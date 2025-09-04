@@ -1,6 +1,7 @@
 package com.example.kronoscrud.Models;
 
 import java.time.LocalTime;
+import java.util.List;
 
 public class Empresa {
     private String nome;
@@ -13,4 +14,5 @@ public class Empresa {
     private LocalTime horarioAbertura;
     private LocalTime horarioFechamento;
     private Endereco endereco;
+    private List<Setor> setor;
 }
