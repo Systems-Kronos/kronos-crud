@@ -4,15 +4,15 @@ import java.time.LocalTime;
 import java.util.List;
 
 public class Empresa {
+    private int ID;
     private String nome;
     private String CEP;
-    private String regraDeNegocios;
-    private String email;
     private String CNPJ;
-    private String porte;
+    private String email;
     private String telefone;
+    private String porte;
+    private Plano planoAssinado;
     private LocalTime horarioAbertura;
     private LocalTime horarioFechamento;
-    private Endereco endereco;
-    private List<Setor> setor;
+    private String regraDeNegocios;
 }

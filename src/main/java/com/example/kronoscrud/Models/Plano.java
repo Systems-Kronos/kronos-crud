@@ -2,11 +2,10 @@ package com.example.kronoscrud.Models;
 
 import java.util.List;
 
-public class Setor {
+public class Plano {
     private int ID;
-    private Empresa empresa;
     private String nome;
+    private float custo;
     private String descricao;
-    private int qntFuncionarios;
-    private List<Usuario> funcionarios;
+    private int maxFuncionarios;
 }
