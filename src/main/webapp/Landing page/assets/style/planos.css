@@ -1,0 +1,114 @@
+#telaPlanos {
+    background-image: url(/assets/img/RoxoFabril3.png);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 110vh;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+}
+
+#telaPlanos .planos {
+    width: 24vw;
+    height: 45vw;
+    font-size: 1.2vw;
+    margin: 6vw 3vw;
+    display: flex;
+    border-radius: 0.35vw;
+    box-shadow: 0.8vw 0.8vw 0.3vw rgba(0, 0, 0, 20%);
+}
+
+
+#telaPlanos .planos h1 {
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+    margin-top: 4vw;
+    font-family: "Cinzel";
+    font-size: 2.5vw;
+}
+
+#planoPro,
+#planoLite {
+    background-color: #FFFFFF;
+    border: 0.1vw #E6B648 solid;
+    color: #25173A;
+}
+
+#planoEnterprise {
+    background-color: #24063F;
+    border: 0.1vw #5F2794 solid;
+    color: #E6B648;
+    position: relative;
+}
+
+.planos {
+    flex-direction: column;
+}
+
+.planos h3 {
+    text-align: left;
+    margin-top: 3vw;
+    margin-left: 1.5vw;
+    font-size: 1.5vw;
+    font-weight: 600;
+}
+
+.planos li {
+    text-align: left;
+    font-weight: 600;
+    line-height: 2.1vw;
+    margin-left: 2vw;
+    font-size: 1vw;
+}
+
+.planos button {
+    font-family: "Montserrat", sans-serif;
+    cursor: pointer;
+    padding: 1vw 2vw;
+    background-color: #e6b648;
+    font-weight: 700;
+    font-size: 1.5vw;
+    border: none;
+    border-radius: 0.6vw;
+    width: 15vw;
+    position: relative;
+    left: 4vw;
+    box-shadow: 0vw 0.3vw 0.3vw rgba(0, 0, 0, 30%);
+}
+
+#planoLite button {
+    position: relative;
+    top: 12.5vw;
+}
+
+#planoPro button {
+    position: relative;
+    top: 8.3vw;
+}
+
+#planoEnterprise button {
+    position: relative;
+    top: 2vw;
+}
+
+#planoEnterprise li, 
+#planoEnterprise h3 {
+    color: #EADAF5;
+}
+
+#planoEnterprise::before {
+    content: "Mais vantajoso";
+    position: absolute;
+    top: -1.3vw;
+    left: 32%;
+    background: #f4b942;
+    color: #2e004f;
+    padding: 0.4vw 2vw;
+    border-radius: 0.4vw;
+    font-weight: bold;
+    font-family: "Montserrat";
+    font-size: 1.4vw;
+}
