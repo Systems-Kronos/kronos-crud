@@ -7,9 +7,7 @@
     <list default="true" id="5e5e3148-2c1a-4ad0-ae39-ef0f6e00cc16" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/kronoscrud/Models/Administracao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/kronoscrud/Models/Administracao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/kronoscrud/Models/Empresa.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/kronoscrud/Models/Empresa.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/kronoscrud/Models/Habilidades.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/kronoscrud/Models/Habilidades.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/kronoscrud/Models/Plano.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/kronoscrud/Models/Plano.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/kronoscrud/Models/Setor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/kronoscrud/Models/Setor.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/kronoscrud/Models/Usuario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/kronoscrud/Models/Usuario.java" afterDir="false" />
     </list>
@@ -92,7 +90,7 @@
       <workItem from="1757339028667" duration="5483000" />
       <workItem from="1757462281651" duration="909000" />
       <workItem from="1757547342221" duration="4000" />
-      <workItem from="1757625519278" duration="4557000" />
+      <workItem from="1757625519278" duration="6585000" />
     </task>
     <servers />
   </component>

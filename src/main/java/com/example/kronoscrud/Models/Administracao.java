@@ -58,7 +58,7 @@ public class Administracao {
     }
     // toString
     public String toString () {
-        return String.format("Administração | Id: %-3d | Nome: %-20s | E-mail: %-20s | Senha: %-20s | Código de acesso: %-10s",
+        return String.format("Administração | Id: %-3d | Nome: %-20s | E-mail: %-20s | Senha: %-25s | Código de acesso: %-10s",
                 this.id,
                 this.nome,
                 this.email,

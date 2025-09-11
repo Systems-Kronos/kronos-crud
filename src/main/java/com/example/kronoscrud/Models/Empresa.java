@@ -31,7 +31,6 @@ public class Empresa {
         this.horarioFechamento = horarioFechamento;
         this.regraDeNegocios = regraDeNegocios;
     }
-
     public Empresa(String nome, String cep, String cnpj, String email, String telefone, String porte,
                    Plano planoAssinado, LocalTime horarioAbertura, LocalTime horarioFechamento,
                    String regraDeNegocios) {
