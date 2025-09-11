@@ -1,7 +1,7 @@
 package com.example.kronoscrud.Models;
 
 public class Administracao {
-    private int ID;
+    private int id;
     private String nome;
     private String email;
     private String senha;
@@ -14,19 +14,19 @@ public class Administracao {
         this.senha = senha;
         this.codigoAcesso = codigoAcesso;
     }
-    public Administracao (int ID, String nome, String email, String senha, String codigoAcesso){
-        this.ID = ID;
+    public Administracao (int id, String nome, String email, String senha, String codigoAcesso){
+        this.id = id;
         this.nome = nome;
         this.email = email;
         this.senha = senha;
         this.codigoAcesso = codigoAcesso;
     }
     //Getters e Setters
-    public void setID (int ID) {
-        this.ID = ID;
+    public void setId (int id) {
+        this.id = id;
     }
-    public int getID (){
-        return ID;
+    public int getId (){
+        return id;
     }
 
     public void setNome(String nome) {
@@ -55,5 +55,15 @@ public class Administracao {
     }
     public String setCodigoAcesso () {
         return codigoAcesso;
+    }
+    // toString
+    public String toString () {
+        return String.format("Administração | Id: %-3d | Nome: %-20s | E-mail: %-20s | Senha: %-20s | Código de acesso: %-10s",
+                this.id,
+                this.nome,
+                this.email,
+                this.senha,
+                this.codigoAcesso
+        );
     }
 }
