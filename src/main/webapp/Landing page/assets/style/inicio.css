@@ -1,0 +1,164 @@
+body {
+    margin: 0;
+    bottom: 0;
+    padding: 0;
+    top: 0;
+}
+
+#telaInicial {
+    background-image: url(/assets/img/RoxoFabril.png);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+    width: 100%;
+    text-align: center;
+    display: flex;
+}
+
+#telaInicial .textoInicial {
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+}
+
+#telaInicial h1 {
+    font-family: "Cinzel", sans-serif;
+    line-height: 3.7vw;
+    font-size: 3.5vw;
+    margin: 0;
+    color: #e6b648;
+}
+
+#telaInicial p {
+    color: white;
+    font-size: 1.55vw;
+}
+
+#telaInicial button {
+    cursor: pointer;
+    padding: 0.95vw 1.5vw;
+    background-color: #e6b648;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 600;
+    font-size: 1.5vw;
+    border: none;
+    border-radius: 0.6vw;
+}
+
+#telaInicial #imgAppKronos {
+    height: 45vw;
+}
+
+.conteudoTelaInicial {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 100%;
+}
+
+@media (max-width: 680px) {
+    #telaInicial {
+        background-image: url(/assets/img/RoxoFabril.png);
+        background-size: cover;
+        background-position: center;
+        height: 100vh;
+        width: 100%;
+        text-align: center;
+        display: flex;
+    }
+
+    
+    #telaInicial h1 {
+        font-family: "Cinzel", sans-serif;
+        line-height: 7vw;
+        font-size: 7vw;
+        margin: 0;
+        color: #e6b648;
+    }
+    
+    #telaInicial p {
+        color: white;
+        font-size: 3vw;
+    }
+    
+    #telaInicial button {
+        cursor: pointer;
+        padding: 2vw 2.5vw;
+        background-color: #e6b648;
+        font-family: "Montserrat", sans-serif;
+        font-weight: 600;
+        font-size: 2.5vw;
+        border: none;
+        border-radius: 1.3vw;
+    }
+    
+    #telaInicial #imgAppKronos {
+        height: 60vw;
+        margin-left: 2vw;
+    }
+    
+    .conteudoTelaInicial {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 336px) {
+    #telaInicial #imgAppKronos {
+        height: 90vw;
+        margin-left: 2vw;
+    }
+    
+    #telaInicial h1 {
+        font-family: "Cinzel", sans-serif;
+        line-height: 7.7vw;
+        font-size: 7.7vw;
+        margin: 0;
+        color: #e6b648;
+    }
+    
+    #telaInicial p {
+        color: white;
+        font-size: 3.5vw;
+    }
+    
+    #telaInicial button {
+        cursor: pointer;
+        padding: 2.2vw 2.5vw;
+        background-color: #e6b648;
+        font-family: "Montserrat", sans-serif;
+        font-weight: 600;
+        font-size: 2.8vw;
+        border: none;
+        border-radius: 1.3vw;
+    }
+}
+
+@media (max-height: 499px) {
+    #telaInicial {
+        background-image: url(/assets/img/RoxoFabril.png);
+        background-size: cover;
+        background-position: center;
+        height: 255vh;
+        width: 100%;
+        text-align: center;
+        display: flex;
+    }
+}
+
+
+@media (max-height: 148px) {
+    #telaInicial {
+        background-image: url(/assets/img/RoxoFabril.png);
+        background-size: cover;
+        background-position: center;
+        height: 1000vh;
+        width: 100%;
+        text-align: center;
+        display: flex;
+    }
+    #telaInicial #imgAppKronos {
+        height: 115vw;
+        margin-left: 2vw;
+    }
+}
