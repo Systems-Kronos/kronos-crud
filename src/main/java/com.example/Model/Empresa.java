@@ -1,4 +1,4 @@
-package com.example.kronoscrud.Models;
+package com.example.Model;
 
 import java.time.LocalTime;
 import java.util.List;
