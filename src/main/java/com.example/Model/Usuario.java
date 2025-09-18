@@ -1,4 +1,4 @@
-package com.example.kronoscrud.Models;
+package com.example.Model;
 
 import java.util.List;
 
