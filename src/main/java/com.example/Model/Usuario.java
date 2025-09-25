@@ -243,7 +243,8 @@ public class Usuario {
             throw new IllegalArgumentException("A senha não pode ser nula.");
         } if (senha.length() < 8) {
             throw new IllegalArgumentException("A senha deve ter no mínimo 8 caracteres");
-        } 
+        }
+        return true;
 
     }
 }
