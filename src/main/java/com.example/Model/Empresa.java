@@ -1,6 +1,8 @@
 package com.example.Model;
 
 import java.time.LocalTime;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Representa uma empresa com informações detalhadas como
@@ -225,8 +227,10 @@ public class Empresa {
             String cepBanco = cep.replace("[^\\d]", "");
             this.cep = cepBanco;
         }
-        return cep.trim().matches(regex);
-    } 
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(cep.trim());
+        return matcher.matches();
+    }
 
 
 /**
@@ -244,8 +248,9 @@ public class Empresa {
             String cnpjBanco = cnpj.replace("[^\\d]", "");
             this.cnpj = cnpjBanco;
         }
-        return cnpj.trim().matches(regex);
-    } 
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(cnpj.trim());
+        return matcher.matches();    }
 
 /**
  * Verifica se o telefone é válido
@@ -266,6 +271,8 @@ public class Empresa {
                 this.telefonePessoal = telefoneBanco;
             }
         }
-        return telefone.trim().matches(regex);
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(telefone.trim());
+        return matcher.matches();
     }
 }
