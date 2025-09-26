@@ -18,19 +18,24 @@ public class Main {
 //            AdministracaoDAO admDAO = new AdministracaoDAO();
 //            admDAO.inserir(adm);
 
-            Empresa empresa = new Empresa(
-                    9,
-                    "90",
-                    "99999-999",
-                    "12.345.678/0001-95",
-                    "4",
-                    "11956775122",
-                    "6",
-                    LocalTime.of(9,0),
-                    LocalTime.of(16,30),
-                    "12");
-            EmpresaDAO empresaDAO = new EmpresaDAO();
-            empresaDAO.inserir(empresa);
+//            Empresa empresa = new Empresa(
+//                    9,
+//                    "90",
+//                    "99999-999",
+//                    "12.345.678/0001-95",
+//                    "4",
+//                    "11956775122",
+//                    "6",
+//                    LocalTime.of(9,0),
+//                    LocalTime.of(16,30),
+//                    "12");
+//            EmpresaDAO empresaDAO = new EmpresaDAO();
+//            empresaDAO.inserir(empresa);
+
+            Plano plano = new Plano(2, "2", 21, "ededde", 12);
+            PlanoDAO planoDAO = new PlanoDAO();
+            planoDAO.inserir(plano);
+
             conecta.desconectar(conn);
         } catch (Exception e) {
             e.printStackTrace();

@@ -10,15 +10,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5e5e3148-2c1a-4ad0-ae39-ef0f6e00cc16" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com.example/Model/AdministracaoDAO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com.example/Model/EmpresaDAO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com.example/Model/HabilidadesDAO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.example/Controller/Conexao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.example/Controller/Conexao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com.example/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.example/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.example/Model/ConexaoBD.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.example/Model/Empresa.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.example/Model/Empresa.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.example/Model/Usuario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.example/Model/Usuario.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com.example/Model/AdministracaoDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.example/Model/AdministracaoDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com.example/Model/Habilidades.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.example/Model/Habilidades.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com.example/Model/HabilidadesDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.example/Model/HabilidadesDAO.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,6 +26,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="Exception" />
       </list>
     </option>
   </component>
@@ -64,28 +62,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
-    &quot;Application.eeeee.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;Tomcat Server.cxzdsz.executor&quot;: &quot;Run&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;refactor/conexao-e-padroes&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/rebeccapaulucci-ieg/OneDrive - Instituto J&amp;F/Germinare/Tech/POO/postgresql-42.7.7.jar&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Main.executor": "Run",
+    "Application.eeeee.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "Tomcat Server.cxzdsz.executor": "Run",
+    "git-widget-placeholder": "feat/metodo-inserir",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/rebeccapaulucci-ieg/OneDrive - Instituto J&F/Germinare/Tech/POO/postgresql-42.7.7.jar",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.lookFeel",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\rebeccapaulucci-ieg\OneDrive - Instituto J&amp;F\Germinare\Tech\POO\Códigos\KronosCRUD\src\main\resources" />

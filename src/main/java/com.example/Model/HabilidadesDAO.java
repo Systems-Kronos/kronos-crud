@@ -5,21 +5,20 @@
 //import java.sql.SQLException;
 //import com.example.Controller.*;
 //
-//public class HabilidadesDAO {
+//public class HabilidadesDAO {git
 //    public boolean inserir(Habilidades habilidade) {
 //        Conexao conexao = new Conexao();
 //        Connection conn = null;
 //        PreparedStatement pstmt = null;
-//        String inserir = "INSERT INTO habilidade (id,nome, tags, senha, codigo_acesso) VALUES (?,?,?,?,?)";
+//        String inserir = "INSERT INTO habilidade (id,nome, tag, descricao) VALUES (?,?,?,?,?)";
 //        try {
 //            // Tem que ver a lista com o Breno
 //            conn = conexao.conectar();
 //            pstmt = conn.prepareStatement(inserir);
-//            pstmt.setInt(1, administracao.getId());
-//            pstmt.setString(2, administracao.getNome());
-//            pstmt.setString(3, administracao.getEmail());
-//            pstmt.setString(4, administracao.getSenha());
-//            pstmt.setString(5, administracao.getCodigoAcesso());
+//            pstmt.setInt(1, habilidade.getId());
+//            pstmt.setString(2, habilidade.getNome());
+//            pstmt.setObject(3, habilidade.getTags());
+//            pstmt.setString(5, habilidade.getDescricao());
 //
 //            return pstmt.executeUpdate() > 0; // true se inseriu
 //        } catch (SQLException e) {
