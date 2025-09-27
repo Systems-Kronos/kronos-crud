@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 /**
  * Representa um setor da indústria.
- * A classe garante a integridade dos dados relacionados ao setor e sua associação 
+ * A classe garante a integridade dos dados relacionados ao setor e sua associação
  * com a empresa e seus funcionários.
  */
 public class Setor {
@@ -19,7 +19,7 @@ public class Setor {
 
 // Métodos Construtores
 
-// As validações de exceções são realizadas pelos métodos set. 
+// As validações de exceções são realizadas pelos métodos set.
     public Setor(int id, Empresa empresa, String nome, String descricao, int qntFuncionarios, List<Usuario> funcionarios) {
         try {
             this.setId(id);
@@ -31,7 +31,7 @@ public class Setor {
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         }
-        
+
     }
     public Setor(Empresa empresa, String nome, String descricao, int qntFuncionarios, List<Usuario> funcionarios) {
         try {
@@ -85,7 +85,7 @@ public class Setor {
         return descricao;
     }
     public void setDescricao(String descricao) {
-        if (descricao == null || descricao.trim().isEmpty()) { // Exceção: verifica se a descrição é nula ou só contém espaço. 
+        if (descricao == null || descricao.trim().isEmpty()) { // Exceção: verifica se a descrição é nula ou só contém espaço.
             throw new IllegalArgumentException("A descrição não pode ser nula ou em branco.");
         }
         this.descricao = descricao;
@@ -109,7 +109,7 @@ public class Setor {
     public void setFuncionarios(List<Usuario> funcionarios) {
         if (funcionarios == null || funcionarios.isEmpty()) { // Exceção: verifica se a lista de funcionários é nula ou vazia.
             throw new IllegalArgumentException("A lista de funcionários não pode ser nula ou vazia.");
-        } 
+        }
 
         for (Usuario funcionario : funcionarios) { // Valida cada objeto de funcionário, um por um.
             if (funcionario == null) { // Exceção: verifica se o objeto de funcionário é nulo.
