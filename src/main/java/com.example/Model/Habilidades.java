@@ -1,102 +1,93 @@
 package com.example.Model;
 
-import java.util.List;
-
 /**
- * Representa um conjunto de habilidades de um funcionário: com nome, descrição e tags.
+ * Representa uma habilidade de um funcionário: com nome, descrição e uma única tag.
  * Esta classe garante que os dados de uma habilidade sejam sempre válidos e bem estruturados.
  */
 public class Habilidades {
-// Atributos
+    // Atributos
     private int id;
     private String nome;
-    private String tags;
+    private String tag;
     private String descricao;
 
-// Métodos Construtores
-
-// As validações de exceções são realizadas pelos métodos set.
-    public Habilidades(int id, String nome, String tags, String descricao) {
+    // Construtores
+    public Habilidades(int id, String nome, String tag, String descricao) {
         try {
             this.setId(id);
             this.setNome(nome);
-            this.setTags(tags);
+            this.setTag(tag);
             this.setDescricao(descricao);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         }
     }
-    public Habilidades(String nome, String tags, String descricao) {
+
+    public Habilidades(String nome, String tag, String descricao) {
         try {
             this.setNome(nome);
-            this.setTags(tags);
+            this.setTag(tag);
             this.setDescricao(descricao);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         }
     }
 
-// Métodos Getters e Setters
+    // Getters e Setters
 
-// Para o ID
+    // Para o ID
     public int getId() {
         return id;
     }
     public void setId(int id) {
-        if (id <= 0) { // Exceção: verifica se o ID é negativo ou igual a zero.
+        if (id <= 0) {
             throw new IllegalArgumentException("O ID (" + id + ") não pode ser zero ou negativo.");
         }
         this.id = id;
     }
 
-// Para o nome
+    // Para o nome
     public String getNome() {
         return nome;
     }
     public void setNome(String nome) {
-        if (nome == null || nome.trim().isEmpty()) { // Exceção: verifica se o nome é nulo ou só contém espaço.
+        if (nome == null || nome.trim().isEmpty()) {
             throw new IllegalArgumentException("O nome não pode ser nulo ou em branco.");
         }
         this.nome = nome;
     }
 
-// Para a lista de tags
-    public String getTags() {
-        return tags;
+    // Para a tag
+    public String getTag() {
+        return tag;
     }
-    public void setTags(String) {
-        if (tags == null || tags.isEmpty()) { // Exceção: verifica se a lista de tags é nula ou vazia.
-            throw new IllegalArgumentException("A lista de tags não pode ser nula ou vazia.");
+    public void setTag(String tag) {
+        if (tag == null || tag.trim().isEmpty()) {
+            throw new IllegalArgumentException("A tag não pode ser nula ou vazia.");
         }
-
-        for (String tag : tags) { // Valida cada tag, uma por uma.
-            if (tag == null || tag.trim().isEmpty()) { // Exceção: verifica se a tag é nula ou em branco.
-                throw new IllegalArgumentException("Uma tag não pode ser nula ou em branco");
-            }
-        }
-        this.tags = tags;
+        this.tag = tag;
     }
 
-// Para a descrição
+    // Para a descrição
     public String getDescricao() {
         return descricao;
     }
     public void setDescricao(String descricao) {
-        if (descricao == null || descricao.trim().isEmpty()) { // Exceção: verifica se a descrição é nula ou em branco.
-            throw new IllegalArgumentException("Uma descrição não pode ser nula ou em branco");
+        if (descricao == null || descricao.trim().isEmpty()) {
+            throw new IllegalArgumentException("A descrição não pode ser nula ou em branco");
         }
         this.descricao = descricao;
     }
 
-// Método toString
+    // Método toString
+    @Override
     public String toString() {
-        // Como o atributo tags é uma lista, este foi transformado em String para o toString.
-        String stringTags = String.join(", ", this.tags);
-        return String.format("Habilidades | Id: %-3d | Nome: %-20s | Tags: %-25s | Descrição: %-50s",
+        return String.format(
+                "Habilidades | Id: %-3d | Nome: %-20s | Tag: %-25s | Descrição: %-50s",
                 this.id,
                 this.nome,
-                stringTags,
+                this.tag,
                 this.descricao
-                );
+        );
     }
 }
