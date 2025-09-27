@@ -1,4 +1,4 @@
-package com.example.example.Controller;
+package com.example.Controller;
 
 import io.github.cdimascio.dotenv.Dotenv;
 

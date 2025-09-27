@@ -19,7 +19,6 @@ public class Empresa {
     private String telefoneFixo;
     private String telefonePessoal;
     private String porte;
-    private Plano planoAssinado;
     private LocalTime horarioAbertura;
     private LocalTime horarioFechamento;
     private String regraDeNegocios;
@@ -28,7 +27,7 @@ public class Empresa {
 
 // As validações de exceções são realizadas pelos métodos set
     public Empresa(int id, String nome, String cep, String cnpj, String email, String telefone,
-                   String porte, Plano planoAssinado, LocalTime horarioAbertura,
+                   String porte, LocalTime horarioAbertura,
                    LocalTime horarioFechamento, String regraDeNegocios) {
         try {
             this.setId(id);
@@ -36,10 +35,8 @@ public class Empresa {
             this.setCep(cep);
             this.setCnpj(cnpj);
             this.setEmail(email);
-            this.setTelefone(telefoneFixo);
-            this.setTelefone(telefonePessoal);
+            this.setTelefone(telefone);
             this.setPorte(porte);
-            this.setPlanoAssinado(planoAssinado);
             this.setHorarioAbertura(horarioAbertura);
             this.setHorarioFechamento(horarioFechamento);
             this.setRegraDeNegocios(regraDeNegocios);
@@ -48,8 +45,7 @@ public class Empresa {
         }            
         
     }
-    public Empresa(String nome, String cep, String cnpj, String email, String telefone, String porte,
-                   Plano planoAssinado, LocalTime horarioAbertura, LocalTime horarioFechamento,
+    public Empresa(String nome, String cep, String cnpj, String email, String telefone, String porte, LocalTime horarioAbertura, LocalTime horarioFechamento,
                    String regraDeNegocios) {
         try {
             this.setNome(nome);
@@ -58,7 +54,6 @@ public class Empresa {
             this.setEmail(email);
             this.setTelefone(telefone);
             this.setPorte(porte);
-            this.setPlanoAssinado(planoAssinado);
             this.setHorarioAbertura(horarioAbertura);
             this.setHorarioFechamento(horarioFechamento);
             this.setRegraDeNegocios(regraDeNegocios); 
@@ -145,17 +140,6 @@ public class Empresa {
         this.porte = porte;
     }
 
-// Para o plano assinado
-    public Plano getPlanoAssinado() {
-        return planoAssinado;
-    }
-    public void setPlanoAssinado(Plano planoAssinado) {
-        if (planoAssinado == null) { // Exceção: verifica se o plano assinado é nulo
-            throw new IllegalArgumentException("O plano assinado não pode ser nulo.");
-        }
-        this.planoAssinado = planoAssinado;
-    }
-
 // Para o horário de abertura
     public LocalTime getHorarioAbertura() {
         return horarioAbertura;
@@ -203,7 +187,6 @@ public class Empresa {
                 this.telefoneFixo, 
                 this.telefonePessoal,
                 this.porte,
-                this.planoAssinado,
                 this.horarioAbertura,
                 this.horarioFechamento,
                 this.regraDeNegocios

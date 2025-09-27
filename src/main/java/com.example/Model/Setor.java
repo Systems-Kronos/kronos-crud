@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 /**
  * Representa um setor da indústria.
- * A classe garante a integridade dos dados relacionados ao setor e sua associação 
+ * A classe garante a integridade dos dados relacionados ao setor e sua associação
  * com a empresa e seus funcionários.
  */
 public class Setor {
@@ -14,32 +14,35 @@ public class Setor {
     private Empresa empresa;
     private String nome;
     private String descricao;
+    private String turnos;
     private int qntFuncionarios;
-    private List<Usuario> funcionarios;
+    private int idEmpresa;
 
 // Métodos Construtores
 
-// As validações de exceções são realizadas pelos métodos set. 
-    public Setor(int id, Empresa empresa, String nome, String descricao, int qntFuncionarios, List<Usuario> funcionarios) {
+// As validações de exceções são realizadas pelos métodos set.
+    public Setor(int id, Empresa empresa, String nome, String descricao, String turnos, int qntFuncionarios, int idEmpresa) {
         try {
             this.setId(id);
             this.setEmpresa(empresa);
             this.setNome(nome);
             this.setDescricao(descricao);
+            this.setTurnos(turnos);
             this.setQntFuncionarios(qntFuncionarios);
-            this.setFuncionarios(funcionarios);
+            this.setIdEmpresa(idEmpresa);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         }
-        
+
     }
-    public Setor(Empresa empresa, String nome, String descricao, int qntFuncionarios, List<Usuario> funcionarios) {
+    public Setor(Empresa empresa, String nome, String descricao, String turnos, int qntFuncionarios, int idEmpresa) {
         try {
             this.setEmpresa(empresa);
             this.setNome(nome);
             this.setDescricao(descricao);
+            this.setTurnos(turnos);
             this.setQntFuncionarios(qntFuncionarios);
-            this.setFuncionarios(funcionarios);
+            this.setIdEmpresa(idEmpresa);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         }
@@ -85,10 +88,21 @@ public class Setor {
         return descricao;
     }
     public void setDescricao(String descricao) {
-        if (descricao == null || descricao.trim().isEmpty()) { // Exceção: verifica se a descrição é nula ou só contém espaço. 
+        if (descricao == null || descricao.trim().isEmpty()) { // Exceção: verifica se a descrição é nula ou só contém espaço.
             throw new IllegalArgumentException("A descrição não pode ser nula ou em branco.");
         }
         this.descricao = descricao;
+    }
+
+    // Para os turnos
+    public String getTurnos() {
+        return turnos;
+    }
+    public void setTurnos(String turnos) {
+        if (turnos == null || turnos.trim().isEmpty()) { // Exceção: verifica se turnos é nulo ou só contém espaço.
+            throw new IllegalArgumentException("Os turnos não podem ser nulo ou em branco.");
+        }
+        this.turnos = turnos;
     }
 
 // Para a quantidade de funcionários
@@ -101,35 +115,27 @@ public class Setor {
         }
         this.qntFuncionarios = qntFuncionarios;
     }
-
-// Para a lista de funcionários
-    public List<Usuario> getFuncionarios() {
-        return funcionarios;
+//    Para id da empresa
+      public int getIdEmpresa() {
+        return idEmpresa;
     }
-    public void setFuncionarios(List<Usuario> funcionarios) {
-        if (funcionarios == null || funcionarios.isEmpty()) { // Exceção: verifica se a lista de funcionários é nula ou vazia.
-            throw new IllegalArgumentException("A lista de funcionários não pode ser nula ou vazia.");
-        } 
-
-        for (Usuario funcionario : funcionarios) { // Valida cada objeto de funcionário, um por um.
-            if (funcionario == null) { // Exceção: verifica se o objeto de funcionário é nulo.
-                throw new IllegalArgumentException("Um objeto de funcionário não pode ser nulo");
-            }
+    public void setIdEmpresa(int idEmpresa) {
+        if (idEmpresa <= 0) { // Exceção: verifica se a quantidade de funcionários é negativo ou igual a zero.
+            throw new IllegalArgumentException("O id da empresa (" + idEmpresa + ") não pode ser negativa ou igual a zero.");
         }
-        this.funcionarios = funcionarios;
+        this.idEmpresa = idEmpresa;
     }
 
 // Método toString
     public String toString() {
         // Como o atributo funcionarios é uma lista, este foi transformado em String para o toString.
-        String stringFuncionarios = String.join(", ", this.funcionarios.stream().map(Usuario::getNome).collect(Collectors.toList()));
         return String.format("Setor | Id: %-3d | Empresa: %-20s | Nome: %-20s | Descrição: %-50s | Qnt. Funcionários: %-5d | Funcionários: %-40s",
                 this.id,
                 this.empresa,
                 this.nome,
                 this.descricao,
                 this.qntFuncionarios,
-                stringFuncionarios
+                this.idEmpresa
         );
     }
 }

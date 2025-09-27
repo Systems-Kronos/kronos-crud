@@ -1,8 +1,6 @@
 package com.example.Model;
 
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Representa um usuário com detalhes pessoais e profissionais.
@@ -24,7 +22,7 @@ public class Usuario {
 
 // Métodos Construtores
 
-// As validações de exceções são realizadas pelos métodos set. 
+// As validações de exceções são realizadas pelos métodos set.
     public Usuario(int id, Character genero, String nome, String cpf, String senha, String status, Setor setor, List<Habilidades> habilidades) {
         try {
             this.setId(id);
@@ -33,7 +31,7 @@ public class Usuario {
             this.setCpf(cpf);
             this.setSenha(senha);
             this.setStatus(status);
-            this.setSetor(setor);
+            this.setSetor(setor);;;
             this.setHabilidades(habilidades);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
@@ -47,7 +45,7 @@ public class Usuario {
             this.setCpf(cpf);
             this.setSenha(senha);
             this.setStatus(status);
-            this.setSetor(setor);
+            this.setSetor(setor);;
             this.setHabilidades(habilidades);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
@@ -150,7 +148,7 @@ public class Usuario {
     public void setHabilidades(List<Habilidades> habilidades) {
         if (habilidades == null || habilidades.isEmpty()) { // Exceção: verifica se a lista de habilidades é nula ou vazia.
             throw new IllegalArgumentException("A lista de habilidades não pode ser nula ou vazia.");
-        } 
+        }
 
         for (Habilidades habilidade : habilidades) { // Valida cada objeto de habilidade, um por um.
             if (habilidade == null) { // Exceção: verifica se o objeto de habilidade é nulo.
@@ -165,7 +163,7 @@ public class Usuario {
         return String.format("Usuário | Id: %-3d | Nome: %-20s | Telefone Fixo: %-12s | Telefone Pessoal: %-12s | Gênero: %-1s | Cpf: %-14s | Senha: %-15s | Status: %-7s | Setor: %-15s | Habilidades: %-30s",
                 this.id,
                 this.nome,
-                this.telefoneFixo, 
+                this.telefoneFixo,
                 this.telefonePessoal,
                 this.genero,
                 this.cpf,
@@ -182,7 +180,7 @@ public class Usuario {
  * Verifica se o gênero é válido
  * Aceitados:
  * 'M' de masculino, 'F' de feminino, 'O' de outro, 'N' de prefiro não informar
-*/ 
+*/
     private boolean isValidGender(Character genero) {
         genero = Character.toUpperCase(genero);
         if (genero == null || genero.equals('M') || !genero.equals('F') || !genero.equals('O') && !genero.equals('N')) {
@@ -195,7 +193,7 @@ public class Usuario {
  * Verifica se o CPF é válido
  * Exemplos de CPF aceitável:
  * "123.123.123-12", "12312312312"
- */  
+ */
     private boolean isValidCpf(String cpf) {
         if (cpf == null || cpf.trim().isEmpty()) { // Exceção: verifica se o CPF é nulo ou só contém espaços
             return false;
@@ -206,9 +204,7 @@ public class Usuario {
             String cpfBanco = cpf.replace("[^\\d]", "");
             this.cpf = cpfBanco;
         }
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(cpf.trim());
-        return matcher.matches();
+        return cpf.trim().matches(regex);
     }
 
 
@@ -231,9 +227,7 @@ public class Usuario {
                 this.telefonePessoal = telefoneBanco;
             }
         }
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(telefone.trim());
-        return matcher.matches();
+        return telefone.trim().matches(regex);
     }
 
 /**
@@ -242,14 +236,15 @@ public class Usuario {
  * -mínimo 1 letra maiúscula
  * -mínimo 1 letra minúscula
  * -mínimo 1 caractere especial
- * -mínimo 1 número
+ * -mínimo 1 número
  */
     private boolean isValidSenha(String senha) {
         if (senha == null) { // Exceção: verifica se a senha é nulo
             throw new IllegalArgumentException("A senha não pode ser nula.");
         } if (senha.length() < 8) {
             throw new IllegalArgumentException("A senha deve ter no mínimo 8 caracteres");
-        } 
+        }
+        return true;
 
     }
 }
