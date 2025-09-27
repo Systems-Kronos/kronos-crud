@@ -1,17 +1,16 @@
 package com.example.Model;
 
+import java.util.List;
+
 /**
- * Representa uma habilidade de um funcionário: com nome, descrição e uma única tag.
- * Esta classe garante que os dados de uma habilidade sejam sempre válidos e bem estruturados.
+ * Representa um conjunto de habilidades de um funcionário: com nome, descrição e tag.
  */
 public class Habilidades {
-    // Atributos
     private int id;
     private String nome;
     private String tag;
     private String descricao;
 
-    // Construtores
     public Habilidades(int id, String nome, String tag, String descricao) {
         try {
             this.setId(id);
@@ -34,60 +33,36 @@ public class Habilidades {
     }
 
     // Getters e Setters
-
-    // Para o ID
-    public int getId() {
-        return id;
-    }
+    public int getId() { return id; }
     public void setId(int id) {
-        if (id <= 0) {
-            throw new IllegalArgumentException("O ID (" + id + ") não pode ser zero ou negativo.");
-        }
+        if (id <= 0) throw new IllegalArgumentException("O ID não pode ser zero ou negativo.");
         this.id = id;
     }
 
-    // Para o nome
-    public String getNome() {
-        return nome;
-    }
+    public String getNome() { return nome; }
     public void setNome(String nome) {
-        if (nome == null || nome.trim().isEmpty()) {
+        if (nome == null || nome.trim().isEmpty())
             throw new IllegalArgumentException("O nome não pode ser nulo ou em branco.");
-        }
         this.nome = nome;
     }
 
-    // Para a tag
-    public String getTag() {
-        return tag;
-    }
+    public String getTag() { return tag; }
     public void setTag(String tag) {
-        if (tag == null || tag.trim().isEmpty()) {
+        if (tag == null || tag.trim().isEmpty())
             throw new IllegalArgumentException("A tag não pode ser nula ou vazia.");
-        }
         this.tag = tag;
     }
 
-    // Para a descrição
-    public String getDescricao() {
-        return descricao;
-    }
+    public String getDescricao() { return descricao; }
     public void setDescricao(String descricao) {
-        if (descricao == null || descricao.trim().isEmpty()) {
-            throw new IllegalArgumentException("A descrição não pode ser nula ou em branco");
-        }
+        if (descricao == null || descricao.trim().isEmpty())
+            throw new IllegalArgumentException("Uma descrição não pode ser nula ou em branco");
         this.descricao = descricao;
     }
 
-    // Método toString
     @Override
     public String toString() {
-        return String.format(
-                "Habilidades | Id: %-3d | Nome: %-20s | Tag: %-25s | Descrição: %-50s",
-                this.id,
-                this.nome,
-                this.tag,
-                this.descricao
-        );
+        return String.format("Habilidades | Id: %-3d | Nome: %-20s | Tag: %-25s | Descrição: %-50s",
+                id, nome, tag, descricao);
     }
 }
