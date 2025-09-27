@@ -10,7 +10,7 @@ public class Habilidades {
 // Atributos
     private int id;
     private String nome;
-    private List<String> tags;
+    private String tag;
     private String descricao;
 
 // Métodos Construtores
@@ -20,7 +20,7 @@ public class Habilidades {
         try {
             this.setId(id);
             this.setNome(nome);
-            this.setTags(tags);
+            this.setTag(tag);
             this.setDescricao(descricao);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
@@ -29,7 +29,7 @@ public class Habilidades {
     public Habilidades(String nome, List<String> tags, String descricao) {
         try {
             this.setNome(nome);
-            this.setTags(tags);
+            this.setTag(tag);
             this.setDescricao(descricao);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
@@ -61,20 +61,14 @@ public class Habilidades {
     }
 
 // Para a lista de tags
-    public List<String> getTags() {
-        return tags;
+    public String getTag() {
+        return tag;
     }
-    public void setTags(List<String> tags) {
-        if (tags == null || tags.isEmpty()) { // Exceção: verifica se a lista de tags é nula ou vazia.
-            throw new IllegalArgumentException("A lista de tags não pode ser nula ou vazia.");
-        } 
-
-        for (String tag : tags) { // Valida cada tag, uma por uma.
-            if (tag == null || tag.trim().isEmpty()) { // Exceção: verifica se a tag é nula ou em branco.
-                throw new IllegalArgumentException("Uma tag não pode ser nula ou em branco");
-            }
+    public void setTag(String tag) {
+        if (tag == null || tag.trim().isEmpty()) { // Exceção: verifica se a tag é nula ou vazia.
+            throw new IllegalArgumentException("A tag não pode ser nula ou vazia.");
         }
-        this.tags = tags;
+        this.tag = tag;
     }
 
 // Para a descrição
@@ -90,12 +84,10 @@ public class Habilidades {
 
 // Método toString
     public String toString() {
-        // Como o atributo tags é uma lista, este foi transformado em String para o toString.
-        String stringTags = String.join(", ", this.tags);
-        return String.format("Habilidades | Id: %-3d | Nome: %-20s | Tags: %-25s | Descrição: %-50s",
+        return String.format("Habilidades | Id: %-3d | Nome: %-20s | Tag: %-25s | Descrição: %-50s",
                 this.id,
                 this.nome,
-                stringTags,
+                this.tag,
                 this.descricao
                 );
     }

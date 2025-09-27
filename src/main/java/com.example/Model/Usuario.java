@@ -1,6 +1,8 @@
 package com.example.Model;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Representa um usuário com detalhes pessoais e profissionais.
@@ -31,7 +33,7 @@ public class Usuario {
             this.setCpf(cpf);
             this.setSenha(senha);
             this.setStatus(status);
-            this.setSetor(setor);;;
+            this.setSetor(setor);
             this.setHabilidades(habilidades);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
@@ -45,7 +47,7 @@ public class Usuario {
             this.setCpf(cpf);
             this.setSenha(senha);
             this.setStatus(status);
-            this.setSetor(setor);;
+            this.setSetor(setor);
             this.setHabilidades(habilidades);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
@@ -204,8 +206,10 @@ public class Usuario {
             String cpfBanco = cpf.replace("[^\\d]", "");
             this.cpf = cpfBanco;
         }
-        return cpf.trim().matches(regex);
-    } 
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(cpf.trim());
+        return matcher.matches();
+    }
 
 
 /**
@@ -227,7 +231,9 @@ public class Usuario {
                 this.telefonePessoal = telefoneBanco;
             }
         }
-        return telefone.trim().matches(regex);
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(telefone.trim());
+        return matcher.matches();
     }
 
 /**
@@ -236,7 +242,7 @@ public class Usuario {
  * -mínimo 1 letra maiúscula
  * -mínimo 1 letra minúscula
  * -mínimo 1 caractere especial
- * -mínimo 1 número
+ * -mínimo 1 número
  */
     private boolean isValidSenha(String senha) {
         if (senha == null) { // Exceção: verifica se a senha é nulo
