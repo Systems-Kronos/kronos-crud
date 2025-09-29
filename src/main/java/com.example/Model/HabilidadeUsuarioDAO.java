@@ -6,21 +6,17 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class UsuarioDAO {
-    public boolean inserir(Setor setor) {
+public class HabilidadeUsuarioDAO {
+    public boolean inserir(HabilidadeUsuario habilidadeUsuario) {
         Conexao conexao = new Conexao();
         Connection conn = null;
         PreparedStatement pstmt = null;
-        String inserir = "INSERT INTO  setor (id,nome, descricao, turnos, qnt_funcionarios, fk_empresa_id) VALUES (?,?,?,?,?,?)";
+        String inserir = "INSERT INTO  setor (fk_usuario_id, fk_habilidade_id) VALUES (?,?)";
         try {
             conn = conexao.conectar();
             pstmt = conn.prepareStatement(inserir);
-            pstmt.setInt(1, setor.getId());
-            pstmt.setString(2, setor.getNome());
-            pstmt.setNString(3, setor.getDescricao());
-            pstmt.setString(4, setor.getTurnos());
-            pstmt.setInt(5, setor.getQntFuncionarios());
-            pstmt.setInt(6, setor.getIdEmpresa());
+            pstmt.setInt(1, habilidadeUsuario.getUsuarioId());
+            pstmt.setInt(2, habilidadeUsuario.getHabilidadeId());
 
             return pstmt.executeUpdate() > 0; // true se inseriu
         } catch (SQLException e) {
