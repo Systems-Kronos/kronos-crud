@@ -1,6 +1,8 @@
 package com.example.Model;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Representa um usuário com detalhes pessoais e profissionais.
@@ -8,7 +10,7 @@ import java.util.List;
  * setor e a lista de habilidades do usuário, garantindo a integridade dos dados.
  */
 public class Usuario {
-// Atributos
+    // Atributos
     private int id;
     private Character genero;
     private String nome;
@@ -18,233 +20,258 @@ public class Usuario {
     private String senha;
     private String status;
     private Setor setor;
-    private List<Habilidades> habilidades;
+    private int idSetor;
 
-// Métodos Construtores
+    // Métodos Construtores
 
-// As validações de exceções são realizadas pelos métodos set.
-    public Usuario(int id, Character genero, String nome, String cpf, String senha, String status, Setor setor, List<Habilidades> habilidades) {
-        try {
-            this.setId(id);
-            this.setGenero(genero);
-            this.setNome(nome);
-            this.setCpf(cpf);
-            this.setSenha(senha);
-            this.setStatus(status);
-            this.setSetor(setor);;;
-            this.setHabilidades(habilidades);
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        }
+    // As validações de exceções são realizadas pelos métodos set.
+    public Usuario(int id, Character genero, String nome, String telefoneFixo,
+                   String telefonePessoal, String cpf, String senha, String status,
+                   Setor setor) {
+        this.setId(id);
+        this.setGenero(genero);
+        this.setNome(nome);
+        this.setTelefoneFixo(telefoneFixo);
+        this.setTelefonePessoal(telefonePessoal);
+        this.setCpf(cpf);
+        this.setSenha(senha);
+        this.setStatus(status);
+        this.setSetor(setor);
     }
 
-    public Usuario(Character genero, String nome, String cpf, String senha, String status, Setor setor, List<Habilidades> habilidades) {
-        try {
-            this.setGenero(genero);
-            this.setNome(nome);
-            this.setCpf(cpf);
-            this.setSenha(senha);
-            this.setStatus(status);
-            this.setSetor(setor);;
-            this.setHabilidades(habilidades);
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        }
+    public Usuario(Character genero, String nome, String telefoneFixo,
+                   String telefonePessoal, String cpf, String senha, String status,
+                   Setor setor) {
+        this.setGenero(genero);
+        this.setNome(nome);
+        this.setTelefoneFixo(telefoneFixo);
+        this.setTelefonePessoal(telefonePessoal);
+        this.setCpf(cpf);
+        this.setSenha(senha);
+        this.setStatus(status);
+        this.setSetor(setor);
     }
 
-// Métodos Getters e Setters
+    // Métodos Getters e Setters
 
-// Para o ID
+    // Para o ID
     public int getId() {
         return id;
     }
     public void setId(int id) {
-        if (id <= 0) { // Exceção: verifica se o ID é negativo ou igual a zero.
-            throw new IllegalArgumentException("O ID (" + id + ") não pode ser zero ou negativo.");
+        if (id <= 0) { // Exceção: verifica se o ID é negativo ou igual a zero
+            throw new IllegalArgumentException("O ID não pode ser zero ou negativo.");
         }
         this.id = id;
     }
 
-// Para o nome
+    // Para o nome
     public String getNome() {
         return nome;
     }
     public void setNome(String nome) {
-        if (nome == null || nome.trim().isEmpty()) { // Exceção: verifica se o nome é nulo ou só contém espaço.
-            throw new IllegalArgumentException("O nome não pode ser nulo ou em branco.");
+        if (nome == null) { // Exceção: verifica se o nome é nulo
+            throw new NullPointerException("O nome não pode ser nulo.");
+        }
+        if (nome.trim().isEmpty()) { // Exceção: verifica se o nome só contém espaço
+            throw new IllegalArgumentException("O nome não pode estar em branco.");
         }
         this.nome = nome;
     }
 
-// Para o telefone fixo e pessoal
+    // Para o telefone fixo
     public String getTelefoneFixo() {
         return telefoneFixo;
     }
-    public String getTelefonePessoal() {
-        return telefonePessoal;
-    }
-    public void setTelefone(String telefone) {
-        if (!isValidTelefone(telefone)) { // Exceção: usa o método isValidTelefone
-            throw new IllegalArgumentException("O telefone (" + telefone + ") não é válido.");
+    public void setTelefoneFixo(String telefoneFixo) {
+        if (telefoneFixo == null) { // Exceção: verifica se o telefone fixo é nulo
+            throw new NullPointerException("O telefone fixo não pode ser nulo.");
+        }
+        if (!isValidTelefoneFixo(telefoneFixo)) { // Exceção: verifica se o telefone fixo é válido
+            throw new IllegalArgumentException("O formato do telefone fixo é inválido: '" + telefoneFixo + "'");
         }
     }
 
-// Para o gênero
+    // Para o telefone pessoal
+    public String getTelefonePessoal() {
+        return telefonePessoal;
+    }
+    public void setTelefonePessoal(String telefonePessoal) {
+        if (telefonePessoal == null) { // Exceção: verifica se o telefone pessoal é nulo
+            throw new NullPointerException("O telefone pessoal não pode ser nulo.");
+        }
+        if (!isValidTelefonePessoal(telefonePessoal)) { // Exceção: verifica se o telefone pessoal é válido
+            throw new IllegalArgumentException("O formato do telefone pessoal é inválido: '" + telefonePessoal + "'");
+        }
+    }
+
+    // Para o gênero
     public Character getGenero() {
         return genero;
     }
     public void setGenero(Character genero) {
-        if (!isValidGender(genero)) { // Exceção: verifica se o gênero é válido.
-            throw new IllegalArgumentException("O gênero (" + genero + ") não é valido.");
+        if (genero == null) { // Exceção: verifica se o gênero é nulo
+            throw new NullPointerException("O gênero não pode ser nulo.");
         }
-        this.genero = genero;
+        if (!isValidGender(genero)) { // Exceção: verifica se o gênero é válido pelo método isValidGender
+            throw new IllegalArgumentException("O gênero não é válido. Use 'M', 'F', 'O' ou 'N'.");
+        }
     }
 
-// Para o CPF
-    public String getCpf() {
-        return cpf;
-    }
+    // Para o CPF
+    public String getCpf() { return cpf; }
     public void setCpf(String cpf) {
-        if (!isValidCpf(cpf)) { // Exceção: verifica se o CPF é válido
-            throw new IllegalArgumentException("O CPF (" + cpf + ") não é válido.");
+        if (cpf == null) { // Exceção: verifica se o CPF é nulo
+            throw new NullPointerException("O CPF não pode ser nulo.");
         }
-        this.cpf = cpf;
+        if (!isValidCpf(cpf)) { // Exceção: verifica se o CPF é válido pelo método isValidCpf
+            throw new IllegalArgumentException("O formato do CPF é inválido: '" + cpf + "'");
+        }
     }
 
-// Para a senha
+    // Para a senha
     public String getSenha() {
         return senha;
     }
-    public void setSenha(String senha) {
+    public void setSenha (String senha) {
+        if (senha == null) { // Exceção: verifica se a senha é nula
+            throw new NullPointerException("A senha não pode ser nula.");
+        }
+        if (senha.trim().isEmpty()) { // Exceção: verifica se a senha só contém espaço
+            throw new IllegalArgumentException("A senha não pode estar em branco");
+        }
+        /** if (!isValidSenha(senha)) { // Exceção: verifica se a senha é válida pelo método isValidSenha
+         *   throw new IllegalArgumentException("O formato da senha é inválida: '" + senha + "'");
+         *}
+         */
         this.senha = senha;
     }
 
-// Para o status
+    // Para o status
     public String getStatus() {
         return status;
     }
     public void setStatus(String status) {
-        if (status == null || status.trim().isEmpty()) { // Exceção: verifica se o status é nulo ou só contém espaços.
-            throw new IllegalArgumentException("O status não pode ser nula ou em branco");
+        if (status == null) { // Exceção: verifica se o status é nulo
+            throw new NullPointerException("O status não pode ser nulo.");
+        }
+        if (status.trim().isEmpty()) { // Exceção: verifica se o status só contém espaço
+            throw new IllegalArgumentException("O status não pode ser em branco.");
         }
         this.status = status;
     }
 
-// Para o setor
+    // Para o setor
     public Setor getSetor() {
         return setor;
     }
     public void setSetor(Setor setor) {
         if (setor == null) { // Exceção: verifica se o objeto setor é nula.
-            throw new IllegalArgumentException("O objeto setor não pode ser nula.");
+            throw new NullPointerException("O objeto setor não pode ser nula.");
         }
         this.setor = setor;
+        this.idSetor = setor.getId(); // Define o atributo idSetor, que serve como FK no banco de dados
     }
 
-// Para a lista de habilidades
-    public List<Habilidades> getHabilidades() {
-        return habilidades;
-    }
-    public void setHabilidades(List<Habilidades> habilidades) {
-        if (habilidades == null || habilidades.isEmpty()) { // Exceção: verifica se a lista de habilidades é nula ou vazia.
-            throw new IllegalArgumentException("A lista de habilidades não pode ser nula ou vazia.");
-        }
-
-        for (Habilidades habilidade : habilidades) { // Valida cada objeto de habilidade, um por um.
-            if (habilidade == null) { // Exceção: verifica se o objeto de habilidade é nulo.
-                throw new IllegalArgumentException("Um objeto de habilidade não pode ser nulo");
-            }
-        }
-        this.habilidades = habilidades;
+    // Para id do setor
+    public int getIdSetor() {
+        return idSetor;
     }
 
-// Para o método toString
+    // Para o método toString
     public String toString() {
-        return String.format("Usuário | Id: %-3d | Nome: %-20s | Telefone Fixo: %-12s | Telefone Pessoal: %-12s | Gênero: %-1s | Cpf: %-14s | Senha: %-15s | Status: %-7s | Setor: %-15s | Habilidades: %-30s",
+        return String.format("Usuário | Id: %-3d | Nome: %-20s | Telefone Fixo: %-12s | Telefone Pessoal: %-12s | Gênero: %-1s | Cpf: %-14s | Senha:[PROTEGIDO] | Status: %-7s | Setor: %-15s | ID Setor: %-3d",
                 this.id,
                 this.nome,
                 this.telefoneFixo,
                 this.telefonePessoal,
                 this.genero,
                 this.cpf,
-                this.senha,
                 this.status,
                 this.setor,
-                this.habilidades
+                this.idSetor
                 );
     }
 
-// Métodos de Validação
+    // Métodos de Validação
 
-/**
- * Verifica se o gênero é válido
- * Aceitados:
- * 'M' de masculino, 'F' de feminino, 'O' de outro, 'N' de prefiro não informar
-*/
+    /*
+     * Verifica se o gênero é válido
+     * Aceitados:
+     * 'M' de masculino, 'F' de feminino, 'O' de outro, 'N' de "prefiro não informar"
+    */
     private boolean isValidGender(Character genero) {
-        genero = Character.toUpperCase(genero);
-        if (genero == null || genero.equals('M') || !genero.equals('F') || !genero.equals('O') && !genero.equals('N')) {
-            return false;
+        char generoUpper = Character.toUpperCase(genero);
+        if (generoUpper == 'M' || generoUpper == 'F' || generoUpper == 'O' || generoUpper == 'N') {
+            this.genero = generoUpper;
+            return true;
         }
-        return true;
+        return false;
     }
 
-/**
- * Verifica se o CPF é válido
- * Exemplos de CPF aceitável:
- * "123.123.123-12", "12312312312"
- */
+
+    /*
+     * Verifica se o CPF é válido
+     * Exemplos de CPF aceitável:
+     * "123.123.123-12", "12312312312"
+     */
     private boolean isValidCpf(String cpf) {
-        if (cpf == null || cpf.trim().isEmpty()) { // Exceção: verifica se o CPF é nulo ou só contém espaços
-            return false;
+        String regex = "^\\d{3}\\.?\\d{3}\\.?\\d{3}-?\\d{2}$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(cpf.trim());
+        if (matcher.matches()) {
+            this.cpf = cpf.replaceAll("[^\\d]", "");
+            return true;
         }
-        String regex = "\\b\\d{3}\\.?\\d{3}\\.?\\d{3}-?\\d{2}\\b";
-        boolean valido = cpf.trim().matches(regex);
-        if (valido) {
-            String cpfBanco = cpf.replace("[^\\d]", "");
-            this.cpf = cpfBanco;
-        }
-        return cpf.trim().matches(regex);
+        return false;
     }
 
 
-/**
- * Verifica se o telefone é válido
- * Exemplos de telefone aceitável:
- * "(11) 12345-1234", "11123451234"
- */
-    private boolean isValidTelefone(String telefone) {
-        if (telefone == null || telefone.trim().isEmpty()) {  // Exceção: verifica se o telefone é nulo ou só contém espaços
-            return false;
-        }
+    /*
+     * Verifica se o telefone fixo é válido
+     * Exemplos de telefone fixo aceitável:
+     * "(11) 12345-1234", "11123451234"
+     */
+    private boolean isValidTelefoneFixo(String telefone) {
         String regex = "\\(?\\d{2}\\)?\\d{4,5}-?\\d{4}";
-        boolean valido = telefone.trim().matches(regex);
-        if (valido) {
-            String telefoneBanco = telefone.replace("[^\\d]", "");
-            if (telefone.equals(this.telefoneFixo)) {
-                this.telefoneFixo = telefoneBanco;
-            } else {
-                this.telefonePessoal = telefoneBanco;
-            }
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(telefone.trim());
+        if (matcher.matches()) {
+            this.telefoneFixo = telefone.replaceAll("[^\\d]", "");
+            return true;
         }
-        return telefone.trim().matches(regex);
+        return false;
     }
 
-/**
- * Verifca se a senha é válida baseando nessas regras:
- * -mínimo 8 caracteres
- * -mínimo 1 letra maiúscula
- * -mínimo 1 letra minúscula
- * -mínimo 1 caractere especial
- * -mínimo 1 número
- */
-    private boolean isValidSenha(String senha) {
-        if (senha == null) { // Exceção: verifica se a senha é nulo
-            throw new IllegalArgumentException("A senha não pode ser nula.");
-        } if (senha.length() < 8) {
-            throw new IllegalArgumentException("A senha deve ter no mínimo 8 caracteres");
+    /*
+     * Verifica se o telefone pessoal é válido
+     * Exemplos de telefone pessoal aceitável:
+     * "(11) 12345-1234", "11123451234"
+     */
+    private boolean isValidTelefonePessoal(String telefone) {
+        String regex = "\\(?\\d{2}\\)?\\d{4,5}-?\\d{4}";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(telefone.trim());
+        if (matcher.matches()) {
+            this.telefonePessoal = telefone.replaceAll("[^\\d]", "");
+            return true;
         }
-        return true;
-
+        return false;
     }
+
+    /* ---------PLACEHOLDER---------
+     * Verifica se a senha é válida
+     * Regras de senha:
+     * -Mínimo 8 caracteres
+     * -Mínimo 1 letra maiúscula
+     * -Mínimo 1 letra minúscula
+     * -Mínimo 1 caractere especial
+     * -Mínimo 1 número
+     */
+
+    /**
+     * private boolean isValidSenha(String senha) {
+     *
+     * }
+     */
 }
