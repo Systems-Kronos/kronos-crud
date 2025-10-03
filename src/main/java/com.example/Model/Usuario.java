@@ -88,8 +88,9 @@ public class Usuario {
             throw new NullPointerException("O telefone fixo não pode ser nulo.");
         }
         if (!isValidTelefoneFixo(telefoneFixo)) { // Exceção: verifica se o telefone fixo é válido
-            throw new IllegalArgumentException("O formato do telefone fixo é inválido: '" + telefoneFixo + "'");
+            throw new IllegalArgumentException("O formato do telefone fixo é inválido: '" + telefoneFixo + "'.");
         }
+        this.telefoneFixo = telefoneFixo.replaceAll("[^\\d]", "");
     }
 
     // Para o telefone pessoal
@@ -101,8 +102,9 @@ public class Usuario {
             throw new NullPointerException("O telefone pessoal não pode ser nulo.");
         }
         if (!isValidTelefonePessoal(telefonePessoal)) { // Exceção: verifica se o telefone pessoal é válido
-            throw new IllegalArgumentException("O formato do telefone pessoal é inválido: '" + telefonePessoal + "'");
+            throw new IllegalArgumentException("O formato do telefone pessoal é inválido: '" + telefonePessoal + "'.");
         }
+        this.telefonePessoal = telefonePessoal.replaceAll("[^\\d]", "");
     }
 
     // Para o gênero
@@ -116,6 +118,7 @@ public class Usuario {
         if (!isValidGender(genero)) { // Exceção: verifica se o gênero é válido pelo método isValidGender
             throw new IllegalArgumentException("O gênero não é válido. Use 'M', 'F', 'O' ou 'N'.");
         }
+        this.genero = Character.toUpperCase(genero);
     }
 
     // Para o CPF
@@ -125,8 +128,9 @@ public class Usuario {
             throw new NullPointerException("O CPF não pode ser nulo.");
         }
         if (!isValidCpf(cpf)) { // Exceção: verifica se o CPF é válido pelo método isValidCpf
-            throw new IllegalArgumentException("O formato do CPF é inválido: '" + cpf + "'");
+            throw new IllegalArgumentException("O formato do CPF é inválido: '" + cpf + "'.");
         }
+        this.cpf = cpf.replaceAll("[^\\d]", "");
     }
 
     // Para a senha
@@ -138,13 +142,11 @@ public class Usuario {
             throw new NullPointerException("A senha não pode ser nula.");
         }
         if (senha.trim().isEmpty()) { // Exceção: verifica se a senha só contém espaço
-            throw new IllegalArgumentException("A senha não pode estar em branco");
+            throw new IllegalArgumentException("A senha não pode estar em branco.");
         }
-        /** if (!isValidSenha(senha)) { // Exceção: verifica se a senha é válida pelo método isValidSenha
-         *   throw new IllegalArgumentException("O formato da senha é inválida: '" + senha + "'");
-         *}
-         */
-        this.senha = senha;
+        if (isValidSenha(senha)) { // Exceção: verifica se a senha é válida pelo método isValidSenha
+            this.senha = senha;
+        }
     }
 
     // Para o status
@@ -180,7 +182,8 @@ public class Usuario {
 
     // Para o método toString
     public String toString() {
-        return String.format("Usuário | Id: %-3d | Nome: %-20s | Telefone Fixo: %-12s | Telefone Pessoal: %-12s | Gênero: %-1s | Cpf: %-14s | Senha:[PROTEGIDO] | Status: %-7s | Setor: %-15s | ID Setor: %-3d",
+        String nomeSetor = (this.setor != null) ? this.setor.getNome() : "Setor indisponível";
+        return String.format("Usuário | Id: %-3d | Nome: %-20s | Telefone Fixo: %-12s | Telefone Pessoal: %-12s | Gênero: %-1s | Cpf: %-14s | Senha:[PROTEGIDA] | Status: %-7s | Setor: %-15s | ID Setor: %-3d",
                 this.id,
                 this.nome,
                 this.telefoneFixo,
@@ -188,7 +191,7 @@ public class Usuario {
                 this.genero,
                 this.cpf,
                 this.status,
-                this.setor,
+                nomeSetor,
                 this.idSetor
                 );
     }
@@ -203,7 +206,6 @@ public class Usuario {
     private boolean isValidGender(Character genero) {
         char generoUpper = Character.toUpperCase(genero);
         if (generoUpper == 'M' || generoUpper == 'F' || generoUpper == 'O' || generoUpper == 'N') {
-            this.genero = generoUpper;
             return true;
         }
         return false;
@@ -219,11 +221,7 @@ public class Usuario {
         String regex = "^\\d{3}\\.?\\d{3}\\.?\\d{3}-?\\d{2}$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(cpf.trim());
-        if (matcher.matches()) {
-            this.cpf = cpf.replaceAll("[^\\d]", "");
-            return true;
-        }
-        return false;
+        return matcher.matches();
     }
 
 
@@ -236,11 +234,7 @@ public class Usuario {
         String regex = "\\(?\\d{2}\\)?\\d{4,5}-?\\d{4}";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(telefone.trim());
-        if (matcher.matches()) {
-            this.telefoneFixo = telefone.replaceAll("[^\\d]", "");
-            return true;
-        }
-        return false;
+        return matcher.matches();
     }
 
     /*
@@ -252,14 +246,10 @@ public class Usuario {
         String regex = "\\(?\\d{2}\\)?\\d{4,5}-?\\d{4}";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(telefone.trim());
-        if (matcher.matches()) {
-            this.telefonePessoal = telefone.replaceAll("[^\\d]", "");
-            return true;
-        }
-        return false;
+        return matcher.matches();
     }
 
-    /* ---------PLACEHOLDER---------
+    /*
      * Verifica se a senha é válida
      * Regras de senha:
      * -Mínimo 8 caracteres
@@ -269,9 +259,34 @@ public class Usuario {
      * -Mínimo 1 número
      */
 
-    /**
-     * private boolean isValidSenha(String senha) {
-     *
-     * }
-     */
+    private boolean isValidSenha(String senha) {
+        if (senha.length() < 8) { // Exceção: verifica se a senha tem no mínimo 8 caracteres
+            throw new IllegalArgumentException("A senha deve ter no mínimo 8 caracteres");
+        }
+        String regex = "[a-z]";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(senha);
+        if (!matcher.find()) { // Exceção: verifica se a senha tem no mínimo 1 letra minúscula
+            throw new IllegalArgumentException("A senha deve ter no mínimo 1 letra minúscula");
+        }
+        regex = "[A-Z]";
+        pattern = Pattern.compile(regex);
+        matcher = pattern.matcher(senha);
+        if (!matcher.find()) { // Exceção: verifica se a senha tem no mínimo 1 letra maiúscula
+            throw new IllegalArgumentException("A senha deve ter no mínimo 1 letra maiúscula");
+        }
+        regex = "\\d";
+        pattern = Pattern.compile(regex);
+        matcher = pattern.matcher(senha);
+        if (!matcher.find()) { // Exceção: verifica se a senha tem no mínimo 1 dígito
+            throw new IllegalArgumentException("A senha deve ter no mínimo 1 dígito");
+        }
+        regex = "[^A-Za-z0-9]";
+        pattern = Pattern.compile(regex);
+        matcher = pattern.matcher(senha);
+        if (!matcher.find()) { // Exceção: verifica se a senha tem no mínimo 1 caractere especial
+            throw new IllegalArgumentException("A senha deve ter no mínimo 1 caractere especial");
+        }
+        return true;
+    }
 }

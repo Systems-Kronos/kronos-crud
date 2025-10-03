@@ -41,17 +41,20 @@ public class Administracao {
     // Métodos Getters e Setters
 
     // Para o ID
+    public int getId (){
+        return id;
+    }
     public void setId(int id) {
         if (id <= 0) { // Exceção: verifica se o ID é negativo ou igual a zero
             throw new IllegalArgumentException("O ID não pode ser zero ou negativo.");
         }
         this.id = id;
     }
-    public int getId (){
-        return id;
-    }
 
     // Para o nome
+    public String getNome () {
+        return nome;
+    }
     public void setNome(String nome) {
         if (nome == null) { // Exceção: verifica se o nome é nulo
             throw new NullPointerException("O nome não pode ser nulo.");
@@ -61,54 +64,54 @@ public class Administracao {
         }
         this.nome = nome;
     }
-    public String getNome () {
-        return nome;
-    }
 
     // Para o email
+    public String getEmail () {
+        return email;
+    }
     public void setEmail (String email){
         if (email == null) { // Exceção: verifica se o email é nulo
             throw new NullPointerException("O e-mail não pode ser nulo.");
         }
         if (!isValidEmail(email)) { // Exceção: verifica se o email é válido pelo método isValidEmail
-            throw new IllegalArgumentException("O formato do e-mail é inválido: '" + email + "'");
+            throw new IllegalArgumentException("O formato do e-mail é inválido: '" + email + "'.");
         }
-    }
-    public String getEmail () {
-        return email;
+        this.email = email;
     }
 
     // Para a senha
+    public String getSenha () {
+        return senha;
+    }
     public void setSenha (String senha) {
         if (senha == null) { // Exceção: verifica se a senha é nula
             throw new NullPointerException("A senha não pode ser nula.");
         }
-        /** if (!isValidSenha(senha)) { // Exceção: verifica se a senha é válida pelo método isValidSenha
-         *   throw new IllegalArgumentException("O formato da senha é inválida: '" + senha + "'");
-         *}
-         */
-    }
-    public String getSenha () {
-        return senha;
+        if (senha.trim().isEmpty()) { // Exceção: verifica se a senha só contém espaço
+            throw new IllegalArgumentException("A senha não pode estar em branco.");
+        }
+        if (isValidSenha(senha)) { // Exceção: verifica se a senha é válida pelo método isValidSenha
+            this.senha = senha;
+        }
     }
 
     // Para o código de acesso
+    public String getCodigoAcesso() {
+        return codigoAcesso;
+    }
     public void setCodigoAcesso(String codigoAcesso) {
         if (codigoAcesso == null) { // Exceção: verifica se o código de acesso é nulo
             throw new NullPointerException("O código de acesso não pode ser nulo.");
         }
         if (codigoAcesso.trim().isEmpty()) { // Exceção: verifica se o código de acesso só contém espaço
-            throw new IllegalArgumentException("O código de acesso não pode estar em branco");
+            throw new IllegalArgumentException("O código de acesso não pode estar em branco.");
         }
         this.codigoAcesso = codigoAcesso;
-    }
-    public String getCodigoAcesso() {
-        return codigoAcesso;
     }
 
     // Método toString
     public String toString () {
-        return String.format("Administração | Id: %-3d | Nome: %-20s | E-mail: %-20s | Senha: [PROTEGIDO] | Código de acesso: %-10s",
+        return String.format("Administração | Id: %-3d | Nome: %-20s | E-mail: %-20s | Senha: [PROTEGIDA] | Código de acesso: %-10s",
                 this.id,
                 this.nome,
                 this.email,
@@ -124,17 +127,14 @@ public class Administracao {
      *
      */
     private boolean isValidEmail(String email) {
-        String regex = "";
+        String regex = "^[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*" +
+                "@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,63}$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(email);
-        if (matcher.matches()) {
-            this.email = email;
-            return true;
-        }
-        return false;
+        return matcher.matches();
     }
 
-    /* ---------PLACEHOLDER---------
+    /*
      * Verifica se a senha é válida
      * Regras de senha:
      * -Mínimo 8 caracteres
@@ -144,9 +144,34 @@ public class Administracao {
      * -Mínimo 1 número
      */
 
-    /**
-     * private boolean isValidSenha(String senha) {
-     *
-     * }
-     */
+     private boolean isValidSenha(String senha) {
+         if (senha.length() < 8) { // Exceção: verifica se a senha tem no mínimo 8 caracteres
+             throw new IllegalArgumentException("A senha deve ter no mínimo 8 caracteres.");
+         }
+         String regex = "[a-z]";
+         Pattern pattern = Pattern.compile(regex);
+         Matcher matcher = pattern.matcher(senha);
+         if (!matcher.find()) { // Exceção: verifica se a senha tem no mínimo 1 letra minúscula
+             throw new IllegalArgumentException("A senha deve ter no mínimo 1 letra minúscula.");
+         }
+         regex = "[A-Z]";
+         pattern = Pattern.compile(regex);
+         matcher = pattern.matcher(senha);
+         if (!matcher.find()) { // Exceção: verifica se a senha tem no mínimo 1 letra maiúscula
+             throw new IllegalArgumentException("A senha deve ter no mínimo 1 letra maiúscula.");
+         }
+         regex = "\\d";
+         pattern = Pattern.compile(regex);
+         matcher = pattern.matcher(senha);
+         if (!matcher.find()) { // Exceção: verifica se a senha tem no mínimo 1 dígito
+             throw new IllegalArgumentException("A senha deve ter no mínimo 1 dígito.");
+         }
+         regex = "[^A-Za-z0-9]";
+         pattern = Pattern.compile(regex);
+         matcher = pattern.matcher(senha);
+         if (!matcher.find()) { // Exceção: verifica se a senha tem no mínimo 1 caractere especial
+             throw new IllegalArgumentException("A senha deve ter no mínimo 1 caractere especial.");
+         }
+         return true;
+     }
 }
