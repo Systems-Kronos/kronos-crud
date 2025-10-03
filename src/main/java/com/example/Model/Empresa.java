@@ -93,8 +93,9 @@ public class Empresa {
             throw new NullPointerException("O CEP não pode ser nulo.");
         }
         if (!isValidCep(cep)) { // Exceção: verifica se o CEP é válido pelo método isValidCep
-            throw new IllegalArgumentException("O formato do CEP é inválido: '" + cep + "'");
+            throw new IllegalArgumentException("O formato do CEP é inválido: '" + cep + "'.");
         }
+        this.cep = cep.replaceAll("[^\\d]", "");
     }
 
     // Para o CNPJ
@@ -106,8 +107,9 @@ public class Empresa {
             throw new NullPointerException("O CNPJ não pode ser nulo.");
         }
         if (!isValidCnpj(cnpj)) { // Exceção: verifica se o CNPJ é válido pelo método isValidCnpj
-            throw new IllegalArgumentException("O formato do CNPJ é inválido: '" + cnpj + "'");
+            throw new IllegalArgumentException("O formato do CNPJ é inválido: '" + cnpj + "'.");
         }
+        this.cnpj = cnpj.replaceAll("[^\\d]", "");
     }
 
     // Para o email
@@ -119,8 +121,9 @@ public class Empresa {
             throw new NullPointerException("O email não pode ser nulo.");
         }
         if (!isValidEmail(email)) { // Exceção: verifica se o email é válido pelo método isValidEmail
-            throw new IllegalArgumentException("O formato do e-mail é inválido: '" + email + "'");
+            throw new IllegalArgumentException("O formato do e-mail é inválido: '" + email + "'.");
         }
+        this.email = email;
     }
 
     // Para o telefone fixo
@@ -132,8 +135,9 @@ public class Empresa {
             throw new NullPointerException("O telefone fixo não pode ser nulo.");
         }
         if (!isValidTelefoneFixo(telefoneFixo)) { // Exceção: verifica se o telefone fixo é válido
-            throw new IllegalArgumentException("O formato do telefone fixo é inválido: '" + telefoneFixo + "'");
+            throw new IllegalArgumentException("O formato do telefone fixo é inválido: '" + telefoneFixo + "'.");
         }
+        this.telefoneFixo = telefoneFixo.replaceAll("[^\\d]", "");
     }
 
     // Para o telefone pessoal
@@ -145,8 +149,9 @@ public class Empresa {
             throw new NullPointerException("O telefone pessoal não pode ser nulo.");
         }
         if (!isValidTelefonePessoal(telefonePessoal)) { // Exceção: verifica se o telefone pessoal é válido
-            throw new IllegalArgumentException("O formato do telefone pessoal é inválido: '" + telefonePessoal + "'");
+            throw new IllegalArgumentException("O formato do telefone pessoal é inválido: '" + telefonePessoal + "'.");
         }
+        this.telefonePessoal = telefonePessoal.replaceAll("[^\\d]", "");
     }
 
     // Para o porte
@@ -235,11 +240,7 @@ public class Empresa {
         String regex = "\\b\\d{5}-?\\d{3}\\b";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(cep.trim());
-        if (matcher.matches()) {
-            this.cep = cep.replaceAll("[^\\d]", "");
-            return true;
-        }
-        return false;
+        return matcher.matches();
     }
 
     /*
@@ -251,11 +252,7 @@ public class Empresa {
         String regex = "\\b\\d{2}\\.?\\d{3}\\.?\\d{3}/?\\.?\\d{4}-?\\d{2}\\b";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(cnpj.trim());
-        if (matcher.matches()) {
-            this.cnpj = cnpj.replaceAll("[^\\d]", "");
-            return true;
-        }
-        return false;
+        return matcher.matches();
     }
 
     /*
@@ -267,11 +264,7 @@ public class Empresa {
         String regex = "\\(?\\d{2}\\)?\\d{4,5}-?\\d{4}";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(telefone.trim());
-        if (matcher.matches()) {
-            this.telefoneFixo = telefone.replaceAll("[^\\d]", "");
-            return true;
-        }
-        return false;
+        return matcher.matches();
     }
 
     /*
@@ -283,26 +276,17 @@ public class Empresa {
         String regex = "\\(?\\d{2}\\)?\\d{4,5}-?\\d{4}";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(telefone.trim());
-        if (matcher.matches()) {
-            this.telefonePessoal = telefone.replaceAll("[^\\d]", "");
-            return true;
-        }
-        return false;
+        return matcher.matches();
     }
 
-    /* ---------PLACEHOLDER---------
+    /*
     * Verifica se o email é válido
-    * Exemplos de email aceitável:
-    *
     */
     private boolean isValidEmail(String email) {
-        String regex = "";
+        String regex = "^[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*" +
+                "@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,63}$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(email);
-        if (matcher.matches()) {
-            this.email = email;
-            return true;
-        }
-        return false;
+        return matcher.matches();
     }
 }
