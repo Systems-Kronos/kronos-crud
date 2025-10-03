@@ -1,9 +1,10 @@
-package com.example.Model;
+package com.example.Dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import com.example.Controller.*;
+import com.example.Model.Habilidades;
 
 public class HabilidadesDAO {
     public boolean inserir(Habilidades habilidade) {

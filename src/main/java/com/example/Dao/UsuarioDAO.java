@@ -1,22 +1,27 @@
-package com.example.Model;
+package com.example.Dao;
 
 import com.example.Controller.Conexao;
+import com.example.Model.Setor;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class HabilidadeUsuarioDAO {
-    public boolean inserir(HabilidadeUsuario habilidadeUsuario) {
+public class UsuarioDAO {
+    public boolean inserir(Setor setor) {
         Conexao conexao = new Conexao();
         Connection conn = null;
         PreparedStatement pstmt = null;
-        String inserir = "INSERT INTO  setor (fk_usuario_id, fk_habilidade_id) VALUES (?,?)";
+        String inserir = "INSERT INTO  setor (id,nome, descricao, turnos, qnt_funcionarios, fk_empresa_id) VALUES (?,?,?,?,?,?)";
         try {
             conn = conexao.conectar();
             pstmt = conn.prepareStatement(inserir);
-            pstmt.setInt(1, habilidadeUsuario.getUsuarioId());
-            pstmt.setInt(2, habilidadeUsuario.getHabilidadeId());
+            pstmt.setInt(1, setor.getId());
+            pstmt.setString(2, setor.getNome());
+            pstmt.setNString(3, setor.getDescricao());
+            pstmt.setString(4, setor.getTurnos());
+            pstmt.setInt(5, setor.getQntFuncionarios());
+            pstmt.setInt(6, setor.getIdEmpresa());
 
             return pstmt.executeUpdate() > 0; // true se inseriu
         } catch (SQLException e) {

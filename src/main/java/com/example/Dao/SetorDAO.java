@@ -1,5 +1,6 @@
-package com.example.Model;
+package com.example.Dao;
 import com.example.Controller.Conexao;
+import com.example.Model.Setor;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
