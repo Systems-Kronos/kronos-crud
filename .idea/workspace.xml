@@ -11,23 +11,7 @@
   <component name="ChangeListManager">
     <list default="true" id="5e5e3148-2c1a-4ad0-ae39-ef0f6e00cc16" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.example/Controller/Conexao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/Controller/Conexao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.example/Controller/HelloServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/Controller/HelloServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.example/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.example/Model/Administracao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/Model/Administracao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.example/Model/AdministracaoDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/Dao/AdministracaoDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.example/Model/Empresa.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/Model/Empresa.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.example/Model/EmpresaDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/Dao/EmpresaDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.example/Model/HabilidadeUsuario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/Model/HabilidadeUsuario.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.example/Model/HabilidadeUsuarioDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/Dao/HabilidadeUsuarioDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.example/Model/Habilidades.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/Model/Habilidades.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.example/Model/HabilidadesDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/Dao/HabilidadesDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.example/Model/Plano.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/Model/Plano.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.example/Model/PlanoDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/Dao/PlanoDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.example/Model/Setor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/Model/Setor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.example/Model/SetorDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/Dao/SetorDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.example/Model/Usuario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/Model/Usuario.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.example/Model/UsuarioDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/Dao/UsuarioDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/Controller/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -94,7 +78,7 @@
   </component>
   <component name="RunManager" selected="Tomcat Server.cxzdsz">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.example.Main" />
+      <option name="MAIN_CLASS_NAME" value="com.example.Controller.Main" />
       <module name="KronosCRUD" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -244,7 +228,7 @@
       <workItem from="1758201680999" duration="11698000" />
       <workItem from="1758817710644" duration="4816000" />
       <workItem from="1759324110150" duration="3716000" />
-      <workItem from="1759493631679" duration="751000" />
+      <workItem from="1759493631679" duration="5487000" />
     </task>
     <servers />
   </component>

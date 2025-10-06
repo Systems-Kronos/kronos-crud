@@ -1,8 +1,7 @@
-package com.example;
+package com.example.Controller;
 
 import java.sql.Connection;
 
-import com.example.Controller.*;
 import com.example.Dao.PlanoDAO;
 import com.example.Model.*;
 
