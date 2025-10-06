@@ -1,11 +1,10 @@
-package com.example.Model;
+package com.example.Dao;
 
 import com.example.Controller.*;
 import com.example.Model.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.time.LocalTime;
 
 public class EmpresaDAO {
 //    Inserir
