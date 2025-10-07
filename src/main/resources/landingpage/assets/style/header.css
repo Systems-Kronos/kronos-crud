@@ -68,17 +68,6 @@ header {
     color: #605f5c;
 }
 
-.opcoesHeader a.ativo::after {
-    content: '';
-    position: absolute;
-    left: -0.5vw;
-    top: 1.6vw;
-    width: calc(100% + 1vw);
-    height: 0.2vw;
-    background-color: #e6b648;
-    border-radius: 10px;
-}
-
 .opcoesHeader a.ativo {
     color: #e6b648;
 }
@@ -128,17 +117,6 @@ header {
         cursor: pointer;
         margin-right: 2vw;
         display: flex;
-    }
-
-    .opcoesHeader a.ativo::after {
-        content: '';
-        position: absolute;
-        left: -0.5vw;
-        top: 2.6vw;
-        width: calc(100% + 1vw);
-        height: 0.2vw;
-        background-color: #e6b648;
-        border-radius: 10px;
     }
     
     .logoKronosDesktop {
