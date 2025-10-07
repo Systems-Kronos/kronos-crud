@@ -1,0 +1,125 @@
+.menu a.ativo::after {
+    content: '';
+    position: absolute;
+    left: -0.5vw;
+    top: 1.6vw;
+    width: calc(100% + 1vw);;
+    height: 0.1vw;
+    background-color: #e6b648;
+    border-radius: 10px;
+}
+
+.menu a.ativo {
+    box-shadow: 0 0 0 20px #4C0F86;
+    background: #4C0F86;
+}
+
+@media (max-width: 864px) {
+    .menu a.ativo::after {
+        top: 2.6vw;
+    }
+}
+
+/* Tela de sobre nós -> Sobre o Kronos */
+
+.sobreKronos {
+    padding: 6vw 3vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: linear-gradient(#4C0F86, #22083B);
+}
+
+.sobreKronos button {
+    cursor: pointer;
+    padding: 0.75vw 1.25vw;
+    background-color: #E6B648;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 600;
+    font-size: 1.35vw;
+    margin-top: 1.5vw;
+    border: none;
+    border-radius: 0.6vw;
+}
+
+.sobreKronos h1 {
+    font-size: 2.8vw;
+    font-family: "Cinzel", sans-serif;
+    color: #E6B648;
+}
+
+.sobreKronos p {
+    font-size: 1.6vw;
+    color: #FFFFFF;
+}
+
+/* Tela de sobre nós -> Nossa história */
+
+.nossaHistoria {   
+    margin: 5vw;
+}
+ 
+.caixaCentral {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3vw;
+}
+
+.nossaHistoria img {   
+    height: 30vw;
+    border-radius: 0.5vw 0vw 0vw 0.75vw;
+    box-shadow: 0vw 0vw 0.4vw 0.2vw rgba(0, 0, 0, 0.2);
+    position: relative;
+    left: 1.5vw;
+}
+
+.descricaoCaixaCentral h1 {
+    font-size: 2.5vw;
+    font-family: "Crete Round";
+    color: #451B6D;
+}
+
+.descricaoCaixaCentral p {
+    font-size: 1.2vw;
+}
+
+.textoCaixaCentral {
+    margin-bottom: 1.4vw;
+}
+
+.descricaoCaixaCentral {
+    box-shadow: 0vw 0vw 0.4vw 0.2vw rgba(0, 0, 0, 0.2);
+    border-top: 0.1vw rgb(182, 182, 182) groove;
+    border-bottom: 0.1vw rgb(182, 182, 182) groove;
+    border-right: 0.1vw rgb(182, 182, 182) groove;
+    border-radius: 0vw 1.2vw 1.2vw 0vw;
+    padding: 4vw;
+    position: relative;
+    right: 1.5vw;
+}
+
+/* Tela de sobre nós -> Nossa missão */
+
+.nossaMissao {
+    text-align: center;
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3vw;
+    background: #FAFAFA;
+    row-gap: 1vw;
+}
+
+.nossaMissao h1 {
+    font-size: 2.5vw;
+    font-family: "Crete Round";
+    color: #451B6D;
+}
+
+.nossaMissao p {
+    font-size: 1.1vw;
+}
