@@ -56,45 +56,49 @@ public boolean create(Empresa empresa) {
     }
 }
 
-public List<Empresa> read() {
-    Conexao conexao = new Conexao();
-    Connection conn = null;
-    PreparedStatement pstmt = null;
-    String read = "SELECT * FROM empresa";
-    ResultSet rset = null;
-    List<Empresa> listaEmpresa = new LinkedList<>();
+    // READ ALL
+    public List<Empresa> read() {
+        Conexao conexao = new Conexao();
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rset = null;
+        String read = "SELECT * FROM empresa";
+        List<Empresa> listaEmpresa = new LinkedList<>();
 
-    try {
-        conn = conexao.conectar();
-        pstmt = conn.prepareStatement(read);
+        try {
+            conn = conexao.conectar();
+            pstmt = conn.prepareStatement(read);
+            rset = pstmt.executeQuery();
 
-        rset = pstmt.executeQuery();
-        while (rset.next()){
-            Empresa empresa = new Empresa(
-                    rset.getInt("id"),
-                    rset.getString("nome"),
-                    rset.getString("cep"),
-                    rset.getString("cnpj"),
-                    rset.getString("email"),
-                    rset.getString("telefone_fixo"),
-                    rset.getString("telefone_pessoal"),
-                    rset.getString("porte"),
-                    rset.getTime("horario_abertura").toLocalTime(),
-                    rset.getTime("horario_fechamento").toLocalTime(),
-                    rset.getString("regradenegocio")
-                    );
-            listaEmpresa.add(empresa);
+            while (rset.next()) {
+                Empresa empresa = new Empresa(
+                        rset.getInt("id"),
+                        rset.getString("nome"),
+                        rset.getString("cep"),
+                        rset.getString("cnpj"),
+                        rset.getString("email"),
+                        rset.getString("telefone_fixo"),
+                        rset.getString("telefone_pessoal"),
+                        rset.getString("porte"),
+                        rset.getTime("horario_abertura").toLocalTime(),
+                        rset.getTime("horario_encerramento").toLocalTime(),
+                        rset.getString("regradenegocio")
+                );
+                listaEmpresa.add(empresa);
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao inserir departamento: " + e.getMessage());
+            return null;
+        } finally {
+            try {
+                if (rset != null) rset.close();
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                System.err.println("Erro ao inserir departamento: " + e.getMessage());
+            }
         }
+
         return listaEmpresa;
     }
-    catch (SQLException e){
-        e.printStackTrace();
-        return null;
-    }
-    finally {
-        conexao.desconectar(conn);
-    }
-}
-
-
 }
