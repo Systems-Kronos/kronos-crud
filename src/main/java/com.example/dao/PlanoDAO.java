@@ -1,6 +1,7 @@
-package com.example.Model;
+package com.example.dao;
 
 import com.example.Controller.Conexao;
+import com.example.Model.Plano;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

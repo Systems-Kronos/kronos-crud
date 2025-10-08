@@ -1,12 +1,12 @@
-package com.example.Model;
-
+package com.example.dao;
 import com.example.Controller.Conexao;
+import com.example.Model.Setor;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class UsuarioDAO {
+public class SetorDAO {
     public boolean inserir(Setor setor) {
         Conexao conexao = new Conexao();
         Connection conn = null;

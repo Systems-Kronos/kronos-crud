@@ -1,4 +1,4 @@
-package com.example.Model;
+package com.example.dao;
 
 import com.example.Controller.*;
 import com.example.Model.*;
@@ -7,7 +7,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalTime;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -77,12 +76,12 @@ public List<Empresa> read() {
                     rset.getString("cep"),
                     rset.getString("cnpj"),
                     rset.getString("email"),
-                    rset.getString("telefoneFixo"),
-                    rset.getString("telefonePessoal"),
+                    rset.getString("telefone_fixo"),
+                    rset.getString("telefone_pessoal"),
                     rset.getString("porte"),
-                    rset.getTime("horarioAbertura").toLocalTime(),
-                    rset.getTime("horarioFechamento").toLocalTime(),
-                    rset.getString("regraDeNegocios")
+                    rset.getTime("horario_abertura").toLocalTime(),
+                    rset.getTime("horario_fechamento").toLocalTime(),
+                    rset.getString("regradenegocio")
                     );
             listaEmpresa.add(empresa);
         }
@@ -94,8 +93,8 @@ public List<Empresa> read() {
     }
     finally {
         conexao.desconectar(conn);
-        return listaEmpresa;
-
     }
 }
+
+
 }
