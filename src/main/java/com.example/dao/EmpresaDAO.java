@@ -87,7 +87,7 @@ public boolean create(Empresa empresa) {
                 listaEmpresa.add(empresa);
             }
         } catch (SQLException e) {
-            System.err.println("Erro ao inserir departamento: " + e.getMessage());
+            System.err.println("Erro ao buscar empresas: " + e.getMessage());
             return null;
         } finally {
             try {
@@ -95,7 +95,7 @@ public boolean create(Empresa empresa) {
                 if (pstmt != null) pstmt.close();
                 if (conn != null) conn.close();
             } catch (SQLException e) {
-                System.err.println("Erro ao inserir departamento: " + e.getMessage());
+                System.err.println("Erro ao fechar recursos ao buscar empresas: " + e.getMessage());
             }
         }
 
@@ -131,14 +131,14 @@ public boolean create(Empresa empresa) {
                 );
             }
         } catch (SQLException e) {
-            System.err.println("Erro ao inserir departamento: " + e.getMessage());
+            System.err.println("Erro ao buscar empresa por ID: " + e.getMessage());
         } finally {
             try {
                 if (rset != null) rset.close();
                 if (pstmt != null) pstmt.close();
                 if (conn != null) conn.close();
             } catch (SQLException e) {
-                System.err.println("Erro ao inserir departamento: " + e.getMessage());
+                System.err.println("Erro ao fechar recursos ao buscar empresa por ID: " + e.getMessage());
             }
         }
         return null;
