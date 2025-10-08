@@ -184,4 +184,44 @@ public boolean create(Empresa empresa) {
             }
         }
     }
+    public int update(int id, String nome, String cep, String cnpj, String email, String telefoneFixo, String telefonePessoal,
+                      String porte, LocalTime horarioAbertura,
+                      LocalTime horarioFechamento, String regraDeNegocios) {
+        Conexao conexao = new Conexao();
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        String update = "UPDATE empresa SET nome = ?, cep = ?, cnpj = ?, email = ?, telefone_fixo = ?, telefone_pessoal = ?, porte = ?, horario_abertura = ?, horario_encerramento = ?, regradenegocio = ? WHERE id = ?";
+        try {
+            conn = conexao.conectar();
+            pstmt = conn.prepareStatement(update);
+
+            pstmt.setString(1, nome);
+            pstmt.setString(2, cep);
+            pstmt.setString(3, cnpj);
+            pstmt.setString(4, email);
+            pstmt.setString(5, telefoneFixo);
+            pstmt.setString(6, telefonePessoal);
+            pstmt.setString(7, porte);
+            pstmt.setObject(8, horarioAbertura);
+            pstmt.setObject(9, horarioFechamento);
+            pstmt.setString(10, regraDeNegocios);
+            pstmt.setInt(11, id);
+
+            if (pstmt.executeUpdate() > 0){
+                return 1;
+            }
+            return 0;
+        }
+        catch (SQLException e) {
+            System.err.println("Erro ao atualizar empresa: " + e.getMessage());
+            return -1;
+        } finally {
+            try {
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                System.err.println("Erro ao fechar conexão após atualizar empresa: " + e.getMessage());
+            }
+        }
+    }
 }
