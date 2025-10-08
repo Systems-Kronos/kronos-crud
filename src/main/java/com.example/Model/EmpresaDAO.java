@@ -2,21 +2,26 @@ package com.example.Model;
 
 import com.example.Controller.*;
 import com.example.Model.*;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalTime;
+import java.util.LinkedList;
+import java.util.List;
 
-public class EmpresaDAO {
-//    Inserir
-public boolean inserir(Empresa empresa) {
+public class
+EmpresaDAO {
+//    Create
+public boolean create(Empresa empresa) {
     Conexao conexao = new Conexao();
     Connection conn = null;
     PreparedStatement pstmt = null;
-    String inserir = "INSERT INTO empresa (id,nome, cep, cnpj, email, telefone_fixo, telefone_pessoal, porte, horario_abertura, horario_encerramento, regradenegocio) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+    String create = "INSERT INTO empresa (id,nome, cep, cnpj, email, telefone_fixo, telefone_pessoal, porte, horario_abertura, horario_encerramento, regradenegocio) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
     try {
         conn = conexao.conectar();
-        pstmt = conn.prepareStatement(inserir);
+        pstmt = conn.prepareStatement(create);
         pstmt.setInt(1,empresa.getId());
         pstmt.setString(2, empresa.getNome());
         pstmt.setString(3, empresa.getCep());
@@ -48,6 +53,48 @@ public boolean inserir(Empresa empresa) {
                 System.out.println("Erro ao fechar Connection");
             }
         }
+
+    }
+}
+
+public List<Empresa> read() {
+    Conexao conexao = new Conexao();
+    Connection conn = null;
+    PreparedStatement pstmt = null;
+    String read = "SELECT * FROM empresa";
+    ResultSet rset = null;
+    List<Empresa> listaEmpresa = new LinkedList<>();
+
+    try {
+        conn = conexao.conectar();
+        pstmt = conn.prepareStatement(read);
+
+        rset = pstmt.executeQuery();
+        while (rset.next()){
+            Empresa empresa = new Empresa(
+                    rset.getInt("id"),
+                    rset.getString("nome"),
+                    rset.getString("cep"),
+                    rset.getString("cnpj"),
+                    rset.getString("email"),
+                    rset.getString("telefoneFixo"),
+                    rset.getString("telefonePessoal"),
+                    rset.getString("porte"),
+                    rset.getTime("horarioAbertura").toLocalTime(),
+                    rset.getTime("horarioFechamento").toLocalTime(),
+                    rset.getString("regraDeNegocios")
+                    );
+            listaEmpresa.add(empresa);
+        }
+        return listaEmpresa;
+    }
+    catch (SQLException e){
+        e.printStackTrace();
+        return null;
+    }
+    finally {
+        conexao.desconectar(conn);
+        return listaEmpresa;
 
     }
 }
