@@ -252,15 +252,15 @@ public boolean create(Empresa empresa) {
         }
     }}
 
-    public int delete(String nome) {
+    public int delete(String cnpj) {
         Conexao conexao = new Conexao();
         Connection conn = null;
         PreparedStatement pstmt = null;
-        String delete = "DELETE FROM empresa WHERE nome = ?";
+        String delete = "DELETE FROM empresa WHERE cnpj = ?";
         try {
             conn = conexao.conectar();
             pstmt = conn.prepareStatement(delete);
-            pstmt.setString(1, nome);
+            pstmt.setString(1, cnpj);
 
             if (pstmt.executeUpdate() > 0){
                 return 1;
