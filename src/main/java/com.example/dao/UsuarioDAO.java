@@ -1,30 +1,33 @@
-package com.example.Model;
+package com.example.dao;
+
+import com.example.Controller.Conexao;
+import com.example.Model.Setor;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import com.example.Controller.*;
 
-public class HabilidadesDAO {
-    public boolean inserir(Habilidades habilidade) {
+public class UsuarioDAO {
+    public boolean inserir(Setor setor) {
         Conexao conexao = new Conexao();
         Connection conn = null;
         PreparedStatement pstmt = null;
-        String inserir = "INSERT INTO habilidade (id,nome, tag, descricao) VALUES (?,?,?,?,?)";
+        String inserir = "INSERT INTO  setor (id,nome, descricao, turnos, qnt_funcionarios, fk_empresa_id) VALUES (?,?,?,?,?,?)";
         try {
-            // Tem que ver a lista com o Breno
             conn = conexao.conectar();
             pstmt = conn.prepareStatement(inserir);
-            pstmt.setInt(1, habilidade.getId());
-            pstmt.setString(2, habilidade.getNome());
-            pstmt.setNString(3, habilidade.getTag());
-            pstmt.setString(5, habilidade.getDescricao());
+            pstmt.setInt(1, setor.getId());
+            pstmt.setString(2, setor.getNome());
+            pstmt.setNString(3, setor.getDescricao());
+            pstmt.setString(4, setor.getTurnos());
+            pstmt.setInt(5, setor.getQntFuncionarios());
+            pstmt.setInt(6, setor.getIdEmpresa());
 
             return pstmt.executeUpdate() > 0; // true se inseriu
         } catch (SQLException e) {
             System.err.println("Erro ao inserir departamento: " + e.getMessage());
             return false;
-        }finally {
+        } finally {
             if (pstmt != null) {
                 try {
                     pstmt.close();

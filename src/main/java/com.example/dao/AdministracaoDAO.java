@@ -1,5 +1,7 @@
-package com.example.Model;
+package com.example.dao;
 import com.example.Controller.*;
+import com.example.Model.Administracao;
+
 import java.sql.*;
 
 public class AdministracaoDAO {
