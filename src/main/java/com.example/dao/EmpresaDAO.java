@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalTime;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -35,7 +36,7 @@ public boolean create(Empresa empresa) {
 
         return pstmt.executeUpdate() > 0;
     } catch (SQLException e) {
-        System.err.println("Erro ao inserir departamento: " + e.getMessage());
+        System.err.println("Erro ao inserir empresa: " + e.getMessage());
         return false;
     }finally {
         if (pstmt != null) {
