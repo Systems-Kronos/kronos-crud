@@ -17,17 +17,35 @@ body {
     top: 0;
 }
 
+.menu a.ativo::after {
+    content: '';
+    position: absolute;
+    left: -0.5vw;
+    top: 1.6vw;
+    width: calc(100% + 1vw);
+    height: 0.1vw;
+    background-color: #e6b648;
+    border-radius: 10px;
+}
+
+@media (max-width: 864px) {
+    .menu a.ativo::after {
+        top: 2.6vw;
+    }
+}
+
 /* Tela -> Tela de início */
 
+
 .telaInicial {
-    background-image: url(/src/main/webapp/assets/img/RoxoFabril.png);
+    background-image: url(/src/main/resources/landingpage/assets/img/roxo-fabril.png);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    height: 100vh;
     width: 100%;
     text-align: center;
     display: flex;
+    padding: 2vw 0vw;
 }
 
 .telaInicial .textoInicial {
@@ -56,12 +74,14 @@ body {
     font-family: "Montserrat", sans-serif;
     font-weight: 600;
     font-size: 1.5vw;
+    margin-top: 1.5vw;
     border: none;
     border-radius: 0.6vw;
 }
 
 .telaInicial .imgAppKronos {
     height: 45vw;
+    margin: 5vw 0vw;
 }
 
 .conteudoTelaInicial {
@@ -73,110 +93,108 @@ body {
 }
 
 @media (max-width: 680px) {
-    .telaInicial {
-        background-image: url(/src/main/webapp/assets/img/RoxoFabril.png);
-        background-size: cover;
-        background-position: center;
-        height: 100vh;
-        width: 100%;
-        text-align: center;
-        display: flex;
-    }
-
     .telaInicial h1 {
-        font-family: "Cinzel", sans-serif;
-        line-height: 7vw;
         font-size: 7vw;
-        margin: 0;
-        color: #e6b648;
     }
     
     .telaInicial p {
-        color: white;
         font-size: 3vw;
     }
     
     .telaInicial button {
-        cursor: pointer;
         padding: 2vw 2.5vw;
-        background-color: #e6b648;
-        font-family: "Montserrat", sans-serif;
-        font-weight: 600;
         font-size: 2.5vw;
-        border: none;
         border-radius: 1.3vw;
     }
     
     .telaInicial .imgAppKronos {
         height: 60vw;
-        margin-left: 2vw;
     }   
 }
 
-@media (max-width: 336px) {
-    .telaInicial .imgAppKronos {
-        height: 90vw;
-        margin-left: 2vw;
-    }
-    
+@media (max-width: 336px) {    
     .telaInicial h1 {
-        font-family: "Cinzel", sans-serif;
-        line-height: 7.7vw;
         font-size: 7.7vw;
-        margin: 0;
-        color: #e6b648;
     }
     
     .telaInicial p {
-        color: white;
         font-size: 3.5vw;
     }
     
     .telaInicial button {
-        cursor: pointer;
         padding: 2.2vw 2.5vw;
-        background-color: #e6b648;
-        font-family: "Montserrat", sans-serif;
-        font-weight: 600;
         font-size: 2.8vw;
-        border: none;
-        border-radius: 1.3vw;
     }
 }
 
-@media (max-height: 599px) {
-    .telaInicial {
-        background-image: url(/src/main/webapp/assets/img/RoxoFabril.png);
-        background-size: cover;
-        background-position: center;
-        height: 100vh;
-        width: 100%;
-        text-align: center;
-        display: flex;
-    }
 
-    .telaInicial .imgAppKronos {
-        display: none;
-    }
+/* Tela -> Problemas que resolvemos */
+
+.problemasQueResolvemos {
+    background: linear-gradient(#F2EEF6, #FFFFFF);
+    padding: 5vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-@media (max-height: 260px) {
-    .telaInicial {
-        background-image: url(/src/main/webapp/assets/img/RoxoFabril.png);
-        background-size: cover;
-        background-position: center;
-        height: 220vh;
-        width: 100%;
-        text-align: center;
-        display: flex;
-    }
+.problemasQueResolvemos .caixaCentralProblemas {
+    width: 90vw;
+    background-color: #FFFFFF;
+    border-radius: 1vw;
+    box-shadow: 0 0 0.05vw 0.05vw rgba(0, 0, 0, 0.1);
 }
 
-/* Tela -> Tudo que você precisa saber */
+.caixaCentralProblemas .caixaCentralTitulos {
+    font-size: 1.3vw;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.caixaCentralTitulos p {
+    text-align: left;
+    color: #A197B0;
+}
+
+.caixaCentralTitulos span, .caixaCentralTitulos span p {
+    text-align: right;
+    font-family: 'Crete Round';
+    font-size: 1.6vw;
+    color: #451B6D;
+}
+
+.caixaCentralProblemas .caixaCentralCards {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 3vw;
+}
+
+.caixaCentralProblemas .caixaCentralCards h3 {
+    color: #25173A;
+    font-family: 'Cinzel';
+    padding-bottom: 1.5vw;
+}
+
+.caixaCentralCards {
+    font-size: 1.2vw;
+    margin: 0 3vw 3vw 3vw;
+}
+
+.caixaCentralProblemas .imgCaixaCentral {
+    object-fit: contain;
+    height: 4vw;
+    width: 3vw;
+    padding-bottom: 1.4vw;
+}
+
+/* Tela -> Benefícios que oferecemos */
 
 .beneficiosQueOferecemos {
-    height: 93vh;
-    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .beneficiosQueOferecemos h2 {
@@ -184,7 +202,7 @@ body {
     color: #451B6D;
     font-weight: 400;
     font-size: 2.5vw;
-    margin-left: 7vw;
+    margin-top: 2vw;
 }
 
 summary {
@@ -196,10 +214,6 @@ summary {
     display: flex;
     align-items: center;
     margin-bottom: 0.3vw;
-}
-
-.caixasExpansivas {
-    margin-left: 3vw;
 }
 
 .beneficiosQueOferecemos .caixaExpansiva {
@@ -219,9 +233,14 @@ summary {
     margin-left: 3vw;
 }
 
-.beneficiosQueOferecemos .caixaExpansiva span {
+.beneficiosQueOferecemos .caixaExpansiva p {
     font-size: 1.3vw;
     line-height: 2vw;
+    font-family: 'Montserrat';
+}
+
+.beneficiosQueOferecemos .caixaExpansiva span {
+    font-size: 1.3vw;
     font-family: 'Montserrat';
 }
 
@@ -242,9 +261,9 @@ summary {
     content: "";
     width: 2vw;
     height: 1.2vw;
-    position: absolute;
-    left: 53.2vw;
-    background: url('/src/main/webapp/assets/img/seta-kronos-baixo.png') no-repeat center/cover;
+    position: absolute; 
+    left: 70vw;
+    background: url('/src/main/resources/landingpage/assets/img/seta-kronos-baixo.png') no-repeat center/cover;
     transform: rotate(0deg); 
     transition: transform 0.25s ease;
 }
@@ -256,7 +275,6 @@ summary {
 /* Tela -> Resultados que sua empresa vai alcançar */
 
 .resultadosAlcancar {
-    height: 85vh;
     background: linear-gradient(#FFFFFF, #EADAF5);
 }
 
@@ -267,6 +285,7 @@ summary {
     font-size: 2.5vw;
     display: flex;
     justify-content: center;
+    margin-top: 3vw;
 }
 
 .caixinhasResultados {
@@ -321,4 +340,5 @@ blockquote {
     padding-top: 6vw;
     font-style: italic;
     font-weight: 300;
+    padding-bottom: 3vw;
 }

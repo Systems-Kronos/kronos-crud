@@ -1,0 +1,242 @@
+
+.menu a.ativo::after {
+    content: '';
+    position: absolute;
+    left: -0.5vw;
+    top: 1.6vw;
+    width: calc(100% + 1vw);
+    height: 0.1vw;
+    background-color: #e6b648;
+    border-radius: 10px;
+}
+
+@media (max-width: 864px) {
+    .menu a.ativo::after {
+        top: 2.6vw;
+    }
+}
+
+.funcionalidadesKronos {
+    padding: 6vw 3vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: linear-gradient(#4C0F86, #22083B);
+}
+
+.funcionalidadesKronos button {
+    cursor: pointer;
+    padding: 0.75vw 1.25vw;
+    background-color: #E6B648;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 600;
+    font-size: 1.35vw;
+    margin-top: 1.5vw;
+    border: none;
+    border-radius: 0.6vw;
+}
+
+.funcionalidadesKronos h1 {
+    font-size: 2.8vw;
+    font-family: "Cinzel", sans-serif;
+    color: #E6B648;
+}
+
+.funcionalidadesKronos p {
+    font-size: 1.6vw;
+    color: #FFFFFF;
+}
+
+/* Tela funcionalidades -> Componentes do Kronos */
+
+.componentesKronos {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 2vw;
+    margin: 5vw;
+    width: auto;
+}
+
+.componentes {
+    background-color: #FFFFFF;
+    border-radius: 1vw;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    padding: 2rem 1.5rem;
+    text-align: left;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.componentes:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.componentes .icone img {
+    height: 3rem;
+    margin-bottom: 1rem;
+    object-fit: contain;
+}
+
+.componentes h3 {
+    font-family: "Cinzel", serif;
+    color: #3C2C6F;
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+}
+
+.componentes p {
+    font-weight: 400;
+    color: #7F7F9A;
+    font-size: 0.9rem;
+    margin-bottom: 1.4rem;
+}
+
+.componentes button {
+    background-color: #E6B648;
+    color: #451B6D;
+    font-weight: bold;
+    border: none;
+    border-radius: 0.3rem;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: auto;
+    align-self: flex-start;
+    transition: background-color 0.2s ease;
+}
+
+.componentes button:hover {
+    background-color: #C48F20;
+}
+
+@media (max-width: 1024px) {
+    .componentesKronos {
+        margin: 3vw;
+        gap: 3vw;
+    }
+
+    .componentes h3 {
+        font-size: 1.3rem;
+    }
+
+    .componentes p {
+        font-size: 0.95rem;
+    }
+
+    .componentes button {
+        font-size: 0.95rem;
+        padding: 0.5rem 0.8rem;
+    }
+
+    .componentes .icone img {
+        height: 2.5rem;
+    }
+}
+
+@media (max-width: 950px) {
+    .componentesKronos {
+        grid-template-columns: 1fr 1fr;
+        margin: 2vw;
+        gap: 4vw;
+    }
+    
+    .componentes h3 {
+        font-size: 1.2rem;
+    }
+    
+    .componentes p {
+        font-size: 0.9rem;
+    }
+    
+    .componentes button {
+        font-size: 0.9rem;
+        padding: 0.6rem 1rem;
+    }
+    
+    .componentes .icone img {
+        height: 3rem;
+        margin-bottom: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+
+    
+    .componentes {
+        padding: 1.2rem 0.7rem;
+    }
+    
+    .componentes h3 {
+        font-size: 0.8rem;
+    }
+    
+    .componentes p {
+        font-size: 0.7rem;
+    }
+
+    .componentes button {
+        font-size: 0.7rem;
+        padding: 0.4rem 0.65rem;
+    }
+    
+    .componentes .icone img {
+        height: 2.2rem;
+    }
+}
+
+
+/* Tela funcionalidades -> O que as funcionalidades trazem? */
+
+.funcionalidadesTrazem {
+    padding: 5vw 10vw;
+    background: linear-gradient(#FFFFFF, #EADAF5);
+}
+
+.tituloFuncionalidadesTrazem {
+    margin-bottom: 4vw;
+    font-size: 3vw;
+    font-family: "Crete Round", sans-serif;
+    color: #451B6D;
+}
+
+.funcionalidades {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 20vw;
+    padding: 3vw 0.6vw;
+    border-radius: 1.2vw;
+    background: white;
+    box-shadow: 0 0.1vw 0.6vw rgba(0,0,0,0.1);
+}
+
+.todasFuncionalidades {
+    display: flex;
+    justify-content: center;
+    gap: 3vw;
+}
+
+.todasFuncionalidades h1 {
+    font-family: "Cinzel", sans-serif;
+    font-size: 1.3vw;
+    margin: 1vw 0vw;
+    padding: 0vw 1vw;
+    position: relative;
+    bottom: 1vw;
+}
+
+.todasFuncionalidades p {
+    font-size: 1vw;
+    padding: 0vw 1vw;
+}
+
+.todasFuncionalidades img {
+    position: relative;
+    bottom: 3vw;
+    height: 11.64vw;
+}

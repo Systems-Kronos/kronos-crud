@@ -101,6 +101,7 @@ footer nav ul li {
     font-style: normal;
     font-size: 1.3vw;
     line-height: 1.2;
+    text-decoration: underline;
 }
 
 .colunaFooter2 small {
