@@ -10,7 +10,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5e5e3148-2c1a-4ad0-ae39-ef0f6e00cc16" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com.example/Model/EmpresaDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.example/Model/EmpresaDAO.java" afterDir="false" />
     </list>
@@ -240,7 +239,7 @@
       <workItem from="1759831815121" duration="8000" />
       <workItem from="1759837109999" duration="2193000" />
       <workItem from="1759923510023" duration="3354000" />
-      <workItem from="1759934718786" duration="2348000" />
+      <workItem from="1759934718786" duration="3852000" />
     </task>
     <servers />
   </component>

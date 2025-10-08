@@ -63,7 +63,7 @@ public List<Empresa> read() {
     PreparedStatement pstmt = null;
     String read = "SELECT * FROM empresa";
     ResultSet rset = null;
-    List<Empresa> lista = new LinkedList<>();
+    List<Empresa> listaEmpresa = new LinkedList<>();
 
     try {
         conn = conexao.conectar();
@@ -74,6 +74,7 @@ public List<Empresa> read() {
             Empresa empresa = new Empresa(
                     rset.getInt("id"),
                     rset.getString("nome"),
+                    rset.getString("cep"),
                     rset.getString("cnpj"),
                     rset.getString("email"),
                     rset.getString("telefoneFixo"),
@@ -83,9 +84,9 @@ public List<Empresa> read() {
                     rset.getTime("horarioFechamento").toLocalTime(),
                     rset.getString("regraDeNegocios")
                     );
-            lista.add(empresa);
+            listaEmpresa.add(empresa);
         }
-        return lista;
+        return listaEmpresa;
     }
     catch (SQLException e){
         e.printStackTrace();
@@ -93,7 +94,7 @@ public List<Empresa> read() {
     }
     finally {
         conexao.desconectar(conn);
-        return lista;
+        return listaEmpresa;
 
     }
 }
