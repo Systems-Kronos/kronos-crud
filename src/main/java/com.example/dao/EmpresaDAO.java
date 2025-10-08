@@ -184,6 +184,7 @@ public boolean create(Empresa empresa) {
             }
         }
     }
+//  UPDATE da empresa por todos os parametros
     public int update(int id, String nome, String cep, String cnpj, String email, String telefoneFixo, String telefonePessoal,
                       String porte, LocalTime horarioAbertura,
                       LocalTime horarioFechamento, String regraDeNegocios) {
@@ -252,6 +253,7 @@ public boolean create(Empresa empresa) {
         }
     }}
 
+//  DELETE por cnpj
     public int delete(String cnpj) {
         Conexao conexao = new Conexao();
         Connection conn = null;
