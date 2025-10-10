@@ -16,8 +16,7 @@ public class Empresa {
     private String cep;
     private String cnpj;
     private String email;
-    private String telefoneFixo;
-    private String telefonePessoal;
+    private String telefone;
     private String porte;
     private LocalTime horarioAbertura;
     private LocalTime horarioFechamento;
@@ -26,7 +25,7 @@ public class Empresa {
     // Métodos Construtores
 
     // As validações de exceções são realizadas pelos métodos set
-    public Empresa(int id, String nome, String cep, String cnpj, String email, String telefoneFixo, String telefonePessoal,
+    public Empresa(int id, String nome, String cep, String cnpj, String email, String telefone,
                    String porte, LocalTime horarioAbertura,
                    LocalTime horarioFechamento, String regraDeNegocios) {
         this.setId(id);
@@ -34,23 +33,21 @@ public class Empresa {
         this.setCep(cep);
         this.setCnpj(cnpj);
         this.setEmail(email);
-        this.setTelefoneFixo(telefoneFixo);
-        this.setTelefonePessoal(telefonePessoal);
+        this.setTelefone(telefone);
         this.setPorte(porte);
         this.setHorarioAbertura(horarioAbertura);
         this.setHorarioFechamento(horarioFechamento);
         this.setRegraDeNegocios(regraDeNegocios);
     }
 
-    public Empresa(String nome, String cep, String cnpj, String email, String telefoneFixo, String telefonePessoal,
+    public Empresa(String nome, String cep, String cnpj, String email, String telefone,
                    String porte, LocalTime horarioAbertura,
                    LocalTime horarioFechamento, String regraDeNegocios) {
         this.setNome(nome);
         this.setCep(cep);
         this.setCnpj(cnpj);
         this.setEmail(email);
-        this.setTelefoneFixo(telefoneFixo);
-        this.setTelefonePessoal(telefonePessoal);
+        this.setTelefone(telefone);
         this.setPorte(porte);
         this.setHorarioAbertura(horarioAbertura);
         this.setHorarioFechamento(horarioFechamento);
@@ -126,32 +123,18 @@ public class Empresa {
         this.email = email;
     }
 
-    // Para o telefone fixo
-    public String getTelefoneFixo() {
-        return telefoneFixo;
+    // Para o telefone
+    public String getTelefone() {
+        return telefone;
     }
-    public void setTelefoneFixo(String telefoneFixo) {
-        if (telefoneFixo == null) { // Exceção: verifica se o telefone fixo é nulo
-            throw new NullPointerException("O telefone fixo não pode ser nulo.");
+    public void setTelefone(String telefone) {
+        if (telefone == null) { // Exceção: verifica se o telefone é nulo
+            throw new NullPointerException("O telefone não pode ser nulo.");
         }
-        if (!isValidTelefoneFixo(telefoneFixo)) { // Exceção: verifica se o telefone fixo é válido
-            throw new IllegalArgumentException("O formato do telefone fixo é inválido: '" + telefoneFixo + "'.");
+        if (!isValidTelefone(telefone)) { // Exceção: verifica se o telefone é válido
+            throw new IllegalArgumentException("O formato do telefone é inválido: '" + telefone + "'.");
         }
-        this.telefoneFixo = telefoneFixo.replaceAll("[^\\d]", "");
-    }
-
-    // Para o telefone pessoal
-    public String getTelefonePessoal() {
-        return telefonePessoal;
-    }
-    public void setTelefonePessoal(String telefonePessoal) {
-        if (telefonePessoal == null) { // Exceção: verifica se o telefone pessoal é nulo
-            throw new NullPointerException("O telefone pessoal não pode ser nulo.");
-        }
-        if (!isValidTelefonePessoal(telefonePessoal)) { // Exceção: verifica se o telefone pessoal é válido
-            throw new IllegalArgumentException("O formato do telefone pessoal é inválido: '" + telefonePessoal + "'.");
-        }
-        this.telefonePessoal = telefonePessoal.replaceAll("[^\\d]", "");
+        this.telefone = telefone.replaceAll("[^\\d]", "");
     }
 
     // Para o porte
@@ -214,14 +197,13 @@ public class Empresa {
 
     // Método toString
     public String toString() {
-        return String.format("Empresa | Id: %-3d | Nome: %-20s | CEP: %-9s | CNPJ: %-18s | Email: %-20s | Telefone Fixo: %-12s | Telefone Pessoal: %-12s | Porte: %-7s | Horário Abertura: %-10s | Horário Fechamento: %-10s | Regras de Negócios: %-50s",
+        return String.format("Empresa | Id: %-3d | Nome: %-20s | CEP: %-9s | CNPJ: %-18s | Email: %-20s | Telefone: %-12s | Porte: %-7s | Horário Abertura: %-10s | Horário Fechamento: %-10s | Regras de Negócios: %-50s",
                 this.id,
                 this.nome,
                 this.cep,
                 this.cnpj,
                 this.email,
-                this.telefoneFixo,
-                this.telefonePessoal,
+                this.telefone,
                 this.porte,
                 this.horarioAbertura,
                 this.horarioFechamento,
@@ -256,24 +238,12 @@ public class Empresa {
     }
 
     /*
-     * Verifica se o telefone fixo é válido
-     * Exemplos de telefone fixo aceitável:
+     * Verifica se o telefone é válido
+     * Exemplos de telefone aceitável:
      * "(11) 12345-1234", "11123451234"
      */
-    private boolean isValidTelefoneFixo(String telefone) {
-        String regex = "\\(?\\d{2}\\)?\\d{4,5}-?\\d{4}";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(telefone.trim());
-        return matcher.matches();
-    }
-
-    /*
-     * Verifica se o telefone pessoal é válido
-     * Exemplos de telefone pessoal aceitável:
-     * "(11) 12345-1234", "11123451234"
-     */
-    private boolean isValidTelefonePessoal(String telefone) {
-        String regex = "\\(?\\d{2}\\)?\\d{4,5}-?\\d{4}";
+    private boolean isValidTelefone(String telefone) {
+        String regex = "\\(?\\d{2}\\)?\\s?\\d{4,5}-?\\d{4}";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(telefone.trim());
         return matcher.matches();
