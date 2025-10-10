@@ -16,7 +16,7 @@ public class Plano {
     // Métodos Construtores
     
     // As validações de exceções são realizadas pelos métodos set.
-    public Plano (int id, String nome, float custo, String descricao, int maxFuncionarios){
+    public Plano(int id, String nome, float custo, String descricao, int maxFuncionarios){
         this.setId(id);
         this.setNome(nome);
         this.setCusto(custo);
@@ -24,7 +24,7 @@ public class Plano {
         this.setMaxFuncionarios(maxFuncionarios);
     }
 
-    public Plano (String nome, float custo, String descricao, int maxFuncionarios){
+    public Plano(String nome, float custo, String descricao, int maxFuncionarios){
         this.setNome(nome);
         this.setCusto(custo);
         this.setDescricao(descricao);

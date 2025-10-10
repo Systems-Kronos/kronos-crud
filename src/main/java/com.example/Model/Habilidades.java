@@ -1,7 +1,5 @@
 package com.example.Model;
 
-import java.util.List;
-
 /**
  * Representa um conjunto de habilidades de um funcionário: com nome, descrição e tag.
  */
