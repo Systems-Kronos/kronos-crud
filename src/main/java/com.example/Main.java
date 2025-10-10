@@ -1,9 +1,11 @@
 package com.example;
 
 import java.sql.Connection;
+import java.util.List;
 
 import com.example.Controller.*;
 import com.example.Model.*;
+import com.example.dao.AdministracaoDAO;
 import com.example.dao.PlanoDAO;
 
 public class Main {
@@ -30,10 +32,20 @@ public class Main {
 //            EmpresaDAO empresaDAO = new EmpresaDAO();
 //            empresaDAO.inserir(empresa);
 
-            Plano plano = new Plano(2, "2", 21, "ededde", 12);
-            PlanoDAO planoDAO = new PlanoDAO();
-            planoDAO.inserir(plano);
+            AdministracaoDAO dao = new AdministracaoDAO();
 
+            System.out.println("📘 Lendo registros da tabela 'administracao'...");
+
+            List<Administracao> administradores = dao.read();
+
+            if (administradores.isEmpty()) {
+                System.out.println("⚠️ Nenhum registro encontrado.");
+            } else {
+                System.out.println("✅ Registros encontrados:");
+                for (Administracao admin : administradores) {
+                    System.out.println(admin);
+                }
+            }
             conecta.desconectar(conn);
         } catch (Exception e) {
             e.printStackTrace();

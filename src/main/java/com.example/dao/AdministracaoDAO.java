@@ -3,22 +3,64 @@ import com.example.Controller.*;
 import com.example.Model.Administracao;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AdministracaoDAO {
-//    Inserir
+
+
+    // Ler todos os registros
+    public List<Administracao> read() {
+        List<Administracao> lista = new ArrayList<>();
+        Conexao conexao = new Conexao();
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        String sql = "SELECT id, nome, email, senha, codigo_acesso FROM administracao";
+
+        try {
+            conn = conexao.conectar();
+            pstmt = conn.prepareStatement(sql);
+            rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                Administracao admin = new Administracao(
+                        rs.getInt("id"),
+                        rs.getString("nome"),
+                        rs.getString("email"),
+                        rs.getString("senha"),
+                        rs.getString("codigo_acesso")
+                );
+                lista.add(admin);
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao ler dados da tabela administracao: " + e.getMessage());
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                System.err.println("Erro ao fechar recursos: " + e.getMessage());
+            }
+        }
+
+        return lista;
+    }
+
+    //    Inserir
     public boolean inserir(Administracao administracao) {
         Conexao conexao = new Conexao();
         Connection conn = null;
         PreparedStatement pstmt = null;
-        String inserir = "INSERT INTO administracao (id,nome, email, senha, codigo_acesso) VALUES (?,?,?,?,?)";
+        String inserir = "INSERT INTO administracao (nome, email, senha, codigo_acesso) VALUES (?,?,?,?)";
         try {
             conn = conexao.conectar();
             pstmt = conn.prepareStatement(inserir);
-            pstmt.setInt(1, administracao.getId());
-            pstmt.setString(2, administracao.getNome());
-            pstmt.setString(3, administracao.getEmail());
-            pstmt.setString(4, administracao.getSenha());
-            pstmt.setString(5, administracao.getCodigoAcesso());
+            pstmt.setString(1, administracao.getNome());
+            pstmt.setString(2, administracao.getEmail());
+            pstmt.setString(3, administracao.getSenha());
+            pstmt.setString(4, administracao.getCodigoAcesso());
 
             return pstmt.executeUpdate() > 0; // true se inseriu
         } catch (SQLException e) {
