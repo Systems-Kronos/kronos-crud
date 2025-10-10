@@ -1,17 +1,29 @@
+.menu a {
+    position: relative;
+    transition: 0.3s ease;
+}
 
-.menu a.ativo::after {
+.menu a::after {
     content: '';
     position: absolute;
-    left: -0.5vw;
+    left: 0vw;
     top: 1.6vw;
-    width: calc(100% + 1vw);
+    width: 100%;
     height: 0.1vw;
-    background-color: #e6b648;
     border-radius: 10px;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.5s ease, background-color 0.3s ease;
+}
+
+.menu a:hover::after,
+.menu a.ativo::after {
+    background-color: #e6b648;
+    transform: scaleX(1);
 }
 
 @media (max-width: 864px) {
-    .menu a.ativo::after {
+    .menu a::after {
         top: 2.6vw;
     }
 }

@@ -10,9 +10,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5e5e3148-2c1a-4ad0-ae39-ef0f6e00cc16" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/index.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/index.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/crud/APagar depois" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/landingpage/assets/style/funcionalidades.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/landingpage/assets/style/funcionalidades.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/landingpage/assets/style/header.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/landingpage/assets/style/header.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/landingpage/assets/style/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/landingpage/assets/style/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/landingpage/assets/style/planos.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/landingpage/assets/style/planos.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/landingpage/assets/style/restrito.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/landingpage/assets/style/sobre-nos.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/landingpage/assets/style/sobre-nos.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/landingpage/funcionalidades.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/landingpage/funcionalidades.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/landingpage/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/landingpage/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/landingpage/planos.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/landingpage/planos.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/landingpage/restrito.html" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,6 +54,13 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 0
 }</component>
@@ -57,14 +74,22 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "RunOnceActivity.git.unshallow": "true",
     "Tomcat Server.Tomcat 10.1.44.executor": "Run",
     "Tomcat Server.cxzdsz.executor": "Run",
-    "git-widget-placeholder": "feat/metodo-inserir",
-    "node.js.selected.package.tslint": "(autodetect)"
+    "git-widget-placeholder": "feat/adicionado-landing-page",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/~Kronos/~Inside Kronos/(Beta 3.0) Site Kronos/kronos-crud",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\~Kronos\~Inside Kronos\(Beta 3.0) Site Kronos\kronos-crud\src\main\webapp" />
       <recent name="C:\Users\rebeccapaulucci-ieg\OneDrive - Instituto J&amp;F\Germinare\Tech\POO\Códigos\KronosCRUD\src\main\resources" />
     </key>
   </component>
@@ -76,7 +101,8 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="cxzdsz" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="cxzdsz" ALTERNATIVE_JRE_ENABLED="false" nameIsGenerated="true">
+    <configuration name="cxzdsz" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 11.0.11" ALTERNATIVE_JRE_ENABLED="false" nameIsGenerated="true">
+      <option name="BROWSER_ID" value="98ca6316-2f89-46d9-a9e5-fa9e2b0625b3" />
       <option name="UPDATING_POLICY" value="restart-server" />
       <deployment>
         <artifact name="KronosCRUD:war">
@@ -185,6 +211,14 @@
       </list>
     </recent_temporary>
   </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-125ca727e0f0-intellij.indexing.shared.core-IU-243.23654.189" />
+        <option value="bundled-js-predefined-d6986cc7102b-822845ee3bb5-JavaScript-IU-243.23654.189" />
+      </set>
+    </attachedChunks>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -211,6 +245,7 @@
       <workItem from="1758122202851" duration="3255000" />
       <workItem from="1758201680999" duration="11698000" />
       <workItem from="1758817710644" duration="4816000" />
+      <workItem from="1760057878072" duration="1302000" />
     </task>
     <servers />
   </component>
