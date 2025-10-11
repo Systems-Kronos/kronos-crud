@@ -51,7 +51,7 @@ body {
 
 
 .telaInicial {
-    background-image: url(/src/main/webapp/landingpage/assets/img/roxo-fabril.png);
+    background-image: url(/src/main/webapp/assets/img/roxo-fabril.png);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -278,7 +278,7 @@ summary {
     height: 1.2vw;
     position: absolute; 
     left: 70vw;
-    background: url('/src/main/webapp/landingpage/assets/img/seta-kronos-baixo.png') no-repeat center/cover;
+    background: url('/src/main/webapp/assets/img/seta-kronos-baixo.png') no-repeat center/cover;
     transform: rotate(0deg); 
     transition: transform 0.2s ease;
 }
