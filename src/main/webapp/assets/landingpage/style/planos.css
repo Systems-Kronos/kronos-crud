@@ -1,0 +1,171 @@
+/* * {
+    outline: 1px solid red;
+} */
+
+.menu a {
+    text-decoration: none;
+    position: relative;
+    transition: 0.3s ease;
+}
+
+.menu a::after {
+    content: '';
+    position: absolute;
+    left: 0vw;
+    top: 1.6vw;
+    width: 100%;
+    height: 0.1vw;
+    border-radius: 10px;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.5s ease, background-color 0.3s ease;
+}
+
+.menu a:hover::after,
+.menu a.ativo::after {
+    background-color: #e6b648;
+    transform: scaleX(1);
+}
+
+@media (max-width: 864px) {
+    .menu a.ativo::after {
+        top: 2.6vw;
+    }
+}
+
+.telaPlanos {
+    width: 100%;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: left;
+    padding: 0vw 0vw 0vw 7vw;
+    box-sizing: border-box;
+}
+
+.cardsPlanos, .tituloPrePlanos {
+    font-size: 1.3vw;
+}
+
+.tituloPrePlanos h1 {
+    font-family: "Crete Round", sans-serif;
+    color: #451B6D;
+    padding-bottom: 1vw;
+    margin: 3vw 0vw 0vw;
+}
+
+.tituloPrePlanos p {
+    margin: 0vw 0vw 5vw;
+    color: #5F2794;
+}
+
+.cardsPlanos {
+    display: flex;
+    font-size: 1.1vw;
+}
+
+.cardsPlanos h1{
+    text-align: left;
+    font-size: 2.6vw;
+    font-family: "Cinzel", sans-serif;
+    padding: 1.5vw 2.8vw 0vw;
+}
+
+.cardsPlanos h2{
+    font-size: 2vw;
+    font-weight: bolder;
+    font-family: "Cinzel", sans-serif;
+    margin-top: 1vw;
+}
+
+.cardsPlanos p{
+    margin: 1vw 0vw;
+}
+
+.planoPro {
+    background: #E7D0FF;
+    height: 19vw;
+    box-shadow: 0vw 0vw 0.4vw 0.05vw rgba(0, 0, 0, 0.1);
+}
+
+.planoLite {
+    background: #F0E1FF;
+    height: 19vw;
+    box-shadow: 0vw 0vw 0.4vw 0.05vw rgba(0, 0, 0, 0.1);
+}
+
+.planoEnterprise {
+    background: #5A2C85;
+    color: #FFFFFF;
+    box-shadow: 0vw 0vw 0.6vw 0.08vw rgba(0, 0, 0, 0.2);
+    height: 41vw;
+    margin: 0vw 5vw;
+}
+
+.planoEnterprise h1 {
+    color: #e6b648;
+}
+
+.planoEnterprise h5 {
+    padding-top: 5vw;
+}
+
+.colunaPlanos1 div, .colunaPlanos2 div {
+    border-radius: 0.5vw 0.5vw 2.5vw 0vw;
+}
+
+.colunaPlanos1 div {
+    width: 50vw;
+    margin: 0vw 0vw 3vw;
+}
+
+.planoEnterprise::before {
+    content: "Mais vantajoso";
+    position: relative;
+    left: 13.5vw;
+    bottom: 0.8vw;
+    background: #f4b942;
+    color: #2e004f;
+    padding: 0.4vw 2vw;
+    border-radius: 0.4vw;
+    font-weight: bold;
+    font-family: "Montserrat";
+    font-size: 1.4vw;
+}
+
+.colunasPro, .colunasLite {
+    display: flex;
+    justify-content: center;
+}
+
+.colunaPro1, .colunaLite1, .colunaPro2, .colunaLite2, .colunaEnterprise {
+    padding-left: 3vw;
+}
+
+.barraSeparacao {
+    width: 0.2vw; 
+    position: relative;
+    background-color: #DBB5FF;
+    border: none;
+    height: 15vw;
+    margin: 0vw 0vw 0vw 5vw; 
+    bottom: 3vw;
+    display: inline-block;
+}
+
+.cardsPlanos button {
+    cursor: pointer;
+    padding: 0.8vw 4vw;
+    background-color: #E6B648;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 600;
+    font-size: 1vw;
+    margin-top: 1vw;
+    border: none;
+    border-radius: 0.6vw;
+}
+
+.cardsPlanos ul {
+    margin-left: 1.2vw;
+}
