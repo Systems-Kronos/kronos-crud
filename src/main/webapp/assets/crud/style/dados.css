@@ -1,0 +1,118 @@
+/* * {
+    border: 1px solid red;
+} */
+
+html {
+    font-family: "Montserrat";
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    bottom: 0;
+    display: flex;
+}
+
+header {
+    width: 20vw;
+    min-height: 100vh;
+    background-color: #FCFAFF;
+    color: #370963;
+    display: flex;
+    flex-direction: column;
+}
+
+header h1 {
+    font-family: "Cinzel", serif;
+    font-size: 3vw;
+    font-weight: bold;
+    margin-top: 4vw;
+    color: #E6B648;
+    align-self: center;
+    margin-bottom: 5vw;
+}
+
+header nav img {
+    object-fit: contain;
+    width: 2vw;
+}
+
+header ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+header li {
+    display: flex;
+    font-size: 1.5vw;
+    font-weight: 500;
+}
+
+header li a {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    padding: 1vw 3vw;
+    gap: 1vw;
+    text-decoration: none;
+    color: #370963;
+}
+
+header li a:hover {
+    background-color: #F1E9F6;
+}
+
+header li a.ativo {
+    background-color: #EADAF5;
+}
+
+main {
+    flex: 1;
+    padding: 20px;
+}
+
+main .buscar {
+    padding: 0.5vw 1vw;
+    border-radius: 0.5vw;
+    font-family: "Montserrat";
+    color: #000000;
+    border: 1px solid #000000;
+}
+
+.caixaFiltro {
+    position: relative;
+    display: inline-block;
+}
+
+.filtro {
+    padding: 0.8vw 3vw;
+    font-weight: 500;
+    background-color: #F8F2FF;
+    color: #451B6D;
+    border-radius: 0.5vw;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.filtros {
+    display: none;
+}
+
+.opcoesFiltro {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: #fff;
+    border: 0.1vw solid #ccc;
+    padding: 2vw 1.5vw;
+    border-radius: 1vw;
+}
+
+.filtros:checked + .filtro + .opcoesFiltro {
+    display: block;
+    margin-top: 0.4vw;
+    width: 6.2vw;
+}
