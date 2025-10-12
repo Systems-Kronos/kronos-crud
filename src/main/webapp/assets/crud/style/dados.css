@@ -1,5 +1,5 @@
 /* * {
-    border: 1px solid red;
+    border: 0.1vw solid red;
 } */
 
 html {
@@ -13,8 +13,13 @@ body {
     display: flex;
 }
 
+.meuPlaceholder {
+    width: 20%;
+}
+
 header {
-    width: 20vw;
+    position: fixed;
+    width: 20%;
     min-height: 100vh;
     background-color: #FCFAFF;
     color: #370963;
@@ -70,24 +75,24 @@ header li a.ativo {
 
 main {
     flex: 1;
-    padding: 20px;
 }
 
 main .buscar {
-    padding: 0.5vw 1vw;
+    font-size: 1vw;
+    height: 2vw;
     border-radius: 0.5vw;
     font-family: "Montserrat";
     color: #000000;
-    border: 1px solid #000000;
+    border: 0.1vw solid #000000;
 }
 
 .caixaFiltro {
     position: relative;
-    display: inline-block;
 }
 
 .filtro {
     padding: 0.8vw 3vw;
+    font-size: 1.15vw;
     font-weight: 500;
     background-color: #F8F2FF;
     color: #451B6D;
@@ -105,14 +110,59 @@ main .buscar {
     position: absolute;
     top: 100%;
     left: 0;
-    background: #fff;
-    border: 0.1vw solid #ccc;
-    padding: 2vw 1.5vw;
-    border-radius: 1vw;
+    width: 9.5vw;
+}
+
+.cadaFiltro:nth-child(4) {
+    border-radius: 0vw 0vw 0.5vw 0.5vw;
 }
 
 .filtros:checked + .filtro + .opcoesFiltro {
     display: block;
-    margin-top: 0.4vw;
-    width: 6.2vw;
+    margin-top: 0.25vw;
+    font-size: 0.85vw;
+}
+
+.cadaFiltro {
+    display: flex;
+    border: 0.1vw solid #E6E6E6;
+    background: #F8F2FF;
+    margin: 0.25vw 0vw 0vw 0vw;
+    width: 9.5vw;
+    height: 2vw;
+    font-size: 1vw;
+}
+
+.etiquetaFiltro {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+}
+
+input[type="checkbox"] {
+    appearance: none; 
+    width: 1vw;
+    height: 1vw;
+    border: 0.1vw solid #1E1E1E;
+    border-radius: 0.5vw; 
+    background-color: #FFFFFF;
+    cursor: pointer;
+    position: relative;
+}
+
+input[type="checkbox"]:checked {
+    background-color: #5F2794;
+    border-color: #5F2794;
+}
+
+.opcoesFiltro button {
+    margin-top: 0.5vw;
+    cursor: pointer;
+    background-color: #E6B648;
+    height: 3vw;
+    width: 9.5vw;
+    border-radius: 2vw;
+    border: 0.1vw solid #370963;
+    font-size: 1vw;
 }

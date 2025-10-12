@@ -13,6 +13,7 @@
     <title>CRUD - Kronos</title>
 </head>
 <body>
+    <div class="meuPlaceholder"></div>
     <header>
         <h1>KRONOS</h1>    
         <nav>
@@ -33,12 +34,31 @@
             <input type="checkbox" id="filtro" class="filtros">
             <label for="filtro" class="filtro">Filtros</label>
             
-            <div class="opcoesFiltro">
-                <label><input type="checkbox"> Aa-Zz </label>
-                <label><input type="checkbox"> Zz-Aa </label>
-                <label><input type="checkbox"> Crescente </label>
-                <label><input type="checkbox"> Decrescente </label>
-            </div>
+            <form class="opcoesFiltro">
+                <div class="cadaFiltro">
+                    <label for="filtroAaZz" class="etiquetaFiltro">
+                        <input type="checkbox" name="filtragemAlfabeto" id="filtroAaZz">Aa-Zz
+                    </label>
+                </div> 
+                <div class="cadaFiltro">
+                    <label for="filtroZzAa" class="etiquetaFiltro">
+                        <input type="checkbox" name="filtragemAlfabeto" id="filtroZzAa">Zz-Aa
+                    </label>
+                </div>
+                <div class="cadaFiltro">
+                    <label for="filtroCrescente" class="etiquetaFiltro">
+                        <input type="checkbox" name="filtragemOrdem" id="filtroCrescente">Crescente
+                    </label>
+                    
+                </div>
+                <div class="cadaFiltro">
+                    <label for="filtroDecrescente" class="etiquetaFiltro">
+                        <input type="checkbox" name="filtragemOrdem" id="filtroDecrescente">Decrescente
+                    </label>
+                </div>
+        
+                <button type="reset" class="limparFiltro">Limpar filtros</button>
+            </form>
         </div>
     </main>
 </body>
