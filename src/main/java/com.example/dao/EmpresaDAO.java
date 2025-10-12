@@ -18,7 +18,7 @@ public boolean create(Empresa empresa) {
     Conexao conexao = new Conexao();
     Connection conn = null;
     PreparedStatement pstmt = null;
-    String create = "INSERT INTO empresa (id,nome, cep, cnpj, email, telefone_fixo, telefone_pessoal, porte, horario_abertura, horario_encerramento, regradenegocio) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+    String create = "INSERT INTO empresa (id,nome, cep, cnpj, email, telefone, porte, horario_abertura, horario_encerramento, regradenegocio) VALUES (?,?,?,?,?,?,?,?,?,?)";
     try {
         conn = conexao.conectar();
         pstmt = conn.prepareStatement(create);
@@ -27,12 +27,11 @@ public boolean create(Empresa empresa) {
         pstmt.setString(3, empresa.getCep());
         pstmt.setString(4, empresa.getCnpj());
         pstmt.setString(5, empresa.getEmail());
-        pstmt.setString(6, empresa.getTelefoneFixo());
-        pstmt.setString(7, empresa.getTelefonePessoal());
-        pstmt.setString(8, empresa.getPorte());
-        pstmt.setObject(9, empresa.getHorarioAbertura());
-        pstmt.setObject(10, empresa.getHorarioFechamento());
-        pstmt.setString(11, empresa.getRegraDeNegocios());
+        pstmt.setString(6, empresa.getTelefone());
+        pstmt.setString(7, empresa.getPorte());
+        pstmt.setObject(8, empresa.getHorarioAbertura());
+        pstmt.setObject(9, empresa.getHorarioFechamento());
+        pstmt.setString(10, empresa.getRegraDeNegocios());
 
         return pstmt.executeUpdate() > 0;
     } catch (SQLException e) {
@@ -78,8 +77,7 @@ public boolean create(Empresa empresa) {
                         rset.getString("cep"),
                         rset.getString("cnpj"),
                         rset.getString("email"),
-                        rset.getString("telefone_fixo"),
-                        rset.getString("telefone_pessoal"),
+                        rset.getString("telefone"),
                         rset.getString("porte"),
                         rset.getTime("horario_abertura").toLocalTime(),
                         rset.getTime("horario_encerramento").toLocalTime(),
@@ -123,8 +121,7 @@ public boolean create(Empresa empresa) {
                         rset.getString("cep"),
                         rset.getString("cnpj"),
                         rset.getString("email"),
-                        rset.getString("telefone_fixo"),
-                        rset.getString("telefone_pessoal"),
+                        rset.getString("telefone"),
                         rset.getString("porte"),
                         rset.getTime("horario_abertura").toLocalTime(),
                         rset.getTime("horario_encerramento").toLocalTime(),
@@ -150,7 +147,7 @@ public boolean create(Empresa empresa) {
         Conexao conexao = new Conexao();
         Connection conn = null;
         PreparedStatement pstmt = null;
-        String update = "UPDATE empresa SET nome = ?, cep = ?, cnpj = ?, email = ?, telefone_fixo = ?, telefone_pessoal = ?, porte = ?, horario_abertura = ?, horario_encerramento = ?, regradenegocio = ? WHERE id = ?";
+        String update = "UPDATE empresa SET nome = ?, cep = ?, cnpj = ?, email = ?, telefone = ?, porte = ?, horario_abertura = ?, horario_encerramento = ?, regradenegocio = ? WHERE id = ?";
         try {
             conn = conexao.conectar();
             pstmt = conn.prepareStatement(update);
@@ -159,13 +156,12 @@ public boolean create(Empresa empresa) {
             pstmt.setString(2, empresa.getCep());
             pstmt.setString(3,empresa.getCnpj());
             pstmt.setString(4, empresa.getEmail());
-            pstmt.setString(5,empresa.getTelefoneFixo());
-            pstmt.setString(6, empresa.getTelefonePessoal());
-            pstmt.setString(7, empresa.getPorte());
-            pstmt.setObject(8, empresa.getHorarioAbertura());
-            pstmt.setObject(9, empresa.getHorarioFechamento());
-            pstmt.setString(10, empresa.getRegraDeNegocios());
-            pstmt.setInt(11, empresa.getId());
+            pstmt.setString(5, empresa.getTelefone());
+            pstmt.setString(6, empresa.getPorte());
+            pstmt.setObject(7, empresa.getHorarioAbertura());
+            pstmt.setObject(8, empresa.getHorarioFechamento());
+            pstmt.setString(9, empresa.getRegraDeNegocios());
+            pstmt.setInt(10, empresa.getId());
 
             if (pstmt.executeUpdate() > 0){
                 return 1;
@@ -185,13 +181,13 @@ public boolean create(Empresa empresa) {
         }
     }
 //  UPDATE da empresa por todos os parametros
-    public int update(int id, String nome, String cep, String cnpj, String email, String telefoneFixo, String telefonePessoal,
+    public int update(int id, String nome, String cep, String cnpj, String email, String telefone,
                       String porte, LocalTime horarioAbertura,
                       LocalTime horarioFechamento, String regraDeNegocios) {
         Conexao conexao = new Conexao();
         Connection conn = null;
         PreparedStatement pstmt = null;
-        String update = "UPDATE empresa SET nome = ?, cep = ?, cnpj = ?, email = ?, telefone_fixo = ?, telefone_pessoal = ?, porte = ?, horario_abertura = ?, horario_encerramento = ?, regradenegocio = ? WHERE id = ?";
+        String update = "UPDATE empresa SET nome = ?, cep = ?, cnpj = ?, email = ?, telefone = ?, porte = ?, horario_abertura = ?, horario_encerramento = ?, regradenegocio = ? WHERE id = ?";
         try {
             conn = conexao.conectar();
             pstmt = conn.prepareStatement(update);
@@ -200,13 +196,12 @@ public boolean create(Empresa empresa) {
             pstmt.setString(2, cep);
             pstmt.setString(3, cnpj);
             pstmt.setString(4, email);
-            pstmt.setString(5, telefoneFixo);
-            pstmt.setString(6, telefonePessoal);
-            pstmt.setString(7, porte);
-            pstmt.setObject(8, horarioAbertura);
-            pstmt.setObject(9, horarioFechamento);
-            pstmt.setString(10, regraDeNegocios);
-            pstmt.setInt(11, id);
+            pstmt.setString(5, telefone);
+            pstmt.setString(6, porte);
+            pstmt.setObject(7, horarioAbertura);
+            pstmt.setObject(8, horarioFechamento);
+            pstmt.setString(9, regraDeNegocios);
+            pstmt.setInt(10, id);
 
             if (pstmt.executeUpdate() > 0){
                 return 1;

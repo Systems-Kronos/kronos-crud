@@ -14,8 +14,7 @@ public class Usuario {
     private int id;
     private Character genero;
     private String nome;
-    private String telefoneFixo;
-    private String telefonePessoal;
+    private String telefone;
     private String cpf;
     private String senha;
     private String status;
@@ -25,27 +24,25 @@ public class Usuario {
     // Métodos Construtores
 
     // As validações de exceções são realizadas pelos métodos set.
-    public Usuario(int id, Character genero, String nome, String telefoneFixo,
-                   String telefonePessoal, String cpf, String senha, String status,
+    public Usuario(int id, Character genero, String nome, String telefone,
+                   String cpf, String senha, String status,
                    Setor setor) {
         this.setId(id);
         this.setGenero(genero);
         this.setNome(nome);
-        this.setTelefoneFixo(telefoneFixo);
-        this.setTelefonePessoal(telefonePessoal);
+        this.setTelefone(telefone);
         this.setCpf(cpf);
         this.setSenha(senha);
         this.setStatus(status);
         this.setSetor(setor);
     }
 
-    public Usuario(Character genero, String nome, String telefoneFixo,
-                   String telefonePessoal, String cpf, String senha, String status,
+    public Usuario(Character genero, String nome, String telefone,
+                   String cpf, String senha, String status,
                    Setor setor) {
         this.setGenero(genero);
         this.setNome(nome);
-        this.setTelefoneFixo(telefoneFixo);
-        this.setTelefonePessoal(telefonePessoal);
+        this.setTelefone(telefone);
         this.setCpf(cpf);
         this.setSenha(senha);
         this.setStatus(status);
@@ -79,32 +76,18 @@ public class Usuario {
         this.nome = nome;
     }
 
-    // Para o telefone fixo
-    public String getTelefoneFixo() {
-        return telefoneFixo;
+    // Para o telefone
+    public String getTelefone() {
+        return telefone;
     }
-    public void setTelefoneFixo(String telefoneFixo) {
-        if (telefoneFixo == null) { // Exceção: verifica se o telefone fixo é nulo
-            throw new NullPointerException("O telefone fixo não pode ser nulo.");
+    public void setTelefone(String telefone) {
+        if (telefone == null) { // Exceção: verifica se o telefone é nulo
+            throw new NullPointerException("O telefone não pode ser nulo.");
         }
-        if (!isValidTelefoneFixo(telefoneFixo)) { // Exceção: verifica se o telefone fixo é válido
-            throw new IllegalArgumentException("O formato do telefone fixo é inválido: '" + telefoneFixo + "'.");
+        if (!isValidTelefone(telefone)) { // Exceção: verifica se o telefone é válido
+            throw new IllegalArgumentException("O formato do telefone é inválido: '" + telefone + "'.");
         }
-        this.telefoneFixo = telefoneFixo.replaceAll("[^\\d]", "");
-    }
-
-    // Para o telefone pessoal
-    public String getTelefonePessoal() {
-        return telefonePessoal;
-    }
-    public void setTelefonePessoal(String telefonePessoal) {
-        if (telefonePessoal == null) { // Exceção: verifica se o telefone pessoal é nulo
-            throw new NullPointerException("O telefone pessoal não pode ser nulo.");
-        }
-        if (!isValidTelefonePessoal(telefonePessoal)) { // Exceção: verifica se o telefone pessoal é válido
-            throw new IllegalArgumentException("O formato do telefone pessoal é inválido: '" + telefonePessoal + "'.");
-        }
-        this.telefonePessoal = telefonePessoal.replaceAll("[^\\d]", "");
+        this.telefone = telefone.replaceAll("[^\\d]", "");
     }
 
     // Para o gênero
@@ -137,7 +120,7 @@ public class Usuario {
     public String getSenha() {
         return senha;
     }
-    public void setSenha (String senha) {
+    public void setSenha(String senha) {
         if (senha == null) { // Exceção: verifica se a senha é nula
             throw new NullPointerException("A senha não pode ser nula.");
         }
@@ -183,11 +166,10 @@ public class Usuario {
     // Para o método toString
     public String toString() {
         String nomeSetor = (this.setor != null) ? this.setor.getNome() : "Setor indisponível";
-        return String.format("Usuário | Id: %-3d | Nome: %-20s | Telefone Fixo: %-12s | Telefone Pessoal: %-12s | Gênero: %-1s | Cpf: %-14s | Senha:[PROTEGIDA] | Status: %-7s | Setor: %-15s | ID Setor: %-3d",
+        return String.format("Usuário | Id: %-3d | Nome: %-20s | Telefone: %-12s | Gênero: %-1s | Cpf: %-14s | Senha:[PROTEGIDA] | Status: %-7s | Setor: %-15s | ID Setor: %-3d",
                 this.id,
                 this.nome,
-                this.telefoneFixo,
-                this.telefonePessoal,
+                this.telefone,
                 this.genero,
                 this.cpf,
                 this.status,
@@ -226,23 +208,11 @@ public class Usuario {
 
 
     /*
-     * Verifica se o telefone fixo é válido
-     * Exemplos de telefone fixo aceitável:
+     * Verifica se o telefone é válido
+     * Exemplos de telefone aceitável:
      * "(11) 12345-1234", "11123451234"
      */
-    private boolean isValidTelefoneFixo(String telefone) {
-        String regex = "\\(?\\d{2}\\)?\\d{4,5}-?\\d{4}";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(telefone.trim());
-        return matcher.matches();
-    }
-
-    /*
-     * Verifica se o telefone pessoal é válido
-     * Exemplos de telefone pessoal aceitável:
-     * "(11) 12345-1234", "11123451234"
-     */
-    private boolean isValidTelefonePessoal(String telefone) {
+    private boolean isValidTelefone(String telefone) {
         String regex = "\\(?\\d{2}\\)?\\d{4,5}-?\\d{4}";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(telefone.trim());

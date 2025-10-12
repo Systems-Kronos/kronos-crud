@@ -10,10 +10,72 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5e5e3148-2c1a-4ad0-ae39-ef0f6e00cc16" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/assets/landingpage/style/planos.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/crud/empresas.jsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/crud/habilidades.jsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/crud/login.jsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/crud/planos.jsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/crud/setores.jsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/crud/usuario.jsp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com.example/Controller/Conexao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.example/Controller/Conexao.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com.example/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.example/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.example/dao/AdministracaoDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.example/dao/AdministracaoDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com.example/Model/Administracao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.example/Model/Administracao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com.example/Model/Empresa.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.example/Model/Empresa.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com.example/Model/Habilidades.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.example/Model/Habilidades.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com.example/Model/Plano.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.example/Model/Plano.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com.example/Model/Usuario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.example/Model/Usuario.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com.example/dao/EmpresaDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.example/dao/EmpresaDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/crud/APagar depois" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/crud/administrador.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/landingpage/assets/img/analise-gut.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/assets/landingpage/img/analise-gut.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/landingpage/assets/img/app-kronos.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/assets/landingpage/img/app-kronos.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/landingpage/assets/img/app-movel.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/assets/landingpage/img/app-movel.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/landingpage/assets/img/apresentacao-kronos-interdisciplinar.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/assets/landingpage/img/apresentacao-kronos-interdisciplinar.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/landingpage/assets/img/apresentacao-kronos-interdisciplinar2.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/assets/landingpage/img/apresentacao-kronos-interdisciplinar2.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/landingpage/assets/img/bem-estar.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/assets/landingpage/img/bem-estar.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/landingpage/assets/img/boneco-absenteismo.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/assets/landingpage/img/boneco-absenteismo.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/landingpage/assets/img/cadeado-area-restrita.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/assets/landingpage/img/cadeado-area-restrita.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/landingpage/assets/img/dashboards-operacionais.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/assets/landingpage/img/dashboards-operacionais.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/landingpage/assets/img/eficiencia-tempo.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/assets/landingpage/img/eficiencia-tempo.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/landingpage/assets/img/email-kronos.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/assets/landingpage/img/email-kronos.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/landingpage/assets/img/engajamento-produtividade.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/assets/landingpage/img/engajamento-produtividade.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/landingpage/assets/img/equipes-nao-sobrecarregadas.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/assets/landingpage/img/equipes-nao-sobrecarregadas.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/landingpage/assets/img/falta-transparencia.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/assets/landingpage/img/falta-transparencia.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/landingpage/assets/img/favikronos.ico" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/assets/landingpage/img/favikronos.ico" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/landingpage/assets/img/img-equipes-nao-sobrecarregadas.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/assets/landingpage/img/img-equipes-nao-sobrecarregadas.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/landingpage/assets/img/img-producao-tempo-real.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/assets/landingpage/img/img-producao-tempo-real.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/landingpage/assets/img/img-reducao-retrabalho-atrasos.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/assets/landingpage/img/img-reducao-retrabalho-atrasos.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/landingpage/assets/img/img-relatorios-automatizados.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/assets/landingpage/img/img-relatorios-automatizados.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/landingpage/assets/img/instagram-kronos.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/assets/landingpage/img/instagram-kronos.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/landingpage/assets/img/menos-atraso.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/assets/landingpage/img/menos-atraso.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/landingpage/assets/img/organizacao-rotina.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/assets/landingpage/img/organizacao-rotina.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/landingpage/assets/img/planejamento-pesado.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/assets/landingpage/img/planejamento-pesado.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/landingpage/assets/img/planilha-qualidade.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/assets/landingpage/img/planilha-qualidade.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/landingpage/assets/img/realocacao-proativa.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/assets/landingpage/img/realocacao-proativa.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/landingpage/assets/img/reducao-retrabalho-atrasos.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/assets/landingpage/img/reducao-retrabalho-atrasos.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/landingpage/assets/img/relatorios-automatizados.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/assets/landingpage/img/relatorios-automatizados.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/landingpage/assets/img/roxo-fabril.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/assets/landingpage/img/roxo-fabril.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/landingpage/assets/img/roxo-fabril2.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/assets/landingpage/img/roxo-fabril2.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/landingpage/assets/img/roxo-fabril3.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/assets/landingpage/img/roxo-fabril3.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/landingpage/assets/img/seta-kronos-baixo.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/assets/landingpage/img/seta-kronos-baixo.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/landingpage/assets/img/seta-kronos-cima.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/assets/landingpage/img/seta-kronos-cima.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/landingpage/assets/img/tarefas-padrao.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/assets/landingpage/img/tarefas-padrao.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/landingpage/assets/img/tarefas-personalizadas.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/assets/landingpage/img/tarefas-personalizadas.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/landingpage/assets/img/telefone-kronos.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/assets/landingpage/img/telefone-kronos.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/landingpage/assets/img/visao-producao.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/assets/landingpage/img/visao-producao.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/landingpage/assets/style/footer.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/assets/landingpage/style/footer.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/landingpage/assets/style/funcionalidades.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/assets/landingpage/style/funcionalidades.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/landingpage/assets/style/header.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/assets/landingpage/style/header.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/landingpage/assets/style/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/assets/landingpage/style/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/landingpage/assets/style/planos.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/landingpage/assets/style/restrito.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/landingpage/assets/style/sobre-nos.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/assets/landingpage/style/sobre-nos.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/landingpage/funcionalidades.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/landingpage/funcionalidades.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/landingpage/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/landingpage/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/landingpage/planos.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/landingpage/planos.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/landingpage/restrito.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/landingpage/sobre-nos.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/landingpage/sobre-nos.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -75,7 +137,7 @@
     "Tomcat Server.Tomcat 10.1.283.executor": "Run",
     "Tomcat Server.Tomcat 10.1.44.executor": "Run",
     "Tomcat Server.cxzdsz.executor": "Run",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "Merging feat/admin-example",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/matheusueno-ieg/KRONOS/kronos-crud/src/main/resources/.env",
     "node.js.detected.package.eslint": "true",
@@ -251,7 +313,8 @@
       <workItem from="1759923510023" duration="3354000" />
       <workItem from="1759934718786" duration="3852000" />
       <workItem from="1760057783698" duration="630000" />
-      <workItem from="1760058443286" duration="1972000" />
+      <workItem from="1760058443286" duration="2665000" />
+      <workItem from="1760302893959" duration="293000" />
     </task>
     <servers />
   </component>

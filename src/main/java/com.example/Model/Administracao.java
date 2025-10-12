@@ -23,14 +23,14 @@ public class Administracao {
      * Vale ressaltar que nos métodos setters, acontece as validações de exceções
      * Por esse motivo, os métodos setters estão sendo usados nos métodos construtores
      */
-    public Administracao (String nome, String email, String senha, String codigoAcesso) {
+    public Administracao(String nome, String email, String senha, String codigoAcesso) {
         this.setNome(nome);
         this.setEmail(email);
         this.setSenha(senha);
         this.setCodigoAcesso(codigoAcesso);
     }
 
-    public Administracao (int id, String nome, String email, String senha, String codigoAcesso){
+    public Administracao(int id, String nome, String email, String senha, String codigoAcesso){
         this.setId(id);
         this.setNome(nome);
         this.setEmail(email);
@@ -41,7 +41,7 @@ public class Administracao {
     // Métodos Getters e Setters
 
     // Para o ID
-    public int getId (){
+    public int getId(){
         return id;
     }
     public void setId(int id) {
@@ -52,7 +52,7 @@ public class Administracao {
     }
 
     // Para o nome
-    public String getNome () {
+    public String getNome() {
         return nome;
     }
     public void setNome(String nome) {
@@ -66,10 +66,10 @@ public class Administracao {
     }
 
     // Para o email
-    public String getEmail () {
+    public String getEmail() {
         return email;
     }
-    public void setEmail (String email){
+    public void setEmail(String email){
         if (email == null) { // Exceção: verifica se o email é nulo
             throw new NullPointerException("O e-mail não pode ser nulo.");
         }
@@ -80,10 +80,10 @@ public class Administracao {
     }
 
     // Para a senha
-    public String getSenha () {
+    public String getSenha() {
         return senha;
     }
-    public void setSenha (String senha) {
+    public void setSenha(String senha) {
         if (senha == null) { // Exceção: verifica se a senha é nula
             throw new NullPointerException("A senha não pode ser nula.");
         }
@@ -110,7 +110,7 @@ public class Administracao {
     }
 
     // Método toString
-    public String toString () {
+    public String toString() {
         return String.format("Administração | Id: %-3d | Nome: %-20s | E-mail: %-20s | Senha: [PROTEGIDA] | Código de acesso: %-10s",
                 this.id,
                 this.nome,
