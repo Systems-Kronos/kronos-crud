@@ -7,23 +7,23 @@ import com.example.Controller.*;
 import com.example.Model.Habilidades;
 
 public class HabilidadesDAO {
-    public boolean inserir(Habilidades habilidade) {
+    public boolean create(Habilidades habilidade) {
         Conexao conexao = new Conexao();
         Connection conn = null;
         PreparedStatement pstmt = null;
-        String inserir = "INSERT INTO habilidade (id,nome, tag, descricao) VALUES (?,?,?,?,?)";
+        String create = "INSERT INTO habilidade (id,nome, tag, descricao) VALUES (?,?,?,?)";
         try {
             // Tem que ver a lista com o Breno
             conn = conexao.conectar();
-            pstmt = conn.prepareStatement(inserir);
+            pstmt = conn.prepareStatement(create);
             pstmt.setInt(1, habilidade.getId());
             pstmt.setString(2, habilidade.getNome());
             pstmt.setNString(3, habilidade.getTag());
-            pstmt.setString(5, habilidade.getDescricao());
+            pstmt.setString(4, habilidade.getDescricao());
 
             return pstmt.executeUpdate() > 0; // true se inseriu
         } catch (SQLException e) {
-            System.err.println("Erro ao inserir departamento: " + e.getMessage());
+            System.err.println("Erro ao inserir habilidade: " + e.getMessage());
             return false;
         }finally {
             if (pstmt != null) {
