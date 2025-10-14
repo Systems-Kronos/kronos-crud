@@ -127,7 +127,7 @@ public class PlanoDAO {
         Conexao conexao = new Conexao();
         Connection conn = null;
         PreparedStatement pstmt = null;
-        String update = "UPDATE plano SET nomeplano = ?, custo = ?, descricao = ?, qnt_max_funcionario WHERE id = ?";
+        String update = "UPDATE planos SET nomeplano = ?, custo = ?, descricao = ?, qnt_max_funcionario WHERE id = ?";
         try {
             conn = conexao.conectar();
             pstmt = conn.prepareStatement(update);
@@ -157,11 +157,11 @@ public class PlanoDAO {
     }
 
 //    Update por parametro
-public int update(String nomeplano, float custo, String descricao, int qnt_max_funcionario) {
+    public int update(String nomeplano, float custo, String descricao, int qnt_max_funcionario) {
     Conexao conexao = new Conexao();
     Connection conn = null;
     PreparedStatement pstmt = null;
-    String update = "UPDATE plano SET nomeplano = ?, custo = ?, descricao = ?, qnt_max_funcionario WHERE id = ?";
+    String update = "UPDATE planos SET nomeplano = ?, custo = ?, descricao = ?, qnt_max_funcionario WHERE id = ?";
     try {
         conn = conexao.conectar();
         pstmt = conn.prepareStatement(update);
@@ -187,7 +187,34 @@ public int update(String nomeplano, float custo, String descricao, int qnt_max_f
             System.err.println("Erro ao fechar conexão após atualizar planos: " + e.getMessage());
         }
     }
+}
 
+// Delete by Id
+    public int delete(int id) {
+        Conexao conexao = new Conexao();
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        String delete = "DELETE FROM planos WHERE id = ?";
+        try {
+            conn = conexao.conectar();
+            pstmt = conn.prepareStatement(delete);
+            pstmt.setInt(1, id);
+
+            if (pstmt.executeUpdate() > 0){
+                return 1;
+            }
+            return 0;
+        }catch (SQLException e) {
+            System.err.println("Erro ao deletar planos: " + e.getMessage());
+            return -1;
+        } finally {
+            try {
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                System.err.println("Erro ao fechar conexão após deletar planos: " + e.getMessage());
+            }
+        }
 }
 }
 
