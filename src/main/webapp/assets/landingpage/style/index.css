@@ -1,0 +1,359 @@
+/* Elementos gerais */
+
+/* * {
+    outline: 1px solid red;
+} */
+
+hr {
+    border: none;
+    height: 0.1vw;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+body {
+    margin: 0;
+    bottom: 0;
+    padding: 0;
+    top: 0;
+}
+
+.menu a {
+    position: relative;
+    transition: 0.3s ease;
+}
+
+.menu a::after {
+    content: '';
+    position: absolute;
+    left: 0vw;
+    top: 1.6vw;
+    width: 100%;
+    height: 0.1vw;
+    border-radius: 10px;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.5s ease, background-color 0.3s ease;
+}
+
+.menu a:hover::after,
+.menu a.ativo::after {
+    background-color: #e6b648;
+    transform: scaleX(1);
+}
+
+@media (max-width: 864px) {
+    .menu a.ativo::after {
+        top: 2.6vw;
+    }
+}
+
+/* Tela -> Tela de início */
+
+
+.telaInicial {
+    background-image: url(/src/main/webapp/assets/landingpage/img/roxo-fabril.png);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    padding: 2vw 0vw;
+}
+
+.telaInicial .textoInicial {
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+}
+
+.telaInicial h1 {
+    font-family: "Cinzel", sans-serif;
+    font-size: 3.5vw;
+    line-height: 1.2em;
+    margin: 0;
+    color: #e6b648;
+}
+
+.telaInicial p {
+    color: white;
+    font-size: 1.55vw;
+}
+
+.telaInicial button {
+    cursor: pointer;
+    padding: 0.95vw 1.5vw;
+    background-color: #e6b648;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 600;
+    font-size: 1.5vw;
+    margin-top: 1.5vw;
+    border: none;
+    border-radius: 0.6vw;
+}
+
+.telaInicial .imgAppKronos {
+    height: 45vw;
+    margin: 5vw 0vw;
+}
+
+.conteudoTelaInicial {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 680px) {
+    .telaInicial h1 {
+        font-size: 7vw;
+    }
+    
+    .telaInicial p {
+        font-size: 3vw;
+    }
+    
+    .telaInicial button {
+        padding: 2vw 2.5vw;
+        font-size: 2.5vw;
+        border-radius: 1.3vw;
+    }
+    
+    .telaInicial .imgAppKronos {
+        height: 60vw;
+    }   
+}
+
+@media (max-width: 336px) {    
+    .telaInicial h1 {
+        font-size: 7.7vw;
+    }
+    
+    .telaInicial p {
+        font-size: 3.5vw;
+    }
+    
+    .telaInicial button {
+        padding: 2.2vw 2.5vw;
+        font-size: 2.8vw;
+    }
+}
+
+
+/* Tela -> Problemas que resolvemos */
+
+.problemasQueResolvemos {
+    background: linear-gradient(#F2EEF6, #FFFFFF);
+    padding: 5vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.problemasQueResolvemos .caixaCentralProblemas {
+    width: 90vw;
+    background-color: #FFFFFF;
+    border-radius: 1vw;
+    box-shadow: 0 0 0.05vw 0.05vw rgba(0, 0, 0, 0.1);
+}
+
+.caixaCentralProblemas .caixaCentralTitulos {
+    font-size: 1.3vw;
+    display: flex;
+    flex-direction: column-reverse;
+    padding: 1.4vw 3.4vw;
+}
+
+.caixaCentralTitulos p {
+    margin: 1vw 0vw 0vw 0vw;
+    text-align: left;
+    color: #382654;
+}
+
+.caixaCentralTitulos span, .caixaCentralTitulos span p {
+    text-align: left;
+    font-family: 'Crete Round';
+    font-size: 1.6vw;
+    color: #451B6D;
+}
+
+.caixaCentralProblemas .caixaCentralCards {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 3vw;
+    margin-top: 1vw;
+}
+
+.caixaCentralProblemas .caixaCentralCards h3 {
+    color: #25173A;
+    font-family: 'Cinzel';
+    padding-bottom: 1.5vw;
+}
+
+.caixaCentralCards {
+    font-size: 1.2vw;
+    margin: 0 3vw 3vw 3vw;
+}
+
+.caixaCentralProblemas .imgCaixaCentral {
+    object-fit: contain;
+    height: 4vw;
+    width: 3vw;
+    padding-bottom: 1.4vw;
+}
+
+/* Tela -> Benefícios que oferecemos */
+
+.beneficiosQueOferecemos {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.beneficiosQueOferecemos h2 {
+    font-family: 'Crete Round', serif;
+    color: #451B6D;
+    font-weight: 400;
+    font-size: 2.5vw;
+    margin-top: 2vw;
+}
+
+summary {
+    list-style: none;
+}
+
+.beneficiosQueOferecemos details summary {
+    height: 3vw;
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.3vw;
+}
+
+.beneficiosQueOferecemos .caixaExpansiva {
+    cursor: pointer;
+    margin: 1.8vw;
+    padding: 1vw 1.3vw;
+    width: 50vw;
+    border-radius: 0.5vw;
+    box-shadow: 0.1vw 0.2vw 0.4vw rgba(0, 0, 0, 0.3);
+}
+
+.beneficiosQueOferecemos .caixaExpansiva summary {
+    color: #25173A;
+    font-size: 1.5vw;
+    font-weight: bold;
+    font-family: 'Cinzel', serif;
+    margin-left: 3vw;
+}
+
+.beneficiosQueOferecemos .caixaExpansiva p {
+    font-size: 1.3vw;
+    line-height: 2vw;
+    font-family: 'Montserrat';
+}
+
+.beneficiosQueOferecemos .caixaExpansiva span {
+    font-size: 1.3vw;
+    font-family: 'Montserrat';
+}
+
+.content {
+    margin: 0;
+    padding: 0;
+}
+
+.imgCaixasExpansivas {
+    position: relative;
+    right: 2.5vw;
+    object-fit: contain;
+    height: 3vw;
+    width: 3vw;
+}
+
+.seta {
+    content: "";
+    width: 2vw;
+    height: 1.2vw;
+    position: absolute; 
+    left: 70vw;
+    background: url('/src/main/webapp/assets/landingpage/img/seta-kronos-baixo.png') no-repeat center/cover;
+    transform: rotate(0deg); 
+    transition: transform 0.2s ease;
+}
+
+.caixaExpansiva[open] .seta {
+    transform: rotate(-180deg);
+}
+
+/* Tela -> Resultados que sua empresa vai alcançar */
+
+.resultadosAlcancar {
+    background: linear-gradient(#FFFFFF, #EADAF5);
+}
+
+.resultadosAlcancar h2 {
+    font-family: 'Crete Round', serif;
+    color: #451B6D;
+    font-weight: 400;
+    font-size: 2.5vw;
+    display: flex;
+    justify-content: center;
+    margin-top: 3vw;
+}
+
+.caixinhasResultados {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 7vw;
+    color: white;
+}
+
+.cards {
+    background: linear-gradient(#5A2C85, #370963);
+    width: 13vw;
+    height: 15vw;
+    margin-top: 1.5vw;
+    border-radius: 0.4vw;
+    border-bottom-right-radius: 2vw;
+    border-bottom-left-radius: 0;
+    box-shadow: 0.05vw 0.25vw 0.25vw rgba(0, 0, 0, 0.3);
+}
+
+.cards img {
+    height: 3.5vw;
+    width: 3.5vw;
+    object-fit: contain;
+    margin-top: 1.85vw;
+}
+
+.cards:nth-child(even) {
+    margin-top: 6vw;
+}
+
+.cards p, .cards h1 {
+    margin: 0.4vw;
+}
+
+.cards h1 {
+    font-size: 2.6vw;
+}
+
+.cards p {
+    font-size: 1vw;
+}
+
+blockquote {
+    color: #451B6D;
+    font-weight: 400;
+    font-size: 1.6vw;
+    display: flex;
+    justify-content: center;
+    padding-top: 6vw;
+    font-style: italic;
+    font-weight: 300;
+    padding-bottom: 3vw;
+}
