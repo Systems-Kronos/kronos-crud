@@ -155,5 +155,39 @@ public class PlanoDAO {
         }
 
     }
+
+//    Update por parametro
+public int update(String nomeplano, float custo, String descricao, int qnt_max_funcionario) {
+    Conexao conexao = new Conexao();
+    Connection conn = null;
+    PreparedStatement pstmt = null;
+    String update = "UPDATE plano SET nomeplano = ?, custo = ?, descricao = ?, qnt_max_funcionario WHERE id = ?";
+    try {
+        conn = conexao.conectar();
+        pstmt = conn.prepareStatement(update);
+
+        pstmt.setString(1, nomeplano);
+        pstmt.setFloat(2, custo);
+        pstmt.setString(3, descricao);
+        pstmt.setInt(4, qnt_max_funcionario);
+
+        if (pstmt.executeUpdate() > 0){
+            return 1;
+        }
+        return 0;
+    }
+    catch (SQLException e) {
+        System.err.println("Erro ao atualizar planos: " + e.getMessage());
+        return -1;
+    } finally {
+        try {
+            if (pstmt != null) pstmt.close();
+            if (conn != null) conn.close();
+        } catch (SQLException e) {
+            System.err.println("Erro ao fechar conexão após atualizar planos: " + e.getMessage());
+        }
+    }
+
+}
 }
 
