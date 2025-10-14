@@ -84,4 +84,40 @@ public class AdministracaoDAO {
 
         return listaAdministracao;
     }
+
+//    READ By Id
+    public Administracao read(int id) {
+        Conexao conexao = new Conexao();
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rset = null;
+        String readId = "SELECT * FROM administracao WHERE id = ?";
+
+        try {
+            conn = conexao.conectar();
+            pstmt = conn.prepareStatement(readId);
+            pstmt.setInt(1, id);
+            rset = pstmt.executeQuery();
+
+            if (rset.next()) {
+                return new Administracao(rset.getInt("id"),
+                        rset.getString("nome"),
+                        rset.getString("email"),
+                        rset.getString("senha"),
+                        rset.getString("codigo_acesso"));
+            }
+
+    }catch (SQLException e) {
+            System.err.println("Erro ao buscar administracao por ID: " + e.getMessage());
+        } finally {
+            try {
+                if (rset != null) rset.close();
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                System.err.println("Erro ao fechar recursos ao buscar administracao por ID: " + e.getMessage());
+            }
+        }
+        return null;
+    }
    }
