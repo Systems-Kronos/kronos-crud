@@ -206,51 +206,51 @@ public class Main {
 //             ********* Teste administracaoDAO   *********
 //             ************************************
 
-
-            AdministracaoDAO administracaoDAO = new AdministracaoDAO();
-
-            // ===== CREATE =====
-            // Criação de um novo administrador com valores de exemplo
-            Administracao adminNovo = new Administracao(15, "Carlos Andrade", "carlos.andrade@email.com", "Senha@123", "ACESSO123");
-            boolean criado = administracaoDAO.create(adminNovo);
-            System.out.println("CREATE: " + criado);
-
-            // ===== READ ALL =====
-            // Lista todos os administradores cadastrados no banco
-            System.out.println("\n===== LISTA DE ADMINISTRAÇÕES =====");
-            for (Administracao a : administracaoDAO.read()) {
-                System.out.println(a);
-            }
-
-            // ===== READ BY ID =====
-            // Busca um administrador específico pelo ID
-            System.out.println("\n===== BUSCA POR ID =====");
-            Administracao adminBuscado = administracaoDAO.read(15);
-            if (adminBuscado != null) {
-                System.out.println(adminBuscado);
-            } else {
-                System.out.println("Administrador não encontrado!");
-            }
-
-            // ===== UPDATE =====
-            // Atualiza os dados do administrador existente
-            System.out.println("\n===== UPDATE =====");
-            Administracao adminAtualizado = new Administracao(15, "Carlos Almeida", "carlos.almeida@email.com", "NovaSenha@456", "NOVOACESSO");
-            int updateResult = administracaoDAO.update(adminAtualizado);
-            System.out.println("UPDATE: " + (updateResult > 0 ? "sucesso" : "falhou"));
-
-            // ===== DELETE BY ID =====
-            // Exclui o administrador pelo ID
-            System.out.println("\n===== DELETE POR ID =====");
-            int deleteId = administracaoDAO.delete(15);
-            System.out.println("DELETE ID: " + (deleteId > 0 ? "sucesso" : "falhou"));
-
-            // ===== DELETE BY NOME =====
-            // Exclui o administrador pelo nome
-            System.out.println("\n===== DELETE POR NOME =====");
-            administracaoDAO.create(adminAtualizado);
-            int deleteNome = administracaoDAO.delete("Carlos Almeida");
-            System.out.println("DELETE NOME: " + (deleteNome > 0 ? "sucesso" : "falhou"));
+//
+//            AdministracaoDAO administracaoDAO = new AdministracaoDAO();
+//
+//            // ===== CREATE =====
+//            // Criação de um novo administrador com valores de exemplo
+//            Administracao adminNovo = new Administracao(15, "Carlos Andrade", "carlos.andrade@email.com", "Senha@123", "ACESSO123");
+//            boolean criado = administracaoDAO.create(adminNovo);
+//            System.out.println("CREATE: " + criado);
+//
+//            // ===== READ ALL =====
+//            // Lista todos os administradores cadastrados no banco
+//            System.out.println("\n===== LISTA DE ADMINISTRAÇÕES =====");
+//            for (Administracao a : administracaoDAO.read()) {
+//                System.out.println(a);
+//            }
+//
+//            // ===== READ BY ID =====
+//            // Busca um administrador específico pelo ID
+//            System.out.println("\n===== BUSCA POR ID =====");
+//            Administracao adminBuscado = administracaoDAO.read(15);
+//            if (adminBuscado != null) {
+//                System.out.println(adminBuscado);
+//            } else {
+//                System.out.println("Administrador não encontrado!");
+//            }
+//
+//            // ===== UPDATE =====
+//            // Atualiza os dados do administrador existente
+//            System.out.println("\n===== UPDATE =====");
+//            Administracao adminAtualizado = new Administracao(15, "Carlos Almeida", "carlos.almeida@email.com", "NovaSenha@456", "NOVOACESSO");
+//            int updateResult = administracaoDAO.update(adminAtualizado);
+//            System.out.println("UPDATE: " + (updateResult > 0 ? "sucesso" : "falhou"));
+//
+//            // ===== DELETE BY ID =====
+//            // Exclui o administrador pelo ID
+//            System.out.println("\n===== DELETE POR ID =====");
+//            int deleteId = administracaoDAO.delete(15);
+//            System.out.println("DELETE ID: " + (deleteId > 0 ? "sucesso" : "falhou"));
+//
+//            // ===== DELETE BY NOME =====
+//            // Exclui o administrador pelo nome
+//            System.out.println("\n===== DELETE POR NOME =====");
+//            administracaoDAO.create(adminAtualizado);
+//            int deleteNome = administracaoDAO.delete("Carlos Almeida");
+//            System.out.println("DELETE NOME: " + (deleteNome > 0 ? "sucesso" : "falhou"));
 
             conecta.desconectar(conn);
         } catch (Exception e) {
