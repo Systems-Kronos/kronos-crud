@@ -156,4 +156,36 @@ public class HabilidadesDAO {
             }
         }
     }
+
+//    Update pelos parametros
+    public int update(int id, String nome, String tag, String descricao) {
+        Conexao conexao = new Conexao();
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        String update = "UPDATE habilidade SET nome = ?, tag = ?, descricao = ? WHERE id = ?";
+        try {
+            conn = conexao.conectar();
+            pstmt = conn.prepareStatement(update);
+
+            pstmt.setString(1, nome);
+            pstmt.setString(2, tag);
+            pstmt.setString(3, descricao);
+            pstmt.setInt(4, id);
+            if (pstmt.executeUpdate() > 0){
+                return 1;
+            }
+            return 0;
+        }
+        catch (SQLException e) {
+            System.err.println("Erro ao atualizar habilidade: " + e.getMessage());
+            return -1;
+        } finally {
+            try {
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                System.err.println("Erro ao fechar conexão após atualizar habilidade: " + e.getMessage());
+            }
+        }
+    }
 }
