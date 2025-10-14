@@ -8,15 +8,15 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class PlanoDAO {
-     //    Inserir
-        public boolean inserir(Plano plano) {
+     //    Create
+        public boolean create(Plano plano) {
             Conexao conexao = new Conexao();
             Connection conn = null;
             PreparedStatement pstmt = null;
-            String inserir = "INSERT INTO  planos (id,nomeplano, custo, descricao, qnt_max_funcionario) VALUES (?,?,?,?,?)";
+            String create = "INSERT INTO  planos (id,nomeplano, custo, descricao, qnt_max_funcionario) VALUES (?,?,?,?,?)";
             try {
                 conn = conexao.conectar();
-                pstmt = conn.prepareStatement(inserir);
+                pstmt = conn.prepareStatement(create);
                 pstmt.setInt(1, plano.getId());
                 pstmt.setString(2, plano.getNome());
                 pstmt.setFloat(3, plano.getCusto());
@@ -25,7 +25,7 @@ public class PlanoDAO {
 
                 return pstmt.executeUpdate() > 0; // true se inseriu
             } catch (SQLException e) {
-                System.err.println("Erro ao inserir departamento: " + e.getMessage());
+                System.err.println("Erro ao inserir plano: " + e.getMessage());
                 return false;
             } finally {
                 if (pstmt != null) {
