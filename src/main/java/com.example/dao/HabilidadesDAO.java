@@ -12,6 +12,8 @@ import com.example.Model.Empresa;
 import com.example.Model.Habilidades;
 
 public class HabilidadesDAO {
+
+//    CREATE
     public boolean create(Habilidades habilidade) {
         Conexao conexao = new Conexao();
         Connection conn = null;
@@ -49,6 +51,7 @@ public class HabilidadesDAO {
         }
     }
 
+//    READ ALL
     public List<Habilidades> read() {
         Conexao conexao = new Conexao();
         Connection conn = null;
@@ -84,5 +87,40 @@ public class HabilidadesDAO {
         }
 
         return listaHabilidade;
+    }
+
+//    READ BY ID
+
+    public Habilidades read(int id) {
+        Conexao conexao = new Conexao();
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rset = null;
+        String readId = "SELECT * FROM habilidade WHERE id = ?";
+        try {
+            conn = conexao.conectar();
+            pstmt = conn.prepareStatement(readId);
+            pstmt.setInt(1, id);
+            rset = pstmt.executeQuery();
+
+            if (rset.next()) {
+                return new Habilidades(rset.getInt("id"),
+                        rset.getString("nome"),
+                        rset.getString("tag"),
+                        rset.getString("descricao"));
+            }
+    }
+        catch (SQLException e) {
+            System.err.println("Erro ao buscar habilidade por ID: " + e.getMessage());
+        } finally {
+            try {
+                if (rset != null) rset.close();
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                System.err.println("Erro ao fechar recursos ao buscar habilidade por ID: " + e.getMessage());
+            }
+        }
+        return null;
     }
 }
