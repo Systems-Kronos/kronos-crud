@@ -64,9 +64,6 @@ header {
     transition: color 0.3s ease;
 }
 
-.opcoesHeader a:hover {
-    color: #605f5c;
-}
 
 .opcoesHeader a.ativo {
     color: #e6b648;
