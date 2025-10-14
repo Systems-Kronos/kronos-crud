@@ -12,41 +12,40 @@ import java.util.regex.Pattern;
 public class Usuario {
     // Atributos
     private int id;
-    private Character genero;
     private String nome;
-    private String telefone;
     private String cpf;
-    private String senha;
+    private Character genero;
     private String status;
-    private Setor setor;
+    private String senha;
     private int idSetor;
+    private int idSupervisor;
 
     // Métodos Construtores
 
     // As validações de exceções são realizadas pelos métodos set.
-    public Usuario(int id, Character genero, String nome, String telefone,
-                   String cpf, String senha, String status,
-                   Setor setor) {
+    public Usuario(int id, String nome, String cpf,
+                   Character genero, String status,
+                   String senha, int idSetor, int idSupervisor) {
         this.setId(id);
-        this.setGenero(genero);
         this.setNome(nome);
-        this.setTelefone(telefone);
         this.setCpf(cpf);
-        this.setSenha(senha);
+        this.setGenero(genero);
         this.setStatus(status);
-        this.setSetor(setor);
+        this.setSenha(senha);
+        this.setIdSetor(idSetor);
+        this.setIdSupervisor(idSupervisor);
     }
 
-    public Usuario(Character genero, String nome, String telefone,
-                   String cpf, String senha, String status,
-                   Setor setor) {
-        this.setGenero(genero);
+    public Usuario(String nome, String cpf,
+                   Character genero, String status,
+                   String senha,  int idSetor, int idSupervisor) {
         this.setNome(nome);
-        this.setTelefone(telefone);
         this.setCpf(cpf);
-        this.setSenha(senha);
+        this.setGenero(genero);
         this.setStatus(status);
-        this.setSetor(setor);
+        this.setSenha(senha);
+        this.setIdSetor(idSetor);
+        this.setIdSupervisor(idSupervisor);
     }
 
     // Métodos Getters e Setters
@@ -74,20 +73,6 @@ public class Usuario {
             throw new IllegalArgumentException("O nome não pode estar em branco.");
         }
         this.nome = nome;
-    }
-
-    // Para o telefone
-    public String getTelefone() {
-        return telefone;
-    }
-    public void setTelefone(String telefone) {
-        if (telefone == null) { // Exceção: verifica se o telefone é nulo
-            throw new NullPointerException("O telefone não pode ser nulo.");
-        }
-        if (!isValidTelefone(telefone)) { // Exceção: verifica se o telefone é válido
-            throw new IllegalArgumentException("O formato do telefone é inválido: '" + telefone + "'.");
-        }
-        this.telefone = telefone.replaceAll("[^\\d]", "");
     }
 
     // Para o gênero
@@ -146,35 +131,38 @@ public class Usuario {
         this.status = status;
     }
 
-    // Para o setor
-    public Setor getSetor() {
-        return setor;
-    }
-    public void setSetor(Setor setor) {
-        if (setor == null) { // Exceção: verifica se o objeto setor é nula.
-            throw new NullPointerException("O objeto setor não pode ser nula.");
-        }
-        this.setor = setor;
-        this.idSetor = setor.getId(); // Define o atributo idSetor, que serve como FK no banco de dados
-    }
-
-    // Para id do setor
+    // Para o ID de setor
     public int getIdSetor() {
         return idSetor;
+    }
+    public void setIdSetor(int id) {
+        if (id <= 0) { // Exceção: verifica se o ID do setor é negativo ou igual a zero
+            throw new IllegalArgumentException("O ID do setor não pode ser zero ou negativo.");
+        }
+        this.idSetor = id;
+    }
+
+    // Para o ID de supervisor
+    public int getIdSupervisor() {
+        return idSupervisor;
+    }
+    public void setIdSupervisor(int id) {
+        if (id <= 0) { // Exceção: verifica se o ID do supervisor é negativo ou igual a zero
+            throw new IllegalArgumentException("O ID do supervisor não pode ser zero ou negativo.");
+        }
+        this.idSupervisor = id;
     }
 
     // Para o método toString
     public String toString() {
-        String nomeSetor = (this.setor != null) ? this.setor.getNome() : "Setor indisponível";
-        return String.format("Usuário | Id: %-3d | Nome: %-20s | Telefone: %-12s | Gênero: %-1s | Cpf: %-14s | Senha:[PROTEGIDA] | Status: %-7s | Setor: %-15s | ID Setor: %-3d",
+        return String.format("Usuário | Id: %-3d | Nome: %-20s | Cpf: %-14s | Gênero: %-1s | Status: %-7s | Senha:[PROTEGIDA] | ID Setor: %-3d | ID Supervisor: %-3d",
                 this.id,
                 this.nome,
-                this.telefone,
-                this.genero,
                 this.cpf,
+                this.genero,
                 this.status,
-                nomeSetor,
-                this.idSetor
+                this.idSetor,
+                this.idSupervisor
                 );
     }
 
@@ -203,19 +191,6 @@ public class Usuario {
         String regex = "^\\d{3}\\.?\\d{3}\\.?\\d{3}-?\\d{2}$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(cpf.trim());
-        return matcher.matches();
-    }
-
-
-    /*
-     * Verifica se o telefone é válido
-     * Exemplos de telefone aceitável:
-     * "(11) 12345-1234", "11123451234"
-     */
-    private boolean isValidTelefone(String telefone) {
-        String regex = "\\(?\\d{2}\\)?\\d{4,5}-?\\d{4}";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(telefone.trim());
         return matcher.matches();
     }
 

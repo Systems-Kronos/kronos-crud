@@ -9,7 +9,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5e5e3148-2c1a-4ad0-ae39-ef0f6e00cc16" name="Changes" comment="" />
+    <list default="true" id="5820632d-2a55-471e-856a-397c1c3b623e" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com.example/Model/HabilidadeUsuario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.example/Model/HabilidadeUsuario.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com.example/Model/Habilidades.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.example/Model/Habilidades.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com.example/Model/Setor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.example/Model/Setor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com.example/Model/Usuario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.example/Model/Usuario.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -73,7 +79,7 @@
     "nodejs_package_manager_path": "npm",
     "vue.rearranger.settings.migration": "true"
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\rebeccapaulucci-ieg\OneDrive - Instituto J&amp;F\Germinare\Tech\POO\Códigos\KronosCRUD\src\main\resources" />
