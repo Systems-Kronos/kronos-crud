@@ -216,5 +216,31 @@ public class PlanoDAO {
             }
         }
 }
+//  DELETE By Nome
+    public int delete(String nomeplano) {
+        Conexao conexao = new Conexao();
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        String delete = "DELETE FROM planos WHERE nomeplano = ?";
+        try {
+            conn = conexao.conectar();
+            pstmt = conn.prepareStatement(delete);
+            pstmt.setString(1, nomeplano);
+
+            if (pstmt.executeUpdate() > 0){
+                return 1;
+            }
+            return 0;
+        }catch (SQLException e) {
+            System.err.println("Erro ao deletar plano: " + e.getMessage());
+            return -1;
+        } finally {
+            try {
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                System.err.println("Erro ao fechar conexão após deletar plano: " + e.getMessage());
+            }
+        }}
 }
 
