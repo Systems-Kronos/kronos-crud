@@ -73,7 +73,7 @@ public class PlanoDAO {
                     listaPlano.add(plano);
                 }
             } catch (SQLException e) {
-                System.err.println("Erro ao buscar empresas: " + e.getMessage());
+                System.err.println("Erro ao buscar planos: " + e.getMessage());
                 return null;
             } finally {
                 try {
@@ -81,11 +81,45 @@ public class PlanoDAO {
                     if (pstmt != null) pstmt.close();
                     if (conn != null) conn.close();
                 } catch (SQLException e) {
-                    System.err.println("Erro ao fechar recursos ao buscar empresas: " + e.getMessage());
+                    System.err.println("Erro ao fechar recursos ao buscar planos: " + e.getMessage());
                 }
             }
 
             return listaPlano;
             }
+
+//            READ BY ID
+    public Plano read(int id) {
+        Conexao conexao = new Conexao();
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rset = null;
+        String readId = "SELECT * FROM planos WHERE id = ?";
+        try {
+            conn = conexao.conectar();
+            pstmt = conn.prepareStatement(readId);
+            pstmt.setInt(1, id);
+            rset = pstmt.executeQuery();
+
+            if (rset.next()) {
+                return new Plano(rset.getInt("id"),
+                        rset.getString("nomeplano"),
+                        rset.getFloat("custo"),
+                        rset.getString("descricao"),
+                        rset.getInt("qnt_max_funcionario"));
+            }
+    }catch (SQLException e) {
+            System.err.println("Erro ao buscar planos por ID: " + e.getMessage());
+        } finally {
+            try {
+                if (rset != null) rset.close();
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                System.err.println("Erro ao fechar recursos ao buscar planos por ID: " + e.getMessage());
+            }
+        }
+        return null;
     }
+}
 
