@@ -243,7 +243,7 @@ public class Empresa {
      * "(11) 12345-1234", "11123451234"
      */
     private boolean isValidTelefone(String telefone) {
-        String regex = "\\(?\\d{2}\\)?\\d{4,5}-?\\d{4}";
+        String regex = "\\(?\\d{2}\\)?\\s?\\d{4,5}-?\\d{4}";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(telefone.trim());
         return matcher.matches();
