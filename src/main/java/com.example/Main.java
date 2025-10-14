@@ -98,6 +98,60 @@ public class Main {
 //            int deletadoCnpj = dao.delete("12345678123456");
 //            System.out.println("DELETE by CNPJ: " + deletadoCnpj);
 
+            // ************************************
+            // ********* Teste HabilidadesDAO ******
+            // ************************************
+
+//            HabilidadesDAO dao = new HabilidadesDAO();
+//
+//            Habilidades habilidade = new Habilidades(
+//                    10,
+//                    "Manutenção Preventiva",
+//                    "Segurança_Industrial",
+//                    "Capacidade de realizar manutenções rotineiras em equipamentos de forma preventiva."
+//            );
+//
+//            // CREATE - Habilidade
+//            boolean criado = dao.create(habilidade);
+//            System.out.println("CREATE: " + criado);
+//
+//            // READ ALL - Habilidade
+//            List<Habilidades> habilidades = dao.read();
+//            System.out.println("\nREAD ALL:");
+//            habilidades.forEach(System.out::println);
+//
+//            // READ BY ID - Habilidade
+//            Habilidades hPorId = dao.read(10);
+//            System.out.println("\nREAD BY ID:");
+//            System.out.println(hPorId);
+//
+//            // UPDATE (objeto)
+//            if (hPorId != null) {
+//                hPorId.setNome("Manutenção Atualizada");
+//                hPorId.setTag("Atualização_Sistema");
+//                hPorId.setDescricao("Habilidade voltada à atualização e revisão de sistemas industriais.");
+//                int atualizado = dao.update(hPorId);
+//                System.out.println("\nUPDATE (objeto): " + atualizado);
+//            }
+//
+//            // UPDATE (parâmetros)
+//            int atualizadoParams = dao.update(
+//                    10,
+//                    "Gestão de Riscos",
+//                    "Segurança_Trabalho",
+//                    "Capacidade de identificar e mitigar riscos operacionais no ambiente industrial."
+//            );
+//            System.out.println("UPDATE (params): " + atualizadoParams);
+//
+//            // DELETE by ID
+//            int deletadoId = dao.delete(10);
+//            System.out.println("\nDELETE by ID: " + deletadoId);
+//
+//            // DELETE by Nome
+//            dao.create(habilidade);
+//            int deletadoNome = dao.delete("Manutenção Preventiva");
+//            System.out.println("DELETE by Nome: " + deletadoNome);
+
 
             conecta.desconectar(conn);
         } catch (Exception e) {

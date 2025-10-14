@@ -25,7 +25,7 @@ public class HabilidadesDAO {
             pstmt = conn.prepareStatement(create);
             pstmt.setInt(1, habilidade.getId());
             pstmt.setString(2, habilidade.getNome());
-            pstmt.setNString(3, habilidade.getTag());
+            pstmt.setString(3, habilidade.getTag());
             pstmt.setString(4, habilidade.getDescricao());
 
             return pstmt.executeUpdate() > 0; // true se inseriu
