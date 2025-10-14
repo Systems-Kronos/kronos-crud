@@ -2,8 +2,13 @@ package com.example.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.List;
+
 import com.example.Controller.*;
+import com.example.Model.Empresa;
 import com.example.Model.Habilidades;
 
 public class HabilidadesDAO {
@@ -42,5 +47,42 @@ public class HabilidadesDAO {
             }
 
         }
+    }
+
+    public List<Habilidades> read() {
+        Conexao conexao = new Conexao();
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rset = null;
+        String read = "SELECT * FROM habilidade";
+        List<Habilidades> listaHabilidade = new LinkedList<>();
+
+        try {
+            conn = conexao.conectar();
+            pstmt = conn.prepareStatement(read);
+            rset = pstmt.executeQuery();
+            while (rset.next()) {
+                Habilidades habilidade = new Habilidades(rset.getInt("id"),
+                        rset.getString("nome"),
+                        rset.getString("tag"),
+                        rset.getString("descricao")
+                );
+                listaHabilidade.add(habilidade);
+            }
+        }
+        catch (SQLException e) {
+            System.err.println("Erro ao buscar habilidades: " + e.getMessage());
+            return null;
+        } finally {
+            try {
+                if (rset != null) rset.close();
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                System.err.println("Erro ao fechar recursos ao buscar habilidades: " + e.getMessage());
+            }
+        }
+
+        return listaHabilidade;
     }
 }
