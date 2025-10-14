@@ -1,25 +1,31 @@
 /* * {
-    border: 1px solid red;
+    border: 0.1vw solid red;
 } */
-
-html {
-    font-family: "Montserrat";
-}
 
 body {
     margin: 0;
     padding: 0;
     bottom: 0;
     display: flex;
+    font-family: "Montserrat", sans-serif;
+}
+
+.meuPlaceholder {
+    width: 20%;
+    height: 100vh;
 }
 
 header {
-    width: 20vw;
-    min-height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 20%;
+    height: 100vh;
     background-color: #FCFAFF;
     color: #370963;
     display: flex;
     flex-direction: column;
+    align-items: center;
 }
 
 header h1 {
@@ -54,7 +60,7 @@ header li a {
     align-items: center;
     width: 100%;
     height: 100%;
-    padding: 1vw 3vw;
+    padding: 1vw 2.9vw;
     gap: 1vw;
     text-decoration: none;
     color: #370963;
@@ -68,51 +74,184 @@ header li a.ativo {
     background-color: #EADAF5;
 }
 
-main {
-    flex: 1;
-    padding: 20px;
+.conteudoPrincipal {
+    margin-left: 20%;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    padding: 2vw;
 }
 
-main .buscar {
-    padding: 0.5vw 1vw;
-    border-radius: 0.5vw;
-    font-family: "Montserrat";
-    color: #000000;
-    border: 1px solid #000000;
+.procurarCadastrar {
+    display: flex;
+    align-items: center;
+    margin: 3vw 0vw 3vw 8vw;
+    gap: 1vw;
 }
 
-.caixaFiltro {
-    position: relative;
-    display: inline-block;
+form {
+    display: flex;
+    align-items: center; 
+    gap: 1vw;
 }
 
-.filtro {
-    padding: 0.8vw 3vw;
-    font-weight: 500;
-    background-color: #F8F2FF;
-    color: #451B6D;
-    border-radius: 0.5vw;
-    cursor: pointer;
-    display: inline-block;
+form .buscar {
+    display: flex;
+    font-size: 1.5vw;
+    padding: 0vw 3vw;
+    height: 3vw;
+    width: 20vw;
+    border-radius: 0.6vw;
+    border: 0.1vw solid black;
+    color: black;
+}
+
+form .buscar::placeholder {
+    color: black;
 }
 
 .filtros {
-    display: none;
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
 }
 
-.opcoesFiltro {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background: #fff;
-    border: 0.1vw solid #ccc;
-    padding: 2vw 1.5vw;
+.filtros summary {
+    list-style: none;
+    background-color: #F8F2FF;
+    color: #451B6D;
+    font-weight: 500;
+    padding: 1vw 4vw;
+    font-size: 1.5vw;
+    transition: background-color 0.3s ease;
     border-radius: 1vw;
+    border: none;
 }
 
-.filtros:checked + .filtro + .opcoesFiltro {
-    display: block;
-    margin-top: 0.4vw;
-    width: 6.2vw;
+.filtros summary:hover {
+    background-color: #e0d6f0;
+}
+
+.conteudoFiltros {
+    overflow: hidden;
+    position: absolute;
+    background-color: #f8f2ff;
+    border-radius: 1vw;
+    margin-top: 0.3vw;
+    min-width: 12vw;
+    flex-direction: column;
+    font-size: 1.1vw;
+}
+
+.conteudoFiltros button {
+    cursor: pointer;
+    background-color: #370963;
+    border: none;
+    border-radius: 0.2vw;
+    font-size: 1vw;
+    padding: 0.75vw 0vw;
+    color: #FFFFFF;
+}
+
+.filtros[open] .conteudoFiltros {
+    display: flex;
+}
+
+.opcaoFiltro {
+    display: flex;
+    align-items: center;
+    padding: 1vw 2vw;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.opcaoFiltro input {
+    margin-right: 1vw;
+    width: 1.2vw;
+    height: 1.2vw;
+    cursor: pointer;
+}
+
+.opcaoFiltro:hover {
+    background-color: #D8C8F0;
+}
+
+.cadastrar:hover {
+    background-color: #3E1570;
+}
+
+.cadastrar {
+    cursor: pointer;
+    list-style: none;
+    background-color: #5A1B9B;
+    color: #FFFFFF;
+    font-weight: 400;
+    padding: 1vw 3vw;
+    font-size: 1.5vw;
+    border-radius: 1vw;
+    border: none;
+    transition: background-color 0.3s ease;
+    font-family: "Montserrat", sans-serif;
+}
+
+table {
+    width: 76vw;
+    table-layout: fixed;
+    border-collapse: collapse;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 400;
+    margin-top: 2vw;
+    border-collapse: collapse;
+    font-size: 0.9vw;
+    text-align: left;
+}
+
+
+main table thead th:last-child {
+    width: 10%;
+}
+
+th, td {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 500;
+    padding: 1vw 2vw;
+}
+
+th {
+    font-size: 1.1vw;
+    background-color: #E6B648;
+    color: white;
+}
+
+th:first-child {
+    border-radius: 1vw 0vw 0vw 0vw;
+}
+
+th:last-child {
+    border-radius: 0vw 1vw 0vw 0vw;
+}
+
+tr {
+    background-color: #FDFDFD;
+    text-align: center;
+}
+
+tr:nth-child(even) {
+    background-color: #F2F2F2;
+}
+
+tr:hover {
+    background-color: #ddd;
+    transition: 0.3s;
+}
+
+td {
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    white-space: nowrap; 
+}
+
+table .detalhes img {
+    object-fit: contain;
+    height: 1.5vw;
 }
