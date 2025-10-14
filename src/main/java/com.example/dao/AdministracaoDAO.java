@@ -120,4 +120,37 @@ public class AdministracaoDAO {
         }
         return null;
     }
+
+//    Update pelo objeto
+    public int update(Administracao administracao) {
+        Conexao conexao = new Conexao();
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        String update = "UPDATE administracao SET nome = ?, email = ?, senha = ?, codigo_acesso = ? WHERE id = ?";
+        try {
+            conn = conexao.conectar();
+            pstmt = conn.prepareStatement(update);
+
+            pstmt.setString(1, administracao.getNome());
+            pstmt.setString(2, administracao.getEmail());
+            pstmt.setString(3, administracao.getSenha());
+            pstmt.setString(4, administracao.getCodigoAcesso());
+            pstmt.setInt(5, administracao.getId());
+            if (pstmt.executeUpdate() > 0){
+                return 1;
+            }
+            return 0;
+        }
+        catch (SQLException e) {
+            System.err.println("Erro ao atualizar administracao: " + e.getMessage());
+            return -1;
+        } finally {
+            try {
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                System.err.println("Erro ao fechar conexão após atualizar administracao: " + e.getMessage());
+            }
+        }
+    }
    }
