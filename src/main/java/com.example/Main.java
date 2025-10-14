@@ -97,7 +97,54 @@ public class Main {
 //            dao.create(empresa);
 //            int deletadoCnpj = dao.delete("12345678123456");
 //            System.out.println("DELETE by CNPJ: " + deletadoCnpj);
-
+//
+////  ************************************
+////  ********* Teste EmpresaDAO *********
+////  ************************************
+//            PlanoDAO planoDAO = new PlanoDAO();
+//
+//            // ===== CREATE =====
+//            // Criação de um novo plano com valores de exemplo
+//            Plano planoNovo = new Plano(7, "Plano Premium", 149.90f, "Acesso completo a todas as funcionalidades", 50);
+//            boolean criado = planoDAO.create(planoNovo);
+//            System.out.println("CREATE: " + criado);
+//
+//            // ===== READ ALL =====
+//            // Busca todos os planos cadastrados
+//            System.out.println("\n===== LISTA DE PLANOS =====");
+//            for (Plano p : planoDAO.read()) {
+//                System.out.println(p);
+//            }
+//
+//            // ===== READ BY ID =====
+//            // Busca um plano específico pelo ID
+//            System.out.println("\n===== BUSCA POR ID =====");
+//            Plano planoBuscado = planoDAO.read(7);
+//            if (planoBuscado != null) {
+//                System.out.println(planoBuscado);
+//            } else {
+//                System.out.println("Plano não encontrado!");
+//            }
+//
+//            // ===== UPDATE =====
+//            // Atualiza os dados do plano existente
+//            System.out.println("\n===== UPDATE =====");
+//            Plano planoAtualizado = new Plano(7, "Plano Empresarial", 199.90f, "Plano voltado para empresas com até 100 funcionários", 100);
+//            int updateResult = planoDAO.update(planoAtualizado);
+//            System.out.println("UPDATE: " + (updateResult > 0 ? "sucesso" : "falhou"));
+//
+//            // ===== DELETE BY ID =====
+//            // Exclui o plano pelo ID
+//            System.out.println("\n===== DELETE POR ID =====");
+//            int deleteId = planoDAO.delete(7);
+//            System.out.println("DELETE ID: " + (deleteId > 0 ? "sucesso" : "falhou"));
+//
+//            // ===== DELETE BY NOME =====
+//            // Exclui o plano pelo nome
+//            System.out.println("\n===== DELETE POR NOME =====");
+//            planoDAO.create(planoAtualizado);
+//            int deleteNome = planoDAO.delete("Plano Empresarial");
+//            System.out.println("DELETE NOME: " + (deleteNome > 0 ? "sucesso" : "falhou"));
 
             conecta.desconectar(conn);
         } catch (Exception e) {
