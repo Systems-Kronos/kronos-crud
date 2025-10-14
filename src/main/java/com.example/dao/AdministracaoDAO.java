@@ -1,8 +1,11 @@
 package com.example.dao;
 import com.example.Controller.*;
 import com.example.Model.Administracao;
+import com.example.Model.Empresa;
 
 import java.sql.*;
+import java.util.LinkedList;
+import java.util.List;
 
 public class AdministracaoDAO {
 //    Create
@@ -42,55 +45,43 @@ public class AdministracaoDAO {
 
         }
     }
-    //Remover
-    public boolean remover(int id){
-        Conexao conexao = new Conexao();
-        Connection conn = conexao.conectar();
-        String remover = "DELETE FROM administracao WHERE id = ?";
-        //Instanciando o objeto preparedStatement(pstmt)
-        PreparedStatement pstmt = null;
-        try {
-            pstmt = conn.prepareStatement(remover);
-            pstmt.setInt(1, id);
-            pstmt.execute();
-            conexao.desconectar(conn);
-            return true;
-        } catch (SQLException e) {
-            return false;
-        }
-    }
-    //    Alterar
-    public boolean alterarNome(int id, String novoNome) {
+
+//    READ ALL
+
+    public List<Administracao> read() {
         Conexao conexao = new Conexao();
         Connection conn = null;
         PreparedStatement pstmt = null;
-        String alterarNome = "UPDATE administracao SET nome = ? WHERE id =? ";
+        ResultSet rset = null;
+        String read = "SELECT * FROM administracao";
+        List<Administracao> listaAdministracao = new LinkedList<>();
+
         try {
             conn = conexao.conectar();
-            pstmt = conn.prepareStatement(alterarNome);
-            pstmt.setString(1, novoNome);
-            pstmt.setInt(2, id);
-            return pstmt.executeUpdate() > 0;
-        } catch (SQLException e) {
-            System.out.println("Erro ao alterar: " + e.getMessage());
-            e.printStackTrace(); // mostra o stack completo
-            return false;
+            pstmt = conn.prepareStatement(read);
+            rset = pstmt.executeQuery();
+
+            while (rset.next()) {
+            Administracao administracao = new Administracao(rset.getInt("id"),
+                    rset.getString("nome"),
+                    rset.getString("email"),
+                    rset.getString("senha"),
+                    rset.getString("codigo_acesso"));
+            listaAdministracao.add(administracao);
+            }
+        }catch (SQLException e) {
+            System.err.println("Erro ao buscar administracao: " + e.getMessage());
+            return null;
         } finally {
-            finalizar(pstmt, conn);
-        }}
-    //    Outros
-    public static void finalizar(Statement pstmt, Connection conn) {
-        if (pstmt != null) {
             try {
-                pstmt.close();
+                if (rset != null) rset.close();
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
             } catch (SQLException e) {
-                System.out.println("Erro ao fechar PreparedStatement");
+                System.err.println("Erro ao fechar recursos ao buscar administracao: " + e.getMessage());
             }
         }
-        if (conn != null) {
-            try {
-                conn.close();
-            } catch (SQLException e) {
-                System.out.println("Erro ao fechar Connection");
-            }
-        }}}
+
+        return listaAdministracao;
+    }
+   }

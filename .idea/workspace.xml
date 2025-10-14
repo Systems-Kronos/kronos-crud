@@ -9,7 +9,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5e5e3148-2c1a-4ad0-ae39-ef0f6e00cc16" name="Changes" comment="" />
+    <list default="true" id="5e5e3148-2c1a-4ad0-ae39-ef0f6e00cc16" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/src/main/java/com.example/dao/AdministracaoDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.example/dao/AdministracaoDAO.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -64,7 +66,7 @@
     "Tomcat Server.Tomcat 10.1.44.executor": "Run",
     "Tomcat Server.cxzdsz.executor": "Run",
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "metodos-planos",
+    "git-widget-placeholder": "metodos-administracao",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/matheusorestes-IEG/OneDrive - Instituto J&F/Área de Trabalho/Tech/LPR/Codes/KronosCrud/kronos-crud",
     "node.js.detected.package.eslint": "true",
