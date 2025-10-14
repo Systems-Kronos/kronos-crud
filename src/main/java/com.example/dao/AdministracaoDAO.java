@@ -5,15 +5,15 @@ import com.example.Model.Administracao;
 import java.sql.*;
 
 public class AdministracaoDAO {
-//    Inserir
-    public boolean inserir(Administracao administracao) {
+//    Create
+    public boolean create(Administracao administracao) {
         Conexao conexao = new Conexao();
         Connection conn = null;
         PreparedStatement pstmt = null;
-        String inserir = "INSERT INTO administracao (id,nome, email, senha, codigo_acesso) VALUES (?,?,?,?,?)";
+        String create = "INSERT INTO administracao (id,nome, email, senha, codigo_acesso) VALUES (?,?,?,?,?)";
         try {
             conn = conexao.conectar();
-            pstmt = conn.prepareStatement(inserir);
+            pstmt = conn.prepareStatement(create);
             pstmt.setInt(1, administracao.getId());
             pstmt.setString(2, administracao.getNome());
             pstmt.setString(3, administracao.getEmail());
@@ -22,7 +22,7 @@ public class AdministracaoDAO {
 
             return pstmt.executeUpdate() > 0; // true se inseriu
         } catch (SQLException e) {
-            System.err.println("Erro ao inserir departamento: " + e.getMessage());
+            System.err.println("Erro ao inserir admnistracao: " + e.getMessage());
             return false;
         }finally {
             if (pstmt != null) {
