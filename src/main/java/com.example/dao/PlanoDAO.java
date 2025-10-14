@@ -127,7 +127,7 @@ public class PlanoDAO {
         Conexao conexao = new Conexao();
         Connection conn = null;
         PreparedStatement pstmt = null;
-        String update = "UPDATE planos SET nomeplano = ?, custo = ?, descricao = ?, qnt_max_funcionario WHERE id = ?";
+        String update = "UPDATE planos SET nomeplano = ?, custo = ?, descricao = ?, qnt_max_funcionario = ? WHERE id = ?";
         try {
             conn = conexao.conectar();
             pstmt = conn.prepareStatement(update);
@@ -136,6 +136,7 @@ public class PlanoDAO {
             pstmt.setFloat(2, plano.getCusto());
             pstmt.setString(3, plano.getDescricao());
             pstmt.setInt(4, plano.getMaxFuncionarios());
+            pstmt.setInt(5, plano.getId());
 
             if (pstmt.executeUpdate() > 0){
                 return 1;
@@ -157,11 +158,11 @@ public class PlanoDAO {
     }
 
 //    Update por parametro
-    public int update(String nomeplano, float custo, String descricao, int qnt_max_funcionario) {
+    public int update(String nomeplano, float custo, String descricao, int qnt_max_funcionario, int id) {
     Conexao conexao = new Conexao();
     Connection conn = null;
     PreparedStatement pstmt = null;
-    String update = "UPDATE planos SET nomeplano = ?, custo = ?, descricao = ?, qnt_max_funcionario WHERE id = ?";
+    String update = "UPDATE planos SET nomeplano = ?, custo = ?, descricao = ?, qnt_max_funcionario = ? WHERE id = ?";
     try {
         conn = conexao.conectar();
         pstmt = conn.prepareStatement(update);
@@ -170,6 +171,7 @@ public class PlanoDAO {
         pstmt.setFloat(2, custo);
         pstmt.setString(3, descricao);
         pstmt.setInt(4, qnt_max_funcionario);
+        pstmt.setInt(5, id);
 
         if (pstmt.executeUpdate() > 0){
             return 1;
