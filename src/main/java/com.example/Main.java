@@ -152,7 +152,6 @@ public class Main {
 //            int deletadoNome = dao.delete("Manutenção Preventiva");
 //            System.out.println("DELETE by Nome: " + deletadoNome);
 
-
             conecta.desconectar(conn);
         } catch (Exception e) {
             e.printStackTrace();
