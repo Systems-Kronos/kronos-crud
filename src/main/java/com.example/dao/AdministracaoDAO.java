@@ -214,4 +214,31 @@ public int update(String nome, String email, String senha, String codigoAcesso, 
             }
         }
     }
+
+//    Delete By Nome
+public int delete(String nome) {
+    Conexao conexao = new Conexao();
+    Connection conn = null;
+    PreparedStatement pstmt = null;
+    String delete = "DELETE FROM administracao WHERE nome = ?";
+    try {
+        conn = conexao.conectar();
+        pstmt = conn.prepareStatement(delete);
+        pstmt.setString(1, nome);
+
+        if (pstmt.executeUpdate() > 0){
+            return 1;
+        }
+        return 0;
+    }catch (SQLException e) {
+        System.err.println("Erro ao deletar adiministracao: " + e.getMessage());
+        return -1;
+    } finally {
+        try {
+            if (pstmt != null) pstmt.close();
+            if (conn != null) conn.close();
+        } catch (SQLException e) {
+            System.err.println("Erro ao fechar conexão após deletar administracao: " + e.getMessage());
+        }
+    }}
    }
