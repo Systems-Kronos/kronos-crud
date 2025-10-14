@@ -188,4 +188,32 @@ public class HabilidadesDAO {
             }
         }
     }
+
+//    Delete por Id
+public int delete(int id) {
+    Conexao conexao = new Conexao();
+    Connection conn = null;
+    PreparedStatement pstmt = null;
+    String delete = "DELETE FROM habilidade WHERE id = ?";
+    try {
+        conn = conexao.conectar();
+        pstmt = conn.prepareStatement(delete);
+        pstmt.setInt(1, id);
+
+        if (pstmt.executeUpdate() > 0){
+            return 1;
+        }
+        return 0;
+    }catch (SQLException e) {
+        System.err.println("Erro ao deletar habilidade: " + e.getMessage());
+        return -1;
+    } finally {
+        try {
+            if (pstmt != null) pstmt.close();
+            if (conn != null) conn.close();
+        } catch (SQLException e) {
+            System.err.println("Erro ao fechar conexão após deletar habilidade: " + e.getMessage());
+        }
+    }
+    }
 }
