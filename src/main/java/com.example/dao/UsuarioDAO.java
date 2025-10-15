@@ -13,19 +13,18 @@ public class UsuarioDAO {
         Conexao conexao = new Conexao();
         Connection conn = null;
         PreparedStatement pstmt = null;
-        String create = "INSERT INTO  usuario (id, nome, cpf, genero, status, senha, fk_setor_id, fk_supervisor_id, cargo) VALUES (?,?,?,?,?,?,?,?,?)";
+        String create = "INSERT INTO  usuario (nome, cpf, genero, status, senha, fk_setor_id, fk_supervisor_id, cargo) VALUES (?,?,?,?,?,?,?,?)";
         try {
             conn = conexao.conectar();
             pstmt = conn.prepareStatement(create);
-            pstmt.setInt(1, usuario.getId());
-            pstmt.setString(2, usuario.getNome());
-            pstmt.setString(3, usuario.getCpf());
-            pstmt.setString(4, String.valueOf(usuario.getGenero()));
-            pstmt.setString(5, usuario.getStatus());
-            pstmt.setString(6, usuario.getSenha());
-            pstmt.setInt(7, usuario.getIdSetor());
-            pstmt.setInt(8, usuario.getIdSupervisor());
-            pstmt.setString(9, usuario.getCargo);
+            pstmt.setString(1, usuario.getNome());
+            pstmt.setString(2, usuario.getCpf());
+            pstmt.setString(3, String.valueOf(usuario.getGenero()));
+            pstmt.setString(4, usuario.getStatus());
+            pstmt.setString(5, usuario.getSenha());
+            pstmt.setInt(6, usuario.getIdSetor());
+            pstmt.setInt(7, usuario.getIdSupervisor());
+            pstmt.setString(8, usuario.getCargo());
 
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
