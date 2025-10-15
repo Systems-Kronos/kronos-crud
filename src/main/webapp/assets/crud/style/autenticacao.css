@@ -110,18 +110,22 @@ select {
     font-family: "Montserrat";
 }
 
-.botaoCriarConta {
+.botaoConta {
     font-size: 1.5vw;
     font-family: "Montserrat";
     display: flex;
     align-items: center;
     justify-content: center;
     border: none;
-    padding: 1vw;
+    padding: 1vw 15.5vw;
     border-radius: 0.8vw;
     cursor: pointer;
     background-color: #370963;
     color: #FFFFFF;
+}
+
+a {
+    text-decoration: none;
 }
 
 .linhaComTexto {
