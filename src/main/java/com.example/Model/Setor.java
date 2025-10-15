@@ -8,7 +8,6 @@ package com.example.Model;
 public class Setor {
     // Atributos
     private int id;
-    private Empresa empresa;
     private String nome;
     private String descricao;
     private String turnos;
@@ -18,20 +17,20 @@ public class Setor {
     // Métodos Construtores
 
     // As validações de exceções são realizadas pelos métodos set.
-    public Setor(int id, Empresa empresa, String nome, String descricao, String turnos, int qntFuncionarios) {
+    public Setor(int id, String nome, String descricao, String turnos, int qntFuncionarios, int idEmpresa) {
         this.setId(id);
-        this.setEmpresa(empresa);
         this.setNome(nome);
         this.setDescricao(descricao);
         this.setTurnos(turnos);
         this.setQntFuncionarios(qntFuncionarios);
+        this.setIdEmpresa(idEmpresa);
     }
-    public Setor(Empresa empresa, String nome, String descricao, String turnos, int qntFuncionarios) {
-        this.setEmpresa(empresa);
+    public Setor(String nome, String descricao, String turnos, int qntFuncionarios, int idEmpresa) {
         this.setNome(nome);
         this.setDescricao(descricao);
         this.setTurnos(turnos);
         this.setQntFuncionarios(qntFuncionarios);
+        this.setIdEmpresa(idEmpresa);
     }
 
     // Métodos Getters e Setters
@@ -45,18 +44,6 @@ public class Setor {
             throw new IllegalArgumentException("O ID não pode ser zero ou negativo.");
         }
         this.id = id;
-    }
-
-    // Para o objeto da empresa
-    public Empresa getEmpresa() {
-        return empresa;
-    }
-    public void setEmpresa(Empresa empresa) {
-        if (empresa == null) { // Exceção: verifica se o objeto da empresa é nulo
-            throw new NullPointerException("O objeto da empresa não pode ser nulo.");
-        }
-        this.empresa = empresa;
-        this.idEmpresa = empresa.getId();  // Define o atributo idEmpresa, que serve como FK no banco de dados
     }
 
     // Para o nome
@@ -112,18 +99,24 @@ public class Setor {
         this.qntFuncionarios = qntFuncionarios;
     }
 
-    // Para id da empresa
+    // Para o ID de empresa
     public int getIdEmpresa() {
         return idEmpresa;
+    }
+    public void setIdEmpresa(int id) {
+        if (id <= 0) { // Exceção: verifica se o ID de empresa é negativo ou igual a zero
+            throw new IllegalArgumentException("O ID de empresa não pode ser zero ou negativo.");
+        }
+        this.idEmpresa = id;
     }
 
     // Método toString
     public String toString() {
-        return String.format("Setor | Id: %-3d | Empresa: %-20s | Nome: %-20s | Descrição: %-50s | Qnt. Funcionários: %-5d | ID Empresa: %-3d",
+        return String.format("Setor | Id: %-3d | Nome: %-20s | Descrição: %-50s | Turnos: %-50s | Qnt. Funcionários: %-5d | ID Empresa: %-3d",
                 this.id,
-                this.empresa,
                 this.nome,
                 this.descricao,
+                this.turnos,
                 this.qntFuncionarios,
                 this.idEmpresa
         );
