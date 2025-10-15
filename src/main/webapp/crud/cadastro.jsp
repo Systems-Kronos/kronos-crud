@@ -13,60 +13,61 @@
     <title>Cadastre-se - Kronos</title>
 </head>
 <body>
-    <main>    
-        <h1>KRONOS</h1>    
-        <h2>Crie sua conta</h2>
-        <form action="" method="post">
-            <div>
-                <label for="nome">Nome</label>
-                <input type="text" name="nome" id="nome" placeholder="Digite seu nome" required>
-              </div>
-            
-              <div>
-                <label for="cpf">CPF</label>
-                <input type="text" name="cpf" id="cpf" placeholder="Digite seu CPF" required>
-              </div>
-            
-              <div>
-                <label for="genero">Gênero</label>
-                <select name="genero" id="genero" required>
-                  <option value="masculino">Masculino</option>
-                  <option value="feminino">Feminino</option>
-                  <option value="outro" selected>Outro</option>
-                </select>
-              </div>
-            
-              <div>
-                <label for="telefone">Telefone</label>
-                <input type="tel" name="telefone" id="telefone" placeholder="Digite seu telefone" required>
-              </div>
-            
-              <div>
-                <label for="email">Email</label>
-                <input type="email" name="email" id="email" placeholder="Digite seu email" required>
-              </div>
-            
-              <div>
-                <label for="senha">Senha</label>
-                <input type="password" name="senha" id="senha" placeholder="Digite sua senha" required>
-              </div>
-              
-              <div class="checkboxTermos">
-                <input type="checkbox" id="termos" name="termos" required>
-                <label for="termos">Eu aceito todos os <a href="">Termos de Uso</a></label>
-              </div>
+<main>
+    <h1 class="logoKronosDesktop">KRONOS</h1>
+    <h2>Crie sua conta</h2>
+    <form action="" method="post">
+        <div>
+            <label for="nome">Nome</label>
+            <input type="text" name="nome" id="nome" placeholder="Digite seu nome" required>
+        </div>
 
-              <button type="submit" class="botaoCriarConta">Criar</button>
-              
-              <div class="linhaComTexto">
-                <hr><span>OU</span><hr>
-              </div>
-              
-              <button type="submit" class="botaoCriarComGoogle"><img src="../assets/crud/img/logo-g-google.png" alt="">Criar com o Google</button>              
-              
-              <small>Já possui uma conta? <a href="login.jsp">Entrar</a></small>
+        <div>
+            <label for="cpf">CPF</label>
+            <input type="text" name="cpf" id="cpf" placeholder="Digite seu CPF" required>
+        </div>
 
-        </form>
-      </main>
+        <div>
+            <label for="genero">Gênero</label>
+            <select name="genero" id="genero" required>
+                <option value="masculino">Masculino</option>
+                <option value="feminino">Feminino</option>
+                <option value="outro" selected>Outro</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="telefone">Telefone</label>
+            <input type="tel" name="telefone" id="telefone" placeholder="Digite seu telefone" required>
+        </div>
+
+        <div>
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email" placeholder="Digite seu email" required>
+        </div>
+
+        <div>
+            <label for="senha">Senha</label>
+            <input type="password" name="senha" id="senha" placeholder="Digite sua senha" required>
+        </div>
+
+        <div class="checkboxTermos">
+            <input type="checkbox" id="termos" name="termos" required>
+            <label for="termos">Eu aceito todos os <a href="">Termos de Uso</a></label>
+        </div>
+
+        <button type="submit" class="botaoCriarConta">Criar</button>
+
+        <div class="linhaComTexto">
+            <hr><span>OU</span><hr>
+        </div>
+
+        <button type="submit" class="botaoCriarComGoogle"><img src="../assets/crud/img/logo-g-google.png" alt="">Criar com o Google</button>
+
+        <small>Já possui uma conta? <a href="teste2.html">Entrar</a></small>
+
+
+    </form>
+</main>
 </body>
 </html>
