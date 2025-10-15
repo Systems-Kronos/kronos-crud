@@ -33,6 +33,6 @@ public class HabilidadeUsuario {
         this.habilidadeId = id;
     }
     public String toString() {
-        return "HabilidadUsuario | Id usuário: " + getUsuarioId() + "| Id habilidade: " + getHabilidadeId();
+        return "HabilidadUsuario | ID usuário: " + getUsuarioId() + "| ID habilidade: " + getHabilidadeId();
     }
 }
