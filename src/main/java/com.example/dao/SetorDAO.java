@@ -88,4 +88,40 @@ public class SetorDAO {
 
         return listaSetor;
     }
+
+    public Setor read(int id) {
+        Conexao conexao = new Conexao();
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rset = null;
+        String readId = "SELECT * FROM setor WHERE id = ?";
+
+        try {
+            conn = conexao.conectar();
+            pstmt = conn.prepareStatement(readId);
+            pstmt.setInt(1, id);
+            rset = pstmt.executeQuery();
+
+            if (rset.next()) {
+                return new Setor(
+                        rset.getInt("id"),
+                        rset.getString("nome"),
+                        rset.getString("descricao"),
+                        rset.getString("turnos"),
+                        rset.getInt("qnt_funcionarios"),
+                        rset.getInt("fk_empresa_id"));
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao buscar setor por ID: " + e.getMessage());
+        } finally {
+            try {
+                if (rset != null) rset.close();
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                System.err.println("Erro ao fechar recursos ao buscar setor por ID: " + e.getMessage());
+            }
+        }
+        return null;
+    }
 }
