@@ -26,7 +26,6 @@ public class Administracao {
         this.setNome(nome);
         this.setEmail(email);
         this.setSenha(senha);
-        this.setCodigoAcesso(codigoAcesso);
     }
 
     public Administracao(int id, String nome, String email, String senha, String codigoAcesso){
@@ -34,7 +33,6 @@ public class Administracao {
         this.setNome(nome);
         this.setEmail(email);
         this.setSenha(senha);
-        this.setCodigoAcesso(codigoAcesso);
     }
 
     // Métodos Getters e Setters
