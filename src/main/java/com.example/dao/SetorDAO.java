@@ -89,6 +89,7 @@ public class SetorDAO {
         return listaSetor;
     }
 
+//    READ By Id
     public Setor read(int id) {
         Conexao conexao = new Conexao();
         Connection conn = null;
@@ -124,4 +125,38 @@ public class SetorDAO {
         }
         return null;
     }
+
+//    UPDATE com objeto
+    public int update(Setor setor) {
+        Conexao conexao = new Conexao();
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        String update = "UPDATE setor SET nome = ?, descricao = ?, turnos = ?, qnt_funcionarios = ?, fk_empresa_id = ? WHERE id = ?";
+        try {
+            conn = conexao.conectar();
+            pstmt = conn.prepareStatement(update);
+
+            pstmt.setString(1, setor.getNome());
+            pstmt.setString(2, setor.getDescricao());
+            pstmt.setString(3, setor.getTurnos());
+            pstmt.setInt(4, setor.getQntFuncionarios());
+            pstmt.setInt(5, setor.getIdEmpresa());
+            pstmt.setInt(6, setor.getId());
+            if (pstmt.executeUpdate() > 0){
+                return 1;
+            }
+            return 0;
+        }
+        catch (SQLException e) {
+            System.err.println("Erro ao atualizar setor: " + e.getMessage());
+            return -1;
+        } finally {
+            try {
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                System.err.println("Erro ao fechar conexão após atualizar setor: " + e.getMessage());
+            }
+        }
+        }
 }
