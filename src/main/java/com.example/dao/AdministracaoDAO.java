@@ -13,15 +13,13 @@ public class AdministracaoDAO {
         Conexao conexao = new Conexao();
         Connection conn = null;
         PreparedStatement pstmt = null;
-        String create = "INSERT INTO administracao (id,nome, email, senha, codigo_acesso) VALUES (?,?,?,?,?)";
+        String create = "INSERT INTO administracao (nome, email, senha) VALUES (?,?,?)";
         try {
             conn = conexao.conectar();
             pstmt = conn.prepareStatement(create);
-            pstmt.setInt(1, administracao.getId());
-            pstmt.setString(2, administracao.getNome());
-            pstmt.setString(3, administracao.getEmail());
-            pstmt.setString(4, administracao.getSenha());
-            pstmt.setString(5, administracao.getCodigoAcesso());
+            pstmt.setString(1, administracao.getNome());
+            pstmt.setString(2, administracao.getEmail());
+            pstmt.setString(3, administracao.getSenha());
 
             return pstmt.executeUpdate() > 0; // true se inseriu
         } catch (SQLException e) {
@@ -65,8 +63,7 @@ public class AdministracaoDAO {
             Administracao administracao = new Administracao(rset.getInt("id"),
                     rset.getString("nome"),
                     rset.getString("email"),
-                    rset.getString("senha"),
-                    rset.getString("codigo_acesso"));
+                    rset.getString("senha"));
             listaAdministracao.add(administracao);
             }
         }catch (SQLException e) {
@@ -103,12 +100,45 @@ public class AdministracaoDAO {
                 return new Administracao(rset.getInt("id"),
                         rset.getString("nome"),
                         rset.getString("email"),
-                        rset.getString("senha"),
-                        rset.getString("codigo_acesso"));
+                        rset.getString("senha"));
             }
 
     }catch (SQLException e) {
             System.err.println("Erro ao buscar administracao por ID: " + e.getMessage());
+        } finally {
+            try {
+                if (rset != null) rset.close();
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                System.err.println("Erro ao fechar recursos ao buscar administracao por ID: " + e.getMessage());
+            }
+        }
+        return null;
+    }
+
+    public Administracao read(String email, String senha) {
+        Conexao conexao = new Conexao();
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rset = null;
+        String readEmail = "SELECT * FROM administracao WHERE email = ? and senha = ?";
+        try {
+            conn = conexao.conectar();
+            pstmt = conn.prepareStatement(readEmail);
+            pstmt.setString(1, email);
+            pstmt.setString(2, senha);
+            rset = pstmt.executeQuery();
+
+            if (rset.next()) {
+                return new Administracao(rset.getInt("id"),
+                        rset.getString("nome"),
+                        rset.getString("email"),
+                        rset.getString("senha"));
+            }
+
+        }catch (SQLException e) {
+            System.err.println("Erro ao buscar administracao por email e senha: " + e.getMessage());
         } finally {
             try {
                 if (rset != null) rset.close();
@@ -126,7 +156,7 @@ public class AdministracaoDAO {
         Conexao conexao = new Conexao();
         Connection conn = null;
         PreparedStatement pstmt = null;
-        String update = "UPDATE administracao SET nome = ?, email = ?, senha = ?, codigo_acesso = ? WHERE id = ?";
+        String update = "UPDATE administracao SET nome = ?, email = ?, senha = ? WHERE id = ?";
         try {
             conn = conexao.conectar();
             pstmt = conn.prepareStatement(update);
@@ -134,8 +164,7 @@ public class AdministracaoDAO {
             pstmt.setString(1, administracao.getNome());
             pstmt.setString(2, administracao.getEmail());
             pstmt.setString(3, administracao.getSenha());
-            pstmt.setString(4, administracao.getCodigoAcesso());
-            pstmt.setInt(5, administracao.getId());
+            pstmt.setInt(4, administracao.getId());
             if (pstmt.executeUpdate() > 0){
                 return 1;
             }
@@ -155,11 +184,11 @@ public class AdministracaoDAO {
     }
 
 //    Update com os parametros
-public int update(String nome, String email, String senha, String codigoAcesso, int id) {
+public int update(String nome, String email, String senha, int id) {
     Conexao conexao = new Conexao();
     Connection conn = null;
     PreparedStatement pstmt = null;
-    String update = "UPDATE administracao SET nome = ?, email = ?, senha = ?, codigo_acesso = ? WHERE id = ?";
+    String update = "UPDATE administracao SET nome = ?, email = ?, senha = ? WHERE id = ?";
     try {
         conn = conexao.conectar();
         pstmt = conn.prepareStatement(update);
@@ -167,8 +196,7 @@ public int update(String nome, String email, String senha, String codigoAcesso, 
         pstmt.setString(1, nome);
         pstmt.setString(2, email);
         pstmt.setString(3, senha);
-        pstmt.setString(4, codigoAcesso);
-        pstmt.setInt(5, id);
+        pstmt.setInt(4, id);
         if (pstmt.executeUpdate() > 0){
             return 1;
         }
