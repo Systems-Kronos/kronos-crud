@@ -20,7 +20,7 @@ public class SetorDAO {
             conn = conexao.conectar();
             pstmt = conn.prepareStatement(create);
             pstmt.setString(1, setor.getNome());
-            pstmt.setNString(2, setor.getDescricao());
+            pstmt.setString(2, setor.getDescricao());
             pstmt.setString(3, setor.getTurnos());
             pstmt.setInt(4, setor.getQntFuncionarios());
             pstmt.setInt(5, setor.getIdEmpresa());
