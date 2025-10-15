@@ -15,7 +15,6 @@ public class Administracao {
     private String nome;
     private String email;
     private String senha;
-    private String codigoAcesso;
 
     // Métodos Construtores
 
@@ -23,19 +22,17 @@ public class Administracao {
      * Vale ressaltar que nos métodos setters, acontece as validações de exceções
      * Por esse motivo, os métodos setters estão sendo usados nos métodos construtores
      */
-    public Administracao(String nome, String email, String senha, String codigoAcesso) {
+    public Administracao(String nome, String email, String senha) {
         this.setNome(nome);
         this.setEmail(email);
         this.setSenha(senha);
-        this.setCodigoAcesso(codigoAcesso);
     }
 
-    public Administracao(int id, String nome, String email, String senha, String codigoAcesso){
+    public Administracao(int id, String nome, String email, String senha){
         this.setId(id);
         this.setNome(nome);
         this.setEmail(email);
         this.setSenha(senha);
-        this.setCodigoAcesso(codigoAcesso);
     }
 
     // Métodos Getters e Setters
@@ -95,27 +92,12 @@ public class Administracao {
         }
     }
 
-    // Para o código de acesso
-    public String getCodigoAcesso() {
-        return codigoAcesso;
-    }
-    public void setCodigoAcesso(String codigoAcesso) {
-        if (codigoAcesso == null) { // Exceção: verifica se o código de acesso é nulo
-            throw new NullPointerException("O código de acesso não pode ser nulo.");
-        }
-        if (codigoAcesso.trim().isEmpty()) { // Exceção: verifica se o código de acesso só contém espaço
-            throw new IllegalArgumentException("O código de acesso não pode estar em branco.");
-        }
-        this.codigoAcesso = codigoAcesso;
-    }
-
     // Método toString
     public String toString() {
-        return String.format("Administração | Id: %-3d | Nome: %-20s | E-mail: %-20s | Senha: [PROTEGIDA] | Código de acesso: %-10s",
+        return String.format("Administração | Id: %-3d | Nome: %-20s | E-mail: %-20s | Senha: [PROTEGIDA]",
                 this.id,
                 this.nome,
-                this.email,
-                this.codigoAcesso
+                this.email
         );
     }
 

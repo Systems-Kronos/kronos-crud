@@ -17,15 +17,14 @@ public class PlanoDAO {
             Conexao conexao = new Conexao();
             Connection conn = null;
             PreparedStatement pstmt = null;
-            String create = "INSERT INTO  planos (id,nomeplano, custo, descricao, qnt_max_funcionario) VALUES (?,?,?,?,?)";
+            String create = "INSERT INTO  planos (nomeplano, custo, descricao, qnt_max_funcionario) VALUES (?,?,?,?)";
             try {
                 conn = conexao.conectar();
                 pstmt = conn.prepareStatement(create);
-                pstmt.setInt(1, plano.getId());
-                pstmt.setString(2, plano.getNome());
-                pstmt.setFloat(3, plano.getCusto());
-                pstmt.setString(4, plano.getDescricao());
-                pstmt.setInt(5, plano.getMaxFuncionarios());
+                pstmt.setString(1, plano.getNome());
+                pstmt.setFloat(2, plano.getCusto());
+                pstmt.setString(3, plano.getDescricao());
+                pstmt.setInt(4, plano.getMaxFuncionarios());
 
                 return pstmt.executeUpdate() > 0; // true se inseriu
             } catch (SQLException e) {

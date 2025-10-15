@@ -18,15 +18,14 @@ public class HabilidadesDAO {
         Conexao conexao = new Conexao();
         Connection conn = null;
         PreparedStatement pstmt = null;
-        String create = "INSERT INTO habilidade (id,nome, tag, descricao) VALUES (?,?,?,?)";
+        String create = "INSERT INTO habilidade (nome, tag, descricao) VALUES (?,?,?)";
         try {
             // Tem que ver a lista com o Breno
             conn = conexao.conectar();
             pstmt = conn.prepareStatement(create);
-            pstmt.setInt(1, habilidade.getId());
-            pstmt.setString(2, habilidade.getNome());
-            pstmt.setString(3, habilidade.getTag());
-            pstmt.setString(4, habilidade.getDescricao());
+            pstmt.setString(1, habilidade.getNome());
+            pstmt.setString(2, habilidade.getTag());
+            pstmt.setString(3, habilidade.getDescricao());
 
             return pstmt.executeUpdate() > 0; // true se inseriu
         } catch (SQLException e) {
