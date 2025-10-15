@@ -215,6 +215,10 @@ main table thead th:last-child {
     width: 5%;
 }
 
+main table thead .nome {
+    width: 20%;
+}
+
 th, td {
     font-family: "Montserrat", sans-serif;
     font-weight: 500;
@@ -257,4 +261,9 @@ td {
 table .detalhes img {
     object-fit: contain;
     height: 1.5vw;
+}
+
+.tabelaScroll {
+    overflow-x: hidden;
+    width: 50vw;
 }
