@@ -22,13 +22,13 @@ public class Administracao {
      * Vale ressaltar que nos métodos setters, acontece as validações de exceções
      * Por esse motivo, os métodos setters estão sendo usados nos métodos construtores
      */
-    public Administracao(String nome, String email, String senha, String codigoAcesso) {
+    public Administracao(String nome, String email, String senha) {
         this.setNome(nome);
         this.setEmail(email);
         this.setSenha(senha);
     }
 
-    public Administracao(int id, String nome, String email, String senha, String codigoAcesso){
+    public Administracao(int id, String nome, String email, String senha){
         this.setId(id);
         this.setNome(nome);
         this.setEmail(email);
