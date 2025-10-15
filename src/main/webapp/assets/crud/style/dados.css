@@ -204,12 +204,19 @@ table {
     margin-top: 2vw;
     border-collapse: collapse;
     font-size: 0.9vw;
-    text-align: left;
+    text-align: center;
 }
 
+main table thead th:first-child {
+    width: 5%;
+}
 
 main table thead th:last-child {
-    width: 10%;
+    width: 5%;
+}
+
+main table thead .nome {
+    width: 20%;
 }
 
 th, td {
@@ -234,7 +241,6 @@ th:last-child {
 
 tr {
     background-color: #FDFDFD;
-    text-align: center;
 }
 
 tr:nth-child(even) {
@@ -255,4 +261,9 @@ td {
 table .detalhes img {
     object-fit: contain;
     height: 1.5vw;
+}
+
+.tabelaScroll {
+    overflow-x: hidden;
+    width: 50vw;
 }
