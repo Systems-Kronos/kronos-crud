@@ -194,10 +194,7 @@ public class Usuario {
     */
     private boolean isValidGender(Character genero) {
         char generoUpper = Character.toUpperCase(genero);
-        if (generoUpper == 'M' || generoUpper == 'F' || generoUpper == 'O' || generoUpper == 'N') {
-            return true;
-        }
-        return false;
+        return generoUpper == 'M' || generoUpper == 'F' || generoUpper == 'O' || generoUpper == 'N';
     }
 
 
