@@ -18,20 +18,19 @@ public boolean create(Empresa empresa) {
     Conexao conexao = new Conexao();
     Connection conn = null;
     PreparedStatement pstmt = null;
-    String create = "INSERT INTO empresa (id,nome, cep, cnpj, email, telefone, porte, horario_abertura, horario_encerramento, regradenegocio) VALUES (?,?,?,?,?,?,?,?,?,?)";
+    String create = "INSERT INTO empresa (nome, cep, cnpj, email, telefone, porte, horario_abertura, horario_encerramento, regradenegocio) VALUES (?,?,?,?,?,?,?,?,?)";
     try {
         conn = conexao.conectar();
         pstmt = conn.prepareStatement(create);
-        pstmt.setInt(1,empresa.getId());
-        pstmt.setString(2, empresa.getNome());
-        pstmt.setString(3, empresa.getCep());
-        pstmt.setString(4, empresa.getCnpj());
-        pstmt.setString(5, empresa.getEmail());
-        pstmt.setString(6, empresa.getTelefone());
-        pstmt.setString(7, empresa.getPorte());
-        pstmt.setObject(8, empresa.getHorarioAbertura());
-        pstmt.setObject(9, empresa.getHorarioFechamento());
-        pstmt.setString(10, empresa.getRegraDeNegocios());
+        pstmt.setString(1, empresa.getNome());
+        pstmt.setString(2, empresa.getCep());
+        pstmt.setString(3, empresa.getCnpj());
+        pstmt.setString(4, empresa.getEmail());
+        pstmt.setString(5, empresa.getTelefone());
+        pstmt.setString(6, empresa.getPorte());
+        pstmt.setObject(7, empresa.getHorarioAbertura());
+        pstmt.setObject(8, empresa.getHorarioFechamento());
+        pstmt.setString(9, empresa.getRegraDeNegocios());
 
         return pstmt.executeUpdate() > 0;
     } catch (SQLException e) {
