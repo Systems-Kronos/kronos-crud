@@ -366,6 +366,73 @@ public class Main {
 //            }
 
 
+
+
+
+
+
+//             ************************************
+//             ********* Teste UsuarioDAO   *********
+//             ************************************
+
+            UsuarioDAO dao = new UsuarioDAO();
+
+            // CREATE
+//            Usuario usuario = new Usuario(
+//                    "Carlos Silva",
+//                    "12345678920",
+//                    'M',
+//                    "Ativo",
+//                    "Senha123#$",
+//                    1,
+//                    2,
+//                    "Operador"
+//            );
+//            System.out.println("Create: " + dao.create(usuario));
+
+            // READ ALL
+//            System.out.println("Read all:");
+//            for (Usuario u : dao.read()) {
+//                System.out.println(u);
+//            }
+
+            // READ BY ID
+//            System.out.println("Read by ID: " + dao.read(1));
+
+            // UPDATE OBJETO
+//            Usuario updateUsuario = new Usuario(
+//                    1,
+//                    "Carlos Silva Atualizado",
+//                    "12345678900",
+//                    'M',
+//                    "Ativo",
+//                    "novaSenha12*3",
+//                    1,
+//                    2,
+//                    "Supervisor"
+//            );
+//            System.out.println("Update objeto: " + dao.update(updateUsuario));
+
+            // UPDATE PARÂMETROS
+//            System.out.println("Update parâmetros: " + dao.update(
+//                    "João Souza",
+//                    "98765432100",
+//                    'M',
+//                    "Inativo",
+//                    "senhaNova78%",
+//                    1,
+//                    2,
+//                    "Gerente",
+//                    1
+//            ));
+
+            // DELETE BY NOME
+//            System.out.println("Delete por nome: " + dao.delete("Carlos Silva Atualizado"));
+
+            // DELETE BY ID
+//            System.out.println("Delete por ID: " + dao.delete(1));
+
+
             conecta.desconectar(conn);
         } catch (Exception e) {
             e.printStackTrace();
