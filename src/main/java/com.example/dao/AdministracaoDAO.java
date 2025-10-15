@@ -117,6 +117,40 @@ public class AdministracaoDAO {
         return null;
     }
 
+    public Administracao read(String email, String senha) {
+        Conexao conexao = new Conexao();
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rset = null;
+        String readEmail = "SELECT * FROM administracao WHERE email = ? and senha = ?";
+        try {
+            conn = conexao.conectar();
+            pstmt = conn.prepareStatement(readEmail);
+            pstmt.setString(1, email);
+            pstmt.setString(2, senha);
+            rset = pstmt.executeQuery();
+
+            if (rset.next()) {
+                return new Administracao(rset.getInt("id"),
+                        rset.getString("nome"),
+                        rset.getString("email"),
+                        rset.getString("senha"));
+            }
+
+        }catch (SQLException e) {
+            System.err.println("Erro ao buscar administracao por email e senha: " + e.getMessage());
+        } finally {
+            try {
+                if (rset != null) rset.close();
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                System.err.println("Erro ao fechar recursos ao buscar administracao por ID: " + e.getMessage());
+            }
+        }
+        return null;
+    }
+
 //    Update pelo objeto
     public int update(Administracao administracao) {
         Conexao conexao = new Conexao();
