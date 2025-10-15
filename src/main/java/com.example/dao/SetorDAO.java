@@ -1,10 +1,14 @@
 package com.example.dao;
 import com.example.Controller.Conexao;
+import com.example.Model.Empresa;
 import com.example.Model.Setor;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.List;
 
 public class SetorDAO {
     public boolean create(Setor setor) {
@@ -42,5 +46,46 @@ public class SetorDAO {
             }
 
         }
+    }
+
+//    READ ALL
+    public List<Setor> read(){
+        Conexao conexao = new Conexao();
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rset = null;
+        String read = "SELECT * FROM setor";
+        List<Setor> listaSetor = new LinkedList<>();
+        try {
+            conn = conexao.conectar();
+            pstmt = conn.prepareStatement(read);
+            rset = pstmt.executeQuery();
+
+            while (rset.next()) {
+                Setor setor = new Setor(
+                        rset.getInt("id"),
+                        rset.getString("nome"),
+                        rset.getString("descricao"),
+                        rset.getString("turnos"),
+                        rset.getInt("qnt_funcionarios"),
+                        rset.getInt("fk_empresa_id")
+                );
+                listaSetor.add(setor);
+            }
+          }
+ catch (SQLException e) {
+        System.err.println("Erro ao buscar setores: " + e.getMessage());
+        return null;
+        } finally {
+        try {
+        if (rset != null) rset.close();
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+        System.err.println("Erro ao fechar recursos ao buscar setores: " + e.getMessage());
+        }
+        }
+
+        return listaSetor;
     }
 }
