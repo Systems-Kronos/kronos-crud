@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="57a138e0-66b1-497e-8b49-f7ef1c9b9f29" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.example/Model/Administracao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.example/Model/Administracao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.example/Model/HabilidadeUsuario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.example/Model/HabilidadeUsuario.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.example/Model/Usuario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.example/Model/Usuario.java" afterDir="false" />
-    </list>
+    <list default="true" id="57a138e0-66b1-497e-8b49-f7ef1c9b9f29" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -20,6 +16,11 @@
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="1" id="Add" />
   </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "git-widget-placeholder": "metodos-administracao"
+  }
+}]]></component>
   <component name="TaskManager">
     <servers />
   </component>
