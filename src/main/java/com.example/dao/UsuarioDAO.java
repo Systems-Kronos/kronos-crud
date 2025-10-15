@@ -170,4 +170,41 @@ public class UsuarioDAO {
             }
         }
     }
+
+//    UPDATE todos os parametros
+    public int update(String nome, String cpf, char genero, String status, String senha, int idSetor, int idSupervisor, String cargo, int id){
+        Conexao conexao = new Conexao();
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        String update = "UPDATE usuario SET nome = ?, cpf = ?, genero = ?, status = ?, senha = ?, fk_setor_id = ?, fk_supervisor_id = ?, cargo = ? WHERE id = ?";
+        try {
+            conn = conexao.conectar();
+            pstmt = conn.prepareStatement(update);
+
+            pstmt.setString(1, nome);
+            pstmt.setString(2, cpf);
+            pstmt.setString(3, String.valueOf(genero));
+            pstmt.setString(4, status);
+            pstmt.setString(5, senha);
+            pstmt.setInt(6, idSetor);
+            pstmt.setInt(7, idSupervisor);
+            pstmt.setString(8, cargo);
+            pstmt.setInt(9, id);
+            if (pstmt.executeUpdate() > 0){
+                return 1;
+            }
+            return 0;
+        }
+        catch (SQLException e) {
+            System.err.println("Erro ao atualizar usuario: " + e.getMessage());
+            return -1;
+        } finally {
+            try {
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                System.err.println("Erro ao fechar conexão após atualizar usuario: " + e.getMessage());
+            }
+        }
+    }
 }
