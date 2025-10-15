@@ -2,30 +2,33 @@ package com.example.dao;
 
 import com.example.Controller.Conexao;
 import com.example.Model.Setor;
+import com.example.Model.Usuario;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class UsuarioDAO {
-    public boolean inserir(Setor setor) {
+    public boolean create(Usuario usuario) {
         Conexao conexao = new Conexao();
         Connection conn = null;
         PreparedStatement pstmt = null;
-        String inserir = "INSERT INTO  setor (id,nome, descricao, turnos, qnt_funcionarios, fk_empresa_id) VALUES (?,?,?,?,?,?)";
+        String create = "INSERT INTO  usuario (nome, cpf, genero, status, senha, fk_setor_id, fk_supervisor_id, cargo) VALUES (?,?,?,?,?,?,?,?)";
         try {
             conn = conexao.conectar();
-            pstmt = conn.prepareStatement(inserir);
-            pstmt.setInt(1, setor.getId());
-            pstmt.setString(2, setor.getNome());
-            pstmt.setNString(3, setor.getDescricao());
-            pstmt.setString(4, setor.getTurnos());
-            pstmt.setInt(5, setor.getQntFuncionarios());
-            pstmt.setInt(6, setor.getIdEmpresa());
+            pstmt = conn.prepareStatement(create);
+            pstmt.setString(1, usuario.getNome());
+            pstmt.setString(2, usuario.getCpf());
+            pstmt.setString(3, String.valueOf(usuario.getGenero()));
+            pstmt.setString(4, usuario.getStatus());
+            pstmt.setString(5, usuario.getSenha());
+            pstmt.setInt(6, usuario.getIdSetor());
+            pstmt.setInt(7, usuario.getIdSupervisor());
+            pstmt.setString(8, usuario.getCargo());
 
-            return pstmt.executeUpdate() > 0; // true se inseriu
+            return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.err.println("Erro ao inserir departamento: " + e.getMessage());
+            System.err.println("Erro ao inserir usuário: " + e.getMessage());
             return false;
         } finally {
             if (pstmt != null) {
@@ -45,4 +48,5 @@ public class UsuarioDAO {
 
         }
     }
+
 }
