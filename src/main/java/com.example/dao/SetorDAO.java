@@ -7,24 +7,23 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class SetorDAO {
-    public boolean inserir(Setor setor) {
+    public boolean create(Setor setor) {
         Conexao conexao = new Conexao();
         Connection conn = null;
         PreparedStatement pstmt = null;
-        String inserir = "INSERT INTO  setor (id,nome, descricao, turnos, qnt_funcionarios, fk_empresa_id) VALUES (?,?,?,?,?,?)";
+        String create = "INSERT INTO  setor (nome, descricao, turnos, qnt_funcionarios, fk_empresa_id) VALUES (?,?,?,?,?)";
         try {
             conn = conexao.conectar();
-            pstmt = conn.prepareStatement(inserir);
-            pstmt.setInt(1, setor.getId());
-            pstmt.setString(2, setor.getNome());
-            pstmt.setNString(3, setor.getDescricao());
-            pstmt.setString(4, setor.getTurnos());
-            pstmt.setInt(5, setor.getQntFuncionarios());
-            pstmt.setInt(6, setor.getIdEmpresa());
+            pstmt = conn.prepareStatement(create);
+            pstmt.setString(1, setor.getNome());
+            pstmt.setNString(2, setor.getDescricao());
+            pstmt.setString(3, setor.getTurnos());
+            pstmt.setInt(4, setor.getQntFuncionarios());
+            pstmt.setInt(5, setor.getIdEmpresa());
 
             return pstmt.executeUpdate() > 0; // true se inseriu
         } catch (SQLException e) {
-            System.err.println("Erro ao inserir departamento: " + e.getMessage());
+            System.err.println("Erro ao inserir setor: " + e.getMessage());
             return false;
         } finally {
             if (pstmt != null) {
