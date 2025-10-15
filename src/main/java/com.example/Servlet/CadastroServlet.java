@@ -19,15 +19,10 @@ public class CadastroServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String nome = request.getParameter("nome");
         String email = request.getParameter("email");
-        String telefone = request.getParameter("telefone");
         String senha = request.getParameter("senha");
-        String cpf = request.getParameter("cpf");
-        String genero = request.getParameter("genero");
 
-        if(nome == null || nome.trim().isEmpty() || email == null || email.trim().isEmpty() || genero == null
-                || genero.trim().isEmpty() || telefone == null || telefone.trim().isEmpty()
-                || senha == null || senha.trim().isEmpty() || cpf == null || cpf.trim().isEmpty()
-                || genero == null || genero.trim().isEmpty()) {
+        if(nome == null || nome.trim().isEmpty() || email == null || email.trim().isEmpty() ||
+                senha == null || senha.trim().isEmpty())
             request.setAttribute("mensagemErro", "Erro: preencha os campos obrigatorios" );
         }
 
