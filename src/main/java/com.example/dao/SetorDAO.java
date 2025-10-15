@@ -159,4 +159,38 @@ public class SetorDAO {
             }
         }
         }
+
+//        UPDATE com todos os parametros
+    public int update(String nome, String descricao, String turnos, int qntFuncionarios, int fkEmpresaId, int id) {
+        Conexao conexao = new Conexao();
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        String update = "UPDATE setor SET nome = ?, descricao = ?, turnos = ?, qnt_funcionarios = ?, fk_empresa_id = ? WHERE id = ?";
+        try {
+            conn = conexao.conectar();
+            pstmt = conn.prepareStatement(update);
+
+            pstmt.setString(1, nome);
+            pstmt.setString(2, descricao);
+            pstmt.setString(3, turnos);
+            pstmt.setInt(4, qntFuncionarios);
+            pstmt.setInt(5, fkEmpresaId);
+            pstmt.setInt(6, id);
+            if (pstmt.executeUpdate() > 0){
+                return 1;
+            }
+            return 0;
+        }
+        catch (SQLException e) {
+            System.err.println("Erro ao atualizar setor: " + e.getMessage());
+            return -1;
+        } finally {
+            try {
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                System.err.println("Erro ao fechar conexão após atualizar setor: " + e.getMessage());
+            }
+        }
+    }
 }
