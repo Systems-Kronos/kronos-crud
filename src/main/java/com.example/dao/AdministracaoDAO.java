@@ -13,14 +13,13 @@ public class AdministracaoDAO {
         Conexao conexao = new Conexao();
         Connection conn = null;
         PreparedStatement pstmt = null;
-        String create = "INSERT INTO administracao (id,nome, email, senha) VALUES (?,?,?,?)";
+        String create = "INSERT INTO administracao (nome, email, senha) VALUES (?,?,?)";
         try {
             conn = conexao.conectar();
             pstmt = conn.prepareStatement(create);
-            pstmt.setInt(1, administracao.getId());
-            pstmt.setString(2, administracao.getNome());
-            pstmt.setString(3, administracao.getEmail());
-            pstmt.setString(4, administracao.getSenha());
+            pstmt.setString(1, administracao.getNome());
+            pstmt.setString(2, administracao.getEmail());
+            pstmt.setString(3, administracao.getSenha());
 
             return pstmt.executeUpdate() > 0; // true se inseriu
         } catch (SQLException e) {
