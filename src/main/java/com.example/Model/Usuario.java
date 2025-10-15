@@ -1,6 +1,5 @@
 package com.example.Model;
 
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -19,13 +18,15 @@ public class Usuario {
     private String senha;
     private int idSetor;
     private int idSupervisor;
+    private String cargo;
 
     // Métodos Construtores
 
     // As validações de exceções são realizadas pelos métodos set.
     public Usuario(int id, String nome, String cpf,
                    Character genero, String status,
-                   String senha, int idSetor, int idSupervisor) {
+                   String senha, int idSetor, int idSupervisor,
+                   String cargo) {
         this.setId(id);
         this.setNome(nome);
         this.setCpf(cpf);
@@ -34,11 +35,13 @@ public class Usuario {
         this.setSenha(senha);
         this.setIdSetor(idSetor);
         this.setIdSupervisor(idSupervisor);
+        this.setCargo(cargo);
     }
 
     public Usuario(String nome, String cpf,
                    Character genero, String status,
-                   String senha,  int idSetor, int idSupervisor) {
+                   String senha, int idSetor, int idSupervisor,
+                   String cargo) {
         this.setNome(nome);
         this.setCpf(cpf);
         this.setGenero(genero);
@@ -46,6 +49,7 @@ public class Usuario {
         this.setSenha(senha);
         this.setIdSetor(idSetor);
         this.setIdSupervisor(idSupervisor);
+        this.setCargo(cargo);
     }
 
     // Métodos Getters e Setters
@@ -153,16 +157,31 @@ public class Usuario {
         this.idSupervisor = id;
     }
 
+    // Para o cargo
+    public String getCargo() {
+        return cargo;
+    }
+    public void setCargo(String cargo) {
+        if (cargo == null) { // Exceção: verifica se o cargo é nulo
+            throw new NullPointerException("O cargo não pode ser nulo.");
+        }
+        if (cargo.trim().isEmpty()) { // Exceção: verifica se o cargo só contém espaço
+            throw new IllegalArgumentException("O cargo não pode estar em branco.");
+        }
+        this.cargo = cargo;
+    }
+
     // Para o método toString
     public String toString() {
-        return String.format("Usuário | Id: %-3d | Nome: %-20s | Cpf: %-14s | Gênero: %-1s | Status: %-7s | Senha:[PROTEGIDA] | ID Setor: %-3d | ID Supervisor: %-3d",
+        return String.format("Usuário | Id: %-3d | Nome: %-20s | Cpf: %-14s | Gênero: %-1s | Status: %-7s | Senha:[PROTEGIDA] | ID Setor: %-3d | ID Supervisor: %-3d | Cargo: %-20s",
                 this.id,
                 this.nome,
                 this.cpf,
                 this.genero,
                 this.status,
                 this.idSetor,
-                this.idSupervisor
+                this.idSupervisor,
+                this.cargo
                 );
     }
 
