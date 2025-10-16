@@ -22,7 +22,7 @@ public class Usuario {
 
     // Métodos Construtores
 
-    // As validações de exceções são realizadas pelos métodos set.
+    // As validações de exceções são realizadas pelos métodos setters
     public Usuario(int id, String nome, String cpf,
                    Character genero, String status,
                    String senha, int idSetor, int idSupervisor,
