@@ -16,7 +16,7 @@
     <main>    
         <h1>KRONOS</h1>    
         <h2>Entre em sua conta</h2>
-        <form action="" method="post">
+        <form action="login-crud" method="post">
               <div>
                 <label for="email">Email</label>
                 <input type="email" name="email" id="email" placeholder="Digite seu email" required>
