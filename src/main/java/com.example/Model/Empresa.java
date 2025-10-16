@@ -24,7 +24,7 @@ public class Empresa {
 
     // Métodos Construtores
 
-    // As validações de exceções são realizadas pelos métodos set
+    // As validações de exceções são realizadas pelos métodos setters
     public Empresa(int id, String nome, String cep, String cnpj, String email, String telefone,
                    String porte, LocalTime horarioAbertura,
                    LocalTime horarioFechamento, String regraDeNegocios) {
