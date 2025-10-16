@@ -16,29 +16,10 @@
 <main>
     <h1 class="logoKronosDesktop">KRONOS</h1>
     <h2>Crie sua conta</h2>
-    <form action="" method="post">
+    <form action="cadastro" method="post">
         <div>
             <label for="nome">Nome</label>
             <input type="text" name="nome" id="nome" placeholder="Digite seu nome" required>
-        </div>
-
-        <div>
-            <label for="cpf">CPF</label>
-            <input type="text" name="cpf" id="cpf" placeholder="Digite seu CPF" required>
-        </div>
-
-        <div>
-            <label for="genero">Gênero</label>
-            <select name="genero" id="genero" required>
-                <option value="masculino">Masculino</option>
-                <option value="feminino">Feminino</option>
-                <option value="outro" selected>Outro</option>
-            </select>
-        </div>
-
-        <div>
-            <label for="telefone">Telefone</label>
-            <input type="tel" name="telefone" id="telefone" placeholder="Digite seu telefone" required>
         </div>
 
         <div>
@@ -56,7 +37,7 @@
             <label for="termos">Eu aceito todos os <a href="">Termos de Uso</a></label>
         </div>
 
-        <button type="submit" class="botaoCriarConta">Criar</button>
+        <a href="teste2.html"><button type="submit" class="botaoConta">Criar</button></a>
 
         <div class="linhaComTexto">
             <hr><span>OU</span><hr>
