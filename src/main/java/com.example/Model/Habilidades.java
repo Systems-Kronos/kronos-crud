@@ -4,11 +4,15 @@ package com.example.Model;
  * Representa um conjunto de habilidades de um funcionário: com nome, descrição e tag.
  */
 public class Habilidades {
+    // Atributos
     private int id;
     private String nome;
     private String tag;
     private String descricao;
 
+    // Métodos Construtores
+
+    // As validações de exceções são realizadas pelos métodos setters
     public Habilidades(int id, String nome, String tag, String descricao) {
         this.setId(id);
         this.setNome(nome);
