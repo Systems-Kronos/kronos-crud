@@ -13,7 +13,9 @@ import java.io.IOException;
 @WebServlet("/login-crud")
 public class ServletLogin extends HttpServlet {
 
-    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
+    }
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
@@ -24,10 +26,10 @@ public class ServletLogin extends HttpServlet {
         Administracao admin = dao.read(email, senha);
 
         if (admin != null) {
-            response.sendRedirect("empresas.jsp");
+            request.getRequestDispatcher("/WEB-INF/empresas.jsp").forward(request, response);
         } else {
             request.setAttribute("erro", "Email ou senha incorretos");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
+            request.getRequestDispatcher("WEB-INF/login.jsp").forward(request, response);
         }
     }
 }
