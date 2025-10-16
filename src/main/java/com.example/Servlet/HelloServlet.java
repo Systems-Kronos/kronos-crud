@@ -1,4 +1,4 @@
-package com.example.Controller;
+package com.example.Servlet;
 
 import java.io.*;
 
