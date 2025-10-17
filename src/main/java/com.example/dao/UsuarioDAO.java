@@ -286,4 +286,42 @@ public int delete(String nome) {
             System.err.println("Erro ao fechar conexão após deletar usuario: " + e.getMessage());
         }
     }}
+
+//    METODO PARA ASSOCIAR COM HABILIDADE
+
+    public boolean addHabilidadeToUsuario(int idUsuario, int idHabilidade) {
+        Conexao conexao = new Conexao();
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        String createHabilidade = "INSERT INTO usuario_habilidade (fk_usuario_id, fk_habilidade_id) VALUES (?, ?)";
+
+        try {
+            conn = conexao.conectar();
+            pstmt = conn.prepareStatement(createHabilidade);
+
+            pstmt.setInt(1, idUsuario);
+            pstmt.setInt(2, idHabilidade);
+
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.err.println("Erro ao inserir usuário: " + e.getMessage());
+            return false;
+        } finally {
+            if (pstmt != null) {
+                try {
+                    pstmt.close();
+                } catch (SQLException e) {
+                    System.out.println("Erro ao fechar PreparedStatement");
+                }
+            }
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    System.out.println("Erro ao fechar Connection");
+                }
+            }
+
+        }
+    }
 }
