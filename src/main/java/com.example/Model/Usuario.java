@@ -1,5 +1,7 @@
 package com.example.Model;
 
+import java.util.EmptyStackException;
+import java.util.LinkedList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -19,6 +21,7 @@ public class Usuario {
     private int idSetor;
     private int idSupervisor;
     private String cargo;
+    private LinkedList<Habilidades> listaHabilidades = new LinkedList<>();
 
     // Métodos Construtores
 
@@ -169,6 +172,19 @@ public class Usuario {
             throw new IllegalArgumentException("O cargo não pode estar em branco.");
         }
         this.cargo = cargo;
+    }
+
+    // Para a lista de habilidades
+    public LinkedList<Habilidades> getListaHabilidades() { return listaHabilidades; }
+    public void setListaHabilidades(LinkedList<Habilidades> listaHabilidades) {
+        if (listaHabilidades.isEmpty()) { // Exceção: verifica se a lista de habilidades é vazia
+            throw new IllegalArgumentException("A lista de habilidades não pode ser vazia.");
+        }
+        for (Habilidades habilidade : listaHabilidades) { // Passa por todos os itens da lista
+            if (habilidade == null) { // Exceção: verifica se o item da lista é nulo
+                throw new NullPointerException("Um item da lista de habilidade não pode ser nulo.");
+            }
+        }
     }
 
     // Para o método toString
