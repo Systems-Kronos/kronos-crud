@@ -100,7 +100,7 @@ public class UsuarioDAO {
                             rset.getString("habilidade_tag"),
                             rset.getString("habilidade_descricao")
                     );
-                    usuarioAtual.getHabilidades().add(habilidade); // precisa arrumar na model
+                    usuarioAtual.getListaHabilidades().add(habilidade);
                 }
             }
         } catch (SQLException e) {
