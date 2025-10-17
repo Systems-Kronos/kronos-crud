@@ -289,6 +289,7 @@ public int delete(String nome) {
 
 //    METODO PARA ASSOCIAR COM HABILIDADE
 
+//    ADD Habilidade to Usuario
     public boolean addHabilidadeToUsuario(int idUsuario, int idHabilidade) {
         Conexao conexao = new Conexao();
         Connection conn = null;
@@ -322,6 +323,37 @@ public int delete(String nome) {
                 }
             }
 
+        }
+    }
+
+//    REMOVE Habilidade from Usuario
+    public int removeHabilidadeFromUsuario(int idUsuario, int idHabilidade) {
+        Conexao conexao = new Conexao();
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        String removeHabilidade = "DELETE FROM usuario_habilidade WHERE fk_usuario_id=? AND fk_habilidade_id=?";
+
+        try {
+            conn = conexao.conectar();
+            pstmt = conn.prepareStatement(removeHabilidade);
+
+            pstmt.setInt(1, idUsuario);
+            pstmt.setInt(2, idHabilidade);
+
+            if (pstmt.executeUpdate() > 0){
+                return 1;
+            }
+            return 0;
+        }catch (SQLException e) {
+            System.err.println("Erro ao deletar usuario: " + e.getMessage());
+            return -1;
+        } finally {
+            try {
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                System.err.println("Erro ao fechar conexão após deletar usuario: " + e.getMessage());
+            }
         }
     }
 }
