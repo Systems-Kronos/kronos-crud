@@ -432,6 +432,39 @@ public class Main {
             // DELETE BY ID
 //            System.out.println("Delete por ID: " + dao.delete(1));
 
+//            UsuarioDAO usuarioDAO = new UsuarioDAO();
+//
+//            System.out.println("==== TESTE READ (TODOS USUÁRIOS) ====");
+//            List<Usuario> usuarios = usuarioDAO.read();
+//            if (usuarios == null || usuarios.isEmpty()) {
+//                System.out.println("Nenhum usuário encontrado.");
+//            } else {
+//                for (Usuario u : usuarios) {
+//                    System.out.println("ID: " + u.getId());
+//                    System.out.println("Nome: " + u.getNome());
+//                    System.out.println("CPF: " + u.getCpf());
+//                    System.out.println("Cargo: " + u.getCargo());
+//                    System.out.println("Habilidades:");
+//                    if (u.getListaHabilidades().isEmpty()) {
+//                        System.out.println("  Nenhuma habilidade associada.");
+//                    } else {
+//                        u.getListaHabilidades().forEach(h ->
+//                                System.out.println("  - " + h.getNome() + " (" + h.getTag() + ")"));
+//                    }
+//                    System.out.println("---------------------------");
+//                }
+//            }
+//
+//            System.out.println("\n==== TESTE READ COM FILTRO ====");
+//            List<Usuario> filtrados = usuarioDAO.readUsuariosPorNome("", "nome", "ASC");
+//            if (filtrados == null || filtrados.isEmpty()) {
+//                System.out.println("Nenhum usuário encontrado com o nome 'João'.");
+//            } else {
+//                for (Usuario u : filtrados) {
+//                    System.out.println("ID: " + u.getId() + " | Nome: " + u.getNome() + " | Cargo: " + u.getCargo());
+//                }
+//            }
+
 
             conecta.desconectar(conn);
         } catch (Exception e) {
