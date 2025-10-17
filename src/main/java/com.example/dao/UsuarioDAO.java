@@ -2,6 +2,7 @@ package com.example.dao;
 
 import com.example.Controller.Conexao;
 import com.example.Model.Empresa;
+import com.example.Model.Habilidades;
 import com.example.Model.Setor;
 import com.example.Model.Usuario;
 
@@ -59,7 +60,8 @@ public class UsuarioDAO {
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rset = null;
-        String read = "SELECT * FROM usuario";
+        String read = "SELECT u.id AS usuario_id, u.nome AS usuario_nome, u.cpf AS usuario_cpf, u.genero AS usuario_genero, u.status AS usuario_status, u.senha AS usuario_senha, u.id_setor AS usuario_id_setor, u.id_supervisor AS usuario_id_supervisor, u.cargo AS usuario_cargo, h.id AS habilidade_id, h.nome AS habilidade_nome, h.tag AS habilidade_tag, h.descricao AS habilidade_descricao FROM usuario u LEFT JOIN usuario_habilidade uh ON u.id = uh.fk_usuario_id LEFT JOIN habilidade h ON h.id = uh.fk_habilidade_id ORDER BY u.id";
+        Usuario usuarioAtual = null;
         List<Usuario> listaUsuario = new LinkedList<>();
 
         try {
@@ -67,17 +69,39 @@ public class UsuarioDAO {
             pstmt = conn.prepareStatement(read);
             rset = pstmt.executeQuery();
 
+            int idUltimoUsuario = -1;
+
             while (rset.next()) {
-                Usuario usuario = new Usuario(rset.getInt("id"),
-                        rset.getString("nome"),
-                        rset.getString("cpf"),
-                        rset.getString("genero").charAt(0),
-                        rset.getString("status"),
-                        rset.getString("senha"),
-                        rset.getInt("fk_setor_id"),
-                        rset.getInt("fk_supervisor_id"),
-                        rset.getString("cargo"));
-                listaUsuario.add(usuario);
+                int idUsuario = rset.getInt("usuario_id");
+
+                // Cria novo usuário se mudou de ID
+                if (usuarioAtual == null || idUsuario != idUltimoUsuario) {
+                    usuarioAtual = new Usuario(
+                            idUsuario,
+                            rset.getString("usuario_nome"),
+                            rset.getString("usuario_cpf"),
+                            rset.getString("usuario_genero").charAt(0),
+                            rset.getString("usuario_status"),
+                            rset.getString("usuario_senha"),
+                            rset.getInt("usuario_id_setor"),
+                            rset.getInt("usuario_id_supervisor"),
+                            rset.getString("usuario_cargo")
+                    );
+                    listaUsuario.add(usuarioAtual);
+                    idUltimoUsuario = idUsuario;
+                }
+
+                // Adiciona habilidade, se existir
+                int idHabilidade = rset.getInt("habilidade_id");
+                if (idHabilidade > 0) {
+                    Habilidades habilidade = new Habilidades(
+                            idHabilidade,
+                            rset.getString("habilidade_nome"),
+                            rset.getString("habilidade_tag"),
+                            rset.getString("habilidade_descricao")
+                    );
+                    usuarioAtual.getHabilidades().add(habilidade); // precisa arrumar na model
+                }
             }
         } catch (SQLException e) {
             System.err.println("Erro ao buscar usuario: " + e.getMessage());
