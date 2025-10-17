@@ -119,46 +119,103 @@ public class UsuarioDAO {
         return listaUsuario;
     }
 
-//    READ by id
-//    public Usuario read(int id) {
-//        Conexao conexao = new Conexao();
-//        Connection conn = null;
-//        PreparedStatement pstmt = null;
-//        ResultSet rset = null;
-//        String readId = "SELECT * FROM usuario WHERE id = ?";
-//
-//        try {
-//            conn = conexao.conectar();
-//            pstmt = conn.prepareStatement(readId);
-//            pstmt.setInt(1, id);
-//            rset = pstmt.executeQuery();
-//
-//            if (rset.next()) {
-//                return new Usuario(rset.getInt("id"),
-//                        rset.getString("nome"),
-//                        rset.getString("cpf"),
-//                        rset.getString("genero").charAt(0),
-//                        rset.getString("status"),
-//                        rset.getString("senha"),
-//                        rset.getInt("fk_setor_id"),
-//                        rset.getInt("fk_supervisor_id"),
-//                        rset.getString("cargo"));
-//            }
-//        } catch (SQLException e) {
-//            System.err.println("Erro ao buscar usuario por ID: " + e.getMessage());
-//        } finally {
-//            try {
-//                if (rset != null) rset.close();
-//                if (pstmt != null) pstmt.close();
-//                if (conn != null) conn.close();
-//            } catch (SQLException e) {
-//                System.err.println("Erro ao fechar recursos ao buscar usuario por ID: " + e.getMessage());
-//            }
-//        }
-//        return null;
-//    }
+//    READ by filter
+public LinkedList<Usuario> readUsuariosPorNome(
+        String nome,
+        String orderBy,
+        String direction
+) {
+    Conexao conexao = new Conexao();
+    Connection conn = null;
+    PreparedStatement pstmt = null;
+    ResultSet rset = null;
+    LinkedList<Usuario> usuarios = new LinkedList<>();
 
-//    UPDATE objeto
+    StringBuilder sql = new StringBuilder("\n" +
+            "SELECT u.id AS usuario_id, u.nome AS usuario_nome, u.cpf AS usuario_cpf, u.genero AS usuario_genero, u.status AS usuario_status, u.senha AS usuario_senha, u.fk_setor_id AS usuario_id_setor, u.fk_supervisor_id AS usuario_id_supervisor, u.cargo AS usuario_cargo, h.id AS habilidade_id, h.nome AS habilidade_nome, h.tag AS habilidade_tag, h.descricao AS habilidade_descricao FROM usuario u LEFT JOIN usuario_habilidade uh ON u.id = uh.fk_usuario_id LEFT JOIN habilidade h ON h.id = uh.fk_habilidade_id WHERE 1=1 \n");
+
+    // Filtro por nome
+    if (nome != null && !nome.isEmpty()) {
+        sql.append(" AND u.nome ILIKE '%").append(nome).append("%'");
+    }
+
+    // Ordenação segura
+    String colunaOrdenacao = "u.id"; // padrão
+    if (orderBy != null) {
+        if (orderBy.equals("nome")) {
+            colunaOrdenacao = "u.nome";
+        } else if (orderBy.equals("cargo")) {
+            colunaOrdenacao = "u.cargo";
+        } else if (orderBy.equals("status")) {
+            colunaOrdenacao = "u.status";
+        }
+    }
+
+    String dir = "ASC"; // padrão
+    if (direction != null) {
+        if (direction.equalsIgnoreCase("DESC")) {
+            dir = "DESC";
+        }
+    }
+
+    sql.append(" ORDER BY ").append(colunaOrdenacao).append(" ").append(dir);
+
+    try {
+        conn = conexao.conectar();
+        pstmt = conn.prepareStatement(sql.toString());
+        rset = pstmt.executeQuery();
+
+        Usuario usuarioAtual = null;
+        int idUltimoUsuario = -1;
+
+        while (rset.next()) {
+            int idUsuario = rset.getInt("usuario_id");
+
+            if (usuarioAtual == null || idUsuario != idUltimoUsuario) {
+                usuarioAtual = new Usuario(
+                        idUsuario,
+                        rset.getString("usuario_nome"),
+                        rset.getString("usuario_cpf"),
+                        rset.getString("usuario_genero").charAt(0),
+                        rset.getString("usuario_status"),
+                        rset.getString("usuario_senha"),
+                        rset.getInt("usuario_id_setor"),
+                        rset.getInt("usuario_id_supervisor"),
+                        rset.getString("usuario_cargo")
+                );
+                usuarios.add(usuarioAtual);
+                idUltimoUsuario = idUsuario;
+            }
+
+            int idHabilidade = rset.getInt("habilidade_id");
+            if (idHabilidade > 0) {
+                Habilidades habilidade = new Habilidades(
+                        idHabilidade,
+                        rset.getString("habilidade_nome"),
+                        rset.getString("habilidade_tag"),
+                        rset.getString("habilidade_descricao")
+                );
+                usuarioAtual.getListaHabilidades().add(habilidade);
+            }
+        }
+
+    } catch (SQLException e) {
+        System.err.println("Erro ao buscar usuários por nome: " + e.getMessage());
+    } finally {
+        try {
+            if (rset != null) rset.close();
+            if (pstmt != null) pstmt.close();
+            if (conn != null) conn.close();
+        } catch (SQLException e) {
+            System.err.println("Erro ao fechar recursos ao buscar usuários por nome: " + e.getMessage());
+        }
+    }
+
+    return usuarios;
+}
+
+
+    //    UPDATE objeto
     public int update(Usuario usuario) {
         Conexao conexao = new Conexao();
         Connection conn = null;
