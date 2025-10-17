@@ -60,7 +60,7 @@ public class UsuarioDAO {
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rset = null;
-        String read = "SELECT u.id AS usuario_id, u.nome AS usuario_nome, u.cpf AS usuario_cpf, u.genero AS usuario_genero, u.status AS usuario_status, u.senha AS usuario_senha, u.id_setor AS usuario_id_setor, u.id_supervisor AS usuario_id_supervisor, u.cargo AS usuario_cargo, h.id AS habilidade_id, h.nome AS habilidade_nome, h.tag AS habilidade_tag, h.descricao AS habilidade_descricao FROM usuario u LEFT JOIN usuario_habilidade uh ON u.id = uh.fk_usuario_id LEFT JOIN habilidade h ON h.id = uh.fk_habilidade_id ORDER BY u.id";
+        String read = "SELECT u.id AS usuario_id, u.nome AS usuario_nome, u.cpf AS usuario_cpf, u.genero AS usuario_genero, u.status AS usuario_status, u.senha AS usuario_senha, u.fk_setor_id AS usuario_id_setor, u.fk_supervisor_id AS usuario_id_supervisor, u.cargo AS usuario_cargo, h.id AS habilidade_id, h.nome AS habilidade_nome, h.tag AS habilidade_tag, h.descricao AS habilidade_descricao FROM usuario u LEFT JOIN usuario_habilidade uh ON u.id = uh.fk_usuario_id LEFT JOIN habilidade h ON h.id = uh.fk_habilidade_id ORDER BY u.id";
         Usuario usuarioAtual = null;
         List<Usuario> listaUsuario = new LinkedList<>();
 
