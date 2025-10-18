@@ -11,7 +11,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../assets/crud/style/dados.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/crud/style/dados.css">
     <title>CRUD - Kronos</title>
 </head>
 
@@ -21,12 +21,12 @@
         <h1>KRONOS</h1>
         <nav>
             <ul>
-                <li><a href="#"><img src="../assets/crud/img/img-crud-administrador.png" alt="">Administrador</a></li>
-                <li><a href="#" class="ativo"><img src="../assets/crud/img/img-crud-empresas.png" alt=""> Empresas</a></li>
-                <li><a href="#"><img src="../assets/crud/img/img-crud-planos.png" alt=""> Planos</a></li>
-                <li><a href="#"><img src="../assets/crud/img/img-crud-habilidades.png" alt=""> Habilidades</a></li>
-                <li><a href="#"><img src="../assets/crud/img/img-crud-setores.png" alt=""> Setores</a></li>
-                <li><a href="#"><img src="../assets/crud/img/img-crud-usuario.png" alt=""> Usuário</a></li>
+                <li><a href="#"><img src="${pageContext.request.contextPath}/assets/crud/img/img-crud-administrador.png" alt="">Administrador</a></li>
+                <li><a href="#" class="ativo"><img src="${pageContext.request.contextPath}/assets/crud/img/img-crud-empresas.png" alt=""> Empresas</a></li>
+                <li><a href="#"><img src="${pageContext.request.contextPath}/assets/crud/img/img-crud-planos.png" alt=""> Planos</a></li>
+                <li><a href="#"><img src="${pageContext.request.contextPath}/assets/crud/img/img-crud-habilidades.png" alt=""> Habilidades</a></li>
+                <li><a href="#"><img src="${pageContext.request.contextPath}/assets/crud/img/img-crud-setores.png" alt=""> Setores</a></li>
+                <li><a href="#"><img src="${pageContext.request.contextPath}/assets/crud/img/img-crud-usuario.png" alt=""> Usuário</a></li>
             </ul>
         </nav>
     </header>
@@ -72,42 +72,42 @@
                         <td>30.567.991/0001-50</td>
                         <td>02545-140</td>
                         <td>empresa1@dominio.com</td>
-                        <td><a href="#" target="_blank" class="detalhes"><img src="../assets/crud/img/mais-detalhes.png" alt=""></a></td>
+                        <td><a href="#" target="_blank" class="detalhes"><img src="${pageContext.request.contextPath}/assets/crud/img/mais-detalhes.png" alt=""></a></td>
                     </tr>
                     <tr>
                         <td>Empresa 1</td>
                         <td>30.567.991/0001-50</td>
                         <td>02545-140</td>
                         <td>empresa1@dominio.com</td>
-                        <td><a href="#" target="_blank" class="detalhes"><img src="../assets/crud/img/mais-detalhes.png" alt=""></a></td>
+                        <td><a href="#" target="_blank" class="detalhes"><img src="${pageContext.request.contextPath}/assets/crud/img/mais-detalhes.png" alt=""></a></td>
                     </tr>
                     <tr>
                         <td>Empresa 1</td>
                         <td>30.567.991/0001-50</td>
                         <td>02545-140</td>
                         <td>empresa1@dominio.com</td>
-                        <td><a href="#" target="_blank" class="detalhes"><img src="../assets/crud/img/mais-detalhes.png" alt=""></a></td>
+                        <td><a href="#" target="_blank" class="detalhes"><img src="${pageContext.request.contextPath}/assets/crud/img/mais-detalhes.png" alt=""></a></td>
                     </tr>
                     <tr>
                         <td>Empresa 1</td>
                         <td>30.567.991/0001-50</td>
                         <td>02545-140</td>
                         <td>empresa1@dominio.com</td>
-                        <td><a href="#" target="_blank" class="detalhes"><img src="../assets/crud/img/mais-detalhes.png" alt=""></a></td>
+                        <td><a href="#" target="_blank" class="detalhes"><img src="${pageContext.request.contextPath}/assets/crud/img/mais-detalhes.png" alt=""></a></td>
                     </tr>
                     <tr>
                         <td>Empresa 1</td>
                         <td>30.567.991/0001-50</td>
                         <td>02545-140</td>
                         <td>empresa1@dominio.com</td>
-                        <td><a href="#" target="_blank" class="detalhes"><img src="../assets/crud/img/mais-detalhes.png" alt=""></a></td>
+                        <td><a href="#" target="_blank" class="detalhes"><img src="${pageContext.request.contextPath}/assets/crud/img/mais-detalhes.png" alt=""></a></td>
                     </tr>
                     <tr>
                         <td>Empresa 1</td>
                         <td>30.567.991/0001-50</td>
                         <td>02545-140</td>
                         <td>empresa1@dominio.com</td>
-                        <td><a href="#" target="_blank" class="detalhes"><img src="../assets/crud/img/mais-detalhes.png" alt=""></a></td>
+                        <td><a href="#" target="_blank" class="detalhes"><img src="${pageContext.request.contextPath}/assets/crud/img/mais-detalhes.png" alt=""></a></td>
                     </tr>
                 </tbody>
             </table>

@@ -9,7 +9,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../assets/crud/style/autenticacao.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/crud/style/autenticacao.css">
     <title>Entrar - Kronos</title>
 </head>
 <body>
