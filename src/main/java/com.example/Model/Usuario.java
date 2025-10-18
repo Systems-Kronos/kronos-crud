@@ -1,7 +1,9 @@
 package com.example.Model;
 
+import java.util.Collections;
 import java.util.EmptyStackException;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -174,17 +176,24 @@ public class Usuario {
         this.cargo = cargo;
     }
 
-    // Para a lista de habilidades
-    public LinkedList<Habilidades> getListaHabilidades() { return listaHabilidades; }
-    public void setListaHabilidades(LinkedList<Habilidades> listaHabilidades) {
-        if (listaHabilidades.isEmpty()) { // Exceção: verifica se a lista de habilidades é vazia
-            throw new IllegalArgumentException("A lista de habilidades não pode ser vazia.");
+    // Métodos para a lista de habilidades
+    public List<Habilidades> getListaHabilidades() {
+        return Collections.unmodifiableList(this.listaHabilidades);
+    }
+    public void adicionarHabilidade(Habilidades habilidade) {
+        if (habilidade == null) { // Exceção: verifica se o objeto de habilidade é nulo
+            throw new NullPointerException("Não é possível adicionar um objeto de habilidade nulo.");
         }
-        for (Habilidades habilidade : listaHabilidades) { // Passa por todos os itens da lista
-            if (habilidade == null) { // Exceção: verifica se o item da lista é nulo
-                throw new NullPointerException("Um item da lista de habilidade não pode ser nulo.");
-            }
+        if (this.listaHabilidades.contains(habilidade)) { // Exceção: verifica se o objeto já existe na lista
+            throw new IllegalArgumentException("Não é permitido ter duas habilidades iguais na lista.");
         }
+        this.listaHabilidades.add(habilidade);
+    }
+    public boolean removerHabilidade(Habilidades habilidade) {
+        if (habilidade == null) { // Exceção: verifica se o objeto de habilidade é nulo
+            throw new NullPointerException("Não é possível remover uma habilidade nula.");
+        }
+        return this.listaHabilidades.remove(habilidade); // Retorna se a habilidade foi removida ou não
     }
 
     // Para o método toString
