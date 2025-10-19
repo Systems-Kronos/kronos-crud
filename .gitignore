@@ -43,3 +43,4 @@ build/
 src/main/resources/.env
 
 .idea/
+src\main\java\.env

@@ -11,13 +11,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/crud/style/autenticacao.css">
-    <title>Entrar - Kronos</title>
+    <title>Cadastre-se - Kronos</title>
 </head>
 <body>
 <main>
-    <h1>KRONOS</h1>
-    <h2>Entre em sua conta</h2>
-    <form action="login-crud" method="post">
+    <h1 class="logoKronosDesktop">KRONOS</h1>
+    <h2>Crie sua conta</h2>
+    <form action="cadastro" method="post">
+        <div>
+            <label for="nome">Nome</label>
+            <input type="text" name="nome" id="nome" placeholder="Digite seu nome" required>
+        </div>
+
         <div>
             <label for="email">Email</label>
             <input type="email" name="email" id="email" placeholder="Digite seu email" required>
@@ -28,15 +33,22 @@
             <input type="password" name="senha" id="senha" placeholder="Digite sua senha" required>
         </div>
 
-        <button type="submit" class="botaoCriarConta">Entrar</button>
+        <div class="checkboxTermos">
+            <input type="checkbox" id="termos" name="termos" required>
+            <label for="termos">Eu aceito todos os <a href="">Termos de Uso</a></label>
+        </div>
+
+        <a href="teste2.html"><button type="submit" class="botaoConta">Criar</button></a>
 
         <div class="linhaComTexto">
             <hr><span>OU</span><hr>
         </div>
 
-        <button type="submit" class="botaoCriarComGoogle"><img src="../assets/crud/img/logo-g-google.png" alt="">Entrar com o Google</button>
+        <button type="submit" class="botaoCriarComGoogle"><img src="${pageContext.request.contextPath}/assets/crud/img/logo-g-google.png" alt="">Criar com o Google</button>
 
-        <small>Ainda não possui conta? <a href="cadastro.jsp">Cadastre-se</a></small>
+        <small>Já possui uma conta? <a href="teste2.html">Entrar</a></small>
+
+
     </form>
 </main>
 </body>
