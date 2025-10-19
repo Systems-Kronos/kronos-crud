@@ -1,5 +1,6 @@
 .idea/workspace.xml
 src/main/resources/.env
+.idea/
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
