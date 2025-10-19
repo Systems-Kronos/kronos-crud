@@ -194,7 +194,7 @@ public LinkedList<Usuario> readUsuariosPorNome(
                         rset.getString("habilidade_tag"),
                         rset.getString("habilidade_descricao")
                 );
-                usuarioAtual.getListaHabilidades().add(habilidade);
+                usuarioAtual.adicionarHabilidade(habilidade);
             }
         }
 
