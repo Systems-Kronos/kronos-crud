@@ -11,6 +11,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../assets/landingpage/img/favikronos.ico" type="image/x-icon">
     <link rel="stylesheet" href="../assets/crud/style/dados.css">
     <title>CRUD - Kronos</title>
 </head>
@@ -33,9 +34,9 @@
 
     <div class="conteudoPrincipal">
         <div class="procurarCadastrar">
+        
             <form class="pesquisa">
                 <input type="search" placeholder="Pesquisar" class="buscar">
-
                 <details class="filtros">
                     <summary>Filtros</summary>
                     <div class="conteudoFiltros">
@@ -49,76 +50,252 @@
                     </div>
                 </details>
             </form>
+            
+            <!-- CREATE -->
 
-            <section>
-                <button type="button" onclick="" class="cadastrar">Cadastrar</button>
+            <section class="create">
+                <dialog id="create">
+                    <h2>Cadastrar empresa</h2>
+                    <form action="" method="post">
+                        <div class="campos">
+                            <div>
+                                <div class="campo">
+                                    <label for="nomeCreate">Nome</label>
+                                    <input type="text" name="nome" id="nomeCreate" autocomplete="off" required>
+                                </div>
+                                <div class="campo">
+                                    <label for="senhaCreate">Senha</label>
+                                    <input type="password" name="senha" id="senhaCreate" autocomplete="new-password" required>
+                                </div>
+                                <div class="campo">
+                                    <label for="emailCreate">E-mail</label>
+                                    <input type="email" name="email" id="emailCreate" autocomplete="off" required>
+                                </div>
+                                <div class="campo">
+                                    <label for="cepCreate">CEP</label>
+                                    <input type="text" name="cep" id="cepCreate" inputmode="numeric" autocomplete="off" pattern="\d{5}-?\d{3}" required>
+                                </div>
+                                <div class="campo">
+                                    <label for="cnjpCreate">CNPJ</label>
+                                    <input type="text" name="cnpj" id="cnjpCreate" inputmode="numeric" autocomplete="off" required>
+                                </div>
+                                <div class="campo">
+                                    <label for="telefoneCreate">Telefone</label>
+                                    <input type="tel" name="telefone" id="telefoneCreate" autocomplete="off" required>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="campo">
+                                    <label for="porteCreate">Porte</label>
+                                    <input type="text" name="porte" id="porteCreate" autocomplete="off" required>
+                                </div>
+                                <div class="campo">
+                                    <label for="segmentoCreate">Segmento</label>
+                                    <input type="text" name="segmento" id="segmentoCreate" autocomplete="off" required>
+                                </div>
+                                <div class="campo">
+                                    <label for="horaEntradaCreate">Horário de abertura</label>
+                                    <input type="time" name="horaEntrada" id="horaEntradaCreate" required>
+                                </div>
+                                <div class="campo">
+                                    <label for="horaFechamentoCreate">Horário de fechamento</label>
+                                    <input type="time" name="horaFechamento" id="horaFechamentoCreate" required>
+                                </div>
+                                <div class="campo">
+                                    <label for="regrasNegociosCreate">Regras de Negócios</label>
+                                    <textarea type="text" name="regrasNegocios" id="regrasNegociosCreate" required></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <menu>
+                            <button type="submit">Cadastrar</button>
+                            <button type="button" onclick="document.getElementById('create').close()">Cancelar</button>
+                        </menu>
+                    </form>
+                </dialog>
+                
+                <button type="button" onclick="document.getElementById('create').showModal()" class="cadastrar">Cadastrar</button>
+            </section>
+            
+
+            <!-- UPDATE -->
+
+            <section class="update">
+                <dialog id="update">
+                    <h2>Editar empresa</h2>
+                    <form action="" method="post">
+                        <div class="campos">
+                            <div>
+                                <div class="campo">
+                                    <label for="nomeUpdate">Nome</label>
+                                    <input type="text" name="nome" id="nomeUpdate" autocomplete="off" required>
+                                </div>
+                                <div class="campo">
+                                    <label for="senhaUpdate">Senha</label>
+                                    <input type="password" name="senha" id="senhaUpdate" autocomplete="new-password" required>
+                                </div>
+                                <div class="campo">
+                                    <label for="emailUpdate">E-mail</label>
+                                    <input type="email" name="email" id="emailUpdate" autocomplete="off" required>
+                                </div>
+                                <div class="campo">
+                                    <label for="cepUpdate">CEP</label>
+                                    <input type="text" name="cep" id="cepUpdate" inputmode="numeric" autocomplete="off" pattern="\d{5}-?\d{3}" required>
+                                </div>
+                                <div class="campo">
+                                    <label for="cnjpUpdate">CNPJ</label>
+                                    <input type="text" name="cnpj" id="cnjpUpdate" inputmode="numeric" autocomplete="off" required>
+                                </div>
+                                <div class="campo">
+                                    <label for="telefoneUpdate">Telefone</label>
+                                    <input type="tel" name="telefone" id="telefoneUpdate" autocomplete="off" required>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="campo">
+                                    <label for="porteUpdate">Porte</label>
+                                    <input type="text" name="porte" id="porteUpdate" autocomplete="off" required>
+                                </div>
+                                <div class="campo">
+                                    <label for="segmentoUpdate">Segmento</label>
+                                    <input type="text" name="segmento" id="segmentoUpdate" autocomplete="off" required>
+                                </div>
+                                <div class="campo">
+                                    <label for="horaEntradaUpdate">Horário de abertura</label>
+                                    <input type="time" name="horaEntrada" id="horaEntradaUpdate" required>
+                                </div>
+                                <div class="campo">
+                                    <label for="horaFechamentoUpdate">Horário de fechamento</label>
+                                    <input type="time" name="horaFechamento" id="horaFechamentoUpdate" required>
+                                </div>
+                                <div class="campo">
+                                    <label for="regrasNegociosUpdate">Regras de Negócios</label>
+                                    <textarea type="text" name="regrasNegocios" id="regrasNegociosUpdate" required></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <menu>
+                            <button type="submit">Confirmar alterações</button>
+                            <button type="button" onclick="document.getElementById('update').close()">Cancelar</button>
+                        </menu>
+                    </form>
+                </dialog>                
+            </section>
+
+            <!-- DELETE -->
+
+            <section class="delete">
+                <dialog id="delete">
+                    <h2>Excluir empresa</h2>
+                    <form action="" method="post">
+                        <div class="campos">
+                            <div>
+                                <div class="campo">
+                                    <label for="nomeDelete">Nome</label>
+                                    <input type="text" name="nome" id="nomeDelete" autocomplete="off" required>
+                                </div>
+                                <div class="campo">
+                                    <label for="senhaDelete">Senha</label>
+                                    <input type="password" name="senha" id="senhaDelete" autocomplete="new-password" required>
+                                </div>
+                                <div class="campo">
+                                    <label for="emailDelete">E-mail</label>
+                                    <input type="email" name="email" id="emailDelete" autocomplete="off" required>
+                                </div>
+                                <div class="campo">
+                                    <label for="cepDelete">CEP</label>
+                                    <input type="text" name="cep" id="cepDelete" inputmode="numeric" autocomplete="off" pattern="\d{5}-?\d{3}" required>
+                                </div>
+                                <div class="campo">
+                                    <label for="cnjpDelete">CNPJ</label>
+                                    <input type="text" name="cnpj" id="cnjpDelete" inputmode="numeric" autocomplete="off" required>
+                                </div>
+                                <div class="campo">
+                                    <label for="telefoneDelete">Telefone</label>
+                                    <input type="tel" name="telefone" id="telefoneDelete" autocomplete="off" required>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="campo">
+                                    <label for="porteDelete">Porte</label>
+                                    <input type="text" name="porte" id="porteDelete" autocomplete="off" required>
+                                </div>
+                                <div class="campo">
+                                    <label for="segmentoDelete">Segmento</label>
+                                    <input type="text" name="segmento" id="segmentoDelete" autocomplete="off" required>
+                                </div>
+                                <div class="campo">
+                                    <label for="horaEntradaDelete">Horário de abertura</label>
+                                    <input type="time" name="horaEntrada" id="horaEntradaDelete" required>
+                                </div>
+                                <div class="campo">
+                                    <label for="horaFechamentoDelete">Horário de fechamento</label>
+                                    <input type="time" name="horaFechamento" id="horaFechamentoDelete" required>
+                                </div>
+                                <div class="campo">
+                                    <label for="regrasNegociosDelete">Regras de Negócios</label>
+                                    <textarea type="text" name="regrasNegocios" id="regrasNegociosDelete" required></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <menu>
+                            <button type="submit" value="true">Confirmar exclusão</button>
+                            <button type="button" onclick="document.getElementById('delete').close()" value="false">Cancelar</button>
+                        </menu>
+                    </form>
+                </dialog>                
             </section>
         </div>
 
+        <!-- READ -->
+
         <main>
-            <table class="tabelaEmpresas">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th class="nome">Nome</th>
-                        <th>CNPJ</th>
-                        <th>E-mail</th>
-                        <th>Telefone</th>
-                        <th>Segmento</th>
-                        <th>Porte</th>
-                        <th>CEP</th>
-                        <th>Ver+</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Dunder </td>
-                        <td>Mifflin</td>
-                        <td>flin</td>
-                        <td>Dundie</td>
-                        <td>Dunder Mifflin</td>
-                        <td>30.567.991/0001-50</td>
-                        <td>02545-140</td>
-                        <td>empresa1@dominio.com</td>
-                        <td><a href="#" target="_blank" class="detalhes"><img src="../assets/crud/img/mais-detalhes.png" alt=""></a></td>
-                    </tr>
-                    <tr>
-                        <td>Filial de Scranton</td>
-                        <td>30.567.991/0001-50</td>
-                        <td>02545-140</td>
-                        <td>empresa1@dominio.com</td>
-                        <td><a href="#" target="_blank" class="detalhes"><img src="../assets/crud/img/mais-detalhes.png" alt=""></a></td>
-                    </tr>
-                    <tr>
-                        <td>Acampamento Meio-Sangue Al</td>
-                        <td>30.567.991/0001-50</td>
-                        <td>02545-140</td>
-                        <td>empresa1@dominio.com</td>
-                        <td><a href="#" target="_blank" class="detalhes"><img src="../assets/crud/img/mais-detalhes.png" alt=""></a></td>
-                    </tr>
-                    <tr>
-                        <td>Empresa 1</td>
-                        <td>30.567.991/0001-50</td>
-                        <td>02545-140</td>
-                        <td>empresa1@dominio.com</td>
-                        <td><a href="#" target="_blank" class="detalhes"><img src="../assets/crud/img/mais-detalhes.png" alt=""></a></td>
-                    </tr>
-                    <tr>
-                        <td>Empresa 1</td>
-                        <td>30.567.991/0001-50</td>
-                        <td>02545-140</td>
-                        <td>empresa1@dominio.com</td>
-                        <td><a href="#" target="_blank" class="detalhes"><img src="../assets/crud/img/mais-detalhes.png" alt=""></a></td>
-                    </tr>
-                    <tr>
-                        <td>Empresa 1</td>
-                        <td>30.567.991/0001-50</td>
-                        <td>02545-140</td>
-                        <td>empresa1@dominio.com</td>
-                        <td><a href="#" target="_blank" class="detalhes"><img src="../assets/crud/img/mais-detalhes.png" alt=""></a></td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="tabelaScroll">
+                <div class="bordaRedonda">
+                    <table class="tabelaEmpresas">
+                        <thead>
+                            <tr>
+                                <th>Ver</th>
+                                <th>ID</th>
+                                <th>Nome</th>
+                                <th>Senha</th>
+                                <th>E-mail</th>
+                                <th>CEP</th>
+                                <th>CNPJ</th>
+                                <th>Telefone</th>
+                                <th>Porte</th>
+                                <th>Segmento</th>
+                                <th>Abertura</th>
+                                <th>Fechamento</th>
+                                <th>Regras</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <form method="get"><input type="hidden" name="acao" value="update"><input type="hidden" name="pk" value="2"><button type="submit" class="detalhes"><img src="../assets/crud/img/mais-detalhes.png" alt=""></button></form>
+                                </td>                                
+                                <td>1</td>
+                                <td>Kronos Systems</td>
+                                <td>kronosoficial</td>
+                                <td>kronos.oficial@gmail.com</td>
+                                <td>00000-99</td>
+                                <td>00.394.460/0058-87</td>
+                                <td>+55 (11) 99352-2981</td>
+                                <td>Grande</td>
+                                <td>Gerenciamento de Tarefas</td>
+                                <td>06:00</td>
+                                <td>23:00</td>
+                                <td class="regrasEmpresa">...</td>
+                                <td>
+                                    <form method="get"><input type="hidden" name="acao" value="delete"><input type="hidden" name="pk" value="2"><button type="submit" class="detalhes"><img src="../assets/crud/img/deletar-kronos.png" alt=""></button></form>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </main>
     </div>
 </body>
