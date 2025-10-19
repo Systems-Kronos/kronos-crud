@@ -9,7 +9,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d1918824-facf-4752-b459-68023e29763f" name="Changes" comment="" />
+    <list default="true" id="d1918824-facf-4752-b459-68023e29763f" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -25,7 +27,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="dev" />
+        <entry key="$PROJECT_DIR$" value="Servlet-Administracao" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -58,7 +60,7 @@
     "Application.Main.executor": "Run",
     "RunOnceActivity.git.unshallow": "true",
     "Tomcat Server.Tomcat 11.0.111.executor": "Run",
-    "git-widget-placeholder": "Servet-Administracao",
+    "git-widget-placeholder": "Servlet-Empresa",
     "kotlin-language-version-configured": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -212,7 +214,8 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1760819849729</updated>
-      <workItem from="1760819851797" duration="152000" />
+      <workItem from="1760819851797" duration="653000" />
+      <workItem from="1760893249573" duration="531000" />
     </task>
     <servers />
   </component>
