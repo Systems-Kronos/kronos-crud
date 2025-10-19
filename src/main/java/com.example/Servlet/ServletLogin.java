@@ -1,3 +1,4 @@
+
 package com.example.Servlet;
 
 import com.example.Model.Administracao;
@@ -26,10 +27,12 @@ public class ServletLogin extends HttpServlet {
         Administracao admin = dao.read(email, senha);
 
         if (admin != null) {
-            request.getRequestDispatcher("/WEB-INF/empresas.jsp").forward(request, response);
+            // Redireciona para o Servlet que carrega a lista de administradores
+            response.sendRedirect(request.getContextPath() + "/admin-crud");
         } else {
             request.setAttribute("erro", "Email ou senha incorretos");
-            request.getRequestDispatcher("WEB-INF/login.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
         }
+
     }
 }
