@@ -1,5 +1,9 @@
 package com.example.Model;
 
+import java.util.Collections;
+import java.util.EmptyStackException;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -19,10 +23,11 @@ public class Usuario {
     private int idSetor;
     private int idSupervisor;
     private String cargo;
+    private LinkedList<Habilidades> listaHabilidades = new LinkedList<>();
 
     // Métodos Construtores
 
-    // As validações de exceções são realizadas pelos métodos set.
+    // As validações de exceções são realizadas pelos métodos setters
     public Usuario(int id, String nome, String cpf,
                    Character genero, String status,
                    String senha, int idSetor, int idSupervisor,
@@ -169,6 +174,26 @@ public class Usuario {
             throw new IllegalArgumentException("O cargo não pode estar em branco.");
         }
         this.cargo = cargo;
+    }
+
+    // Métodos para a lista de habilidades
+    public List<Habilidades> getListaHabilidades() {
+        return Collections.unmodifiableList(this.listaHabilidades);
+    }
+    public void adicionarHabilidade(Habilidades habilidade) {
+        if (habilidade == null) { // Exceção: verifica se o objeto de habilidade é nulo
+            throw new NullPointerException("Não é possível adicionar um objeto de habilidade nulo.");
+        }
+        if (this.listaHabilidades.contains(habilidade)) { // Exceção: verifica se o objeto já existe na lista
+            throw new IllegalArgumentException("Não é permitido ter duas habilidades iguais na lista.");
+        }
+        this.listaHabilidades.add(habilidade);
+    }
+    public boolean removerHabilidade(Habilidades habilidade) {
+        if (habilidade == null) { // Exceção: verifica se o objeto de habilidade é nulo
+            throw new NullPointerException("Não é possível remover uma habilidade nula.");
+        }
+        return this.listaHabilidades.remove(habilidade); // Retorna se a habilidade foi removida ou não
     }
 
     // Para o método toString

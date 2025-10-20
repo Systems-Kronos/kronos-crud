@@ -16,7 +16,7 @@ public class Setor {
 
     // Métodos Construtores
 
-    // As validações de exceções são realizadas pelos métodos set.
+    // As validações de exceções são realizadas pelos métodos setters
     public Setor(int id, String nome, String descricao, String turnos, int qntFuncionarios, int idEmpresa) {
         this.setId(id);
         this.setNome(nome);

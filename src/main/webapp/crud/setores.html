@@ -1,0 +1,228 @@
+<!-- <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%> -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <!-------------------- Fontes -------------------->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Montserrat:wght@300;400;500;700;900&family=Crete+Round:wght@400;700&display=swap"
+        rel="stylesheet">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../assets/landingpage/img/favikronos.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../assets/crud/style/dados.css">
+    <title>CRUD - Kronos</title>
+</head>
+
+<body>
+    <div class="meuPlaceholder"></div>
+    <header>
+        <h1>KRONOS</h1>
+        <nav>
+            <ul>
+                <li><a href="administrador.html"><img src="../assets/crud/img/img-crud-administrador.png" alt="">Administrador</a></li>
+                <li><a href="empresas.html"><img src="../assets/crud/img/img-crud-empresas.png" alt=""> Empresas</a></li>
+                <li><a href="planos.html"><img src="../assets/crud/img/img-crud-planos.png" alt=""> Planos</a></li>
+                <li><a href="habilidades.html"><img src="../assets/crud/img/img-crud-habilidades.png" alt=""> Habilidades</a></li>
+                <li><a href="setores.html" class="ativo"><img src="../assets/crud/img/img-crud-setores.png" alt=""> Setores</a></li>
+                <li><a href="usuario.html"><img src="../assets/crud/img/img-crud-usuario.png" alt=""> Usuário</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="conteudoPrincipal">
+        <div class="procurarCadastrar">
+            <form class="pesquisa">
+                <input type="search" placeholder="Pesquisar" class="buscar">
+
+                <details class="filtros">
+                    <summary>Filtros</summary>
+                    <div class="conteudoFiltros">
+                        <label class="opcaoFiltro">
+                            <input type="radio" name="ordem" value="crescente">Crescente
+                        </label>
+                        <label class="opcaoFiltro">
+                            <input type="radio" name="ordem" value="decrescente">Decrescente
+                        </label>
+                        <button type="reset">Limpar filtros</button>
+                    </div>
+                </details>
+            </form>
+
+            <!-- CREATE -->
+
+            <section class="create">
+                <dialog id="create">
+                    <h2>Cadastrar setor</h2>
+                    <form action="" method="post">
+                        <div class="campos">
+                            <div>
+                                <div class="campo">
+                                    <label for="nomeCreate">Nome</label>
+                                    <input type="text" name="nome" id="nomeCreate" autocomplete="off" required>
+                                </div>
+                                <div class="campo">
+                                    <label for="turnosCreate">Turnos</label>
+                                    <input type="text" name="turnos" id="turnosCreate" autocomplete="off" required>
+                                </div>
+                                <div class="campo">
+                                    <label for="qtdFuncionariosCreate">Número de funcionários</label>
+                                    <input type="number" name="qtdFuncionarios" id="qtdFuncionariosCreate" min="1" required>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="campo">
+                                    <label for="descricaoCreate">Descrição</label>
+                                    <textarea type="text" name="descricao" id="descricaoCreate" required></textarea>
+                                </div>
+                                <div class="campo">
+                                    <label for="idEmpresaCreate">ID da Empresa</label>
+                                    <input type="number" name="idEmpresa" id="idEmpresaCreate" min="0" required>
+                                </div>
+                            </div>
+                        </div>
+                        <menu>
+                            <button type="submit">Cadastrar</button>
+                            <button type="button" onclick="document.getElementById('create').close()">Cancelar</button>
+                        </menu>
+                    </form>
+                </dialog>
+                
+                <button type="button" onclick="document.getElementById('create').showModal()" class="cadastrar">Cadastrar</button>
+            </section>
+            
+
+            <!-- UPDATE -->
+
+            <section class="update">
+                <dialog id="update">
+                    <h2>Editar setor</h2>
+                    <form action="" method="post">
+                        <div class="campos">
+                            <div>
+                                <div class="campo">
+                                    <label for="nomeUpdate">Nome</label>
+                                    <input type="text" name="nome" id="nomeUpdate" autocomplete="off" required>
+                                </div>
+                                <div class="campo">
+                                    <label for="turnosUpdate">Turnos</label>
+                                    <input type="text" name="turnos" id="turnosUpdate" autocomplete="off" required>
+                                </div>
+                                <div class="campo">
+                                    <label for="qtdFuncionariosUpdate">Número de funcionários</label>
+                                    <input type="number" name="qtdFuncionarios" id="qtdFuncionariosUpdate" min="1" required>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="campo">
+                                    <label for="descricaoUpdate">Descrição</label>
+                                    <textarea type="text" name="descricao" id="descricaoUpdate" required></textarea>
+                                </div>
+                                <div class="campo">
+                                    <label for="idEmpresaUpdate">ID da Empresa</label>
+                                    <input type="number" name="idEmpresa" id="idEmpresaUpdate" min="0" required>
+                                </div>
+                            </div>
+                        </div>
+                        <menu>
+                            <button type="submit">Confirmar alterações</button>
+                            <button type="button" onclick="document.getElementById('update').close()">Cancelar</button>
+                        </menu>
+                    </form>
+                </dialog>                
+            </section>
+
+            <!-- DELETE -->
+
+            <section class="delete">
+                <dialog id="delete">
+                    <h2>Excluir setor</h2>
+                    <form action="" method="post">
+                        <div class="campos">
+                            <div>
+                                <div class="campo">
+                                    <label for="nomeDelete">Nome</label>
+                                    <input type="text" name="nome" id="nomeDelete" autocomplete="off" disabled>
+                                </div>
+                                <div class="campo">
+                                    <label for="turnosDelete">Turnos</label>
+                                    <input type="text" name="turnos" id="turnosDelete" autocomplete="off" disabled>
+                                </div>
+                                <div class="campo">
+                                    <label for="qtdFuncionariosDelete">Número de funcionários</label>
+                                    <input type="number" name="qtdFuncionarios" id="qtdFuncionariosDelete" min="1" disabled>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="campo">
+                                    <label for="descricaoDelete">Descrição</label>
+                                    <textarea type="text" name="descricao" id="descricaoDelete" disabled></textarea>
+                                </div>
+                                <div class="campo">
+                                    <label for="idEmpresaDelete">ID da Empresa</label>
+                                    <input type="number" name="idEmpresa" id="idEmpresaDelete" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <menu>
+                            <button type="submit" value="true">Confirmar exclusão</button>
+                            <button type="button" onclick="document.getElementById('delete').close()" value="false">Cancelar</button>
+                        </menu>
+                    </form>
+                </dialog>                
+            </section>
+        </div>
+
+        <main>
+            <div class="tabelaScroll">
+                <table class="tabelaHabilidades">
+                    <thead>
+                        <tr>
+                            <th>Ver</th>
+                            <th>ID</th>
+                            <th>Empresa</th>
+                            <th>Nome</th>
+                            <th>Quantidade de Funcionários</th>
+                            <th>Turnos</th>
+                            <th>Descrição</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <form method="get"><input type="hidden" name="acao" value="update"><input type="hidden" name="pk" value="3"><button type="submit" class="detalhes"><img src="../assets/crud/img/mais-detalhes.png" alt=""></button></form>
+                            </td>
+                            <td>1</td>
+                            <td>Kronos Systems</td>
+                            <td>Desenvolvimento CRUD</td>
+                            <td>30.991</td>
+                            <td>Manhã, tarde e noite</td>
+                            <td>Abate o boi, o coitado só sofre, vive no mato e ainda morre desse jeito sofrido e lascado</td>
+                            <td>
+                                <form method="get"><input type="hidden" name="acao" value="delete"><input type="hidden" name="pk" value="3"><button type="submit" class="detalhes"><img src="../assets/crud/img/deletar-kronos.png" alt=""></button></form>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <form method="get"><input type="hidden" name="acao" value="update"><input type="hidden" name="pk" value="3"><button type="submit" class="detalhes"><img src="../assets/crud/img/mais-detalhes.png" alt=""></button></form>
+                            </td>
+                            <td>1</td>
+                            <td>Kronos Systems</td>
+                            <td>Banco de Dados Kronos</td>
+                            <td>69.240</td>
+                            <td>Manhã, tarde e noite</td>
+                            <td>Apaixonados não recíprocos</td>
+                            <td>
+                                <form method="get"><input type="hidden" name="acao" value="delete"><input type="hidden" name="pk" value="3"><button type="submit" class="detalhes"><img src="../assets/crud/img/deletar-kronos.png" alt=""></button></form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
