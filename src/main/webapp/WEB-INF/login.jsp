@@ -1,4 +1,3 @@
-
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -28,15 +27,7 @@
             <input type="password" name="senha" id="senha" placeholder="Digite sua senha" required>
         </div>
 
-        <button type="submit" class="botaoCriarConta">Entrar</button>
-
-        <div class="linhaComTexto">
-            <hr><span>OU</span><hr>
-        </div>
-
-        <button type="submit" class="botaoCriarComGoogle"><img src="../assets/crud/img/logo-g-google.png" alt="">Entrar com o Google</button>
-
-        <small>Ainda não possui conta? <a href="cadastro.jsp">Cadastre-se</a></small>
+        <button type="submit" class="botaoConta">Entrar</button>
     </form>
 </main>
 </body>
