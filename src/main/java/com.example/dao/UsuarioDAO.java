@@ -120,7 +120,7 @@ public class UsuarioDAO {
     }
 
 //    READ by filter
-public LinkedList<Usuario> readUsuariosPorNome(
+public LinkedList<Usuario> read(
         String nome,
         String orderBy,
         String direction
