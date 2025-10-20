@@ -100,7 +100,7 @@ public class UsuarioDAO {
                             rset.getString("habilidade_tag"),
                             rset.getString("habilidade_descricao")
                     );
-                    usuarioAtual.getListaHabilidades().add(habilidade);
+                    usuarioAtual.adicionarHabilidade(habilidade);
                 }
             }
         } catch (SQLException e) {
@@ -115,7 +115,6 @@ public class UsuarioDAO {
                 System.err.println("Erro ao fechar recursos ao buscar usuario: " + e.getMessage());
             }
         }
-
         return listaUsuario;
     }
 
@@ -195,7 +194,7 @@ public LinkedList<Usuario> read(
                         rset.getString("habilidade_tag"),
                         rset.getString("habilidade_descricao")
                 );
-                usuarioAtual.getListaHabilidades().add(habilidade);
+                usuarioAtual.adicionarHabilidade(habilidade);
             }
         }
 

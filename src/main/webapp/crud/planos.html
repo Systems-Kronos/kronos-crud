@@ -11,6 +11,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../assets/landingpage/img/favikronos.ico" type="image/x-icon">
     <link rel="stylesheet" href="../assets/crud/style/dados.css">
     <title>CRUD - Kronos</title>
 </head>
@@ -50,74 +51,174 @@
                 </details>
             </form>
 
-            <section>
-                <button type="button" onclick="" class="cadastrar">Cadastrar</button>
+            <!-- CREATE -->
+
+            <section class="create">
+                <dialog id="create">
+                    <h2>Cadastrar plano</h2>
+                    <form action="" method="post">
+                        <div class="campos">
+                            <div>
+                                <div class="campo">
+                                    <label for="nomeCreate">Nome</label>
+                                    <input type="text" name="nome" id="nomeCreate" autocomplete="off" required>
+                                </div>
+                                <div class="campo">
+                                    <label for="maxFuncionariosCreate">Número de funcionários</label>
+                                    <input type="number" name="maxFuncionarios" id="maxFuncionariosCreate" min="1" required>
+                                </div>
+                                <div class="campo">
+                                    <label for="precoCreate">Preço</label>
+                                    <input type="number" name="preco" id="precoCreate" step="0.01" min="0.01" placeholder="0,00">
+                                </div>
+                            </div>
+                            <div>
+                                <div class="campo">
+                                    <label for="descricaoCreate">Descrição</label>
+                                    <textarea type="text" name="descricao" id="descricaoCreate" required></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <menu>
+                            <button type="submit">Cadastrar</button>
+                            <button type="button" onclick="document.getElementById('create').close()">Cancelar</button>
+                        </menu>
+                    </form>
+                </dialog>
+                
+                <button type="button" onclick="document.getElementById('create').showModal()" class="cadastrar">Cadastrar</button>
+            </section>
+
+            <!-- UPDATE -->
+
+            <section class="update">
+                <dialog id="update">
+                    <h2>Editar plano</h2>
+                    <form action="" method="post">
+                        <div class="campos">
+                            <div>
+                                <div class="campo">
+                                    <label for="nomeUpdate">Nome</label>
+                                    <input type="text" name="nome" id="nomeUpdate" autocomplete="off" required>
+                                </div>
+                                <div class="campo">
+                                    <label for="maxFuncionariosUpdate">Número de funcionários</label>
+                                    <input type="number" name="maxFuncionarios" id="maxFuncionariosUpdate" min="1" required>
+                                </div>
+                                <div class="campo">
+                                    <label for="precoUpdate">Preço</label>
+                                    <input type="number" name="preco" id="precoUpdate" step="0.01" min="0.01" placeholder="0,00">
+                                </div>
+                            </div>
+                            <div>
+                                <div class="campo">
+                                    <label for="descricaoUpdate">Descrição</label>
+                                    <textarea type="text" name="descricao" id="descricaoUpdate" required></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <menu>
+                            <button type="submit">Confirmar alterações</button>
+                            <button type="button" onclick="document.getElementById('update').close()">Cancelar</button>
+                        </menu>
+                    </form>
+                </dialog>                
+            </section>
+
+            <!-- DELETE -->
+
+            <section class="delete">
+                <dialog id="delete">
+                    <h2>Excluir plano</h2>
+                    <form action="" method="post">
+                        <div class="campos">
+                            <div>
+                                <div class="campo">
+                                    <label for="nomeDelete">Nome</label>
+                                    <input type="text" name="nome" id="nomeDelete" autocomplete="off" disabled>
+                                </div>
+                                <div class="campo">
+                                    <label for="maxFuncionariosDelete">Número de funcionários</label>
+                                    <input type="number" name="maxFuncionarios" id="maxFuncionariosDelete" min="1" disabled>
+                                </div>
+                                <div class="campo">
+                                    <label for="precoDelete">Preço</label>
+                                    <input type="number" name="preco" id="precoDelete" step="0.01" min="0.01" placeholder="0,00" disabled>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="campo">
+                                    <label for="descricaoDelete">Descrição</label>
+                                    <textarea type="text" name="descricao" id="descricaoDelete" disabled></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <menu>
+                            <button type="submit" value="true">Confirmar exclusão</button>
+                            <button type="button" onclick="document.getElementById('delete').close()" value="false">Cancelar</button>
+                        </menu>
+                    </form>
+                </dialog>                
             </section>
         </div>
 
         <main>
-            <table class="tabelaPlanos">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th class="nome">Nome</th>
-                        <th>Custo</th>
-                        <th>Qtd Máxima</th>
-                        <th>Descrição</th>
-                        <th>Ver+</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Empresa 1</td>
-                        <td>100.000</td>
-                        <td>10.000</td>
-                        <td>Plano enterprise. Gostaria de comer outro</td>
-                        <td><a href="#" target="_blank" class="detalhes"><img src="../assets/crud/img/mais-detalhes.png" alt=""></a></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Empresa 1</td>
-                        <td>100.000</td>
-                        <td>10.000</td>
-                        <td>Plano enterprise. Gostaria de comer outro</td>
-                        <td><a href="#" target="_blank" class="detalhes"><img src="../assets/crud/img/mais-detalhes.png" alt=""></a></td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>Empresa 1</td>
-                        <td>100.000</td>
-                        <td>10.000</td>
-                        <td>Plano enterprise. Gostaria de comer</td>
-                        <td><a href="#" target="_blank" class="detalhes"><img src="../assets/crud/img/mais-detalhes.png" alt=""></a></td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>Empresa 1</td>
-                        <td>100.000</td>
-                        <td>10.000</td>
-                        <td>Plano enterprise. Gostaria de comer</td>
-                        <td><a href="#" target="_blank" class="detalhes"><img src="../assets/crud/img/mais-detalhes.png" alt=""></a></td>
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td>Empresa 1</td>
-                        <td>100.000</td>
-                        <td>10.000</td>
-                        <td>Plano enterprise. Gostaria de comer</td>
-                        <td><a href="#" target="_blank" class="detalhes"><img src="../assets/crud/img/mais-detalhes.png" alt=""></a></td>
-                    </tr>
-                    <tr>
-                        <td>6</td>
-                        <td>Empresa 1</td>
-                        <td>100.000</td>
-                        <td>10.000</td>
-                        <td>Plano enterprise. Gostaria de comer</td>
-                        <td><a href="#" target="_blank" class="detalhes"><img src="../assets/crud/img/mais-detalhes.png" alt=""></a></td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="tabelaScroll">
+                <table class="tabelaPlanos">
+                    <thead>
+                        <tr>
+                            <th>Ver</th>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Custo</th>
+                            <th>Máximo de Funcionários</th>
+                            <th>Descrição</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <form method="get"><input type="hidden" name="acao" value="update"><input type="hidden" name="pk" value="3"><button type="submit" class="detalhes"><img src="../assets/crud/img/mais-detalhes.png" alt=""></button></form>
+                            </td>
+                            <td>1</td>
+                            <td>Pro</td>
+                            <td>1000</td>
+                            <td>10.000</td>
+                            <td>Plano enterprise. Gostaria de comer outro</td>
+                            <td>
+                                <form method="get"><input type="hidden" name="acao" value="delete"><input type="hidden" name="pk" value="3"><button type="submit" class="detalhes"><img src="../assets/crud/img/deletar-kronos.png" alt=""></button></form>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <form method="get"><input type="hidden" name="acao" value="update"><input type="hidden" name="pk" value="3"><button type="submit" class="detalhes"><img src="../assets/crud/img/mais-detalhes.png" alt=""></button></form>
+                            </td>
+                            <td>2</td>
+                            <td>Lite</td>
+                            <td>1000</td>
+                            <td>10.000</td>
+                            <td>Plano enterprise. Gostaria de comer outro</td>
+                            <td>
+                                <form method="get"><input type="hidden" name="acao" value="delete"><input type="hidden" name="pk" value="3"><button type="submit" class="detalhes"><img src="../assets/crud/img/deletar-kronos.png" alt=""></button></form>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <form method="get"><input type="hidden" name="acao" value="update"><input type="hidden" name="pk" value="3"><button type="submit" class="detalhes"><img src="../assets/crud/img/mais-detalhes.png" alt=""></button></form>
+                            </td>
+                            <td>3</td>
+                            <td>Enterprise</td>
+                            <td>1000</td>
+                            <td>10.000</td>
+                            <td>Plano enterprise. Gostaria de comer outro</td>
+                            <td>
+                                <form method="get"><input type="hidden" name="acao" value="delete"><input type="hidden" name="pk" value="3"><button type="submit" class="detalhes"><img src="../assets/crud/img/deletar-kronos.png" alt=""></button></form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </main>
     </div>
 </body>
