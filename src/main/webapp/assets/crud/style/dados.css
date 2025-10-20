@@ -1,7 +1,22 @@
 /* * {
-    border: 0.1vw solid red;
-    border: 0.1vw solid red;
+border: 0.1vw solid red;
 } */
+
+html {
+    scrollbar-gutter: stable;
+}
+
+::-webkit-scrollbar {
+    width: 0.5vw;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #E6B648;
+}
+
+::-webkit-scrollbar-track {
+    background: #370963;
+}
 
 body {
     margin: 0;
@@ -92,14 +107,14 @@ header li a.ativo {
 
 form {
     display: flex;
-    align-items: center; 
+    align-items: center;
     gap: 1vw;
 }
 
 form .buscar {
     display: flex;
-    font-size: 1.5vw;
-    padding: 0vw 3vw;
+    font-size: 1.2vw;
+    padding: 0vw 1vw;
     height: 3vw;
     width: 20vw;
     border-radius: 0.6vw;
@@ -195,34 +210,164 @@ form .buscar::placeholder {
     font-family: "Montserrat", sans-serif;
 }
 
+.create, .update, .delete {
+    display: inline-flex;
+}
+
+.create::-webkit-scrollbar-thumb,
+.update::-webkit-scrollbar-thumb,
+.delete::-webkit-scrollbar-thumb {
+    background: #E6B648;
+    border-radius: 0vw 1vw 1vw 0vw;
+}
+
+.create::-webkit-scrollbar-track,
+.update::-webkit-scrollbar-track,
+.delete::-webkit-scrollbar-track {
+    background: #370963;
+    border-radius: 0vw 1vw 1vw 0vw;
+}
+
+section dialog form .campo input:focus,
+section dialog form .campo textarea:focus {
+    outline: none;
+    box-shadow: 0 0 0 0.05vw #2b064e;
+    transition: background 0.3s ease;
+}
+
+section dialog::backdrop {
+    background: rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(8px);
+}
+
+section dialog {
+    border-radius: 1vw;
+    border: 0.15vw solid #370963;
+    transition: 0.3s ease-in;
+}
+
+section dialog form {
+    display: flex;
+    flex-direction: column;
+    margin: 1vw;
+}
+
+section dialog form .campos {
+    display: flex;
+    gap: 5vw;
+}
+
+section dialog form .campo {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1vw;
+    row-gap: 0.5vw;
+}
+
+
+section dialog form .campo label {
+    font-size: 1.2vw;
+}
+
+section dialog form .campoLado {
+    display: flex;
+    gap: 1.75vw;
+}
+
+section dialog form .campos input {
+    font-family: "Montserrat", sans-serif;
+    background-color: #FBF8FF;
+    border-radius: 0.5vw;
+    width: 17.5vw;
+    height: 1.75vw;
+    font-size: 1vw;
+    padding-left: 0.5vw;
+    border: 0.15vw solid #370963;
+    font-weight: 400;
+}
+
+section dialog form .campos textarea {
+    font-family: "Montserrat", sans-serif;
+    background-color: #FBF8FF;
+    border-radius: 0.5vw;
+    width: 17.5vw;
+    height: 6vw;
+    font-size: 1vw;
+    padding: 0.5vw;
+    border: 0.15vw solid #370963;
+    font-weight: 400;
+    resize: none;
+}
+
+section dialog form .campos select {
+    font-family: "Montserrat", sans-serif;
+    background-color: #FBF8FF;
+    border-radius: 0.5vw;
+    width: 8.25vw;
+    height: 2.5vw;
+    font-size: 1vw;
+    padding: 0.5vw;
+    border: 0.15vw solid #370963;
+    font-weight: 400;
+}
+
+section dialog h2 {
+    font-size: 2vw;
+    margin: 1vw 0vw 2.5vw 1vw;
+    color: #370963;
+    font-family: "Crete Round";
+    font-weight: 500;
+}
+
+section dialog menu {
+    display: flex;
+    align-self: flex-end;
+    margin-right: 1vw;
+    gap: 1vw;
+}
+
+section dialog menu button {
+    cursor: pointer;
+    padding: 0.75vw 1.5vw;
+    background-color: #E6B648;
+    transition: 0.3s ease;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 600;
+    font-size: 1vw;
+    border: none;
+    border-radius: 0.6vw;
+}
+
+section dialog menu button:hover {
+    background-color: #C48F20;
+}
+
+.delete dialog button:nth-last-child(2) {
+    background-color: #E53935;
+    color: #FFFFFF;
+}
+
+.delete dialog button:nth-last-child(2):hover {
+    background-color: #880404;
+}
+
 table {
-    width: 76vw;
-    table-layout: fixed;
+    width: auto;
     border-collapse: collapse;
     font-family: "Montserrat", sans-serif;
     font-weight: 400;
     margin-top: 2vw;
     border-collapse: collapse;
-    font-size: 0.9vw;
+    font-size: 1vw;
     text-align: center;
-}
-
-main table thead th:first-child {
-    width: 5%;
-}
-
-main table thead th:last-child {
-    width: 5%;
-}
-
-main table thead .nome {
-    width: 20%;
 }
 
 th, td {
     font-family: "Montserrat", sans-serif;
     font-weight: 500;
     padding: 1vw 2vw;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 th {
@@ -253,17 +398,34 @@ tr:hover {
 }
 
 td {
-    overflow: hidden; 
-    text-overflow: ellipsis; 
-    white-space: nowrap; 
+    overflow: hidden;
 }
 
-table .detalhes img {
+table form .detalhes img {
     object-fit: contain;
     height: 1.5vw;
+    cursor: pointer;
+}
+
+table form .detalhes {
+    display: inline-flex;
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
 }
 
 .tabelaScroll {
-    overflow-x: hidden;
-    width: 50vw;
+    overflow-x: auto;
+    width: 75vw;
+}
+
+.tabelaScroll::-webkit-scrollbar-thumb {
+    background: #E6B648;
+    border-radius: 0vw 0vw 2vw 2vw;
+}
+
+.tabelaScroll::-webkit-scrollbar-track {
+    background: #370963;
+    border-radius: 0vw 0vw 2vw 2vw;
 }

@@ -1,4 +1,6 @@
- <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="com.example.Model.Administracao" %>
+<%@ page import="java.util.List" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -11,23 +13,48 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../assets/crud/style/dados.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/crud/style/dados.css">
     <title>CRUD - Kronos</title>
 </head>
 
 <body>
 <div class="meuPlaceholder"></div>
 <div class="meuPlaceholder"></div>
+
 <header>
     <h1>KRONOS</h1>
     <nav>
         <ul>
-            <li><a href="administrador.html" class="ativo"><img src="../assets/crud/img/img-crud-administrador.png" alt="">Administrador</a></li>
-            <li><a href="empresas.html"><img src="../assets/crud/img/img-crud-empresas.png" alt=""> Empresas</a></li>
-            <li><a href="planos.html"><img src="../assets/crud/img/img-crud-planos.png" alt=""> Planos</a></li>
-            <li><a href="habilidades.html"><img src="../assets/crud/img/img-crud-habilidades.png" alt=""> Habilidades</a></li>
-            <li><a href="setores.html"><img src="../assets/crud/img/img-crud-setores.png" alt=""> Setores</a></li>
-            <li><a href="habilidades.html"><img src="../assets/crud/img/img-crud-usuario.png" alt=""> Usuário</a></li>
+            <li>
+                <a href="${pageContext.request.contextPath}/admin-crud" class="ativo">
+                    <img src="${pageContext.request.contextPath}/assets/crud/img/img-crud-administrador.png" alt="">Administrador
+                </a>
+            </li>
+            <li>
+                <a href="${pageContext.request.contextPath}/empresas-crud">
+                    <img src="${pageContext.request.contextPath}/assets/crud/img/img-crud-empresas.png" alt="">Empresas
+                </a>
+            </li>
+            <li>
+                <a href="${pageContext.request.contextPath}/planos-crud">
+                    <img src="${pageContext.request.contextPath}/assets/crud/img/img-crud-planos.png" alt="">Planos
+                </a>
+            </li>
+            <li>
+                <a href="${pageContext.request.contextPath}/habilidades-crud">
+                    <img src="${pageContext.request.contextPath}/assets/crud/img/img-crud-habilidades.png" alt="">Habilidades
+                </a>
+            </li>
+            <li>
+                <a href="${pageContext.request.contextPath}/setores-crud">
+                    <img src="${pageContext.request.contextPath}/assets/crud/img/img-crud-setores.png" alt="">Setores
+                </a>
+            </li>
+            <li>
+                <a href="${pageContext.request.contextPath}/usuarios-crud">
+                    <img src="${pageContext.request.contextPath}/assets/crud/img/img-crud-usuario.png" alt="">Usuário
+                </a>
+            </li>
         </ul>
     </nav>
 </header>
@@ -35,7 +62,7 @@
 <div class="conteudoPrincipal">
     <div class="procurarCadastrar">
         <form class="pesquisa">
-            <input type="search" placeholder="Pesquisar" class="buscar">
+            <input type="search" placeholder="Pesquisar" id="pesquisa" name = "pesquisa" nameclass="buscar">
 
             <details class="filtros">
                 <summary>Filtros</summary>
@@ -69,54 +96,31 @@
             </tr>
             </thead>
             <tbody>
+            <%
+                List<Administracao> listaAdmins = (List<Administracao>) request.getAttribute("listaAdmins");
+                if (listaAdmins != null && !listaAdmins.isEmpty()) {
+                    for (Administracao admin : listaAdmins) {
+            %>
             <tr>
-                <td>1</td>
-                <td>João Victor Conceição do Prado</td>
-                <td>Lanna_Carmo_1234@gmail.com</td>
-                <td>Vinte</td>
+                <td><%= admin.getId() %></td>
+                <td><%= admin.getNome() %></td>
+                <td><%= admin.getEmail() %></td>
+                <td>Vinte</td> <!-- Se tiver campo específico, substitua -->
                 <td>*********</td>
-                <td><a href="#" target="_blank" class="detalhes"><img src="../assets/crud/img/mais-detalhes.png" alt=""></a></td>
+                <td>
+                    <a href="#" target="_blank" class="detalhes">
+                        <img src="${pageContext.request.contextPath}/assets/crud/img/mais-detalhes.png" alt="">
+                    </a>
+                </td>
             </tr>
+            <%
+                }
+            } else {
+            %>
             <tr>
-                <td>2</td>
-                <td>Jones Pinheiro Aliaga Dias</td>
-                <td>Lanna_Carmo_1234@gmail.com</td>
-                <td>Vinte</td>
-                <td>*********</td>
-                <td><a href="#" target="_blank" class="detalhes"><img src="../assets/crud/img/mais-detalhes.png" alt=""></a></td>
+                <td colspan="6">Nenhum administrador encontrado.</td>
             </tr>
-            <tr>
-                <td>3</td>
-                <td>Jones Pinheiro Aliaga Dias</td>
-                <td>Lanna_Carmo_1234@gmail.com</td>
-                <td>Vinte</td>
-                <td>*********</td>
-                <td><a href="#" target="_blank" class="detalhes"><img src="../assets/crud/img/mais-detalhes.png" alt=""></a></td>
-            </tr>
-            <tr>
-                <td>4</td>
-                <td>Jones Pinheiro Aliaga Dias</td>
-                <td>Lanna_Carmo_1234@gmail.com</td>
-                <td>Vinte</td>
-                <td>*********</td>
-                <td><a href="#" target="_blank" class="detalhes"><img src="../assets/crud/img/mais-detalhes.png" alt=""></a></td>
-            </tr>
-            <tr>
-                <td>5</td>
-                <td>Jones Pinheiro Aliaga Dias</td>
-                <td>Lanna_Carmo_1234@gmail.com</td>
-                <td>Vinte</td>
-                <td>*********</td>
-                <td><a href="#" target="_blank" class="detalhes"><img src="../assets/crud/img/mais-detalhes.png" alt=""></a></td>
-            </tr>
-            <tr>
-                <td>6</td>
-                <td>Jones Pinheiro Aliaga Dias</td>
-                <td>Lanna_Carmo_1234@gmail.com</td>
-                <td>Vinte</td>
-                <td>*********</td>
-                <td><a href="#" target="_blank" class="detalhes"><img src="../assets/crud/img/mais-detalhes.png" alt=""></a></td>
-            </tr>
+            <% } %>
             </tbody>
         </table>
     </div>

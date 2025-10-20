@@ -61,8 +61,8 @@ public class Habilidades {
         if (tag == null) { // Exceção: verifica se a tag é nula
             throw new NullPointerException("A tag não pode ser nula.");
         }
-        if (tag.trim().isEmpty()) { // Exceção: verifica se o nome só contém espaço
-            throw new IllegalArgumentException("O nome não pode estar em branco.");
+        if (tag.trim().isEmpty()) { // Exceção: verifica se a tag só contém espaço
+            throw new IllegalArgumentException("A tag não pode estar em branco.");
         }
         this.tag = tag;
     }

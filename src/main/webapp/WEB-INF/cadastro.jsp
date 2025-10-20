@@ -1,3 +1,4 @@
+
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -9,7 +10,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../assets/crud/style/autenticacao.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/crud/style/autenticacao.css">
     <title>Cadastre-se - Kronos</title>
 </head>
 <body>
@@ -43,7 +44,7 @@
             <hr><span>OU</span><hr>
         </div>
 
-        <button type="submit" class="botaoCriarComGoogle"><img src="../assets/crud/img/logo-g-google.png" alt="">Criar com o Google</button>
+        <button type="submit" class="botaoCriarComGoogle"><img src="${pageContext.request.contextPath}/assets/crud/img/logo-g-google.png" alt="">Criar com o Google</button>
 
         <small>Já possui uma conta? <a href="teste2.html">Entrar</a></small>
 
