@@ -100,21 +100,46 @@ public boolean create(Empresa empresa) {
         return listaEmpresa;
     }
     // READ BY ID
-    public Empresa read(int id) {
+    public List<Empresa> read(String nome, String orderBy, String direction) {
         Conexao conexao = new Conexao();
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rset = null;
-        String readId = "SELECT * FROM empresa WHERE id = ?";
+        List<Empresa> listaEmpresa = new LinkedList<>();
+
+        String sql = "SELECT * FROM empresa";
+
+        if (nome != null && !nome.isEmpty()) {
+            sql += " WHERE nome ILIKE '%" + nome + "%'";
+        }
+
+        String colunaOrdenacao = "id";
+        if (orderBy != null) {
+            if (orderBy.equals("nome")) {
+                colunaOrdenacao = "nome";
+            } else if (orderBy.equals("email")) {
+                colunaOrdenacao = "email";
+            } else if (orderBy.equals("porte")) {
+                colunaOrdenacao = "porte";
+            } else if (orderBy.equals("cnpj")) {
+                colunaOrdenacao = "cnpj";
+            }
+        }
+
+        String dir = "ASC";
+        if (direction != null && direction.equalsIgnoreCase("DESC")) {
+            dir = "DESC";
+        }
+
+        sql += " ORDER BY " + colunaOrdenacao + " " + dir;
 
         try {
             conn = conexao.conectar();
-            pstmt = conn.prepareStatement(readId);
-            pstmt.setInt(1, id);
+            pstmt = conn.prepareStatement(sql);
             rset = pstmt.executeQuery();
 
-            if (rset.next()) {
-                return new Empresa(
+            while (rset.next()) {
+                Empresa empresa = new Empresa(
                         rset.getInt("id"),
                         rset.getString("nome"),
                         rset.getString("cep"),
@@ -126,19 +151,23 @@ public boolean create(Empresa empresa) {
                         rset.getTime("horario_encerramento").toLocalTime(),
                         rset.getString("regradenegocio")
                 );
+                listaEmpresa.add(empresa);
             }
+
         } catch (SQLException e) {
-            System.err.println("Erro ao buscar empresa por ID: " + e.getMessage());
+            System.err.println("Erro ao buscar empresa com filtro: " + e.getMessage());
+            return null;
         } finally {
             try {
                 if (rset != null) rset.close();
                 if (pstmt != null) pstmt.close();
                 if (conn != null) conn.close();
             } catch (SQLException e) {
-                System.err.println("Erro ao fechar recursos ao buscar empresa por ID: " + e.getMessage());
+                System.err.println("Erro ao fechar recursos ao buscar empresa com filtro: " + e.getMessage());
             }
         }
-        return null;
+
+        return listaEmpresa;
     }
 
 //  UPDATE da empresa pelo objeto Empresa
