@@ -16,7 +16,6 @@ public class Conexao {
             String dbHost = dotenv.get("DB_URL");
             String dbUser = dotenv.get("DB_USER");
             String dbPassword = dotenv.get("DB_PASSWORD");
-            String dbPass = dotenv.get("PASS");
 
 
             conn = DriverManager.getConnection(
@@ -28,9 +27,7 @@ public class Conexao {
         catch (SQLException e) {
             e.printStackTrace();
         }
-        finally {
             return conn;
-        }
 
     }
     public void desconectar(Connection conn){

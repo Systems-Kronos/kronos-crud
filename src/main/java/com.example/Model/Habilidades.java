@@ -4,11 +4,15 @@ package com.example.Model;
  * Representa um conjunto de habilidades de um funcionário: com nome, descrição e tag.
  */
 public class Habilidades {
+    // Atributos
     private int id;
     private String nome;
     private String tag;
     private String descricao;
 
+    // Métodos Construtores
+
+    // As validações de exceções são realizadas pelos métodos setters
     public Habilidades(int id, String nome, String tag, String descricao) {
         this.setId(id);
         this.setNome(nome);
@@ -57,8 +61,8 @@ public class Habilidades {
         if (tag == null) { // Exceção: verifica se a tag é nula
             throw new NullPointerException("A tag não pode ser nula.");
         }
-        if (tag.trim().isEmpty()) { // Exceção: verifica se o nome só contém espaço
-            throw new IllegalArgumentException("O nome não pode estar em branco.");
+        if (tag.trim().isEmpty()) { // Exceção: verifica se a tag só contém espaço
+            throw new IllegalArgumentException("A tag não pode estar em branco.");
         }
         this.tag = tag;
     }
