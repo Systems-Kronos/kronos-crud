@@ -213,6 +213,45 @@ public List<Usuario> read(
     return usuarios;
 }
 
+//READ BY ID
+    public Usuario read(int id) {
+        Conexao conexao = new Conexao();
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rset = null;
+        String readId = "SELECT * FROM usuario WHERE id = ?";
+        Usuario usuario = null;
+
+        try {
+            conn = conexao.conectar();
+            pstmt = conn.prepareStatement(readId);
+            pstmt.setInt(1, id);
+            rset = pstmt.executeQuery();
+
+            if (rset.next()) {
+                return new Usuario(rset.getInt("id"),
+                        rset.getString("nome"),
+                        rset.getString("cpf"),
+                        rset.getString("genero").charAt(0),
+                        rset.getString("status"),
+                        rset.getString("senha"),
+                        rset.getInt("fk_setor_id"),
+                        rset.getInt("fk_superisor_id"),
+                        rset.getString("cargo"));
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao buscar usuários por nome: " + e.getMessage());
+        } finally {
+            try {
+                if (rset != null) rset.close();
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                System.err.println("Erro ao fechar recursos ao buscar usuários por nome: " + e.getMessage());
+            }
+        }
+        return usuario;
+    }
 
     //    UPDATE objeto
     public int update(Usuario usuario) {
