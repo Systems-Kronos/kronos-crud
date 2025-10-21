@@ -82,9 +82,104 @@ public class AdministracaoDAO {
         return listaAdministracao;
     }
 
-//    READ By filtro
+//    READ By Id
+// READ com filtro por nome e ordenação
+public List<Administracao> read(String nome, String orderBy, String direction) {
+    Conexao conexao = new Conexao();
+    Connection conn = null;
+    PreparedStatement pstmt = null;
+    ResultSet rset = null;
+    List<Administracao> listaAdministracao = new LinkedList<>();
+
+    String sql = "SELECT * FROM administracao";
+
+    if (nome != null && !nome.isEmpty()) {
+        sql += " WHERE nome ILIKE '%" + nome + "%'";
+    }
+
+    String colunaOrdenacao = "id";
+    if (orderBy != null) {
+        if (orderBy.equals("nome")) {
+            colunaOrdenacao = "nome";
+        } else if (orderBy.equals("email")) {
+            colunaOrdenacao = "email";
+        } else if (orderBy.equals("senha")) {
+            colunaOrdenacao = "senha";
+        }
+    }
+
+    String dir = "ASC";
+    if (direction != null && direction.equalsIgnoreCase("DESC")) {
+        dir = "DESC";
+    }
+
+    sql += " ORDER BY " + colunaOrdenacao + " " + dir;
+
+    try {
+        conn = conexao.conectar();
+        pstmt = conn.prepareStatement(sql);
+        rset = pstmt.executeQuery();
+
+        while (rset.next()) {
+            Administracao administracao = new Administracao(
+                    rset.getInt("id"),
+                    rset.getString("nome"),
+                    rset.getString("email"),
+                    rset.getString("senha")
+            );
+            listaAdministracao.add(administracao);
+        }
+
+    } catch (SQLException e) {
+        System.err.println("Erro ao buscar administracao com filtro: " + e.getMessage());
+        return null;
+    } finally {
+        try {
+            if (rset != null) rset.close();
+            if (pstmt != null) pstmt.close();
+            if (conn != null) conn.close();
+        } catch (SQLException e) {
+            System.err.println("Erro ao fechar recursos ao buscar administracao com filtro: " + e.getMessage());
+        }
+    }
+
+    return listaAdministracao;
+}
 
 
+    public Administracao read(String email, String senha) {
+        Conexao conexao = new Conexao();
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rset = null;
+        String readEmail = "SELECT * FROM administracao WHERE email = ? and senha = ?";
+        try {
+            conn = conexao.conectar();
+            pstmt = conn.prepareStatement(readEmail);
+            pstmt.setString(1, email);
+            pstmt.setString(2, senha);
+            rset = pstmt.executeQuery();
+
+            if (rset.next()) {
+                return new Administracao(rset.getInt("id"),
+                        rset.getString("nome"),
+                        rset.getString("email"),
+                        rset.getString("senha"));
+            }
+
+        }catch (SQLException e) {
+            System.err.println("Erro ao buscar administracao por email e senha: " + e.getMessage());
+        } finally {
+            try {
+                if (rset != null) rset.close();
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                System.err.println("Erro ao fechar recursos ao buscar administracao por ID: " + e.getMessage());
+            }
+        }
+        return null;
+    }
 
 //    Update pelo objeto
     public int update(Administracao administracao) {
