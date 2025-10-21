@@ -20,13 +20,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+    var botaoFiltro = document.getElementById('botaoLimparFiltro');
+    botaoFiltro.addEventListener("click", function (){
+        window.location.href='${pageContext.request.contextPath}/usuarios-crud'
+    })
 });
-
-const modalUpdate = document.getElementById('update');
-const modalDelete = document.getElementById('delete');
-if (modalUpdate.dataset.abrir === 'true') {
-    modalUpdate.showModal();
-}
-else if (modalDelete.dataset.abrir === 'true') {
-    modalDelete.showModal();
-}

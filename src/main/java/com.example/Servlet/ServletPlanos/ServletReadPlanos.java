@@ -14,16 +14,26 @@ import java.util.List;
 @WebServlet("/planos-crud")
 public class ServletReadPlanos extends HttpServlet {
 
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // Pega o valor do campo de pesquisa
+        String pesquisa = request.getParameter("pesquisa");
 
-        // Instancia DAO
+        // Pega a ordem (crescente ou decrescente)
+        String ordem = request.getParameter("ordem"); // "crescente" ou "decrescente"
+
+        // Define direção padrão
+        String direction = "ASC";
+        if (ordem != null && ordem.equalsIgnoreCase("decrescente")) {
+            direction = "DESC";
+        }
+
+        // Cria DAO e busca planos com filtro e ordenação
         PlanoDAO dao = new PlanoDAO();
+        List<Plano> listaPlanos = dao.read(pesquisa, "nome", direction);
 
-        // Pega todos os planos do banco
-        List<Plano> listaPlanos = dao.read();
-
-        // Passa para o JSP
+        // Atribui ao request para o JSP acessar
         request.setAttribute("listaPlanos", listaPlanos);
 
         // Encaminha para o JSP dentro do WEB-INF

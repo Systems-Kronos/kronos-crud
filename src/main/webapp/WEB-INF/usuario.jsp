@@ -57,7 +57,7 @@
                             <input type="radio" name="ordem" value="decrescente"
                                 <%= "decrescente".equals(request.getParameter("ordem")) ? "checked" : "" %>> Decrescente
                         </label>
-                        <button type="reset" onclick="window.location='${pageContext.request.contextPath}/usuarios-crud'">Limpar filtros</button>
+                        <button type="reset" id="botaoLimparFiltro">Limpar filtros</button>
                         <button type="submit">Aplicar</button>
                     </div>
                 </details>

@@ -18,13 +18,23 @@ public class ServletReadSetores extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // Instancia DAO
+        // Pega o valor do campo de pesquisa
+        String pesquisa = request.getParameter("pesquisa");
+
+        // Pega a ordem (crescente ou decrescente)
+        String ordem = request.getParameter("ordem"); // "crescente" ou "decrescente"
+
+        // Define direção padrão
+        String direction = "ASC";
+        if (ordem != null && ordem.equalsIgnoreCase("decrescente")) {
+            direction = "DESC";
+        }
+
+        // Cria DAO e busca setores com filtro e ordenação
         SetorDAO dao = new SetorDAO();
+        List<Setor> listaSetores = dao.read(pesquisa, "nome", direction);
 
-        // Pega todos os setores do banco
-        List<Setor> listaSetores = dao.read();
-
-        // Passa para o JSP
+        // Atribui ao request para o JSP acessar
         request.setAttribute("listaSetores", listaSetores);
 
         // Encaminha para o JSP dentro do WEB-INF
