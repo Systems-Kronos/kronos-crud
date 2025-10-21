@@ -65,7 +65,7 @@
         <section class="create">
             <dialog id="create">
                 <h2>Cadastrar administrador</h2>
-                <form action="" method="post">
+                <form action="${pageContext.request.contextPath}/admin-create" method="post">
                     <div class="campos">
                         <div>
                             <div class="campo">
