@@ -18,7 +18,6 @@
 
 <%
     String idAdquirido = request.getParameter("pk");
-
     String acao = request.getParameter("acao");
     boolean updateAberto = "update".equals(acao);
     boolean deleteAberto = "delete".equals(acao);
@@ -62,11 +61,10 @@
         </form>
 
         <!-- CREATE -->
-
         <section class="create">
             <dialog id="create">
                 <h2>Cadastrar administrador</h2>
-                <form action="" method="post">
+                <form action="${pageContext.request.contextPath}/create-administracao" method="post">
                     <div class="campos">
                         <div>
                             <div class="campo">
@@ -95,13 +93,12 @@
             <button type="button" class="cadastrar acaoModal" data-acao="abrir" data-modal="create">Cadastrar</button>
         </section>
 
-
         <!-- UPDATE -->
-
         <section class="update">
             <dialog id="update" data-abrir="<%=updateAberto%>">
                 <h2>Editar administrador</h2>
-                <form action="" method="post">
+                <form action="${pageContext.request.contextPath}/update-administracao" method="post">
+                    <input type="hidden" name="pk" value="<%= idAdquirido != null ? idAdquirido : "" %>">
                     <div class="campos">
                         <div>
                             <div class="campo">
@@ -129,26 +126,26 @@
         </section>
 
         <!-- DELETE -->
-
         <section class="delete">
             <dialog id="delete" data-abrir="<%=deleteAberto%>">
                 <h2>Excluir administrador</h2>
-                <form action="" method="post">
+                <form action="delete-administracao" method="post">
+                    <input type="hidden" name="pk" value="<%= idAdquirido != null ? idAdquirido : "" %>">
                     <div class="campos">
                         <div>
                             <div class="campo">
                                 <label for="nomeDelete">Nome</label>
-                                <input type="text" name="nome" id="nomeDelete" disabled value="Davi Aliaga">
+                                <input type="text" name="nome" id="nomeDelete" disabled>
                             </div>
                             <div class="campo">
                                 <label for="senhaDelete">Senha</label>
-                                <input type="password" name="senha" id="senhaDelete" disabled value="">
+                                <input type="password" name="senha" id="senhaDelete" disabled>
                             </div>
                         </div>
                         <div>
                             <div class="campo">
                                 <label for="emailDelete">E-mail</label>
-                                <input type="email" name="email" id="emailDelete" disabled value="">
+                                <input type="email" name="email" id="emailDelete" disabled>
                             </div>
                         </div>
                     </div>
@@ -162,19 +159,18 @@
     </div>
 
     <!-- READ -->
-
     <main>
         <div class="tabelaScroll">
             <table class="tabelaAdministrador">
                 <thead>
-                    <tr>
-                        <th>Ver</th>
-                        <th>ID</th>
-                        <th>Nome</th>
-                        <th>E-mail</th>
-                        <th>Senha</th>
-                        <th></th>
-                    </tr>
+                <tr>
+                    <th>Ver</th>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>E-mail</th>
+                    <th>Senha</th>
+                    <th></th>
+                </tr>
                 </thead>
                 <tbody>
                 <%
@@ -182,25 +178,33 @@
                     if (listaAdmins != null && !listaAdmins.isEmpty()) {
                         for (Administracao admin : listaAdmins) {
                 %>
-                    <tr>
-                        <td>
-                            <form method="get"><input type="hidden" name="acao" value="update"><input type="hidden" name="pk" value="<%= admin.getId() %>"><button type="submit" class="detalhes"><img src="${pageContext.request.contextPath}/assets/crud/img/mais-detalhes.png" alt=""></button></form>
-                        </td>
-                        <td><%= admin.getId() %></td>
-                        <td><%= admin.getNome() %></td>
-                        <td><%= admin.getEmail() %></td>
-                        <td><%= admin.getSenha() %></td>
-                        <td>
-                            <form method="get"><input type="hidden" name="acao" value="delete"><input type="hidden" name="pk" value="<%= admin.getId() %>"><button type="submit" class="detalhes"><img src="${pageContext.request.contextPath}/assets/crud/img/deletar-kronos.png" alt=""></button></form>
-                        </td>
-                    </tr>
+                <tr>
+                    <td>
+                        <form method="get">
+                            <input type="hidden" name="acao" value="update">
+                            <input type="hidden" name="pk" value="<%= admin.getId() %>">
+                            <button type="submit" class="detalhes"><img src="${pageContext.request.contextPath}/assets/crud/img/mais-detalhes.png" alt=""></button>
+                        </form>
+                    </td>
+                    <td><%= admin.getId() %></td>
+                    <td><%= admin.getNome() %></td>
+                    <td><%= admin.getEmail() %></td>
+                    <td><%= admin.getSenha() %></td>
+                    <td>
+                        <form method="get">
+                            <input type="hidden" name="acao" value="delete">
+                            <input type="hidden" name="pk" value="<%= admin.getId() %>">
+                            <button type="submit" class="detalhes"><img src="${pageContext.request.contextPath}/assets/crud/img/deletar-kronos.png" alt=""></button>
+                        </form>
+                    </td>
+                </tr>
                 <%
                     }
                 } else {
                 %>
-                    <tr>
-                        <td colspan="6">Nenhum administrador encontrado.</td>
-                    </tr>
+                <tr>
+                    <td colspan="6">Nenhum administrador encontrado.</td>
+                </tr>
                 <% } %>
                 </tbody>
             </table>

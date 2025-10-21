@@ -245,33 +245,31 @@ public int update(String nome, String email, String senha, int id) {
     }
 }
 
-//Delete By Id
+    // Delete por ID
     public int delete(int id) {
+        String sql = "DELETE FROM administracao WHERE id = ?";
         Conexao conexao = new Conexao();
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        String delete = "DELETE FROM administracao WHERE id = ?";
-        try {
-            conn = conexao.conectar();
-            pstmt = conn.prepareStatement(delete);
-            pstmt.setInt(1, id);
 
-            if (pstmt.executeUpdate() > 0){
+        try (Connection conn = conexao.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, id);
+            int linhasAfetadas = pstmt.executeUpdate();
+
+            if (linhasAfetadas > 0) {
+                System.out.println("✅ Administrador deletado com sucesso! ID = " + id);
                 return 1;
+            } else {
+                System.out.println("⚠️ Nenhum administrador encontrado com o ID: " + id);
+                return 0;
             }
-            return 0;
-        }catch (SQLException e) {
-            System.err.println("Erro ao deletar adiministracao: " + e.getMessage());
+
+        } catch (SQLException e) {
+            System.err.println("❌ Erro ao deletar administrador: " + e.getMessage());
             return -1;
-        } finally {
-            try {
-                if (pstmt != null) pstmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                System.err.println("Erro ao fechar conexão após deletar adiministracao: " + e.getMessage());
-            }
         }
     }
+
 
 //    Delete By Nome
 public int delete(String nome) {
