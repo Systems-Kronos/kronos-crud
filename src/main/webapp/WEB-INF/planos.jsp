@@ -79,7 +79,7 @@
                                 </div>
                                 <div class="campo">
                                     <label for="precoCreate">Preço</label>
-                                    <input type="number" name="preco" id="precoCreate" step="0.01" min="0.01" placeholder="0,00">
+                                    <input type="number" name="preco" id="precoCreate" step="0.01" min="0.01" placeholder="0,00" required>
                                 </div>
                             </div>
                             <div>
@@ -118,8 +118,7 @@
                                 </div>
                                 <div class="campo">
                                     <label for="precoUpdate">Preço</label>
-                                    <input type="number" name="preco" id="precoUpdate" step="0.01" min="0.01" placeholder="0,00">
-                                </div>
+                                    <input type="number" name="preco" id="precoUpdate" step="0.01" min="0.01" placeholder="0,00" required>                                </div>
                             </div>
                             <div>
                                 <div class="campo">
