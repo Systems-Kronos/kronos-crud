@@ -77,7 +77,7 @@
                                     </div>
                                     <div class="campo">
                                         <label for="qtdFuncionariosCreate">Número de funcionários</label>
-                                        <input type="number" name="qtdFuncionarios" id="qtdFuncionariosCreate" min="1" required>
+                                        <input type="number" name="qtdFuncionarios" id="qtdFuncionariosCreate" min="0" required>
                                     </div>
                                 </div>
                                 <div>
@@ -87,7 +87,7 @@
                                     </div>
                                     <div class="campo">
                                         <label for="idEmpresaCreate">ID da Empresa</label>
-                                        <input type="number" name="idEmpresa" id="idEmpresaCreate" min="0" required>
+                                        <input type="number" name="idEmpresa" id="idEmpresaCreate" min="1" required>
                                     </div>
                                 </div>
                             </div>
@@ -120,7 +120,7 @@
                                     </div>
                                     <div class="campo">
                                         <label for="qtdFuncionariosUpdate">Número de funcionários</label>
-                                        <input type="number" name="qtdFuncionarios" id="qtdFuncionariosUpdate" min="1" required>
+                                        <input type="number" name="qtdFuncionarios" id="qtdFuncionariosUpdate" min="0" required>
                                     </div>
                                 </div>
                                 <div>
@@ -130,7 +130,7 @@
                                     </div>
                                     <div class="campo">
                                         <label for="idEmpresaUpdate">ID da Empresa</label>
-                                        <input type="number" name="idEmpresa" id="idEmpresaUpdate" min="0" required>
+                                        <input type="number" name="idEmpresa" id="idEmpresaUpdate" min="1" required>
                                     </div>
                                 </div>
                             </div>
