@@ -81,12 +81,12 @@
                                 </div>
                                 <div class="campo">
                                     <label for="senhaCreate">Senha</label>
-                                    <input type="password" name="senha" id="senhaCreate" autocomplete="new-password" required>
+                                    <input type="password" name="senha" id="senhaCreate" autocomplete="new-password" required minlength="8">
                                 </div>
                                 <div class="campoLado">
                                     <div class="campo">
                                         <label for="generoCreate">Gênero</label>
-                                        <select name="genero" id="generoCreate">
+                                        <select name="genero" id="generoCreate" required>
                                             <option value="M">M</option>
                                             <option value="F">F</option>
                                             <option value="O">O</option>
@@ -94,7 +94,7 @@
                                     </div>
                                     <div class="campo">
                                         <label for="statusCreate">Status</label>
-                                        <select name="status" id="statusCreate">
+                                        <select name="status" id="statusCreate" required>
                                             <option value="Ativo" selected>Ativo</option>
                                             <option value="Inativo">Inativo</option>
                                             <option value="Férias">Férias</option>
@@ -143,12 +143,12 @@
                                 </div>
                                 <div class="campo">
                                     <label for="senhaUpdate">Senha</label>
-                                    <input type="password" name="senha" id="senhaUpdate" autocomplete="new-password" required>
+                                    <input type="password" name="senha" id="senhaUpdate" autocomplete="new-password" required minlength="8">
                                 </div>
                                 <div class="campoLado">
                                     <div class="campo">
                                         <label for="generoUpdate">Gênero</label>
-                                        <select name="genero" id="generoUpdate">
+                                        <select name="genero" id="generoUpdate" required>
                                             <option value="M">M</option>
                                             <option value="F">F</option>
                                             <option value="O">O</option>
@@ -156,7 +156,7 @@
                                     </div>
                                     <div class="campo">
                                         <label for="statusUpdate">Status</label>
-                                        <select name="status" id="statusUpdate">
+                                        <select name="status" id="statusUpdate" required>
                                             <option value="Ativo" selected>Ativo</option>
                                             <option value="Inativo">Inativo</option>
                                             <option value="Férias">Férias</option>
