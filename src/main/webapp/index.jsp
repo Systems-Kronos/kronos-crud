@@ -9,7 +9,7 @@
 </h1>
 <br/>
 <a href="hello-servlet">Hello Servlet</a>
-<a href="cadastro">Cadastro</a>
+<a href="landingpage/index.html">Landing Page</a>
 <a href = "login-crud">Login</a>
 </body>
 </html>
