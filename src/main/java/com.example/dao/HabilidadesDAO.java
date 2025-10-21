@@ -90,40 +90,73 @@ public class HabilidadesDAO {
 
 //    READ BY ID
 
-    public Habilidades read(int id) {
+    public List<Habilidades> read(String nome, String orderBy, String direction) {
         Conexao conexao = new Conexao();
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rset = null;
-        String readId = "SELECT * FROM habilidade WHERE id = ?";
+        List<Habilidades> listaHabilidades = new LinkedList<>();
+
+        String sql = "SELECT * FROM habilidade";
+
+        // Filtro por nome
+        if (nome != null && !nome.isEmpty()) {
+            sql += " WHERE nome ILIKE '%" + nome + "%'";
+        }
+
+        // Definir coluna de ordenação
+        String colunaOrdenacao = "id";
+        if (orderBy != null) {
+            if (orderBy.equals("nome")) {
+                colunaOrdenacao = "nome";
+            } else if (orderBy.equals("tag")) {
+                colunaOrdenacao = "tag";
+            } else if (orderBy.equals("descricao")) {
+                colunaOrdenacao = "descricao";
+            }
+        }
+
+        // Definir direção da ordenação
+        String dir = "ASC";
+        if (direction != null && direction.equalsIgnoreCase("DESC")) {
+            dir = "DESC";
+        }
+
+        sql += " ORDER BY " + colunaOrdenacao + " " + dir;
+
         try {
             conn = conexao.conectar();
-            pstmt = conn.prepareStatement(readId);
-            pstmt.setInt(1, id);
+            pstmt = conn.prepareStatement(sql);
             rset = pstmt.executeQuery();
 
-            if (rset.next()) {
-                return new Habilidades(rset.getInt("id"),
+            while (rset.next()) {
+                Habilidades habilidade = new Habilidades(
+                        rset.getInt("id"),
                         rset.getString("nome"),
                         rset.getString("tag"),
-                        rset.getString("descricao"));
+                        rset.getString("descricao")
+                );
+                listaHabilidades.add(habilidade);
             }
-    }
-        catch (SQLException e) {
-            System.err.println("Erro ao buscar habilidade por ID: " + e.getMessage());
+
+        } catch (SQLException e) {
+            System.err.println("Erro ao buscar habilidades com filtro: " + e.getMessage());
+            return null;
         } finally {
             try {
                 if (rset != null) rset.close();
                 if (pstmt != null) pstmt.close();
                 if (conn != null) conn.close();
             } catch (SQLException e) {
-                System.err.println("Erro ao fechar recursos ao buscar habilidade por ID: " + e.getMessage());
+                System.err.println("Erro ao fechar recursos ao buscar habilidades com filtro: " + e.getMessage());
             }
         }
-        return null;
+
+        return listaHabilidades;
     }
 
-//    Update pelo objeto
+
+    //    Update pelo objeto
     public int update(Habilidades habilidade) {
         Conexao conexao = new Conexao();
         Connection conn = null;
