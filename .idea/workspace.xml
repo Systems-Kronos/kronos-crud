@@ -11,8 +11,7 @@
   <component name="ChangeListManager">
     <list default="true" id="d1918824-facf-4752-b459-68023e29763f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.example/dao/UsuarioDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.example/dao/UsuarioDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/usuario.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/usuario.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com.example/dao/HabilidadesDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.example/dao/HabilidadesDAO.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,7 +28,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="Servlet-Habilidades" />
+        <entry key="$PROJECT_DIR$" value="metodos-planos" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -59,7 +58,7 @@
   "keyToString": {
     "Application.Main.executor": "Run",
     "Tomcat Server.Tomcat 11.0.111.executor": "Run",
-    "git-widget-placeholder": "Servlet-Setores",
+    "git-widget-placeholder": "metodos-habilidades",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)"
@@ -186,6 +185,7 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Main" />
         <item itemvalue="Application.Main" />
       </list>
     </recent_temporary>
