@@ -55,7 +55,7 @@ public class ServletUpdateEmpresa extends HttpServlet {
         }
 
 
-        request.getRequestDispatcher("/WEB-INF/empresas.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/pages/empresas.jsp").forward(request, response);
     }
 
 
@@ -144,6 +144,6 @@ public class ServletUpdateEmpresa extends HttpServlet {
         request.setAttribute("abrirModal", "update");
 
 
-        request.getRequestDispatcher("/WEB-INF/empresas.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/pages/empresas.jsp").forward(request, response);
     }
 }

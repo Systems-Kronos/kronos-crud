@@ -37,6 +37,6 @@ public class ServletReadUsuario extends HttpServlet {
         request.setAttribute("usuarios", listaUsuarios);
 
         // Redireciona para o JSP
-        request.getRequestDispatcher("/WEB-INF/usuario.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/pages/usuario.jsp").forward(request, response);
     }
 }

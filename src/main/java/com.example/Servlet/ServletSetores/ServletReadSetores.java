@@ -28,6 +28,6 @@ public class ServletReadSetores extends HttpServlet {
         request.setAttribute("listaSetores", listaSetores);
 
         // Encaminha para o JSP dentro do WEB-INF
-        request.getRequestDispatcher("/WEB-INF/setores.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/pages/setores.jsp").forward(request, response);
     }
 }

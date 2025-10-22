@@ -27,6 +27,6 @@ public class ServletReadHabilidades extends HttpServlet {
         request.setAttribute("listaHabilidades", listaHabilidades);
 
         // Encaminha para o JSP dentro do WEB-INF
-        request.getRequestDispatcher("/WEB-INF/habilidades.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/pages/habilidades.jsp").forward(request, response);
     }
 }
