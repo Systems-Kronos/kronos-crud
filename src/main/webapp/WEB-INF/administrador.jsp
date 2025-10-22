@@ -167,15 +167,16 @@
             <table class="tabelaAdministrador">
                 <thead>
                     <tr>
+                        <th>Excluir</th>
                         <th>Ver</th>
                         <th>ID</th>
                         <th>Nome</th>
                         <th>E-mail</th>
                         <th>Senha</th>
-                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
+
                 <%
                     List<Administracao> listaAdmins = (List<Administracao>) request.getAttribute("listaAdmins");
                     if (listaAdmins != null && !listaAdmins.isEmpty()) {
@@ -183,15 +184,16 @@
                 %>
                     <tr>
                         <td>
+                            <form method="get"><input type="hidden" name="acao" value="delete"><input type="hidden" name="pk" value="<%= admin.getId() %>"><button type="submit" class="detalhes"><img src="${pageContext.request.contextPath}/assets/crud/img/deletar-kronos.png" alt=""></button></form>
+                        </td>
+                        <td>
                             <form method="get"><input type="hidden" name="acao" value="update"><input type="hidden" name="pk" value="<%= admin.getId() %>"><button type="submit" class="detalhes"><img src="${pageContext.request.contextPath}/assets/crud/img/mais-detalhes.png" alt=""></button></form>
                         </td>
                         <td><%= admin.getId() %></td>
                         <td><%= admin.getNome() %></td>
                         <td><%= admin.getEmail() %></td>
                         <td><%= admin.getSenha() %></td>
-                        <td>
-                            <form method="get"><input type="hidden" name="acao" value="delete"><input type="hidden" name="pk" value="<%= admin.getId() %>"><button type="submit" class="detalhes"><img src="${pageContext.request.contextPath}/assets/crud/img/deletar-kronos.png" alt=""></button></form>
-                        </td>
+
                     </tr>
                 <%
                     }
