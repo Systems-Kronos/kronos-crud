@@ -251,6 +251,7 @@
                 <table class="tabelaHabilidades">
                     <thead>
                         <tr>
+                            <th>Excluir</th>
                             <th>Ver</th>
                             <th>ID</th>
                             <th>Nome</th>
@@ -260,7 +261,6 @@
                             <th>Status</th>
                             <th>Setor</th>
                             <th>Supervisor</th>
-                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -270,6 +270,9 @@
                             for (com.example.Model.Usuario u : usuarios) {
                     %>
                         <tr>
+                            <td>
+                                <form method="get"><input type="hidden" name="acao" value="delete"><input type="hidden" name="pk" value="<%= u.getId() %>"><button type="submit" class="detalhes"><img src="${pageContext.request.contextPath}/assets/crud/img/deletar-kronos.png" alt=""></button></form>
+                            </td>
                             <td>
                                 <form method="get"><input type="hidden" name="acao" value="update"><input type="hidden" name="pk" value="<%= u.getId() %>"><button type="submit" class="detalhes"><img src="${pageContext.request.contextPath}/assets/crud/img/mais-detalhes.png" alt=""></button></form>
                             </td>
@@ -281,9 +284,7 @@
                             <td><%= u.getStatus() %></td>
                             <td> Setor Join</td>
                             <td> Supervisor Join</td>
-                            <td>
-                                <form method="get"><input type="hidden" name="acao" value="delete"><input type="hidden" name="pk" value="<%= u.getId() %>"><button type="submit" class="detalhes"><img src="${pageContext.request.contextPath}/assets/crud/img/deletar-kronos.png" alt=""></button></form>
-                            </td>
+
                         </tr>
                     <%
                         }

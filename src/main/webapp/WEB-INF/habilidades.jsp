@@ -18,7 +18,6 @@
 
 <%
     String idAdquirido = request.getParameter("pk");
-
     String acao = request.getParameter("acao");
     boolean updateAberto = "update".equals(acao);
     boolean deleteAberto = "delete".equals(acao);
@@ -61,22 +60,25 @@
         </form>
 
         <!-- CREATE -->
-
         <section class="create">
             <dialog id="create">
-                <h2>Cadastrar administrador</h2>
-                <form action="" method="post">
+                <h2>Cadastrar habilidade</h2>
+                <form action="${pageContext.request.contextPath}/habilidade-create" method="post">
                     <div class="campos">
                         <div>
                             <div class="campo">
                                 <label for="nomeCreate">Nome</label>
                                 <input type="text" name="nome" id="nomeCreate" autocomplete="off" required>
                             </div>
+                            <div class="campo">
+                                <label for="tagCreate">Tag</label>
+                                <input type="text" name="tag" id="tagCreate" autocomplete="off" required>
+                            </div>
                         </div>
                         <div>
                             <div class="campo">
                                 <label for="descricaoCreate">Descrição</label>
-                                <textarea type="text" name="descricao" id="descricaoCreate" required></textarea>
+                                <textarea name="descricao" id="descricaoCreate" required></textarea>
                             </div>
                         </div>
                     </div>
@@ -90,12 +92,10 @@
             <button type="button" class="cadastrar acaoModal" data-acao="abrir" data-modal="create">Cadastrar</button>
         </section>
 
-
         <!-- UPDATE -->
-
         <section class="update">
             <dialog id="update" data-abrir="<%=updateAberto%>">
-                <h2>Editar administrador</h2>
+                <h2>Editar habilidade</h2>
                 <form action="" method="post">
                     <div class="campos">
                         <div>
@@ -103,11 +103,15 @@
                                 <label for="nomeUpdate">Nome</label>
                                 <input type="text" name="nome" id="nomeUpdate" autocomplete="off" required>
                             </div>
+                            <div class="campo">
+                                <label for="tagUpdate">Tag</label>
+                                <input type="text" name="tag" id="tagUpdate" autocomplete="off" required>
+                            </div>
                         </div>
                         <div>
                             <div class="campo">
                                 <label for="descricaoUpdate">Descrição</label>
-                                <textarea type="text" name="descricao" id="descricaoUpdate" required></textarea>
+                                <textarea name="descricao" id="descricaoUpdate" required></textarea>
                             </div>
                         </div>
                     </div>
@@ -120,10 +124,9 @@
         </section>
 
         <!-- DELETE -->
-
         <section class="delete">
             <dialog id="delete" data-abrir="<%=deleteAberto%>">
-                <h2>Excluir administrador</h2>
+                <h2>Excluir habilidade</h2>
                 <form action="" method="post">
                     <div class="campos">
                         <div>
@@ -131,11 +134,15 @@
                                 <label for="nomeDelete">Nome</label>
                                 <input type="text" name="nome" id="nomeDelete" autocomplete="off" disabled>
                             </div>
+                            <div class="campo">
+                                <label for="tagDelete">Tag</label>
+                                <input type="text" name="tag" id="tagDelete" autocomplete="off" disabled>
+                            </div>
                         </div>
                         <div>
                             <div class="campo">
                                 <label for="descricaoDelete">Descrição</label>
-                                <textarea type="text" name="descricao" id="descricaoDelete" disabled></textarea>
+                                <textarea name="descricao" id="descricaoDelete" disabled></textarea>
                             </div>
                         </div>
                     </div>
@@ -149,42 +156,58 @@
     </div>
 
     <!-- READ -->
-
     <div class="tabelaScroll">
         <table class="tabelaHabilidades">
             <thead>
-                <tr>
-                    <th>Ver</th>
-                    <th>ID</th>
-                    <th>Nome</th>
-                    <th>Descrição</th>
-                    <th></th>
-                </tr>
+            <tr>
+                <th>Excluir</th>
+                <th>Ver</th>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Tag</th>
+                <th>Descrição</th>
+            </tr>
             </thead>
             <tbody>
+
             <%
                 List<Habilidades> listaHabilidades = (List<Habilidades>) request.getAttribute("listaHabilidades");
                 if (listaHabilidades != null && !listaHabilidades.isEmpty()) {
                     for (Habilidades habilidade : listaHabilidades) {
             %>
-                <tr>
-                    <td>
-                        <form method="get"><input type="hidden" name="acao" value="update"><input type="hidden" name="pk" value="<%= habilidade.getId() %>"><button type="submit" class="detalhes"><img src="${pageContext.request.contextPath}/assets/crud/img/mais-detalhes.png" alt=""></button></form>
-                    </td>
-                    <td><%= habilidade.getId() %></td>
-                    <td><%= habilidade.getNome() %></td>
-                    <td><%= habilidade.getDescricao() %></td>
-                    <td>
-                        <form method="get"><input type="hidden" name="acao" value="delete"><input type="hidden" name="pk" value="<%= habilidade.getId() %>"><button type="submit" class="detalhes"><img src="${pageContext.request.contextPath}/assets/crud/img/deletar-kronos.png" alt=""></button></form>
-                    </td>
-                </tr>
+
+            <tr>
+                <td>
+                    <form method="get">
+                        <input type="hidden" name="acao" value="delete">
+                        <input type="hidden" name="pk" value="<%= habilidade.getId() %>">
+                        <button type="submit" class="detalhes">
+                            <img src="${pageContext.request.contextPath}/assets/crud/img/deletar-kronos.png" alt="">
+                        </button>
+                    </form>
+                </td>
+                <td>
+                    <form method="get">
+                        <input type="hidden" name="acao" value="update">
+                        <input type="hidden" name="pk" value="<%= habilidade.getId() %>">
+                        <button type="submit" class="detalhes">
+                            <img src="${pageContext.request.contextPath}/assets/crud/img/mais-detalhes.png" alt="">
+                        </button>
+                    </form>
+                </td>
+                <td><%= habilidade.getId() %></td>
+                <td><%= habilidade.getNome() %></td>
+                <td><%= habilidade.getTag() %></td>
+                <td><%= habilidade.getDescricao() %></td>
+
+            </tr>
             <%
                 }
             } else {
             %>
-                <tr>
-                    <td colspan="4">Nenhuma habilidade encontrada.</td>
-                </tr>
+            <tr>
+                <td colspan="6">Nenhuma habilidade encontrada.</td>
+            </tr>
             <% } %>
             </tbody>
         </table>

@@ -189,13 +189,13 @@
             <table class="tabelaHabilidades">
                 <thead>
                     <tr>
+                        <th>Excluir</th>
                         <th>Ver</th>
                         <th>ID</th>
                         <th>Nome</th>
                         <th>Quantidade de Funcionários</th>
                         <th>Turnos</th>
                         <th>Descrição</th>
-                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -206,6 +206,9 @@
                 %>
                     <tr>
                         <td>
+                            <form method="get"><input type="hidden" name="acao" value="delete"><input type="hidden" name="pk" value="<%= setor.getId() %>"><button type="submit" class="detalhes"><img src="${pageContext.request.contextPath}/assets/crud/img/deletar-kronos.png" alt=""></button></form>
+                        </td>
+                        <td>
                             <form method="get"><input type="hidden" name="acao" value="update"><input type="hidden" name="pk" value="<%= setor.getId() %>"><button type="submit" class="detalhes"><img src="${pageContext.request.contextPath}/assets/crud/img/mais-detalhes.png" alt=""></button></form>
                         </td>
                         <td><%= setor.getId() %></td>
@@ -213,9 +216,7 @@
                         <td><%= setor.getQntFuncionarios() %></td>
                         <td><%= setor.getTurnos() %></td>
                         <td><%= setor.getDescricao() %></td>
-                        <td>
-                            <form method="get"><input type="hidden" name="acao" value="delete"><input type="hidden" name="pk" value="<%= setor.getId() %>"><button type="submit" class="detalhes"><img src="${pageContext.request.contextPath}/assets/crud/img/deletar-kronos.png" alt=""></button></form>
-                        </td>
+
                     </tr>
                 <%
                     }

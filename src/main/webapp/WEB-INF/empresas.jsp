@@ -295,6 +295,7 @@
         <table class="tabelaEmpresas">
             <thead>
             <tr>
+                <th>Excluir</th>
                 <th>Ver</th>
                 <th>ID</th>
                 <th>Nome</th>
@@ -306,7 +307,7 @@
                 <th>Abertura</th>
                 <th>Fechamento</th>
                 <th>Regras</th>
-                <th></th>
+
             </tr>
             </thead>
             <tbody>
@@ -316,6 +317,13 @@
                     for (Empresa empresa : listaEmpresas) {
             %>
             <tr>
+                <td>
+                    <form method="get" action="<%= request.getContextPath() %>/empresas-delete">
+                        <input type="hidden" name="acao" value="delete">
+                        <input type="hidden" name="pk" value="<%= empresa.getId() %>">
+                        <button type="submit" class="detalhes"><img src="<%= request.getContextPath() %>/assets/crud/img/deletar-kronos.png" alt=""></button>
+                    </form>
+                </td>
                 <td>
                     <form method="get" action="<%= request.getContextPath() %>/empresas-update">
                         <input type="hidden" name="acao" value="update">
@@ -333,13 +341,7 @@
                 <td><%= timeValue(empresa.getHorarioAbertura()) %></td>
                 <td><%= timeValue(empresa.getHorarioFechamento()) %></td>
                 <td>...</td>
-                <td>
-                    <form method="get" action="<%= request.getContextPath() %>/empresas-delete">
-                        <input type="hidden" name="acao" value="delete">
-                        <input type="hidden" name="pk" value="<%= empresa.getId() %>">
-                        <button type="submit" class="detalhes"><img src="<%= request.getContextPath() %>/assets/crud/img/deletar-kronos.png" alt=""></button>
-                    </form>
-                </td>
+
             </tr>
             <%
                 }

@@ -235,7 +235,7 @@ public List<Usuario> read(
                         rset.getString("status"),
                         rset.getString("senha"),
                         rset.getInt("fk_setor_id"),
-                        rset.getInt("fk_superisor_id"),
+                        rset.getInt("fk_supervisor_id"),
                         rset.getString("cargo"));
             }
         } catch (SQLException e) {
