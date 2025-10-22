@@ -88,40 +88,73 @@ public class PlanoDAO {
             }
 
 //            READ BY ID
-    public Plano read(int id) {
-        Conexao conexao = new Conexao();
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rset = null;
-        String readId = "SELECT * FROM planos WHERE id = ?";
-        try {
-            conn = conexao.conectar();
-            pstmt = conn.prepareStatement(readId);
-            pstmt.setInt(1, id);
-            rset = pstmt.executeQuery();
+// READ COM FILTRO
+public List<Plano> read(String nome, String orderBy, String direction) {
+    Conexao conexao = new Conexao();
+    Connection conn = null;
+    PreparedStatement pstmt = null;
+    ResultSet rset = null;
+    List<Plano> listaPlano = new LinkedList<>();
 
-            if (rset.next()) {
-                return new Plano(rset.getInt("id"),
-                        rset.getString("nomeplano"),
-                        rset.getFloat("custo"),
-                        rset.getString("descricao"),
-                        rset.getInt("qnt_max_funcionario"));
-            }
-    }catch (SQLException e) {
-            System.err.println("Erro ao buscar planos por ID: " + e.getMessage());
-        } finally {
-            try {
-                if (rset != null) rset.close();
-                if (pstmt != null) pstmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                System.err.println("Erro ao fechar recursos ao buscar planos por ID: " + e.getMessage());
-            }
-        }
-        return null;
+    String sql = "SELECT * FROM planos";
+
+    if (nome != null && !nome.isEmpty()) {
+        sql += " WHERE nomeplano ILIKE '%" + nome + "%'";
     }
 
-//    Update pelo objeto
+    String colunaOrdenacao = "id";
+    if (orderBy != null) {
+        if (orderBy.equals("nome")) {
+            colunaOrdenacao = "nomeplano";
+        } else if (orderBy.equals("custo")) {
+            colunaOrdenacao = "custo";
+        } else if (orderBy.equals("descricao")) {
+            colunaOrdenacao = "descricao";
+        } else if (orderBy.equals("qnt_max_funcionario")) {
+            colunaOrdenacao = "qnt_max_funcionario";
+        }
+    }
+
+    String dir = "ASC";
+    if (direction != null && direction.equalsIgnoreCase("DESC")) {
+        dir = "DESC";
+    }
+
+    sql += " ORDER BY " + colunaOrdenacao + " " + dir;
+
+    try {
+        conn = conexao.conectar();
+        pstmt = conn.prepareStatement(sql);
+        rset = pstmt.executeQuery();
+
+        while (rset.next()) {
+            Plano plano = new Plano(
+                    rset.getInt("id"),
+                    rset.getString("nomeplano"),
+                    rset.getFloat("custo"),
+                    rset.getString("descricao"),
+                    rset.getInt("qnt_max_funcionario")
+            );
+            listaPlano.add(plano);
+        }
+
+    } catch (SQLException e) {
+        System.err.println("Erro ao buscar planos com filtro: " + e.getMessage());
+        return null;
+    } finally {
+        try {
+            if (rset != null) rset.close();
+            if (pstmt != null) pstmt.close();
+            if (conn != null) conn.close();
+        } catch (SQLException e) {
+            System.err.println("Erro ao fechar recursos ao buscar planos com filtro: " + e.getMessage());
+        }
+    }
+
+    return listaPlano;
+}
+
+    //    Update pelo objeto
     public int update(Plano plano) {
         Conexao conexao = new Conexao();
         Connection conn = null;

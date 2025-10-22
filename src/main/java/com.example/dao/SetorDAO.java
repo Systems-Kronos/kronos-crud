@@ -90,43 +90,76 @@ public class SetorDAO {
     }
 
 //    READ By Id
-    public Setor read(int id) {
-        Conexao conexao = new Conexao();
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rset = null;
-        String readId = "SELECT * FROM setor WHERE id = ?";
+public List<Setor> read(String nome, String orderBy, String direction) {
+    Conexao conexao = new Conexao();
+    Connection conn = null;
+    PreparedStatement pstmt = null;
+    ResultSet rset = null;
+    List<Setor> listaSetor = new LinkedList<>();
 
-        try {
-            conn = conexao.conectar();
-            pstmt = conn.prepareStatement(readId);
-            pstmt.setInt(1, id);
-            rset = pstmt.executeQuery();
+    String sql = "SELECT * FROM setor";
 
-            if (rset.next()) {
-                return new Setor(
-                        rset.getInt("id"),
-                        rset.getString("nome"),
-                        rset.getString("descricao"),
-                        rset.getString("turnos"),
-                        rset.getInt("qnt_funcionarios"),
-                        rset.getInt("fk_empresa_id"));
-            }
-        } catch (SQLException e) {
-            System.err.println("Erro ao buscar setor por ID: " + e.getMessage());
-        } finally {
-            try {
-                if (rset != null) rset.close();
-                if (pstmt != null) pstmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                System.err.println("Erro ao fechar recursos ao buscar setor por ID: " + e.getMessage());
-            }
-        }
-        return null;
+    if (nome != null && !nome.isEmpty()) {
+        sql += " WHERE nome ILIKE '%" + nome + "%'";
     }
 
-//    UPDATE com objeto
+    String colunaOrdenacao = "id";
+    if (orderBy != null) {
+        if (orderBy.equals("nome")) {
+            colunaOrdenacao = "nome";
+        } else if (orderBy.equals("descricao")) {
+            colunaOrdenacao = "descricao";
+        } else if (orderBy.equals("turnos")) {
+            colunaOrdenacao = "turnos";
+        } else if (orderBy.equals("qnt_funcionarios")) {
+            colunaOrdenacao = "qnt_funcionarios";
+        } else if (orderBy.equals("fk_empresa_id")) {
+            colunaOrdenacao = "fk_empresa_id";
+        }
+    }
+
+    String dir = "ASC";
+    if (direction != null && direction.equalsIgnoreCase("DESC")) {
+        dir = "DESC";
+    }
+
+    sql += " ORDER BY " + colunaOrdenacao + " " + dir;
+
+    try {
+        conn = conexao.conectar();
+        pstmt = conn.prepareStatement(sql);
+        rset = pstmt.executeQuery();
+
+        while (rset.next()) {
+            Setor setor = new Setor(
+                    rset.getInt("id"),
+                    rset.getString("nome"),
+                    rset.getString("descricao"),
+                    rset.getString("turnos"),
+                    rset.getInt("qnt_funcionarios"),
+                    rset.getInt("fk_empresa_id")
+            );
+            listaSetor.add(setor);
+        }
+
+    } catch (SQLException e) {
+        System.err.println("Erro ao buscar setor com filtro: " + e.getMessage());
+        return null;
+    } finally {
+        try {
+            if (rset != null) rset.close();
+            if (pstmt != null) pstmt.close();
+            if (conn != null) conn.close();
+        } catch (SQLException e) {
+            System.err.println("Erro ao fechar recursos ao buscar setor com filtro: " + e.getMessage());
+        }
+    }
+
+    return listaSetor;
+}
+
+
+    //    UPDATE com objeto
     public int update(Setor setor) {
         Conexao conexao = new Conexao();
         Connection conn = null;
