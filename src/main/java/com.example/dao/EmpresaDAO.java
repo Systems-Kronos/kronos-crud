@@ -170,6 +170,46 @@ public boolean create(Empresa empresa) {
         return listaEmpresa;
     }
 
+    // READ BY ID
+    public Empresa read(int id) {
+        Conexao conexao = new Conexao();
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rset = null;
+        String readId = "SELECT * FROM empresa WHERE id = ?";
+
+        try {
+            conn = conexao.conectar();
+            pstmt = conn.prepareStatement(readId);
+            pstmt.setInt(1, id);
+            rset = pstmt.executeQuery();
+
+            if (rset.next()) {
+                return new Empresa(rset.getInt("id"),
+                        rset.getString("nome"),
+                        rset.getString("cep"),
+                        rset.getString("cnpj"),
+                        rset.getString("email"),
+                        rset.getString("telefone"),
+                        rset.getString("porte"),
+                        rset.getTime("horario_abertura").toLocalTime(),
+                        rset.getTime("horario_encerramento").toLocalTime(),
+                        rset.getString("regradenegocio"));
+        }
+    }   catch (SQLException e) {
+            System.err.println("Erro ao buscar empresa com filtro: " + e.getMessage());
+            return null;
+        } finally {
+            try {
+                if (rset != null) rset.close();
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                System.err.println("Erro ao fechar recursos ao buscar empresa com filtro: " + e.getMessage());
+            }
+        }
+        return null;
+    }
 //  UPDATE da empresa pelo objeto Empresa
     public int update(Empresa empresa) {
         Conexao conexao = new Conexao();
