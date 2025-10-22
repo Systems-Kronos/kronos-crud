@@ -7,6 +7,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
 
 import java.io.IOException;
 import java.util.LinkedList;
@@ -30,7 +31,7 @@ public class ServletReadUsuario extends HttpServlet {
 
         // Criar DAO e buscar usuários
         UsuarioDAO usuarioDAO = new UsuarioDAO();
-        LinkedList<Usuario> listaUsuarios = usuarioDAO.readUsuariosPorNome(pesquisa, "nome", direction);
+        List<Usuario> listaUsuarios = usuarioDAO.read(pesquisa, "nome", direction);
 
         // Salvar a lista no request para exibir no JSP
         request.setAttribute("usuarios", listaUsuarios);
