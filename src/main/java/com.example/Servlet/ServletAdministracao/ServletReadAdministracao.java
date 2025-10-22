@@ -28,6 +28,6 @@ public class ServletReadAdministracao extends HttpServlet {
         request.setAttribute("listaAdmins", listaAdmins);
 
         // Encaminha para JSP dentro do WEB-INF
-        request.getRequestDispatcher("/WEB-INF/administrador.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/pages/administrador.jsp").forward(request, response);
     }
 }

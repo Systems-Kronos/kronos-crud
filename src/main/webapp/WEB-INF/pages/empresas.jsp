@@ -80,7 +80,7 @@
 
 <%-- BLOCO DE ERRO --%>
 <% if (erro != null && !erro.isEmpty()) { %>
-<div style="background-color: #FFD2D2; border: 1px solid #D800 C; color: #A00; padding: 10px; margin: 10px 4%; border-radius: 5px; width: 90%;">
+<div style="background-color: #FFD2D2; border: 1px solid #D800; color: #A00; padding: 10px; margin: 10px 4%; border-radius: 5px; width: 90%;">
     <strong>ERRO:</strong> <%= erro %>
 </div>
 <% } %>
@@ -96,6 +96,7 @@
                     <label class="opcaoFiltro"><input type="radio" name="ordem" value="crescente">Crescente</label>
                     <label class="opcaoFiltro"><input type="radio" name="ordem" value="decrescente">Decrescente</label>
                     <button type="reset">Limpar filtros</button>
+                    <button type="submit">Aplicar</button>
                 </div>
             </details>
         </form>

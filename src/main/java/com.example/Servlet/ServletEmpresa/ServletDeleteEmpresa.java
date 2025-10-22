@@ -96,6 +96,6 @@ public class ServletDeleteEmpresa extends HttpServlet {
         }
         request.setAttribute("abrirModal", "delete");
 
-        request.getRequestDispatcher("/WEB-INF/empresas.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/pages/empresas.jsp").forward(request, response);
     }
 }

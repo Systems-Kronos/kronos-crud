@@ -27,6 +27,6 @@ public class ServletReadPlanos extends HttpServlet {
         request.setAttribute("listaPlanos", listaPlanos);
 
         // Encaminha para o JSP dentro do WEB-INF
-        request.getRequestDispatcher("/WEB-INF/planos.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/pages/planos.jsp").forward(request, response);
     }
 }

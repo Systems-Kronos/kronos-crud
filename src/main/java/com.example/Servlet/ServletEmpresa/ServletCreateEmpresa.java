@@ -86,6 +86,6 @@ public class ServletCreateEmpresa extends HttpServlet {
         request.setAttribute("abrirModal", "create");
 
         // 3. Encaminha (forward) o request (com os erros e dados) de volta para o JSP
-        request.getRequestDispatcher("/WEB-INF/empresas.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/pages/empresas.jsp").forward(request, response);
     }
 }

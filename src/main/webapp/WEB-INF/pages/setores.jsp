@@ -55,6 +55,8 @@
                             <input type="radio" name="ordem" value="decrescente">Decrescente
                         </label>
                         <button type="reset">Limpar filtros</button>
+                        <button type="submit">Aplicar</button>
+
                     </div>
                 </details>
             </form>
