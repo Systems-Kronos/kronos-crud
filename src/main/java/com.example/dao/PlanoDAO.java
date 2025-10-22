@@ -154,6 +154,40 @@ public List<Plano> read(String nome, String orderBy, String direction) {
     return listaPlano;
 }
 
+    //            READ BY ID
+    public Plano read(int id) {
+        Conexao conexao = new Conexao();
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rset = null;
+        String readId = "SELECT * FROM planos WHERE id = ?";
+        try {
+            conn = conexao.conectar();
+            pstmt = conn.prepareStatement(readId);
+            pstmt.setInt(1, id);
+            rset = pstmt.executeQuery();
+
+            if (rset.next()) {
+                return new Plano(rset.getInt("id"),
+                        rset.getString("nomeplano"),
+                        rset.getFloat("custo"),
+                        rset.getString("descricao"),
+                        rset.getInt("qnt_max_funcionario"));
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao buscar planos com filtro: " + e.getMessage());
+        } finally {
+            try {
+                if (rset != null) rset.close();
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                System.err.println("Erro ao fechar recursos ao buscar planos com filtro: " + e.getMessage());
+            }
+        }
+        return null;
+        }
+
     //    Update pelo objeto
     public int update(Plano plano) {
         Conexao conexao = new Conexao();
