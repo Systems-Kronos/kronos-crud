@@ -220,7 +220,6 @@ public List<Usuario> read(
         PreparedStatement pstmt = null;
         ResultSet rset = null;
         String readId = "SELECT * FROM usuario WHERE id = ?";
-        Usuario usuario = null;
 
         try {
             conn = conexao.conectar();
@@ -250,7 +249,7 @@ public List<Usuario> read(
                 System.err.println("Erro ao fechar recursos ao buscar usuários por nome: " + e.getMessage());
             }
         }
-        return usuario;
+        return null;
     }
 
     //    UPDATE objeto
