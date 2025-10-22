@@ -146,6 +146,40 @@ public List<Administracao> read(String nome, String orderBy, String direction) {
     return listaAdministracao;
 }
 
+    //    READ By Id
+    public Administracao read(int id) {
+        Conexao conexao = new Conexao();
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rset = null;
+        String readId = "SELECT * FROM administracao WHERE id = ?";
+
+        try {
+            conn = conexao.conectar();
+            pstmt = conn.prepareStatement(readId);
+            pstmt.setInt(1, id);
+            rset = pstmt.executeQuery();
+
+            if (rset.next()) {
+                return new Administracao(rset.getInt("id"),
+                        rset.getString("nome"),
+                        rset.getString("email"),
+                        rset.getString("senha"));
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao buscar administracao com filtro: " + e.getMessage());
+            return null;
+        } finally {
+            try {
+                if (rset != null) rset.close();
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                System.err.println("Erro ao fechar recursos ao buscar administracao com filtro: " + e.getMessage());
+            }
+        }
+        return null;
+    }
 
     public Administracao read(String email, String senha) {
         Conexao conexao = new Conexao();
