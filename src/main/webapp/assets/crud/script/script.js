@@ -1,20 +1,38 @@
 document.addEventListener('DOMContentLoaded', () => {
 
+    // --- LÓGICA PARA BOTÕES DE FILTRAGEM ---
+    const botaoLimparFiltro = document.getElementById("botaoLimparFiltro");
+
+    botaoLimparFiltro.addEventListener("click", function() {
+        const caminho = JSON.parse(botaoLimparFiltro.dataset.caminho);
+        const caminhoBase = caminho.base;
+        const tabelaAtual = caminho.tabela;
+        window.location.href = `${caminhoBase}/${tabelaAtual}`;
+    });
+
     // --- LÓGICA PARA ABRIR/FECHAR MODAIS COM CLIQUE ---
     const botoesModal = document.querySelectorAll('.acaoModal');
-    botoesModal.forEach(function(botao) {
-        botao.addEventListener('click', function(evento) {
+    botoesModal.forEach(botaoModal => {
+        botaoModal.addEventListener('click', () => {
+            const modal = document.getElementById(botaoModal.dataset.modal);
+            const acao = botaoModal.dataset.acao;
 
-            const acao = evento.currentTarget.getAttribute('data-acao');
-            const idModal = evento.currentTarget.getAttribute('data-modal');
-
-            const modalAlvo = document.getElementById(idModal);
-
-            if (modalAlvo && typeof modalAlvo.showModal === 'function') {
+            if (modal) {
                 if (acao === 'abrir') {
-                    modalAlvo.showModal();
+                    const pk = botaoModal.dataset.pk;
+                    if (modal.id === 'update') { document.getElementById('idUpdate').value = pk }
+                    else if (modal.id === 'delete') { document.getElementById('idDelete').value = pk }
+
+                    if (botaoModal.dataset.caminho) {
+                        const caminho = JSON.parse(botaoModal.dataset.caminho);
+                        const caminhoBase = caminho.base;
+                        const tabelaAtual = caminho.tabela;
+                        fetch(`${caminhoBase}/${tabelaAtual}?pk=${pk}`);
+                    }
+                    modal.showModal();
+
                 } else if (acao === 'fechar') {
-                    modalAlvo.close();
+                    modal.close();
                 }
             }
         });
@@ -56,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-}); // <-- FIM DO 'DOMContentLoaded'
+}); 
 
 
 /*
@@ -124,4 +142,26 @@ function isValidSenha(senha) {
         throw new Error("A senha deve ter no mínimo 1 caractere especial");
     }
     return true;
+}
+
+// --- FUNÇÕES DE PRÉ-PREENCHIMENTO DOS MODAIS ---
+
+function preencherCamposModal(tipo, dados) {
+    if (tipo === 'update') {
+        if (document.getElementById('idUpdate')) document.getElementById('idUpdate').value = dados.id || '';
+        if (document.getElementById('nomeUpdate')) document.getElementById('nomeUpdate').value = dados.nome || '';
+        if (document.getElementById('emailUpdate')) document.getElementById('emailUpdate').value = dados.email || '';
+        if (document.getElementById('senhaUpdate')) document.getElementById('senhaUpdate').value = dados.senha || '';
+        if (document.getElementById('cpfUpdate')) document.getElementById('cpfUpdate').value = dados.cpf || '';
+        // adiciona outros campos que tiver no form update
+    }
+
+    else if (tipo === 'delete') {
+        if (document.getElementById('idDelete')) document.getElementById('idDelete').value = dados.id || '';
+        if (document.getElementById('nomeDelete')) document.getElementById('nomeDelete').value = dados.nome || '';
+        if (document.getElementById('emailDelete')) document.getElementById('emailDelete').value = dados.email || '';
+        // se quiser mostrar no modal de exclusão algo tipo “Tem certeza que quer excluir X?”
+        const nomeAlvo = document.getElementById('nomeDeleteTexto');
+        if (nomeAlvo) nomeAlvo.textContent = dados.nome ? `Tem certeza que deseja excluir ${dados.nome}?` : '';
+    }
 }

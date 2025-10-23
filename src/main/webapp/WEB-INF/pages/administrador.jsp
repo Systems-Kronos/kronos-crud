@@ -16,14 +16,6 @@
     <title>CRUD - Kronos</title>
 </head>
 
-<%
-    String idAdquirido = request.getParameter("pk");
-
-    String acao = request.getParameter("acao");
-    boolean updateAberto = "update".equals(acao);
-    boolean deleteAberto = "delete".equals(acao);
-%>
-
 <body>
 <div class="meuPlaceholder"></div>
 
@@ -43,19 +35,21 @@
 
 <div class="conteudoPrincipal">
     <div class="procurarCadastrar">
-        <form class="pesquisa">
-            <input type="search" placeholder="Pesquisar" id="pesquisa" name="pesquisa" class="buscar">
+        <form class="pesquisa" method="get" action="${pageContext.request.contextPath}/admin-crud">
+            <input type="search" placeholder="Pesquisar" id="pesquisa" name="pesquisa" class="buscar" value="<%= request.getParameter("pesquisa") != null ? request.getParameter("pesquisa") : "" %>">
 
             <details class="filtros">
                 <summary>Filtros</summary>
                 <div class="conteudoFiltros">
                     <label class="opcaoFiltro">
-                        <input type="radio" name="ordem" value="crescente">Crescente
+                        <input type="radio" name="ordem" value="crescente"
+                            <%= "crescente".equals(request.getParameter("ordem")) ? "checked" : "" %>> Crescente
                     </label>
                     <label class="opcaoFiltro">
-                        <input type="radio" name="ordem" value="decrescente">Decrescente
+                        <input type="radio" name="ordem" value="decrescente"
+                            <%= "decrescente".equals(request.getParameter("ordem")) ? "checked" : "" %>> Decrescente
                     </label>
-                    <button type="reset">Limpar filtros</button>
+                    <button type="reset" id="botaoLimparFiltro" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"admin-crud"}'>Limpar filtros</button>
                     <button type="submit">Aplicar</button>
                 </div>
             </details>
@@ -94,14 +88,18 @@
 
             <button type="button" class="cadastrar acaoModal" data-acao="abrir" data-modal="create">Cadastrar</button>
         </section>
-
-
+        
+        
         <!-- UPDATE -->
-
+        
         <section class="update">
-            <dialog id="update" data-abrir="<%=updateAberto%>">
+            <dialog id="update">
                 <h2>Editar administrador</h2>
                 <form action="" method="post">
+                    <div>
+                        <label for="idDelete">ID:</label>
+                        <input type="button" name="id" id="idUpdate" disabled>
+                    </div>
                     <div class="campos">
                         <div>
                             <div class="campo">
@@ -121,8 +119,8 @@
                         </div>
                     </div>
                     <menu>
-                        <button type="submit">Confirmar alterações</button>
                         <button type="button" class="acaoModal" data-acao="fechar" data-modal="update">Cancelar</button>
+                        <button type="submit">Confirmar alterações</button>
                     </menu>
                 </form>
             </dialog>
@@ -131,9 +129,13 @@
         <!-- DELETE -->
 
         <section class="delete">
-            <dialog id="delete" data-abrir="<%=deleteAberto%>">
+            <dialog id="delete">
                 <h2>Excluir administrador</h2>
                 <form action="" method="post">
+                    <div>
+                        <label for="idDelete">ID:</label>
+                        <input type="button" name="id" id="idDelete" disabled>
+                    </div>
                     <div class="campos">
                         <div>
                             <div class="campo">
@@ -168,8 +170,8 @@
             <table class="tabelaAdministrador">
                 <thead>
                     <tr>
-                        <th>Excluir</th>
                         <th>Ver</th>
+                        <th>Excluir</th>
                         <th>ID</th>
                         <th>Nome</th>
                         <th>E-mail</th>
@@ -185,16 +187,15 @@
                 %>
                     <tr>
                         <td>
-                            <form method="get"><input type="hidden" name="acao" value="delete"><input type="hidden" name="pk" value="<%= admin.getId() %>"><button type="submit" class="detalhes"><img src="${pageContext.request.contextPath}/assets/crud/img/deletar-kronos.png" alt=""></button></form>
+                            <button type="button" class="detalhes acaoModal" data-acao="abrir" data-modal="update" data-pk="<%= admin.getId() %>" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"admin-crud"}'><img src="${pageContext.request.contextPath}/assets/crud/img/mais-detalhes.png" alt=""></button>
                         </td>
                         <td>
-                            <form method="get"><input type="hidden" name="acao" value="update"><input type="hidden" name="pk" value="<%= admin.getId() %>"><button type="submit" class="detalhes"><img src="${pageContext.request.contextPath}/assets/crud/img/mais-detalhes.png" alt=""></button></form>
+                            <button type="button" class="detalhes acaoModal" data-acao="abrir" data-modal="delete" data-pk="<%= admin.getId() %>" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"admin-crud"}'><img src="${pageContext.request.contextPath}/assets/crud/img/deletar-kronos.png" alt=""></button>
                         </td>
                         <td><%= admin.getId() %></td>
                         <td><%= admin.getNome() %></td>
                         <td><%= admin.getEmail() %></td>
                         <td><%= admin.getSenha() %></td>
-
                     </tr>
                 <%
                     }
