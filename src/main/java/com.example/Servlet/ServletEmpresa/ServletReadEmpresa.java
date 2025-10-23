@@ -28,6 +28,6 @@ public class ServletReadEmpresa extends HttpServlet {
         request.setAttribute("listaEmpresas", listaEmpresas);
 
         // Encaminha para o JSP dentro do WEB-INF
-        request.getRequestDispatcher("/WEB-INF/empresas.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/pages/empresas.jsp").forward(request, response);
     }
 }

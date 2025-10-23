@@ -1,4 +1,4 @@
-<%@ page import="com.example.Model.Habilidades" %>
+<%@ page import="com.example.Model.Administracao" %>
 <%@ page import="java.util.List" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -31,10 +31,10 @@
     <h1>KRONOS</h1>
     <nav>
         <ul>
-            <li><a href="${pageContext.request.contextPath}/admin-crud"><img src="${pageContext.request.contextPath}/assets/crud/img/img-crud-administrador.png" alt="">Administrador</a></li>
+            <li><a href="${pageContext.request.contextPath}/admin-crud" class="ativo"><img src="${pageContext.request.contextPath}/assets/crud/img/img-crud-administrador.png" alt="">Administrador</a></li>
             <li><a href="${pageContext.request.contextPath}/empresas-crud"><img src="${pageContext.request.contextPath}/assets/crud/img/img-crud-empresas.png" alt="">Empresas</a></li>
             <li><a href="${pageContext.request.contextPath}/planos-crud"><img src="${pageContext.request.contextPath}/assets/crud/img/img-crud-planos.png" alt="">Planos</a></li>
-            <li><a href="${pageContext.request.contextPath}/habilidades-crud" class="ativo"><img src="${pageContext.request.contextPath}/assets/crud/img/img-crud-habilidades.png" alt="">Habilidades</a></li>
+            <li><a href="${pageContext.request.contextPath}/habilidades-crud"><img src="${pageContext.request.contextPath}/assets/crud/img/img-crud-habilidades.png" alt="">Habilidades</a></li>
             <li><a href="${pageContext.request.contextPath}/setores-crud"><img src="${pageContext.request.contextPath}/assets/crud/img/img-crud-setores.png" alt="">Setores</a></li>
             <li><a href="${pageContext.request.contextPath}/usuarios-crud"><img src="${pageContext.request.contextPath}/assets/crud/img/img-crud-usuario.png" alt="">Usuário</a></li>
         </ul>
@@ -56,6 +56,7 @@
                         <input type="radio" name="ordem" value="decrescente">Decrescente
                     </label>
                     <button type="reset">Limpar filtros</button>
+                    <button type="submit">Aplicar</button>
                 </div>
             </details>
         </form>
@@ -65,18 +66,22 @@
         <section class="create">
             <dialog id="create">
                 <h2>Cadastrar administrador</h2>
-                <form action="" method="post">
+                <form action="${pageContext.request.contextPath}/admin-create" method="post">
                     <div class="campos">
                         <div>
                             <div class="campo">
                                 <label for="nomeCreate">Nome</label>
                                 <input type="text" name="nome" id="nomeCreate" autocomplete="off" required>
                             </div>
+                            <div class="campo">
+                                <label for="senhaCreate">Senha</label>
+                                <input type="password" name="senha" id="senhaCreate" autocomplete="new-password" required>
+                            </div>
                         </div>
                         <div>
                             <div class="campo">
-                                <label for="descricaoCreate">Descrição</label>
-                                <textarea type="text" name="descricao" id="descricaoCreate" required></textarea>
+                                <label for="emailCreate">E-mail</label>
+                                <input type="email" name="email" id="emailCreate" required>
                             </div>
                         </div>
                     </div>
@@ -101,13 +106,17 @@
                         <div>
                             <div class="campo">
                                 <label for="nomeUpdate">Nome</label>
-                                <input type="text" name="nome" id="nomeUpdate" autocomplete="off" required>
+                                <input type="text" name="nome" id="nomeUpdate" required>
+                            </div>
+                            <div class="campo">
+                                <label for="senhaUpdate">Senha</label>
+                                <input type="password" name="senha" id="senhaUpdate" required>
                             </div>
                         </div>
                         <div>
                             <div class="campo">
-                                <label for="descricaoUpdate">Descrição</label>
-                                <textarea type="text" name="descricao" id="descricaoUpdate" required></textarea>
+                                <label for="emailUpdate">E-mail</label>
+                                <input type="email" name="email" id="emailUpdate" required>
                             </div>
                         </div>
                     </div>
@@ -129,13 +138,17 @@
                         <div>
                             <div class="campo">
                                 <label for="nomeDelete">Nome</label>
-                                <input type="text" name="nome" id="nomeDelete" autocomplete="off" disabled>
+                                <input type="text" name="nome" id="nomeDelete" disabled value="Davi Aliaga">
+                            </div>
+                            <div class="campo">
+                                <label for="senhaDelete">Senha</label>
+                                <input type="password" name="senha" id="senhaDelete" disabled value="">
                             </div>
                         </div>
                         <div>
                             <div class="campo">
-                                <label for="descricaoDelete">Descrição</label>
-                                <textarea type="text" name="descricao" id="descricaoDelete" disabled></textarea>
+                                <label for="emailDelete">E-mail</label>
+                                <input type="email" name="email" id="emailDelete" disabled value="">
                             </div>
                         </div>
                     </div>
@@ -150,45 +163,51 @@
 
     <!-- READ -->
 
-    <div class="tabelaScroll">
-        <table class="tabelaHabilidades">
-            <thead>
-                <tr>
-                    <th>Ver</th>
-                    <th>ID</th>
-                    <th>Nome</th>
-                    <th>Descrição</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-            <%
-                List<Habilidades> listaHabilidades = (List<Habilidades>) request.getAttribute("listaHabilidades");
-                if (listaHabilidades != null && !listaHabilidades.isEmpty()) {
-                    for (Habilidades habilidade : listaHabilidades) {
-            %>
-                <tr>
-                    <td>
-                        <form method="get"><input type="hidden" name="acao" value="update"><input type="hidden" name="pk" value="<%= habilidade.getId() %>"><button type="submit" class="detalhes"><img src="${pageContext.request.contextPath}/assets/crud/img/mais-detalhes.png" alt=""></button></form>
-                    </td>
-                    <td><%= habilidade.getId() %></td>
-                    <td><%= habilidade.getNome() %></td>
-                    <td><%= habilidade.getDescricao() %></td>
-                    <td>
-                        <form method="get"><input type="hidden" name="acao" value="delete"><input type="hidden" name="pk" value="<%= habilidade.getId() %>"><button type="submit" class="detalhes"><img src="${pageContext.request.contextPath}/assets/crud/img/deletar-kronos.png" alt=""></button></form>
-                    </td>
-                </tr>
-            <%
-                }
-            } else {
-            %>
-                <tr>
-                    <td colspan="4">Nenhuma habilidade encontrada.</td>
-                </tr>
-            <% } %>
-            </tbody>
-        </table>
-    </div>
+    <main>
+        <div class="tabelaScroll">
+            <table class="tabelaAdministrador">
+                <thead>
+                    <tr>
+                        <th>Excluir</th>
+                        <th>Ver</th>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>E-mail</th>
+                        <th>Senha</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                <%
+                    List<Administracao> listaAdmins = (List<Administracao>) request.getAttribute("listaAdmins");
+                    if (listaAdmins != null && !listaAdmins.isEmpty()) {
+                        for (Administracao admin : listaAdmins) {
+                %>
+                    <tr>
+                        <td>
+                            <form method="get"><input type="hidden" name="acao" value="delete"><input type="hidden" name="pk" value="<%= admin.getId() %>"><button type="submit" class="detalhes"><img src="${pageContext.request.contextPath}/assets/crud/img/deletar-kronos.png" alt=""></button></form>
+                        </td>
+                        <td>
+                            <form method="get"><input type="hidden" name="acao" value="update"><input type="hidden" name="pk" value="<%= admin.getId() %>"><button type="submit" class="detalhes"><img src="${pageContext.request.contextPath}/assets/crud/img/mais-detalhes.png" alt=""></button></form>
+                        </td>
+                        <td><%= admin.getId() %></td>
+                        <td><%= admin.getNome() %></td>
+                        <td><%= admin.getEmail() %></td>
+                        <td><%= admin.getSenha() %></td>
+
+                    </tr>
+                <%
+                    }
+                } else {
+                %>
+                    <tr>
+                        <td colspan="6">Nenhum administrador encontrado.</td>
+                    </tr>
+                <% } %>
+                </tbody>
+            </table>
+        </div>
+    </main>
 </div>
 </body>
 </html>

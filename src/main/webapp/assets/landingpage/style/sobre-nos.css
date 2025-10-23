@@ -50,6 +50,11 @@
     margin-top: 1.5vw;
     border: none;
     border-radius: 0.6vw;
+    transition: background-color 0.2s ease;
+}
+
+.sobreKronos button:hover {
+    background-color: #C48F20;
 }
 
 .sobreKronos h1 {

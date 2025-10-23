@@ -56,6 +56,7 @@
                             <input type="radio" name="ordem" value="decrescente">Decrescente
                         </label>
                         <button type="reset">Limpar filtros</button>
+                        <button type="submit">Aplicar</button>
                     </div>
                 </details>
             </form>
@@ -65,7 +66,7 @@
             <section class="create">
                 <dialog id="create">
                     <h2>Cadastrar plano</h2>
-                    <form action="" method="post">
+                    <form action="${pageContext.request.contextPath}/create-plano" method="post">
                         <div class="campos">
                             <div>
                                 <div class="campo">
@@ -177,13 +178,13 @@
             <table class="tabelaPlanos">
                 <thead>
                     <tr>
+                        <th>Excluir</th>
                         <th>Ver</th>
                         <th>ID</th>
                         <th>Nome</th>
                         <th>Custo</th>
                         <th>Máximo de Funcionários</th>
                         <th>Descrição</th>
-                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -194,6 +195,9 @@
                 %>
                     <tr>
                         <td>
+                            <form method="get"><input type="hidden" name="acao" value="delete"><input type="hidden" name="pk" value="<%= plano.getId() %>"><button type="submit" class="detalhes"><img src="${pageContext.request.contextPath}/assets/crud/img/deletar-kronos.png" alt=""></button></form>
+                        </td>
+                        <td>
                             <form method="get"><input type="hidden" name="acao" value="update"><input type="hidden" name="pk" value="<%= plano.getId() %>"><button type="submit" class="detalhes"><img src="${pageContext.request.contextPath}/assets/crud/img/mais-detalhes.png" alt=""></button></form>                        
                         </td>
                         <td><%= plano.getId() %></td>
@@ -201,9 +205,7 @@
                         <td><%= plano.getCusto() %></td>
                         <td><%= plano.getMaxFuncionarios() %></td>
                         <td><%= plano.getDescricao() %></td>
-                        <td>
-                            <form method="get"><input type="hidden" name="acao" value="delete"><input type="hidden" name="pk" value="<%= plano.getId() %>"><button type="submit" class="detalhes"><img src="${pageContext.request.contextPath}/assets/crud/img/deletar-kronos.png" alt=""></button></form>                        
-                        </td>
+
                     </tr>
                 <%
                     }

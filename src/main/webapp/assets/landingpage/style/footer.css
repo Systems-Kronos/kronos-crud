@@ -78,6 +78,18 @@ footer nav ul li {
     background: var(--setinhaMarker) no-repeat center/contain;
 }
 
+.areaRestrita {
+    display: flex;
+}
+
+.cadeadoAreaRestrita {
+    height: 1.5vw;
+    cursor: pointer;
+    margin-left: 0.5vw;
+    position: relative;
+    top: 0.2vw;
+}
+
 .colunaFooter1, .colunaFooter2 {
     margin-right: 7.5vw;
 }

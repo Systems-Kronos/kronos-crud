@@ -11,6 +11,7 @@ import java.util.List;
 
 import java.io.IOException;
 import java.util.LinkedList;
+import java.util.List;
 
 @WebServlet("/usuarios-crud")
 public class ServletReadUsuario extends HttpServlet {
@@ -37,6 +38,6 @@ public class ServletReadUsuario extends HttpServlet {
         request.setAttribute("usuarios", listaUsuarios);
 
         // Redireciona para o JSP
-        request.getRequestDispatcher("/WEB-INF/usuario.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/pages/usuario.jsp").forward(request, response);
     }
 }
