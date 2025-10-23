@@ -64,7 +64,7 @@ public class ServletUpdateEmpresa extends HttpServlet {
 
         request.setCharacterEncoding("UTF-8");
         EmpresaDAO dao = new EmpresaDAO();
-        int id = 0; // Inicializa ID
+        int id = 0;
 
         try {
             id = Integer.parseInt(request.getParameter("pk"));
