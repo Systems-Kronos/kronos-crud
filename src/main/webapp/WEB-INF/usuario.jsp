@@ -68,7 +68,7 @@
             <section class="create">
                 <dialog id="create">
                     <h2>Cadastrar usuário</h2>
-                    <form action="" method="post">
+                    <form action="usuario-create" method="post">
                         <div class="campos">
                             <div>
                                 <div class="campo">
@@ -111,6 +111,10 @@
                                 <div class="campo">
                                     <label for="idSupervisorCreate">ID do Supervisor</label>
                                     <input type="number" name="idSupervisor" id="idSupervisorCreate" min="1" required>
+                                </div>
+                                <div class="campo">
+                                    <label for="cargoCreate">cargo</label>
+                                    <input type="text" name="cargo" id="cargocreate" min="1" required>
                                 </div>
                             </div>
                         </div>
@@ -260,6 +264,7 @@
                             <th>Status</th>
                             <th>Setor</th>
                             <th>Supervisor</th>
+                            <th></th>
                             <th></th>
                         </tr>
                     </thead>

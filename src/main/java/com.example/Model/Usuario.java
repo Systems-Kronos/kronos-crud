@@ -156,7 +156,7 @@ public class Usuario {
         return idSupervisor;
     }
     public void setIdSupervisor(int id) {
-        if (id <= 0) { // Exceção: verifica se o ID do supervisor é negativo ou igual a zero
+        if (id < 0) { // Exceção: verifica se o ID do supervisor é negativo ou igual a zero
             throw new IllegalArgumentException("O ID do supervisor não pode ser zero ou negativo.");
         }
         this.idSupervisor = id;
