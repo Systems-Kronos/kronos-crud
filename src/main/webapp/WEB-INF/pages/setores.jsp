@@ -99,7 +99,7 @@
                 <!-- UPDATE -->
 
                 <section class="update">
-                    <dialog id="update" data-abrir="<%=updateAberto%>">
+                    <dialog id="update">
                         <h2>Editar setor</h2>
                         <form action="" method="post">
                             <div class="campos">
@@ -139,7 +139,7 @@
                 <!-- DELETE -->
 
                 <section class="delete">
-                    <dialog id="delete" data-abrir="<%=deleteAberto%>">
+                    <dialog id="delete">
                         <h2>Excluir setor</h2>
                         <form action="" method="post">
                             <div class="campos">
