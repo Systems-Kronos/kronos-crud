@@ -32,13 +32,14 @@ public class ServletReadAdministracao extends HttpServlet {
                 Administracao admin = dao.buscarPorId(Integer.parseInt(pk));
 
                 if (admin != null) {
-                    // JSON manual sem dependência externa
+
                     String json = "{"
                             + "\"id\":\"" + admin.getId() + "\","
                             + "\"nome\":\"" + admin.getNome() + "\","
                             + "\"email\":\"" + admin.getEmail() + "\","
                             + "\"senha\":\"" + admin.getSenha() + "\""
                             + "}";
+                            
                     response.getWriter().write(json);
                 } else {
                     response.getWriter().write("{\"erro\":\"Admin não encontrado\"}");
