@@ -141,6 +141,10 @@
                 <dialog id="delete" data-abrir="<%=deleteAberto%>">
                     <h2>Excluir plano</h2>
                     <form action="" method="post">
+                        <div>
+                            <label for="idDelete">ID:</label>
+                            <input type="button" name="id" id="idDelete" disabled>
+                        </div>
                         <div class="campos">
                             <div>
                                 <div class="campo">
@@ -195,10 +199,10 @@
                 %>
                     <tr>
                         <td>
-                            <form method="get"><input type="hidden" name="acao" value="delete"><input type="hidden" name="pk" value="<%= plano.getId() %>"><button type="submit" class="detalhes"><img src="${pageContext.request.contextPath}/assets/crud/img/deletar-kronos.png" alt=""></button></form>
+                            <button type="button" id="modalUpdate" class="detalhes acaoModal" data-acao="abrir" data-modal="update" data-pk="<%= plano.getId() %>" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"admin-crud"}'><img src="${pageContext.request.contextPath}/assets/crud/img/mais-detalhes.png" alt=""></button>
                         </td>
                         <td>
-                            <form method="get"><input type="hidden" name="acao" value="update"><input type="hidden" name="pk" value="<%= plano.getId() %>"><button type="submit" class="detalhes"><img src="${pageContext.request.contextPath}/assets/crud/img/mais-detalhes.png" alt=""></button></form>                        
+                            <button type="button" id="modalDelete" class="detalhes acaoModal" data-acao="abrir" data-modal="delete" data-pk="<%= plano.getId() %>" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"admin-crud"}'><img src="${pageContext.request.contextPath}/assets/crud/img/deletar-kronos.png" alt=""></button>
                         </td>
                         <td><%= plano.getId() %></td>
                         <td><%= plano.getNome() %></td>

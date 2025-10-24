@@ -16,14 +16,6 @@
     <title>CRUD - Kronos</title>
 </head>
 
-<%
-    String idAdquirido = request.getParameter("pk");
-
-    String acao = request.getParameter("acao");
-    boolean updateAberto = "update".equals(acao);
-    boolean deleteAberto = "delete".equals(acao);
-%>
-
 <body>
     <div class="meuPlaceholder"></div>
 
@@ -45,7 +37,7 @@
         <div class="procurarCadastrar">
             <form class="pesquisa" method="get" action="${pageContext.request.contextPath}/usuarios-crud">
                 <input type="search" placeholder="Pesquisar" id="pesquisa" name="pesquisa" class="buscar" value="<%= request.getParameter("pesquisa") != null ? request.getParameter("pesquisa") : "" %>">
-
+    
                 <details class="filtros">
                     <summary>Filtros</summary>
                     <div class="conteudoFiltros">
@@ -57,7 +49,7 @@
                             <input type="radio" name="ordem" value="decrescente"
                                 <%= "decrescente".equals(request.getParameter("ordem")) ? "checked" : "" %>> Decrescente
                         </label>
-                        <button type="reset" onclick="window.location='${pageContext.request.contextPath}/usuarios-crud'">Limpar filtros</button>
+                        <button type="reset" id="botaoLimparFiltro" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"usuarios-crud"}'>Limpar filtros</button>
                         <button type="submit">Aplicar</button>
                     </div>
                 </details>
@@ -128,9 +120,13 @@
             <!-- UPDATE -->
 
             <section class="update">
-                <dialog id="update" data-abrir="<%=updateAberto%>">
+                <dialog id="update">
                     <h2>Editar usuário</h2>
                     <form action="" method="post">
+                        <div>
+                            <label for="idUpdate">ID:</label>
+                            <input type="button" name="id" id="idUpdate" disabled>
+                        </div>
                         <div class="campos">
                             <div>
                                 <div class="campo">
@@ -149,15 +145,15 @@
                                     <div class="campo">
                                         <label for="generoUpdate">Gênero</label>
                                         <select name="genero" id="generoUpdate" required>
-                                            <option value="M">M</option>
-                                            <option value="F">F</option>
-                                            <option value="O">O</option>
+                                            <option value="M">Masculino</option>
+                                            <option value="F">Feminino</option>
+                                            <option value="O">Outro</option>
                                         </select>
                                     </div>
                                     <div class="campo">
                                         <label for="statusUpdate">Status</label>
                                         <select name="status" id="statusUpdate" required>
-                                            <option value="Ativo" selected>Ativo</option>
+                                            <option value="Ativo">Ativo</option>
                                             <option value="Inativo">Inativo</option>
                                             <option value="Férias">Férias</option>
                                             <option value="Desligado">Desligado</option>
@@ -187,9 +183,13 @@
             <!-- DELETE -->
 
             <section class="delete">
-                <dialog id="delete" data-abrir="<%=deleteAberto%>">
+                <dialog id="delete">
                     <h2>Excluir usuário</h2>
                     <form action="" method="post">
+                        <div>
+                            <label for="idDelete">ID:</label>
+                            <input type="button" name="id" id="idDelete" disabled>
+                        </div>
                         <div class="campos">
                             <div>
                                 <div class="campo">
@@ -207,20 +207,11 @@
                                 <div class="campoLado">
                                     <div class="campo">
                                         <label for="generoDelete">Gênero</label>
-                                        <select name="genero" id="generoDelete">
-                                            <option value="M">M</option>
-                                            <option value="F">F</option>
-                                            <option value="O">O</option>
-                                        </select>
+                                        <input type="text" id="generoDelete">
                                     </div>
                                     <div class="campo">
                                         <label for="statusDelete">Status</label>
-                                        <select name="status" id="statusDelete">
-                                            <option value="Ativo" selected>Ativo</option>
-                                            <option value="Inativo">Inativo</option>
-                                            <option value="Férias">Férias</option>
-                                            <option value="Desligado">Desligado</option>
-                                        </select>
+                                        <input type="text" id="statusDelete">
                                     </div>
                                 </div>
                             </div>
@@ -248,11 +239,11 @@
 
         <main>
             <div class="tabelaScroll">
-                <table class="tabelaHabilidades">
+                <table class="tabelaUsuarios">
                     <thead>
                         <tr>
-                            <th>Excluir</th>
                             <th>Ver</th>
+                            <th>Excluir</th>
                             <th>ID</th>
                             <th>Nome</th>
                             <th>CPF</th>
@@ -271,10 +262,10 @@
                     %>
                         <tr>
                             <td>
-                                <form method="get"><input type="hidden" name="acao" value="delete"><input type="hidden" name="pk" value="<%= u.getId() %>"><button type="submit" class="detalhes"><img src="${pageContext.request.contextPath}/assets/crud/img/deletar-kronos.png" alt=""></button></form>
+                                <button type="button" class="detalhes acaoModal" data-acao="abrir" data-modal="update" data-pk="<%= u.getId() %>" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"usuarios-crud"}'><img src="${pageContext.request.contextPath}/assets/crud/img/mais-detalhes.png" alt=""></button>
                             </td>
                             <td>
-                                <form method="get"><input type="hidden" name="acao" value="update"><input type="hidden" name="pk" value="<%= u.getId() %>"><button type="submit" class="detalhes"><img src="${pageContext.request.contextPath}/assets/crud/img/mais-detalhes.png" alt=""></button></form>
+                                <button type="button" class="detalhes acaoModal" data-acao="abrir" data-modal="delete" data-pk="<%= u.getId() %>" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"usuarios-crud"}'><img src="${pageContext.request.contextPath}/assets/crud/img/deletar-kronos.png" alt=""></button>
                             </td>
                             <td><%= u.getId() %></td>
                             <td><%= u.getNome() %></td>

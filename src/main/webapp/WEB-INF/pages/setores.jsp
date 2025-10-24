@@ -16,14 +16,6 @@
     <title>CRUD - Kronos</title>
 </head>
 
-<%
-    String idAdquirido = request.getParameter("pk");
-
-    String acao = request.getParameter("acao");
-    boolean updateAberto = "update".equals(acao);
-    boolean deleteAberto = "delete".equals(acao);
-%>
-
 <body>
     <div class="meuPlaceholder"></div>
 
@@ -107,7 +99,7 @@
                 <!-- UPDATE -->
 
                 <section class="update">
-                    <dialog id="update" data-abrir="<%=updateAberto%>">
+                    <dialog id="update">
                         <h2>Editar setor</h2>
                         <form action="" method="post">
                             <div class="campos">
@@ -147,7 +139,7 @@
                 <!-- DELETE -->
 
                 <section class="delete">
-                    <dialog id="delete" data-abrir="<%=deleteAberto%>">
+                    <dialog id="delete">
                         <h2>Excluir setor</h2>
                         <form action="" method="post">
                             <div class="campos">
@@ -208,10 +200,10 @@
                 %>
                     <tr>
                         <td>
-                            <form method="get"><input type="hidden" name="acao" value="delete"><input type="hidden" name="pk" value="<%= setor.getId() %>"><button type="submit" class="detalhes"><img src="${pageContext.request.contextPath}/assets/crud/img/deletar-kronos.png" alt=""></button></form>
+                            <button type="button" id="modalUpdate" class="detalhes acaoModal" data-acao="abrir" data-modal="update" data-pk="<%= setor.getId() %>" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"admin-crud"}'><img src="${pageContext.request.contextPath}/assets/crud/img/mais-detalhes.png" alt=""></button>
                         </td>
                         <td>
-                            <form method="get"><input type="hidden" name="acao" value="update"><input type="hidden" name="pk" value="<%= setor.getId() %>"><button type="submit" class="detalhes"><img src="${pageContext.request.contextPath}/assets/crud/img/mais-detalhes.png" alt=""></button></form>
+                            <button type="button" id="modalDelete" class="detalhes acaoModal" data-acao="abrir" data-modal="delete" data-pk="<%= setor.getId() %>" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"admin-crud"}'><img src="${pageContext.request.contextPath}/assets/crud/img/deletar-kronos.png" alt=""></button>
                         </td>
                         <td><%= setor.getId() %></td>
                         <td><%= setor.getNome() %></td>

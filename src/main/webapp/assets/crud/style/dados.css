@@ -37,7 +37,7 @@ header {
     left: 0;
     width: 20%;
     height: 100vh;
-    background-color: #FCFAFF;
+    background-color: #f3ecff;
     color: #370963;
     display: flex;
     flex-direction: column;
@@ -49,7 +49,7 @@ header h1 {
     font-size: 3vw;
     font-weight: bold;
     margin-top: 4vw;
-    color: #E6B648;
+    color: #370963;
     align-self: center;
     margin-bottom: 5vw;
 }
@@ -76,18 +76,18 @@ header li a {
     align-items: center;
     width: 100%;
     height: 100%;
-    padding: 1vw 2.9vw;
+    padding: 1vw 2.95vw;
     gap: 1vw;
     text-decoration: none;
     color: #370963;
 }
 
 header li a:hover {
-    background-color: #F1E9F6;
+    background-color: #EADAF5;
 }
 
 header li a.ativo {
-    background-color: #EADAF5;
+    background-color: #ebd2fa;
 }
 
 .conteudoPrincipal {
@@ -218,6 +218,7 @@ form .buscar::placeholder {
 .update::-webkit-scrollbar-thumb,
 .delete::-webkit-scrollbar-thumb {
     background: #E6B648;
+    height: 0.5vh;
     border-radius: 0vw 1vw 1vw 0vw;
 }
 
@@ -225,6 +226,7 @@ form .buscar::placeholder {
 .update::-webkit-scrollbar-track,
 .delete::-webkit-scrollbar-track {
     background: #370963;
+    height: 0.5vh;
     border-radius: 0vw 1vw 1vw 0vw;
 }
 
@@ -250,6 +252,7 @@ section dialog form {
     display: flex;
     flex-direction: column;
     margin: 1vw;
+    box-sizing: border-box;
 }
 
 section dialog form .campos {
@@ -272,6 +275,20 @@ section dialog form .campo label {
 section dialog form .campoLado {
     display: flex;
     gap: 1.75vw;
+}
+
+section dialog form .idAtual {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1vw;
+}
+
+section dialog form input[type="button"] {
+    font-family: "Montserrat", sans-serif;
+    color: #000000;
+    border-radius: 0.25vw;
+    font-size: 1vw;
+    border: none;
 }
 
 section dialog form .campos input {
@@ -342,13 +359,16 @@ section dialog menu button:hover {
     background-color: #C48F20;
 }
 
-.delete dialog button:nth-last-child(2) {
-    background-color: #E53935;
-    color: #FFFFFF;
+section dialog menu button.cancelar {
+    background-color: #9E9E9E;
+    color: #000000;
+    border: 0.1vw solid #7A7A7A;
 }
 
-.delete dialog button:nth-last-child(2):hover {
-    background-color: #880404;
+section dialog menu button.cancelar:hover {
+    background-color: #E53935;
+    color: #FFFFFF;
+    border: 0.1vw solid #E53935;
 }
 
 table {
@@ -401,13 +421,13 @@ td {
     overflow: hidden;
 }
 
-table form .detalhes img {
+table button.detalhes img {
     object-fit: contain;
     height: 1.5vw;
     cursor: pointer;
 }
 
-table form .detalhes {
+table button.detalhes {
     display: inline-flex;
     background-color: transparent;
     border: none;
@@ -417,7 +437,9 @@ table form .detalhes {
 
 .tabelaScroll {
     overflow-x: auto;
+    overflow-y: auto;
     width: 75vw;
+    max-height: 65vh
 }
 
 .tabelaScroll::-webkit-scrollbar-thumb {
