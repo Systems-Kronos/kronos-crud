@@ -153,7 +153,7 @@
                                     <div class="campo">
                                         <label for="statusUpdate">Status</label>
                                         <select name="status" id="statusUpdate" required>
-                                            <option value="Ativo" selected>Ativo</option>
+                                            <option value="Ativo">Ativo</option>
                                             <option value="Inativo">Inativo</option>
                                             <option value="Férias">Férias</option>
                                             <option value="Desligado">Desligado</option>

@@ -19,19 +19,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (modal) {
                 if (acao === 'abrir') {
+
+                    if (modal.id === 'create') {
+                        modal.showModal();
+                        return;
+                    }
+
                     const pk = botaoModal.dataset.pk;
-                    if (modal.id === 'update') { document.getElementById('idUpdate').value = pk }
-                    else if (modal.id === 'delete') { document.getElementById('idDelete').value = pk }
 
                     if (botaoModal.dataset.caminho) {
                         const caminho = JSON.parse(botaoModal.dataset.caminho);
                         const caminhoBase = caminho.base;
                         const tabelaAtual = caminho.tabela;
-                        fetch(`${caminhoBase}/${tabelaAtual}?pk=${pk}`);
-                    }
-                    modal.showModal();
-
-                } else if (acao === 'fechar') {
+                        
+                        fetch(`${caminhoBase}/${tabelaAtual}?pk=${pk}`)
+                        .then(response => response.json())
+                        .then(dados => {
+                            
+                            // Preenche os campos do modal correspondente
+                            if (modal.id === 'update') {
+                                preencherCamposModal('update', dados, tabelaAtual);
+                            } else if (modal.id === 'delete') {
+                                preencherCamposModal('delete', dados, tabelaAtual);
+                            }
+                            modal.showModal();
+                            })
+                        .catch(err => console.error("Erro ao buscar dados:", err));
+                        }
+                    } else if (acao === 'fechar') {
                     modal.close();
                 }
             }
@@ -146,22 +161,21 @@ function isValidSenha(senha) {
 
 // --- FUNÇÕES DE PRÉ-PREENCHIMENTO DOS MODAIS ---
 
-function preencherCamposModal(tipo, dados) {
-    if (tipo === 'update') {
-        if (document.getElementById('idUpdate')) document.getElementById('idUpdate').value = dados.id || '';
-        if (document.getElementById('nomeUpdate')) document.getElementById('nomeUpdate').value = dados.nome || '';
-        if (document.getElementById('emailUpdate')) document.getElementById('emailUpdate').value = dados.email || '';
-        if (document.getElementById('senhaUpdate')) document.getElementById('senhaUpdate').value = dados.senha || '';
-        if (document.getElementById('cpfUpdate')) document.getElementById('cpfUpdate').value = dados.cpf || '';
-        // adiciona outros campos que tiver no form update
+function preencherCamposModal(tipo, dados, tabela) {
+    const sufixo = tipo === 'update' ? 'Update' : 'Delete';
+    let campos = [];
+
+    switch (tabela) {
+        case 'admin-crud': campos = ['id', 'nome', 'email', 'senha']; break;
+        case 'empresas-crud': campos = ['id', 'nome', 'email', 'cep', 'cnpj', 'telefone', 'porte', 'horaEntrada', 'horaFechamento', 'regrasNegocios']; break;
+        case 'planos-crud': campos = ['id', 'nome', 'custo', 'maxFuncionarios', 'descricao']; break;
+        case 'habilidades-crud': campos = ['id', 'nome', 'tag', 'descricao']; break;
+        case 'setores-crud': campos = ['id', 'nome', 'qtdFuncionarios', 'turnos', 'descricao']; break;
+        case 'usuarios-crud': campos = ['id', 'nome', 'cpf', 'senha', 'genero', 'status', 'idSetor', 'idSupervisor']; break;
     }
 
-    else if (tipo === 'delete') {
-        if (document.getElementById('idDelete')) document.getElementById('idDelete').value = dados.id || '';
-        if (document.getElementById('nomeDelete')) document.getElementById('nomeDelete').value = dados.nome || '';
-        if (document.getElementById('emailDelete')) document.getElementById('emailDelete').value = dados.email || '';
-        // se quiser mostrar no modal de exclusão algo tipo “Tem certeza que quer excluir X?”
-        const nomeAlvo = document.getElementById('nomeDeleteTexto');
-        if (nomeAlvo) nomeAlvo.textContent = dados.nome ? `Tem certeza que deseja excluir ${dados.nome}?` : '';
-    }
+    campos.forEach(campo => {
+        const elemento = document.getElementById(`${campo}${sufixo}`);
+        if (elemento) elemento.value = dados[campo] || '';
+    });
 }

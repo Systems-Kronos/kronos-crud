@@ -80,8 +80,8 @@
                         </div>
                     </div>
                     <menu>
-                        <button type="submit">Cadastrar</button>
-                        <button type="button" class="acaoModal" data-acao="fechar" data-modal="create">Cancelar</button>
+                        <button type="button" class="cancelar acaoModal" data-acao="fechar" data-modal="create">Cancelar</button>
+                        <button type="submit" class="confirmar">Cadastrar</button>
                     </menu>
                 </form>
             </dialog>
@@ -94,9 +94,10 @@
         
         <section class="update">
             <dialog id="update">
+                <div class="carregamento"></div>
                 <h2>Editar administrador</h2>
                 <form action="" method="post">
-                    <div>
+                    <div class="idAtual">
                         <label for="idDelete">ID:</label>
                         <input type="button" name="id" id="idUpdate" disabled>
                     </div>
@@ -119,8 +120,8 @@
                         </div>
                     </div>
                     <menu>
-                        <button type="button" class="acaoModal" data-acao="fechar" data-modal="update">Cancelar</button>
-                        <button type="submit">Confirmar alterações</button>
+                        <button type="button" class="cancelar acaoModal" data-acao="fechar" data-modal="update">Cancelar</button>
+                        <button type="submit" class="confirmar">Confirmar alterações</button>
                     </menu>
                 </form>
             </dialog>
@@ -130,9 +131,10 @@
 
         <section class="delete">
             <dialog id="delete">
+                <div class="carregamento"></div>
                 <h2>Excluir administrador</h2>
                 <form action="" method="post">
-                    <div>
+                    <div class="idAtual">
                         <label for="idDelete">ID:</label>
                         <input type="button" name="id" id="idDelete" disabled>
                     </div>
@@ -155,8 +157,8 @@
                         </div>
                     </div>
                     <menu>
-                        <button type="submit" value="true">Confirmar exclusão</button>
-                        <button type="button" class="acaoModal" data-acao="fechar" data-modal="delete" value="false">Cancelar</button>
+                        <button type="button" class="cancelar acaoModal" data-acao="fechar" data-modal="delete" value="false">Cancelar</button>
+                        <button type="submit" class="excluir" value="true">Confirmar exclusão</button>
                     </menu>
                 </form>
             </dialog>
