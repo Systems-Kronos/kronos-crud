@@ -49,7 +49,7 @@
                         <input type="radio" name="ordem" value="decrescente"
                             <%= "decrescente".equals(request.getParameter("ordem")) ? "checked" : "" %>> Decrescente
                     </label>
-                    <button type="reset" id="botaoLimparFiltro" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"admin-crud"}'>Limpar filtros</button>
+                    <button type="reset" id="botaoLimparFiltro" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"empresas-crud"}'>Limpar filtros</button>
                     <button type="submit">Aplicar</button>
                 </div>
             </details>

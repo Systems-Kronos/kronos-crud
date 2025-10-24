@@ -285,12 +285,10 @@ section dialog form .idAtual {
 
 section dialog form input[type="button"] {
     font-family: "Montserrat", sans-serif;
-    background-color: #E6B648;
     color: #000000;
     border-radius: 0.25vw;
     font-size: 1vw;
-    border: 0.15vw solid #370963;
-    font-weight: 400;
+    border: none;
 }
 
 section dialog form .campos input {
@@ -371,15 +369,6 @@ section dialog menu button.cancelar:hover {
     background-color: #E53935;
     color: #FFFFFF;
     border: 0.1vw solid #E53935;
-}
-
-section dialog menu button.excluir {
-    background-color: #E53935;
-    color: #FFFFFF;
-}
-
-section dialog menu button.excluir:hover {
-    background-color: #880404;
 }
 
 table {
