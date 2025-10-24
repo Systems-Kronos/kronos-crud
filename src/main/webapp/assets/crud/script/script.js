@@ -3,12 +3,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- LÓGICA PARA BOTÕES DE FILTRAGEM ---
     const botaoLimparFiltro = document.getElementById("botaoLimparFiltro");
 
-    botaoLimparFiltro.addEventListener("click", function() {
-        const caminho = JSON.parse(botaoLimparFiltro.dataset.caminho);
-        const caminhoBase = caminho.base;
-        const tabelaAtual = caminho.tabela;
-        window.location.href = `${caminhoBase}/${tabelaAtual}`;
-    });
+    if (botaoLimparFiltro) {
+        botaoLimparFiltro.addEventListener("click", function() {
+            const caminho = JSON.parse(botaoLimparFiltro.dataset.caminho);
+            const caminhoBase = caminho.base;
+            const tabelaAtual = caminho.tabela;
+            window.location.href = `${caminhoBase}/${tabelaAtual}`;
+        });
+    }
 
     // --- LÓGICA PARA ABRIR/FECHAR MODAIS COM CLIQUE ---
     const botoesModal = document.querySelectorAll('.acaoModal');
@@ -167,7 +169,7 @@ function preencherCamposModal(tipo, dados, tabela) {
 
     switch (tabela) {
         case 'admin-crud': campos = ['id', 'nome', 'email', 'senha']; break;
-        case 'empresas-crud': campos = ['id', 'nome', 'email', 'cep', 'cnpj', 'telefone', 'porte', 'horaEntrada', 'horaFechamento', 'regrasNegocios']; break;
+        case 'empresas-crud': campos = ['id', 'nome', 'email', 'cep', 'cnpj', 'telefone', 'porte', 'horaAbertura', 'horaFechamento', 'regrasNegocios']; break;
         case 'planos-crud': campos = ['id', 'nome', 'custo', 'maxFuncionarios', 'descricao']; break;
         case 'habilidades-crud': campos = ['id', 'nome', 'tag', 'descricao']; break;
         case 'setores-crud': campos = ['id', 'nome', 'qtdFuncionarios', 'turnos', 'descricao']; break;

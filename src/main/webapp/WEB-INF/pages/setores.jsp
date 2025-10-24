@@ -11,9 +11,10 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="${pageContext.request.contextPath}/assets/crud/img/favikronos.ico" type="image/x-icon">
     <script src="${pageContext.request.contextPath}/assets/crud/script/script.js" defer></script>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/crud/style/dados.css">
-    <title>CRUD - Kronos</title>
+    <title>Setores - Kronos CRUD</title>
 </head>
 
 <body>

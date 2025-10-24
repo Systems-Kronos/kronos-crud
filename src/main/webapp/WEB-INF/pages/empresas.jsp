@@ -9,11 +9,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Montserrat:wght@300;400;500;700;900&family=Crete+Round:wght@400;700&display=swap" rel="stylesheet">
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="<%= request.getContextPath() %>/assets/crud/script/script.js" defer></script>
-    <link rel="stylesheet" href="<%= request.getContextPath() %>/assets/crud/style/dados.css">
-    <title>CRUD - Empresas</title>
+    <link rel="icon" href="${pageContext.request.contextPath}/assets/crud/img/favikronos.ico" type="image/x-icon">
+    <script src="${pageContext.request.contextPath}/assets/crud/script/script.js" defer></script>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/crud/style/dados.css">
+    <title>Empresas - Kronos CRUD</title>
 </head>
 
 <body>
@@ -22,26 +24,33 @@
         <h1>KRONOS</h1>
         <nav>
             <ul>
-                <li><a href="<%= request.getContextPath() %>/admin-crud"><img src="<%= request.getContextPath() %>/assets/crud/img/img-crud-administrador.png" alt="">Administrador</a></li>
-                <li><a href="<%= request.getContextPath() %>/empresas-crud" class="ativo"><img src="<%= request.getContextPath() %>/assets/crud/img/img-crud-empresas.png" alt="">Empresas</a></li>
-                <li><a href="<%= request.getContextPath() %>/planos-crud"><img src="<%= request.getContextPath() %>/assets/crud/img/img-crud-planos.png" alt="">Planos</a></li>
-                <li><a href="<%= request.getContextPath() %>/habilidades-crud"><img src="<%= request.getContextPath() %>/assets/crud/img/img-crud-habilidades.png" alt="">Habilidades</a></li>
-                <li><a href="<%= request.getContextPath() %>/setores-crud"><img src="<%= request.getContextPath() %>/assets/crud/img/img-crud-setores.png" alt="">Setores</a></li>
-                <li><a href="<%= request.getContextPath() %>/usuarios-crud"><img src="<%= request.getContextPath() %>/assets/crud/img/img-crud-usuario.png" alt="">Usuário</a></li>
+                <li><a href="${pageContext.request.contextPath}/admin-crud"><img src="${pageContext.request.contextPath}/assets/crud/img/img-crud-administrador.png" alt="">Administrador</a></li>
+                <li><a href="${pageContext.request.contextPath}/empresas-crud" class="ativo"><img src="${pageContext.request.contextPath}/assets/crud/img/img-crud-empresas.png" alt="">Empresas</a></li>
+                <li><a href="${pageContext.request.contextPath}/planos-crud"><img src="${pageContext.request.contextPath}/assets/crud/img/img-crud-planos.png" alt="">Planos</a></li>
+                <li><a href="${pageContext.request.contextPath}/habilidades-crud"><img src="${pageContext.request.contextPath}/assets/crud/img/img-crud-habilidades.png" alt="">Habilidades</a></li>
+                <li><a href="${pageContext.request.contextPath}/setores-crud"><img src="${pageContext.request.contextPath}/assets/crud/img/img-crud-setores.png" alt="">Setores</a></li>
+                <li><a href="${pageContext.request.contextPath}/usuarios-crud"><img src="${pageContext.request.contextPath}/assets/crud/img/img-crud-usuario.png" alt="">Usuário</a></li>
             </ul>
         </nav>
     </header>
 
     <div class="conteudoPrincipal">
         <div class="procurarCadastrar">
-            <form class="pesquisa">
-                <input type="search" placeholder="Pesquisar" id="pesquisa" name="pesquisa" class="buscar">
+            <form class="pesquisa" method="get" action="${pageContext.request.contextPath}/empresas-crud">
+                <input type="search" placeholder="Pesquisar" id="pesquisa" name="pesquisa" class="buscar" value="<%= request.getParameter("pesquisa") != null ? request.getParameter("pesquisa") : "" %>">
+    
                 <details class="filtros">
                     <summary>Filtros</summary>
                     <div class="conteudoFiltros">
-                        <label class="opcaoFiltro"><input type="radio" name="ordem" value="crescente">Crescente</label>
-                        <label class="opcaoFiltro"><input type="radio" name="ordem" value="decrescente">Decrescente</label>
-                        <button type="reset">Limpar filtros</button>
+                        <label class="opcaoFiltro">
+                            <input type="radio" name="ordem" value="crescente"
+                                <%= "crescente".equals(request.getParameter("ordem")) ? "checked" : "" %>> Crescente
+                        </label>
+                        <label class="opcaoFiltro">
+                            <input type="radio" name="ordem" value="decrescente"
+                                <%= "decrescente".equals(request.getParameter("ordem")) ? "checked" : "" %>> Decrescente
+                        </label>
+                        <button type="reset" id="botaoLimparFiltro" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"empresas-crud"}'>Limpar filtros</button>
                         <button type="submit">Aplicar</button>
                     </div>
                 </details>
@@ -82,8 +91,8 @@
                                     <input type="text" name="porte" id="porteCreate" autocomplete="off" required>
                                 </div>
                                 <div class="campo">
-                                    <label for="horaEntradaCreate">Horário de abertura</label>
-                                    <input type="time" name="horaEntrada" id="horaEntradaCreate" required>
+                                    <label for="horaAberturaCreate">Horário de abertura</label>
+                                    <input type="time" name="horaAbertura" id="horaAberturaCreate" required>
                                 </div>
                                 <div class="campo">
                                     <label for="horaFechamentoCreate">Horário de fechamento</label>
@@ -109,7 +118,6 @@
 
             <section class="update">
                 <dialog id="update">
-                    <div class="carregamento"></div>
                     <h2>Editar empresa</h2>
                     <form action="" method="post">
                         <div class="idAtual">
@@ -145,8 +153,8 @@
                                     <input type="text" name="porte" id="porteUpdate" autocomplete="off" required>
                                 </div>
                                 <div class="campo">
-                                    <label for="horaEntradaUpdate">Horário de abertura</label>
-                                    <input type="time" name="horaEntrada" id="horaEntradaUpdate" required>
+                                    <label for="horaAberturaUpdate">Horário de abertura</label>
+                                    <input type="time" name="horaAbertura" id="horaAberturaUpdate" required>
                                 </div>
                                 <div class="campo">
                                     <label for="horaFechamentoUpdate">Horário de fechamento</label>
@@ -168,7 +176,6 @@
 
             <section class="delete">
                 <dialog id="delete">
-                    <div class="carregamento"></div>
                     <h2>Excluir empresa</h2>
                     <form action="" method="post">
                         <div class="idAtual">
@@ -204,8 +211,8 @@
                                     <input type="text" name="porte" id="porteDelete" autocomplete="off" disabled>
                                 </div>
                                 <div class="campo">
-                                    <label for="horaEntradaDelete">Horário de abertura</label>
-                                    <input type="time" name="horaEntrada" id="horaEntradaDelete" disabled>
+                                    <label for="horaAberturaDelete">Horário de abertura</label>
+                                    <input type="time" name="horaAbertura" id="horaAberturaDelete" disabled>
                                 </div>
                                 <div class="campo">
                                     <label for="horaFechamentoDelete">Horário de fechamento</label>
@@ -218,8 +225,8 @@
                             </div>
                         </div>
                         <menu>
-                            <button type="button" class="acaoModal" data-acao="fechar" data-modal="delete" value="false">Cancelar</button>
-                            <button type="submit" value="true">Confirmar exclusão</button>
+                            <button type="button" class="cancelar acaoModal" data-acao="fechar" data-modal="delete" value="false">Cancelar</button>
+                            <button type="submit" class="confirmar" value="true">Confirmar exclusão</button>
                         </menu>
                     </form>
                 </dialog>
