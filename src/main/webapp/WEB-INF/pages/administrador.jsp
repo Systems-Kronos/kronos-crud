@@ -11,9 +11,10 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="${pageContext.request.contextPath}/assets/crud/img/favikronos.ico" type="image/x-icon">
     <script src="${pageContext.request.contextPath}/assets/crud/script/script.js" defer></script>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/crud/style/dados.css">
-    <title>CRUD - Kronos</title>
+    <title>Administrador - Kronos CRUD</title>
 </head>
 
 <body>
@@ -94,7 +95,6 @@
         
         <section class="update">
             <dialog id="update">
-                <div class="carregamento"></div>
                 <h2>Editar administrador</h2>
                 <form action="" method="post">
                     <div class="idAtual">
@@ -131,7 +131,6 @@
 
         <section class="delete">
             <dialog id="delete">
-                <div class="carregamento"></div>
                 <h2>Excluir administrador</h2>
                 <form action="" method="post">
                     <div class="idAtual">
@@ -158,7 +157,7 @@
                     </div>
                     <menu>
                         <button type="button" class="cancelar acaoModal" data-acao="fechar" data-modal="delete" value="false">Cancelar</button>
-                        <button type="submit" class="excluir" value="true">Confirmar exclusão</button>
+                        <button type="submit" class="confirmar" value="true">Confirmar exclusão</button>
                     </menu>
                 </form>
             </dialog>

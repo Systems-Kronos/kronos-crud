@@ -38,12 +38,12 @@ public class ServletReadEmpresa extends HttpServlet {
                             + "\"id\":\"" + pk + "\","
                             + "\"nome\":\"" + empresa.getNome() + "\","
                             + "\"email\":\"" + empresa.getEmail() + "\","
-                            + "\"cep\":\"" + empresa.getCep() + "\""
-                            + "\"cnpj\":\"" + empresa.getCnpj() + "\""
-                            + "\"telefone\":\"" + empresa.getTelefone() + "\""
-                            + "\"porte\":\"" + empresa.getPorte() + "\""
-                            + "\"horaAbertura\":\"" + empresa.getHorarioAbertura() + "\""
-                            + "\"horaFechamento\":\"" + empresa.getHorarioFechamento() + "\""
+                            + "\"cep\":\"" + empresa.getCep() + "\","
+                            + "\"cnpj\":\"" + empresa.getCnpj() + "\","
+                            + "\"telefone\":\"" + empresa.getTelefone() + "\","
+                            + "\"porte\":\"" + empresa.getPorte() + "\","
+                            + "\"horaAbertura\":\"" + empresa.getHorarioAbertura() + "\","
+                            + "\"horaFechamento\":\"" + empresa.getHorarioFechamento() + "\","
                             + "\"regrasNegocios\":\"" + empresa.getRegraDeNegocios() + "\""
                             + "}";
 
