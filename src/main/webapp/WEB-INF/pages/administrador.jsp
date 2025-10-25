@@ -18,10 +18,13 @@
 
 <%
     String idAdquirido = request.getParameter("pk");
+    String acao = (String) request.getAttribute("acao");
+    if (acao == null) acao = request.getParameter("acao");
 
-    String acao = request.getParameter("acao");
     boolean updateAberto = "update".equals(acao);
     boolean deleteAberto = "delete".equals(acao);
+
+    Administracao adminModal = (Administracao) request.getAttribute("adminModal");
 %>
 
 <body>
@@ -128,27 +131,30 @@
             </dialog>
         </section>
 
+
         <!-- DELETE -->
 
         <section class="delete">
             <dialog id="delete" data-abrir="<%=deleteAberto%>">
                 <h2>Excluir administrador</h2>
-                <form action="" method="post">
+                <form action="${pageContext.request.contextPath}/admin-delete" method="post">
+                    <input type="hidden" name="pk" value="<%= (request.getAttribute("pk") != null ? request.getAttribute("pk") : (idAdquirido != null ? idAdquirido : "")) %>">
+
                     <div class="campos">
                         <div>
                             <div class="campo">
                                 <label for="nomeDelete">Nome</label>
-                                <input type="text" name="nome" id="nomeDelete" disabled value="Davi Aliaga">
+                                <input type="text" name="nome" id="nomeDelete" disabled value="<%= adminModal != null ? adminModal.getNome() : "" %>">
                             </div>
                             <div class="campo">
                                 <label for="senhaDelete">Senha</label>
-                                <input type="password" name="senha" id="senhaDelete" disabled value="">
+                                <input type="password" name="senha" id="senhaDelete" disabled value="<%= adminModal != null ? adminModal.getSenha() : "" %>">
                             </div>
                         </div>
                         <div>
                             <div class="campo">
                                 <label for="emailDelete">E-mail</label>
-                                <input type="email" name="email" id="emailDelete" disabled value="">
+                                <input type="email" name="email" id="emailDelete" disabled value="<%= adminModal != null ? adminModal.getEmail() : "" %>">
                             </div>
                         </div>
                     </div>
@@ -167,14 +173,14 @@
         <div class="tabelaScroll">
             <table class="tabelaAdministrador">
                 <thead>
-                    <tr>
-                        <th>Excluir</th>
-                        <th>Ver</th>
-                        <th>ID</th>
-                        <th>Nome</th>
-                        <th>E-mail</th>
-                        <th>Senha</th>
-                    </tr>
+                <tr>
+                    <th>Excluir</th>
+                    <th>Ver</th>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>E-mail</th>
+                    <th>Senha</th>
+                </tr>
                 </thead>
                 <tbody>
 
@@ -183,26 +189,37 @@
                     if (listaAdmins != null && !listaAdmins.isEmpty()) {
                         for (Administracao admin : listaAdmins) {
                 %>
-                    <tr>
-                        <td>
-                            <form method="get"><input type="hidden" name="acao" value="delete"><input type="hidden" name="pk" value="<%= admin.getId() %>"><button type="submit" class="detalhes"><img src="${pageContext.request.contextPath}/assets/crud/img/deletar-kronos.png" alt=""></button></form>
-                        </td>
-                        <td>
-                            <form method="get"><input type="hidden" name="acao" value="update"><input type="hidden" name="pk" value="<%= admin.getId() %>"><button type="submit" class="detalhes"><img src="${pageContext.request.contextPath}/assets/crud/img/mais-detalhes.png" alt=""></button></form>
-                        </td>
-                        <td><%= admin.getId() %></td>
-                        <td><%= admin.getNome() %></td>
-                        <td><%= admin.getEmail() %></td>
-                        <td><%= admin.getSenha() %></td>
-
-                    </tr>
+                <tr>
+                    <td>
+                        <form method="get" action="${pageContext.request.contextPath}/admin-delete">
+                            <input type="hidden" name="acao" value="delete">
+                            <input type="hidden" name="pk" value="<%= admin.getId() %>">
+                            <button type="submit" class="detalhes">
+                                <img src="${pageContext.request.contextPath}/assets/crud/img/deletar-kronos.png" alt="">
+                            </button>
+                        </form>
+                    </td>
+                    <td>
+                        <form method="get" action="${pageContext.request.contextPath}/admin-update">
+                            <input type="hidden" name="acao" value="update">
+                            <input type="hidden" name="pk" value="<%= admin.getId() %>">
+                            <button type="submit" class="detalhes">
+                                <img src="${pageContext.request.contextPath}/assets/crud/img/mais-detalhes.png" alt="">
+                            </button>
+                        </form>
+                    </td>
+                    <td><%= admin.getId() %></td>
+                    <td><%= admin.getNome() %></td>
+                    <td><%= admin.getEmail() %></td>
+                    <td><%= admin.getSenha() %></td>
+                </tr>
                 <%
                     }
                 } else {
                 %>
-                    <tr>
-                        <td colspan="6">Nenhum administrador encontrado.</td>
-                    </tr>
+                <tr>
+                    <td colspan="6">Nenhum administrador encontrado.</td>
+                </tr>
                 <% } %>
                 </tbody>
             </table>

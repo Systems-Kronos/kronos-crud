@@ -149,9 +149,10 @@
                                     <div class="campo">
                                         <label for="generoUpdate">Gênero</label>
                                         <select name="genero" id="generoUpdate" required>
-                                            <option value="M">M</option>
-                                            <option value="F">F</option>
-                                            <option value="O">O</option>
+                                            <option value="M">Masculino</option>
+                                            <option value="F">Feminino</option>
+                                            <option value="O">Outro</option>
+                                            <option value="N">Prefiro não dizer</option>
                                         </select>
                                     </div>
                                     <div class="campo">

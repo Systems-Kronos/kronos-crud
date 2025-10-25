@@ -60,7 +60,7 @@
                     </div>
                 </details>
             </form>
-            
+
                 <!-- CREATE -->
 
                 <section class="create">
@@ -149,7 +149,7 @@
                 <section class="delete">
                     <dialog id="delete" data-abrir="<%=deleteAberto%>">
                         <h2>Excluir setor</h2>
-                        <form action="" method="post">
+                        <form action="${pageContext.request.contextPath}/setores-delete" method="post">
                             <div class="campos">
                                 <div>
                                     <div class="campo">

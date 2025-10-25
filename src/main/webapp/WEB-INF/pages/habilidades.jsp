@@ -17,10 +17,12 @@
 </head>
 
 <%
-    String idAdquirido = request.getParameter("pk");
     String acao = request.getParameter("acao");
     boolean updateAberto = "update".equals(acao);
     boolean deleteAberto = "delete".equals(acao);
+
+    Habilidades habilidadeModal = (Habilidades) request.getAttribute("habilidadeModal");
+    String pk = request.getAttribute("pk") != null ? request.getAttribute("pk").toString() : "";
 %>
 
 <body>
@@ -128,22 +130,25 @@
         <section class="delete">
             <dialog id="delete" data-abrir="<%=deleteAberto%>">
                 <h2>Excluir habilidade</h2>
-                <form action="" method="post">
+                <form action="${pageContext.request.contextPath}/habilidades-delete" method="post">
+                    <input type="hidden" name="pk" value="<%= pk %>">
                     <div class="campos">
                         <div>
                             <div class="campo">
                                 <label for="nomeDelete">Nome</label>
-                                <input type="text" name="nome" id="nomeDelete" autocomplete="off" disabled>
+                                <input type="text" id="nomeDelete" autocomplete="off"
+                                       value="<%= habilidadeModal != null ? habilidadeModal.getNome() : "" %>" disabled>
                             </div>
                             <div class="campo">
                                 <label for="tagDelete">Tag</label>
-                                <input type="text" name="tag" id="tagDelete" autocomplete="off" disabled>
+                                <input type="text" id="tagDelete" autocomplete="off"
+                                       value="<%= habilidadeModal != null ? habilidadeModal.getTag() : "" %>" disabled>
                             </div>
                         </div>
                         <div>
                             <div class="campo">
                                 <label for="descricaoDelete">Descrição</label>
-                                <textarea name="descricao" id="descricaoDelete" disabled></textarea>
+                                <textarea id="descricaoDelete" disabled><%= habilidadeModal != null ? habilidadeModal.getDescricao() : "" %></textarea>
                             </div>
                         </div>
                     </div>
@@ -179,7 +184,7 @@
 
             <tr>
                 <td>
-                    <form method="get">
+                    <form method="get" action="${pageContext.request.contextPath}/habilidades-delete">
                         <input type="hidden" name="acao" value="delete">
                         <input type="hidden" name="pk" value="<%= habilidade.getId() %>">
                         <button type="submit" class="detalhes">
