@@ -13,11 +13,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @WebServlet("/planos-crud")
-public class ServletReadPlanos extends HttpServlet {
-    
+public class ServletReadPlano extends HttpServlet {
+
     // Instancia DAO
     private PlanoDAO dao = new PlanoDAO();
-
+    
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
