@@ -11,21 +11,11 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="${pageContext.request.contextPath}/assets/crud/img/favikronos.ico" type="image/x-icon">
     <script src="${pageContext.request.contextPath}/assets/crud/script/script.js" defer></script>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/crud/style/dados.css">
-    <title>CRUD - Kronos</title>
+    <title>Administrador - Kronos CRUD</title>
 </head>
-
-<%
-    String idAdquirido = request.getParameter("pk");
-    String acao = (String) request.getAttribute("acao");
-    if (acao == null) acao = request.getParameter("acao");
-
-    boolean updateAberto = "update".equals(acao);
-    boolean deleteAberto = "delete".equals(acao);
-
-    Administracao adminModal = (Administracao) request.getAttribute("adminModal");
-%>
 
 <body>
 <div class="meuPlaceholder"></div>
@@ -46,19 +36,21 @@
 
 <div class="conteudoPrincipal">
     <div class="procurarCadastrar">
-        <form class="pesquisa">
-            <input type="search" placeholder="Pesquisar" id="pesquisa" name="pesquisa" class="buscar">
+        <form class="pesquisa" method="get" action="${pageContext.request.contextPath}/admin-crud">
+            <input type="search" placeholder="Pesquisar" id="pesquisa" name="pesquisa" class="buscar" value="<%= request.getParameter("pesquisa") != null ? request.getParameter("pesquisa") : "" %>">
 
             <details class="filtros">
                 <summary>Filtros</summary>
                 <div class="conteudoFiltros">
                     <label class="opcaoFiltro">
-                        <input type="radio" name="ordem" value="crescente">Crescente
+                        <input type="radio" name="ordem" value="crescente"
+                            <%= "crescente".equals(request.getParameter("ordem")) ? "checked" : "" %>> Crescente
                     </label>
                     <label class="opcaoFiltro">
-                        <input type="radio" name="ordem" value="decrescente">Decrescente
+                        <input type="radio" name="ordem" value="decrescente"
+                            <%= "decrescente".equals(request.getParameter("ordem")) ? "checked" : "" %>> Decrescente
                     </label>
-                    <button type="reset">Limpar filtros</button>
+                    <button type="reset" id="botaoLimparFiltro" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"empresas-crud"}'>Limpar filtros</button>
                     <button type="submit">Aplicar</button>
                 </div>
             </details>
@@ -89,22 +81,26 @@
                         </div>
                     </div>
                     <menu>
-                        <button type="submit">Cadastrar</button>
-                        <button type="button" class="acaoModal" data-acao="fechar" data-modal="create">Cancelar</button>
+                        <button type="button" class="cancelar acaoModal" data-acao="fechar" data-modal="create">Cancelar</button>
+                        <button type="submit" class="confirmar">Cadastrar</button>
                     </menu>
                 </form>
             </dialog>
 
             <button type="button" class="cadastrar acaoModal" data-acao="abrir" data-modal="create">Cadastrar</button>
         </section>
-
-
+        
+        
         <!-- UPDATE -->
-
+        
         <section class="update">
-            <dialog id="update" data-abrir="<%=updateAberto%>">
+            <dialog id="update">
                 <h2>Editar administrador</h2>
                 <form action="" method="post">
+                    <div class="idAtual">
+                        <label for="idDelete">ID:</label>
+                        <input type="button" name="id" id="idUpdate" disabled>
+                    </div>
                     <div class="campos">
                         <div>
                             <div class="campo">
@@ -124,43 +120,44 @@
                         </div>
                     </div>
                     <menu>
-                        <button type="submit">Confirmar alterações</button>
-                        <button type="button" class="acaoModal" data-acao="fechar" data-modal="update">Cancelar</button>
+                        <button type="button" class="cancelar acaoModal" data-acao="fechar" data-modal="update">Cancelar</button>
+                        <button type="submit" class="confirmar">Confirmar alterações</button>
                     </menu>
                 </form>
             </dialog>
         </section>
 
-
         <!-- DELETE -->
 
         <section class="delete">
-            <dialog id="delete" data-abrir="<%=deleteAberto%>">
+            <dialog id="delete">
                 <h2>Excluir administrador</h2>
-                <form action="${pageContext.request.contextPath}/admin-delete" method="post">
-                    <input type="hidden" name="pk" value="<%= (request.getAttribute("pk") != null ? request.getAttribute("pk") : (idAdquirido != null ? idAdquirido : "")) %>">
-
+                <form action="" method="post">
+                    <div class="idAtual">
+                        <label for="idDelete">ID:</label>
+                        <input type="button" name="id" id="idDelete" disabled>
+                    </div>
                     <div class="campos">
                         <div>
                             <div class="campo">
                                 <label for="nomeDelete">Nome</label>
-                                <input type="text" name="nome" id="nomeDelete" disabled value="<%= adminModal != null ? adminModal.getNome() : "" %>">
+                                <input type="text" name="nome" id="nomeDelete" disabled value="Davi Aliaga">
                             </div>
                             <div class="campo">
                                 <label for="senhaDelete">Senha</label>
-                                <input type="password" name="senha" id="senhaDelete" disabled value="<%= adminModal != null ? adminModal.getSenha() : "" %>">
+                                <input type="password" name="senha" id="senhaDelete" disabled value="">
                             </div>
                         </div>
                         <div>
                             <div class="campo">
                                 <label for="emailDelete">E-mail</label>
-                                <input type="email" name="email" id="emailDelete" disabled value="<%= adminModal != null ? adminModal.getEmail() : "" %>">
+                                <input type="email" name="email" id="emailDelete" disabled value="">
                             </div>
                         </div>
                     </div>
                     <menu>
-                        <button type="submit" value="true">Confirmar exclusão</button>
-                        <button type="button" class="acaoModal" data-acao="fechar" data-modal="delete" value="false">Cancelar</button>
+                        <button type="button" class="cancelar acaoModal" data-acao="fechar" data-modal="delete" value="false">Cancelar</button>
+                        <button type="submit" class="confirmar" value="true">Confirmar exclusão</button>
                     </menu>
                 </form>
             </dialog>
@@ -173,14 +170,14 @@
         <div class="tabelaScroll">
             <table class="tabelaAdministrador">
                 <thead>
-                <tr>
-                    <th>Excluir</th>
-                    <th>Ver</th>
-                    <th>ID</th>
-                    <th>Nome</th>
-                    <th>E-mail</th>
-                    <th>Senha</th>
-                </tr>
+                    <tr>
+                        <th>Ver</th>
+                        <th>Excluir</th>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>E-mail</th>
+                        <th>Senha</th>
+                    </tr>
                 </thead>
                 <tbody>
 
@@ -189,37 +186,25 @@
                     if (listaAdmins != null && !listaAdmins.isEmpty()) {
                         for (Administracao admin : listaAdmins) {
                 %>
-                <tr>
-                    <td>
-                        <form method="get" action="${pageContext.request.contextPath}/admin-delete">
-                            <input type="hidden" name="acao" value="delete">
-                            <input type="hidden" name="pk" value="<%= admin.getId() %>">
-                            <button type="submit" class="detalhes">
-                                <img src="${pageContext.request.contextPath}/assets/crud/img/deletar-kronos.png" alt="">
-                            </button>
-                        </form>
-                    </td>
-                    <td>
-                        <form method="get" action="${pageContext.request.contextPath}/admin-update">
-                            <input type="hidden" name="acao" value="update">
-                            <input type="hidden" name="pk" value="<%= admin.getId() %>">
-                            <button type="submit" class="detalhes">
-                                <img src="${pageContext.request.contextPath}/assets/crud/img/mais-detalhes.png" alt="">
-                            </button>
-                        </form>
-                    </td>
-                    <td><%= admin.getId() %></td>
-                    <td><%= admin.getNome() %></td>
-                    <td><%= admin.getEmail() %></td>
-                    <td><%= admin.getSenha() %></td>
-                </tr>
+                    <tr>
+                        <td>
+                            <button type="button" class="detalhes acaoModal" data-acao="abrir" data-modal="update" data-pk="<%= admin.getId() %>" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"admin-crud"}'><img src="${pageContext.request.contextPath}/assets/crud/img/mais-detalhes.png" alt=""></button>
+                        </td>
+                        <td>
+                            <button type="button" class="detalhes acaoModal" data-acao="abrir" data-modal="delete" data-pk="<%= admin.getId() %>" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"admin-crud"}'><img src="${pageContext.request.contextPath}/assets/crud/img/deletar-kronos.png" alt=""></button>
+                        </td>
+                        <td><%= admin.getId() %></td>
+                        <td><%= admin.getNome() %></td>
+                        <td><%= admin.getEmail() %></td>
+                        <td><%= admin.getSenha() %></td>
+                    </tr>
                 <%
                     }
                 } else {
                 %>
-                <tr>
-                    <td colspan="6">Nenhum administrador encontrado.</td>
-                </tr>
+                    <tr>
+                        <td colspan="6">Nenhum administrador encontrado.</td>
+                    </tr>
                 <% } %>
                 </tbody>
             </table>

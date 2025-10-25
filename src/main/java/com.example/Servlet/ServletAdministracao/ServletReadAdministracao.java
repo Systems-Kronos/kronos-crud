@@ -14,20 +14,50 @@ import java.util.List;
 
 @WebServlet("/admin-crud")
 public class ServletReadAdministracao extends HttpServlet {
+    
+    // Instancia DAO
+    private AdministracaoDAO dao = new AdministracaoDAO();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // Instancia DAO
-        AdministracaoDAO dao = new AdministracaoDAO();
+        String pk = request.getParameter("pk");
 
-        // Pega todos os administradores do banco
-        List<Administracao> listaAdmins = dao.read();
+        if (pk != null && !pk.isEmpty()) {
 
-        // Passa para o JSP
-        request.setAttribute("listaAdmins", listaAdmins);
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
 
-        // Encaminha para JSP dentro do WEB-INF
-        request.getRequestDispatcher("/WEB-INF/pages/administrador.jsp").forward(request, response);
+            try {
+                Administracao admin = dao.read(Integer.parseInt(pk));
+
+                if (admin != null) {
+
+                    String json = "{"
+                            + "\"id\":\"" + pk + "\","
+                            + "\"nome\":\"" + admin.getNome() + "\","
+                            + "\"email\":\"" + admin.getEmail() + "\","
+                            + "\"senha\":\"" + admin.getSenha() + "\""
+                            + "}";
+
+                    response.getWriter().write(json);
+                }
+            } catch (NumberFormatException e) {
+                response.getWriter().write("{\"erro\":\"PK inválida\"}");
+            } catch (Exception e) {
+                response.getWriter().write("{\"erro\":\"" + e.getMessage() + "\"}");
+            }
+
+        } else {
+
+            // Pega todos os administradores do banco
+            List<Administracao> listaAdmins = dao.read();
+
+            // Passa para o JSP
+            request.setAttribute("listaAdmins", listaAdmins);
+
+            // Encaminha para JSP dentro do WEB-INF
+            request.getRequestDispatcher("/WEB-INF/pages/administrador.jsp").forward(request, response);
+        }
     }
 }

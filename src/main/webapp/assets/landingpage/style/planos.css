@@ -75,7 +75,6 @@
 .cardsPlanos h2{
     font-size: 2vw;
     font-weight: bolder;
-    font-family: "Cinzel", sans-serif;
     margin-top: 1vw;
 }
 
@@ -85,13 +84,13 @@
 
 .planoPro {
     background: #E7D0FF;
-    height: 19vw;
+    height: 20vw;
     box-shadow: 0vw 0vw 0.4vw 0.05vw rgba(0, 0, 0, 0.1);
 }
 
 .planoLite {
     background: #F0E1FF;
-    height: 19vw;
+    height: 20vw;
     box-shadow: 0vw 0vw 0.4vw 0.05vw rgba(0, 0, 0, 0.1);
 }
 
@@ -99,7 +98,7 @@
     background: #5A2C85;
     color: #FFFFFF;
     box-shadow: 0vw 0vw 0.6vw 0.08vw rgba(0, 0, 0, 0.2);
-    height: 41vw;
+    height: 43vw;
     margin: 0vw 5vw;
 }
 
@@ -164,6 +163,11 @@
     margin-top: 1vw;
     border: none;
     border-radius: 0.6vw;
+    transition: background-color 0.2s ease;
+}
+
+.cardsPlanos button:hover {
+    background-color: #C48F20;
 }
 
 .cardsPlanos ul {

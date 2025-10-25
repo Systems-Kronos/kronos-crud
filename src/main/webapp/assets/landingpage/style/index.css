@@ -51,10 +51,7 @@ body {
 
 
 .telaInicial {
-    background-image: url(/src/main/webapp/assets/landingpage/img/roxo-fabril.png);
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    background: url("../img/roxo-fabril.png") no-repeat center/cover;
     width: 100%;
     text-align: center;
     display: flex;
@@ -90,6 +87,11 @@ body {
     margin-top: 1.5vw;
     border: none;
     border-radius: 0.6vw;
+    transition: background-color 0.2s ease;
+}
+
+.telaInicial button:hover {
+    background-color: #C48F20;
 }
 
 .telaInicial .imgAppKronos {
@@ -278,7 +280,7 @@ summary {
     height: 1.2vw;
     position: absolute; 
     left: 70vw;
-    background: url('/src/main/webapp/assets/landingpage/img/seta-kronos-baixo.png') no-repeat center/cover;
+    background: url("../img/seta-kronos-baixo.png") no-repeat center/cover;
     transform: rotate(0deg); 
     transition: transform 0.2s ease;
 }

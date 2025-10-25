@@ -1,6 +1,5 @@
 <%@ page import="com.example.Model.Plano" %>
 <%@ page import="java.util.List" %>
-<%@ page import="com.example.Model.Setor" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -12,11 +11,12 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="${pageContext.request.contextPath}/assets/crud/img/favikronos.ico" type="image/x-icon">
     <script src="${pageContext.request.contextPath}/assets/crud/script/script.js" defer></script>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/crud/style/dados.css">
-    <title>CRUD - Kronos</title>
+    <title>Planos - Kronos CRUD</title>
 </head>
-
+    
 <%
     String idAdquirido = request.getParameter("pk");
 
@@ -24,10 +24,10 @@
     boolean updateAberto = "update".equals(acao);
     boolean deleteAberto = "delete".equals(acao);
 %>
-
+    
 <body>
     <div class="meuPlaceholder"></div>
-
+    
     <header>
         <h1>KRONOS</h1>
         <nav>
@@ -140,39 +140,31 @@
 
             <section class="delete">
                 <dialog id="delete" data-abrir="<%=deleteAberto%>">
-                    <h2>Excluir setor</h2>
-                    <form action="${pageContext.request.contextPath}/setores-delete" method="post">
-                        <input type="hidden" name="pk"
-                               value="<%= request.getAttribute("pk") != null ? request.getAttribute("pk") : "" %>">
+                    <h2>Excluir plano</h2>
+                    <form action="" method="post">
+                        <div>
+                            <label for="idDelete">ID:</label>
+                            <input type="button" name="id" id="idDelete" disabled>
+                        </div>
                         <div class="campos">
                             <div>
                                 <div class="campo">
                                     <label for="nomeDelete">Nome</label>
-                                    <input type="text" name="nome" id="nomeDelete" autocomplete="off" disabled
-                                           value="<%= (request.getAttribute("setorModal") != null) ? ((Setor) request.getAttribute("setorModal")).getNome() : "" %>">
+                                    <input type="text" name="nome" id="nomeDelete" autocomplete="off" disabled>
                                 </div>
                                 <div class="campo">
-                                    <label for="turnosDelete">Turnos</label>
-                                    <input type="text" name="turnos" id="turnosDelete" autocomplete="off" disabled
-                                           value="<%= (request.getAttribute("setorModal") != null) ? ((Setor) request.getAttribute("setorModal")).getTurnos() : "" %>">
+                                    <label for="maxFuncionariosDelete">Número de funcionários</label>
+                                    <input type="number" name="maxFuncionarios" id="maxFuncionariosDelete" min="1" disabled>
                                 </div>
                                 <div class="campo">
-                                    <label for="qtdFuncionariosDelete">Número de funcionários</label>
-                                    <input type="number" name="qtdFuncionarios" id="qtdFuncionariosDelete" min="1" disabled
-                                           value="<%= (request.getAttribute("setorModal") != null) ? ((Setor) request.getAttribute("setorModal")).getQtdFuncionarios() : 0 %>">
+                                    <label for="precoDelete">Preço</label>
+                                    <input type="number" name="preco" id="precoDelete" step="0.01" min="0.01" placeholder="0,00" disabled>
                                 </div>
                             </div>
                             <div>
                                 <div class="campo">
                                     <label for="descricaoDelete">Descrição</label>
-                                    <textarea type="text" name="descricao" id="descricaoDelete" disabled><%=
-                                    (request.getAttribute("setorModal") != null) ? ((Setor) request.getAttribute("setorModal")).getDescricao() : ""
-                                    %></textarea>
-                                </div>
-                                <div class="campo">
-                                    <label for="idEmpresaDelete">ID da Empresa</label>
-                                    <input type="number" name="idEmpresa" id="idEmpresaDelete" disabled
-                                           value="<%= (request.getAttribute("setorModal") != null) ? ((Setor) request.getAttribute("setorModal")).getIdEmpresa() : 0 %>">
+                                    <textarea type="text" name="descricao" id="descricaoDelete" disabled></textarea>
                                 </div>
                             </div>
                         </div>
@@ -183,10 +175,9 @@
                     </form>
                 </dialog>
             </section>
-
         </div>
 
-        <!-- READ -->
+            <!-- READ -->
 
         <div class="tabelaScroll">
             <table class="tabelaPlanos">
@@ -209,10 +200,10 @@
                 %>
                     <tr>
                         <td>
-                            <form method="get"><input type="hidden" name="acao" value="delete"><input type="hidden" name="pk" value="<%= plano.getId() %>"><button type="submit" class="detalhes"><img src="${pageContext.request.contextPath}/assets/crud/img/deletar-kronos.png" alt=""></button></form>
+                            <button type="button" id="modalUpdate" class="detalhes acaoModal" data-acao="abrir" data-modal="update" data-pk="<%= plano.getId() %>" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"admin-crud"}'><img src="${pageContext.request.contextPath}/assets/crud/img/mais-detalhes.png" alt=""></button>
                         </td>
                         <td>
-                            <form method="get"><input type="hidden" name="acao" value="update"><input type="hidden" name="pk" value="<%= plano.getId() %>"><button type="submit" class="detalhes"><img src="${pageContext.request.contextPath}/assets/crud/img/mais-detalhes.png" alt=""></button></form>
+                            <button type="button" id="modalDelete" class="detalhes acaoModal" data-acao="abrir" data-modal="delete" data-pk="<%= plano.getId() %>" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"admin-crud"}'><img src="${pageContext.request.contextPath}/assets/crud/img/deletar-kronos.png" alt=""></button>
                         </td>
                         <td><%= plano.getId() %></td>
                         <td><%= plano.getNome() %></td>
