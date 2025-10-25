@@ -1,6 +1,8 @@
+
 <%@ page import="com.example.Model.Habilidades" %>
 <%@ page import="java.util.List" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -16,13 +18,6 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/crud/style/dados.css">
     <title>Habilidades - Kronos CRUD</title>
 </head>
-
-<%
-    String idAdquirido = request.getParameter("pk");
-    String acao = request.getParameter("acao");
-    boolean updateAberto = "update".equals(acao);
-    boolean deleteAberto = "delete".equals(acao);
-%>
 
 <body>
     <div class="meuPlaceholder"></div>
@@ -43,19 +38,21 @@
 
     <div class="conteudoPrincipal">
         <div class="procurarCadastrar">
-            <form class="pesquisa">
-                <input type="search" placeholder="Pesquisar" id="pesquisa" name="pesquisa" class="buscar">
+            <form class="pesquisa" method="get" action="${pageContext.request.contextPath}/habilidades-crud">
+                <input type="search" placeholder="Pesquisar" id="pesquisa" name="pesquisa" class="buscar" value="<%= request.getParameter("pesquisa") != null ? request.getParameter("pesquisa") : "" %>">
 
                 <details class="filtros">
                     <summary>Filtros</summary>
                     <div class="conteudoFiltros">
                         <label class="opcaoFiltro">
-                            <input type="radio" name="ordem" value="crescente">Crescente
+                            <input type="radio" name="ordem" value="crescente"
+                                <%= "crescente".equals(request.getParameter("ordem")) ? "checked" : "" %>> Crescente
                         </label>
                         <label class="opcaoFiltro">
-                            <input type="radio" name="ordem" value="decrescente">Decrescente
+                            <input type="radio" name="ordem" value="decrescente"
+                                <%= "decrescente".equals(request.getParameter("ordem")) ? "checked" : "" %>> Decrescente
                         </label>
-                        <button type="reset">Limpar filtros</button>
+                        <button type="reset" id="botaoLimparFiltro" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"habilidades-crud"}'>Limpar filtros</button>
                         <button type="submit">Aplicar</button>
                     </div>
                 </details>
@@ -86,8 +83,8 @@
                             </div>
                         </div>
                         <menu>
-                            <button type="submit">Cadastrar</button>
-                            <button type="button" class="acaoModal" data-acao="fechar" data-modal="create">Cancelar</button>
+                            <button type="button" class="cancelar acaoModal" data-acao="fechar" data-modal="create">Cancelar</button>
+                            <button type="submit" class="confirmar">Cadastrar</button>
                         </menu>
                     </form>
                 </dialog>
@@ -101,7 +98,7 @@
                 <dialog id="update">
                     <h2>Editar habilidade</h2>
                     <form action="" method="post">
-                        <div>
+                        <div class="idAtual">
                             <label for="idUpdate">ID:</label>
                             <input type="button" name="id" id="idUpdate" disabled>
                         </div>
@@ -124,8 +121,8 @@
                             </div>
                         </div>
                         <menu>
-                            <button type="submit">Confirmar alterações</button>
-                            <button type="button" class="acaoModal" data-acao="fechar" data-modal="update">Cancelar</button>
+                            <button type="button" class="cancelar acaoModal" data-acao="fechar" data-modal="update">Cancelar</button>
+                            <button type="submit" class="confirmar">Confirmar alterações</button>
                         </menu>
                     </form>
                 </dialog>
@@ -137,11 +134,7 @@
                 <dialog id="delete">
                     <h2>Excluir habilidade</h2>
                     <form action="" method="post">
-                        <div>
-                            <label for="idDelete">ID:</label>
-                            <input type="button" name="id" id="idDelete" disabled>
-                        </div>
-                        <div>
+                        <div class="idAtual">
                             <label for="idDelete">ID:</label>
                             <input type="button" name="id" id="idDelete" disabled>
                         </div>
@@ -164,8 +157,8 @@
                             </div>
                         </div>
                         <menu>
-                            <button type="submit" value="true">Confirmar exclusão</button>
-                            <button type="button" class="acaoModal" data-acao="fechar" data-modal="delete" value="false">Cancelar</button>
+                            <button type="button" class="cancelar acaoModal" data-acao="fechar" data-modal="delete">Cancelar</button>
+                            <button type="submit" class="confirmar">Confirmar exclusão</button>
                         </menu>
                     </form>
                 </dialog>
@@ -178,8 +171,8 @@
             <table class="tabelaHabilidades">
                 <thead>
                     <tr>
-                        <th>Excluir</th>
                         <th>Ver</th>
+                        <th>Excluir</th>
                         <th>ID</th>
                         <th>Nome</th>
                         <th>Tag</th>
@@ -196,10 +189,10 @@
 
                     <tr>
                         <td>
-                            <button type="button" id="modalUpdate" class="detalhes acaoModal" data-acao="abrir" data-modal="update" data-pk="<%= habilidade.getId() %>" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"habilidade-crud"}'><img src="${pageContext.request.contextPath}/assets/crud/img/mais-detalhes.png" alt=""></button>
+                            <button type="button" class="detalhes acaoModal" data-acao="abrir" data-modal="update" data-pk="<%= habilidade.getId() %>" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"habilidades-crud"}'><img src="${pageContext.request.contextPath}/assets/crud/img/mais-detalhes.png" alt=""></button>
                         </td>
                         <td>
-                            <button type="button" id="modalDelete" class="detalhes acaoModal" data-acao="abrir" data-modal="delete" data-pk="<%= habilidade.getId() %>" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"habilidade-crud"}'><img src="${pageContext.request.contextPath}/assets/crud/img/deletar-kronos.png" alt=""></button>
+                            <button type="button" class="detalhes acaoModal" data-acao="abrir" data-modal="delete" data-pk="<%= habilidade.getId() %>" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"habilidades-crud"}'><img src="${pageContext.request.contextPath}/assets/crud/img/deletar-kronos.png" alt=""></button>
                         </td>
                         <td><%= habilidade.getId() %></td>
                         <td><%= habilidade.getNome() %></td>

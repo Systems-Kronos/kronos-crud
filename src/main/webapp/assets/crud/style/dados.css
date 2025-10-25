@@ -115,7 +115,7 @@ form {
 form .buscar {
     display: flex;
     font-size: 1.2vw;
-    padding-left: 1vw;
+    padding: 0vw 1vw;
     height: 2.75vw;
     width: 20vw;
     border-radius: 0.6vw;
@@ -279,18 +279,21 @@ section dialog form .campoLado {
 }
 
 section dialog form .idAtual {
+    font-family: "Montserrat", sans-serif;
     display: flex;
     align-items: center;
-    margin-bottom: 1vw;
+    font-weight: bold;
+    font-size: 1.5vw;
+    color: #370963;
 }
 
-section dialog form input[type="button"] {
+section dialog form .idAtual input[type="button"] {
     font-family: "Montserrat", sans-serif;
-    color: #000000;
-    border-radius: 0.25vw;
-    font-size: 1vw;
     border: none;
     background: none;
+    font-weight: bold;
+    font-size: 1.5vw;
+    color: #370963;
 }
 
 section dialog form .campos input {
@@ -328,6 +331,10 @@ section dialog form .campos select {
     padding: 0.5vw;
     border: 0.15vw solid #370963;
     font-weight: 400;
+}
+
+section dialog form .campos select option:first-child {
+    display: none; 
 }
 
 section dialog h2 {
@@ -439,7 +446,7 @@ table button.detalhes {
     overflow-x: auto;
     overflow-y: auto;
     width: 75vw;
-    max-height: 65vh
+    max-height: 75vh
 }
 
 .tabelaScroll::-webkit-scrollbar-thumb {

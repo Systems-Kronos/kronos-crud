@@ -38,7 +38,7 @@
         <div class="procurarCadastrar">
             <form class="pesquisa" method="get" action="${pageContext.request.contextPath}/usuarios-crud">
                 <input type="search" placeholder="Pesquisar" id="pesquisa" name="pesquisa" class="buscar" value="<%= request.getParameter("pesquisa") != null ? request.getParameter("pesquisa") : "" %>">
-    
+
                 <details class="filtros">
                     <summary>Filtros</summary>
                     <div class="conteudoFiltros">
@@ -80,15 +80,17 @@
                                     <div class="campo">
                                         <label for="generoCreate">Gênero</label>
                                         <select name="genero" id="generoCreate" required>
-                                            <option value="M">M</option>
-                                            <option value="F">F</option>
-                                            <option value="O">O</option>
+                                            <option value="" disabled selected>Selecionar</option>
+                                            <option value="M">Masculino</option>
+                                            <option value="F">Feminino</option>
+                                            <option value="O">Outro</option>
                                         </select>
                                     </div>
                                     <div class="campo">
                                         <label for="statusCreate">Status</label>
                                         <select name="status" id="statusCreate" required>
-                                            <option value="Ativo" selected>Ativo</option>
+                                            <option value="" disabled selected>Selecione o Status</option>
+                                            <option value="Ativo">Ativo</option>
                                             <option value="Inativo">Inativo</option>
                                             <option value="Férias">Férias</option>
                                             <option value="Desligado">Desligado</option>
@@ -108,8 +110,8 @@
                             </div>
                         </div>
                         <menu>
-                            <button type="submit">Cadastrar</button>
-                            <button type="button" class="acaoModal" data-acao="fechar" data-modal="create">Cancelar</button>
+                            <button type="button" class="cancelar acaoModal" data-acao="fechar" data-modal="create">Cancelar</button>
+                            <button type="submit" class="confirmar">Cadastrar</button>
                         </menu>
                     </form>
                 </dialog>
@@ -124,7 +126,7 @@
                 <dialog id="update">
                     <h2>Editar usuário</h2>
                     <form action="" method="post">
-                        <div>
+                        <div class="idAtual">
                             <label for="idUpdate">ID:</label>
                             <input type="button" name="id" id="idUpdate" disabled>
                         </div>
@@ -146,6 +148,7 @@
                                     <div class="campo">
                                         <label for="generoUpdate">Gênero</label>
                                         <select name="genero" id="generoUpdate" required>
+                                            <option value="" disabled selected>Selecionar</option>
                                             <option value="M">Masculino</option>
                                             <option value="F">Feminino</option>
                                             <option value="O">Outro</option>
@@ -154,6 +157,7 @@
                                     <div class="campo">
                                         <label for="statusUpdate">Status</label>
                                         <select name="status" id="statusUpdate" required>
+                                            <option value="" disabled selected>Selecionar</option>
                                             <option value="Ativo">Ativo</option>
                                             <option value="Inativo">Inativo</option>
                                             <option value="Férias">Férias</option>
@@ -174,8 +178,8 @@
                             </div>
                         </div>
                         <menu>
-                            <button type="submit">Confirmar alterações</button>
-                            <button type="button" class="acaoModal" data-acao="fechar" data-modal="update">Cancelar</button>
+                            <button type="button" class="cancelar acaoModal" data-acao="fechar" data-modal="update">Cancelar</button>
+                            <button type="submit" class="confirmar">Confirmar alterações</button>
                         </menu>
                     </form>
                 </dialog>
@@ -187,7 +191,7 @@
                 <dialog id="delete">
                     <h2>Excluir usuário</h2>
                     <form action="" method="post">
-                        <div>
+                        <div class="idAtual">
                             <label for="idDelete">ID:</label>
                             <input type="button" name="id" id="idDelete" disabled>
                         </div>
@@ -228,8 +232,8 @@
                             </div>
                         </div>
                         <menu>
-                            <button type="submit" value="true">Confirmar exclusão</button>
-                            <button type="button" class="acaoModal" data-acao="fechar" data-modal="delete" value="false">Cancelar</button>
+                            <button type="button" class="cancelar acaoModal" data-acao="fechar" data-modal="delete">Cancelar</button>
+                            <button type="submit" class="confirmar">Confirmar exclusão</button>
                         </menu>
                     </form>
                 </dialog>
@@ -276,7 +280,6 @@
                             <td><%= u.getStatus() %></td>
                             <td> Setor Join</td>
                             <td> Supervisor Join</td>
-
                         </tr>
                     <%
                         }

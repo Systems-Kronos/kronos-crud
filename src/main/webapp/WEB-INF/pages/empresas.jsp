@@ -174,6 +174,8 @@
                 </dialog>
             </section>
 
+            <!-- DELETE -->
+
             <section class="delete">
                 <dialog id="delete">
                     <h2>Excluir empresa</h2>
@@ -225,13 +227,15 @@
                             </div>
                         </div>
                         <menu>
-                            <button type="button" class="cancelar acaoModal" data-acao="fechar" data-modal="delete" value="false">Cancelar</button>
-                            <button type="submit" class="confirmar" value="true">Confirmar exclusão</button>
+                            <button type="button" class="cancelar acaoModal" data-acao="fechar" data-modal="update">Cancelar</button>
+                            <button type="submit" class="confirmar">Confirmar exclusão</button>
                         </menu>
                     </form>
                 </dialog>
             </section>
         </div>
+
+        <!-- READ -->
 
         <div class="tabelaScroll">
             <table class="tabelaEmpresas">
