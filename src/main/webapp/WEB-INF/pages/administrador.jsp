@@ -96,7 +96,7 @@
         <section class="update">
             <dialog id="update">
                 <h2>Editar administrador</h2>
-                <form action="" method="post">
+                <form action="${pageContext.request.contextPath}/admin-update" method="post">
                     <div class="idAtual">
                         <label for="idDelete">ID:</label>
                         <input type="button" name="id" id="idUpdate" disabled>
