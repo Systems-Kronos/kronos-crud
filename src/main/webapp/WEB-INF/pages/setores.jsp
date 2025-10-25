@@ -106,7 +106,6 @@
                 <button type="button" class="cadastrar acaoModal" data-acao="abrir" data-modal="create">Cadastrar</button>
             </section>
 
-
             <!-- UPDATE -->
 
             <section class="update">
@@ -164,7 +163,7 @@
             <section class="delete">
                 <dialog id="delete">
                     <h2>Excluir setor</h2>
-                    <form action="" method="post">
+                    <form action="${pageContext.request.contextPath}/setores-delete" method="post">
                         <div class="idAtual">
                             <label for="idDelete">ID:</label>
                             <input type="button" name="id" id="idDelete" disabled>
