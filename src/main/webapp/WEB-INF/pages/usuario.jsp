@@ -89,7 +89,7 @@
                                     <div class="campo">
                                         <label for="statusCreate">Status</label>
                                         <select name="status" id="statusCreate" required>
-                                            <option value="" disabled selected>Selecione o Status</option>
+                                            <option value="" disabled selected>Selecionar</option>
                                             <option value="Ativo">Ativo</option>
                                             <option value="Inativo">Inativo</option>
                                             <option value="Férias">Férias</option>
@@ -152,7 +152,7 @@
                                             <option value="M">Masculino</option>
                                             <option value="F">Feminino</option>
                                             <option value="O">Outro</option>
-                                        </select>
+                                        </select>                                 
                                     </div>
                                     <div class="campo">
                                         <label for="statusUpdate">Status</label>
@@ -199,24 +199,35 @@
                             <div>
                                 <div class="campo">
                                     <label for="nomeDelete">Nome</label>
-                                    <input type="text" name="nome" id="nomeDelete" autocomplete="off" disabled>
+                                    <input type="text" name="nome" id="nomeDelete" disabled>
                                 </div>
                                 <div class="campo">
                                     <label for="cpfDelete">CPF</label>
-                                    <input type="text" name="cpf" id="cpfDelete" autocomplete="off" disabled>
+                                    <input type="text" name="cpf" id="cpfDelete" disabled>
                                 </div>
                                 <div class="campo">
                                     <label for="senhaDelete">Senha</label>
-                                    <input type="password" name="senha" id="senhaDelete" autocomplete="new-password" disabled>
+                                    <input type="password" name="senha" id="senhaDelete" disabled>
                                 </div>
                                 <div class="campoLado">
                                     <div class="campo">
                                         <label for="generoDelete">Gênero</label>
-                                        <input type="text" id="generoDelete">
+                                        <select name="genero" id="generoDelete" disabled>
+                                            <option value="" disabled selected>Selecionar</option>
+                                            <option value="M">Masculino</option>
+                                            <option value="F">Feminino</option>
+                                            <option value="O">Outro</option>
+                                        </select>      
                                     </div>
                                     <div class="campo">
                                         <label for="statusDelete">Status</label>
-                                        <input type="text" id="statusDelete">
+                                        <select name="status" id="statusDelete" disabled>
+                                            <option value="" disabled selected>Selecionar</option>
+                                            <option value="Ativo">Ativo</option>
+                                            <option value="Inativo">Inativo</option>
+                                            <option value="Férias">Férias</option>
+                                            <option value="Desligado">Desligado</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -240,7 +251,7 @@
             </section>
         </div>
 
-            <!-- READ -->
+        <!-- READ -->
 
         <main>
             <div class="tabelaScroll">

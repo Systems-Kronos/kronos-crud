@@ -130,7 +130,7 @@
                             </div>
                         </div>
                         <menu>
-                            <button type="button" class="cancelar acaoModal" data-acao="fechar" data-modal="delete">Cancelar</button>
+                            <button type="button" class="cancelar acaoModal" data-acao="fechar" data-modal="update">Cancelar</button>
                             <button type="submit" class="confirmar">Confirmar alterações</button>
                         </menu>
                     </form>

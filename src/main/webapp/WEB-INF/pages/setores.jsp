@@ -129,7 +129,7 @@
                                 </div>
                                 <div class="campo">
                                     <label for="turnosUpdate">Turnos</label>
-                                    <select name="turnos" id="turnosCreate" required>
+                                    <select name="turnos" id="turnosUpdate" required>
                                         <option value="" disabled selected>Selecionar</option>
                                         <option value="Integral">Integral</option>
                                         <option value="Manhã">Manhã</option>
@@ -176,12 +176,19 @@
                                     <input type="text" name="nome" id="nomeDelete" autocomplete="off" disabled>
                                 </div>
                                 <div class="campo">
-                                    <label for="turnosDelete">Turnos</label>
-                                    <input type="text" name="turnos" id="turnosDelete" autocomplete="off" disabled>
-                                </div>
-                                <div class="campo">
                                     <label for="qtnFuncionariosDelete">Número de funcionários</label>
                                     <input type="number" name="qtnFuncionarios" id="qtnFuncionariosDelete" min="1" disabled>
+                                </div>
+                                <div class="campo">
+                                    <label for="turnosDelete">Turnos</label>
+                                    <select name="turnos" id="turnosDelete" disabled>
+                                        <option value="" disabled selected>Selecionar</option>
+                                        <option value="Integral">Integral</option>
+                                        <option value="Manhã">Manhã</option>
+                                        <option value="Tarde">Tarde</option>
+                                        <option value="Noite">Noite</option>
+                                        <option value="Madrugada">Madrugada</option>
+                                    </select>                                 
                                 </div>
                             </div>
                             <div>

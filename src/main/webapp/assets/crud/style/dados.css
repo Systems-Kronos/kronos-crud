@@ -333,6 +333,18 @@ section dialog form .campos select {
     font-weight: 400;
 }
 
+section dialog form .campos .campoLado input {
+    font-family: "Montserrat", sans-serif;
+    background-color: #FBF8FF;
+    border-radius: 0.5vw;
+    width: 7.125vw;
+    height: 1.25vw;
+    font-size: 1vw;
+    padding: 0.5vw;
+    border: 0.15vw solid #370963;
+    font-weight: 400;
+}
+
 section dialog form .campos select option:first-child {
     display: none; 
 }

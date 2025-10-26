@@ -87,6 +87,17 @@
                             </div>
                             <div>
                                 <div class="campo">
+                                    <label for="porteCreate">Porte</label>
+                                    <select type="text" name="porte" id="porteCreate" required>
+                                        <option value="" selected disabled>Selecionar</option>
+                                        <option value="Micro">Micro</option>
+                                        <option value="Pequena">Pequena</option>
+                                        <option value="Média">Média</option>
+                                        <option value="Grande">Grande</option>
+                                        <option value="Global">Global</option>
+                                    </select>
+                                </div>
+                                <div class="campo">
                                     <label for="horaAberturaCreate">Horário de abertura</label>
                                     <input type="time" name="horaAbertura" id="horaAberturaCreate" required>
                                 </div>
@@ -97,17 +108,6 @@
                                 <div class="campo">
                                     <label for="regrasNegociosCreate">Regras de Negócios</label>
                                     <textarea type="text" name="regrasNegocios" id="regrasNegociosCreate" required></textarea>
-                                </div>
-                                <div class="campo">
-                                    <label for="porteCreate">Porte</label>
-                                    <select type="text" name="porte" id="porteCreate" required>
-                                        <option value="" selected disabled>Selecionar</option>
-                                        <option value="Micro">Micro</option>
-                                        <option value="Pequeno">Pequeno</option>
-                                        <option value="Médio">Médio</option>
-                                        <option value="Grande">Grande</option>
-                                        <option value="Global">Global</option>
-                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -156,6 +156,17 @@
                             </div>
                             <div>
                                 <div class="campo">
+                                    <label for="porteUpdate">Porte</label>
+                                    <select type="text" name="porte" id="porteUpdate" required>
+                                        <option value="" selected disabled>Selecionar</option>
+                                        <option value="Micro">Micro</option>
+                                        <option value="Pequena">Pequena</option>
+                                        <option value="Média">Média</option>
+                                        <option value="Grande">Grande</option>
+                                        <option value="Global">Global</option>
+                                    </select>
+                                </div>
+                                <div class="campo">
                                     <label for="horaAberturaUpdate">Horário de abertura</label>
                                     <input type="time" name="horaAbertura" id="horaAberturaUpdate" required>
                                 </div>
@@ -166,17 +177,6 @@
                                 <div class="campo">
                                     <label for="regrasNegociosUpdate">Regras de Negócios</label>
                                     <textarea type="text" name="regrasNegocios" id="regrasNegociosUpdate" required></textarea>
-                                </div>
-                                <div class="campo">
-                                    <label for="porteCreate">Porte</label>
-                                    <select type="text" name="porte" id="porteCreate" required>
-                                        <option value="" selected disabled>Selecionar</option>
-                                        <option value="Micro">Micro</option>
-                                        <option value="Pequeno">Pequeno</option>
-                                        <option value="Médio">Médio</option>
-                                        <option value="Grande">Grande</option>
-                                        <option value="Global">Global</option>
-                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -223,6 +223,17 @@
                             </div>
                             <div>
                                 <div class="campo">
+                                    <label for="porteDelete">Porte</label>
+                                    <select type="text" name="porte" id="porteDelete" required>
+                                        <option value="" selected disabled>Selecionar</option>
+                                        <option value="Micro">Micro</option>
+                                        <option value="Pequena">Pequena</option>
+                                        <option value="Média">Média</option>
+                                        <option value="Grande">Grande</option>
+                                        <option value="Global">Global</option>
+                                    </select>
+                                </div>
+                                <div class="campo">
                                     <label for="horaAberturaDelete">Horário de abertura</label>
                                     <input type="time" name="horaAbertura" id="horaAberturaDelete" disabled>
                                 </div>
@@ -233,10 +244,6 @@
                                 <div class="campo">
                                     <label for="regrasNegociosDelete">Regras de Negócios</label>
                                     <textarea type="text" name="regrasNegocios" id="regrasNegociosDelete" disabled></textarea>
-                                </div>
-                                <div class="campo">
-                                    <label for="porteDelete">Porte</label>
-                                    <input type="text" name="porte" id="porteDelete" autocomplete="off" disabled>
                                 </div>
                             </div>
                         </div>
