@@ -1,6 +1,7 @@
 <%@ page import="com.example.Model.Setor" %>
 <%@ page import="java.util.List" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -36,194 +37,229 @@
 
     <div class="conteudoPrincipal">
         <div class="procurarCadastrar">
-            <form class="pesquisa">
-                <input type="search" placeholder="Pesquisar" name="pesquisa" class="buscar">
+            <form class="pesquisa" method="get" action="${pageContext.request.contextPath}/setores-crud">
+                <input type="search" placeholder="Pesquisar" id="pesquisa" name="pesquisa" class="buscar" value="<%= request.getParameter("pesquisa") != null ? request.getParameter("pesquisa") : "" %>">
+
                 <details class="filtros">
                     <summary>Filtros</summary>
                     <div class="conteudoFiltros">
                         <label class="opcaoFiltro">
-                            <input type="radio" name="ordem" value="crescente">Crescente
+                            <input type="radio" name="ordem" value="crescente"
+                                <%= "crescente".equals(request.getParameter("ordem")) ? "checked" : "" %>> Crescente
                         </label>
                         <label class="opcaoFiltro">
-                            <input type="radio" name="ordem" value="decrescente">Decrescente
+                            <input type="radio" name="ordem" value="decrescente"
+                                <%= "decrescente".equals(request.getParameter("ordem")) ? "checked" : "" %>> Decrescente
                         </label>
-                        <button type="reset">Limpar filtros</button>
+                        <button type="reset" id="botaoLimparFiltro" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"setores-crud"}'>Limpar filtros</button>
                         <button type="submit">Aplicar</button>
-
                     </div>
                 </details>
             </form>
+            
+            <!-- CREATE -->
 
-                <!-- CREATE -->
-
-                <section class="create">
-                    <dialog id="create">
-                        <h2>Cadastrar setor</h2>
-                        <form action="" method="post">
-                            <div class="campos">
-                                <div>
-                                    <div class="campo">
-                                        <label for="nomeCreate">Nome</label>
-                                        <input type="text" name="nome" id="nomeCreate" autocomplete="off" required>
-                                    </div>
-                                    <div class="campo">
-                                        <label for="turnosCreate">Turnos</label>
-                                        <input type="text" name="turnos" id="turnosCreate" autocomplete="off" required>
-                                    </div>
-                                    <div class="campo">
-                                        <label for="qtdFuncionariosCreate">Número de funcionários</label>
-                                        <input type="number" name="qtdFuncionarios" id="qtdFuncionariosCreate" min="0" required>
-                                    </div>
+            <section class="create">
+                <dialog id="create">
+                    <h2>Cadastrar setor</h2>
+                    <form action="" method="post">
+                        <div class="campos">
+                            <div>
+                                <div class="campo">
+                                    <label for="nomeCreate">Nome</label>
+                                    <input type="text" name="nome" id="nomeCreate" autocomplete="off" required>
                                 </div>
-                                <div>
-                                    <div class="campo">
-                                        <label for="descricaoCreate">Descrição</label>
-                                        <textarea type="text" name="descricao" id="descricaoCreate" required></textarea>
-                                    </div>
-                                    <div class="campo">
-                                        <label for="idEmpresaCreate">ID da Empresa</label>
-                                        <input type="number" name="idEmpresa" id="idEmpresaCreate" min="1" required>
-                                    </div>
+                                <div class="campo">
+                                    <label for="qtnFuncionariosCreate">Número de funcionários</label>
+                                    <input type="number" name="qtnFuncionarios" id="qtnFuncionariosCreate" min="0" required>
+                                </div>
+                                <div class="campo">
+                                    <label for="turnosCreate">Turnos</label>
+                                    <select name="turnos" id="turnosCreate" required>
+                                        <option value="" disabled selected>Selecionar</option>
+                                        <option value="Integral">Integral</option>
+                                        <option value="Manhã">Manhã</option>
+                                        <option value="Tarde">Tarde</option>
+                                        <option value="Noite">Noite</option>
+                                        <option value="Madrugada">Madrugada</option>
+                                    </select>                                
                                 </div>
                             </div>
-                            <menu>
-                                <button type="submit">Cadastrar</button>
-                                <button type="button" class="acaoModal" data-acao="fechar" data-modal="create">Cancelar</button>
-                            </menu>
-                        </form>
-                    </dialog>
-
-                    <button type="button" class="cadastrar acaoModal" data-acao="abrir" data-modal="create">Cadastrar</button>
-                </section>
-
-
-                <!-- UPDATE -->
-
-                <section class="update">
-                    <dialog id="update">
-                        <h2>Editar setor</h2>
-                        <form action="" method="post">
-                            <div class="campos">
-                                <div>
-                                    <div class="campo">
-                                        <label for="nomeUpdate">Nome</label>
-                                        <input type="text" name="nome" id="nomeUpdate" autocomplete="off" required>
-                                    </div>
-                                    <div class="campo">
-                                        <label for="turnosUpdate">Turnos</label>
-                                        <input type="text" name="turnos" id="turnosUpdate" autocomplete="off" required>
-                                    </div>
-                                    <div class="campo">
-                                        <label for="qtdFuncionariosUpdate">Número de funcionários</label>
-                                        <input type="number" name="qtdFuncionarios" id="qtdFuncionariosUpdate" min="0" required>
-                                    </div>
+                            <div>
+                                <div class="campo">
+                                    <label for="descricaoCreate">Descrição</label>
+                                    <textarea type="text" name="descricao" id="descricaoCreate" required></textarea>
                                 </div>
-                                <div>
-                                    <div class="campo">
-                                        <label for="descricaoUpdate">Descrição</label>
-                                        <textarea type="text" name="descricao" id="descricaoUpdate" required></textarea>
-                                    </div>
-                                    <div class="campo">
-                                        <label for="idEmpresaUpdate">ID da Empresa</label>
-                                        <input type="number" name="idEmpresa" id="idEmpresaUpdate" min="1" required>
-                                    </div>
+                                <div class="campo">
+                                    <label for="idEmpresaCreate">ID da Empresa</label>
+                                    <input type="number" name="idEmpresa" id="idEmpresaCreate" min="1" required>
                                 </div>
                             </div>
-                            <menu>
-                                <button type="submit">Confirmar alterações</button>
-                                <button type="button" class="acaoModal" data-acao="fechar" data-modal="update">Cancelar</button>
-                            </menu>
-                        </form>
-                    </dialog>
-                </section>
+                        </div>
+                        <menu>
+                            <button type="button" class="cancelar acaoModal" data-acao="fechar" data-modal="create">Cancelar</button>
+                            <button type="submit" class="confirmar">Cadastrar</button>
+                        </menu>
+                    </form>
+                </dialog>
 
-                <!-- DELETE -->
+                <button type="button" class="cadastrar acaoModal" data-acao="abrir" data-modal="create">Cadastrar</button>
+            </section>
 
-                <section class="delete">
-                    <dialog id="delete">
-                        <h2>Excluir setor</h2>
-                        <form action="${pageContext.request.contextPath}/setores-delete" method="post">
-                            <div class="campos">
-                                <div>
-                                    <div class="campo">
-                                        <label for="nomeDelete">Nome</label>
-                                        <input type="text" name="nome" id="nomeDelete" autocomplete="off" disabled>
-                                    </div>
-                                    <div class="campo">
-                                        <label for="turnosDelete">Turnos</label>
-                                        <input type="text" name="turnos" id="turnosDelete" autocomplete="off" disabled>
-                                    </div>
-                                    <div class="campo">
-                                        <label for="qtdFuncionariosDelete">Número de funcionários</label>
-                                        <input type="number" name="qtdFuncionarios" id="qtdFuncionariosDelete" min="1" disabled>
-                                    </div>
+
+            <!-- UPDATE -->
+
+            <section class="update">
+                <dialog id="update">
+                    <h2>Editar setor</h2>
+                    <form action="" method="post">
+                        <div class="idAtual">
+                            <label for="idUpdate">ID:</label>
+                            <input type="button" name="id" id="idUpdate" disabled>
+                        </div>
+                        <div class="campos">
+                            <div>
+                                <div class="campo">
+                                    <label for="nomeUpdate">Nome</label>
+                                    <input type="text" name="nome" id="nomeUpdate" autocomplete="off" required>
                                 </div>
-                                <div>
-                                    <div class="campo">
-                                        <label for="descricaoDelete">Descrição</label>
-                                        <textarea type="text" name="descricao" id="descricaoDelete" disabled></textarea>
-                                    </div>
-                                    <div class="campo">
-                                        <label for="idEmpresaDelete">ID da Empresa</label>
-                                        <input type="number" name="idEmpresa" id="idEmpresaDelete" disabled>
-                                    </div>
+                                <div class="campo">
+                                    <label for="qtnFuncionariosUpdate">Número de funcionários</label>
+                                    <input type="number" name="qtnFuncionarios" id="qtnFuncionariosUpdate" min="0" required>
+                                </div>
+                                <div class="campo">
+                                    <label for="turnosUpdate">Turnos</label>
+                                    <select name="turnos" id="turnosUpdate" required>
+                                        <option value="" disabled selected>Selecionar</option>
+                                        <option value="Integral">Integral</option>
+                                        <option value="Manhã">Manhã</option>
+                                        <option value="Tarde">Tarde</option>
+                                        <option value="Noite">Noite</option>
+                                        <option value="Madrugada">Madrugada</option>
+                                    </select>                                 
                                 </div>
                             </div>
-                            <menu>
-                                <button type="submit" value="true">Confirmar exclusão</button>
-                                <button type="button" class="acaoModal" data-acao="fechar" data-modal="delete" value="false">Cancelar</button>
-                            </menu>
-                        </form>
-                    </dialog>
-                </section>
-            </div>
+                            <div>
+                                <div class="campo">
+                                    <label for="descricaoUpdate">Descrição</label>
+                                    <textarea type="text" name="descricao" id="descricaoUpdate" required></textarea>
+                                </div>
+                                <div class="campo">
+                                    <label for="idEmpresaUpdate">ID da Empresa</label>
+                                    <input type="number" name="idEmpresa" id="idEmpresaUpdate" min="1" required>
+                                </div>
+                            </div>
+                        </div>
+                        <menu>
+                            <button type="button" class="cancelar acaoModal" data-acao="fechar" data-modal="update">Cancelar</button>
+                            <button type="submit" class="confirmar">Confirmar alterações</button>
 
-                <!-- READ -->
+                        </menu>
+                    </form>
+                </dialog>
+            </section>
 
-        <div class="tabelaScroll">
-            <table class="tabelaHabilidades">
-                <thead>
-                    <tr>
-                        <th>Excluir</th>
-                        <th>Ver</th>
-                        <th>ID</th>
-                        <th>Nome</th>
-                        <th>Quantidade de Funcionários</th>
-                        <th>Turnos</th>
-                        <th>Descrição</th>
-                    </tr>
-                </thead>
-                <tbody>
-                <%
-                    List<Setor> listaSetores = (List<Setor>) request.getAttribute("listaSetores");
-                    if (listaSetores != null && !listaSetores.isEmpty()) {
-                        for (Setor setor : listaSetores) {
-                %>
-                    <tr>
-                        <td>
-                            <button type="button" id="modalUpdate" class="detalhes acaoModal" data-acao="abrir" data-modal="update" data-pk="<%= setor.getId() %>" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"admin-crud"}'><img src="${pageContext.request.contextPath}/assets/crud/img/mais-detalhes.png" alt=""></button>
-                        </td>
-                        <td>
-                            <button type="button" id="modalDelete" class="detalhes acaoModal" data-acao="abrir" data-modal="delete" data-pk="<%= setor.getId() %>" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"admin-crud"}'><img src="${pageContext.request.contextPath}/assets/crud/img/deletar-kronos.png" alt=""></button>
-                        </td>
-                        <td><%= setor.getId() %></td>
-                        <td><%= setor.getNome() %></td>
-                        <td><%= setor.getQntFuncionarios() %></td>
-                        <td><%= setor.getTurnos() %></td>
-                        <td><%= setor.getDescricao() %></td>
+            <!-- DELETE -->
 
-                    </tr>
-                <%
-                    }
-                } else {
-                %>
-                    <tr>
-                        <td colspan="6">Nenhum setor encontrado.</td>
-                    </tr>
-                <% } %>
-                </tbody>
-            </table>
+            <section class="delete">
+                <dialog id="delete">
+                    <h2>Excluir setor</h2>
+                    <form action="${pageContext.request.contextPath}/setores-delete" method="post">
+                        <div class="idAtual">
+                            <label for="idDelete">ID:</label>
+                            <input type="button" name="id" id="idDelete" disabled>
+                        </div>
+                        <div class="campos">
+                            <div>
+                                <div class="campo">
+                                    <label for="nomeDelete">Nome</label>
+                                    <input type="text" name="nome" id="nomeDelete" autocomplete="off" disabled>
+                                </div>
+                                <div class="campo">
+                                    <label for="qtnFuncionariosDelete">Número de funcionários</label>
+                                    <input type="number" name="qtnFuncionarios" id="qtnFuncionariosDelete" min="1" disabled>
+                                </div>
+                                <div class="campo">
+                                    <label for="turnosDelete">Turnos</label>
+                                    <select name="turnos" id="turnosDelete" disabled>
+                                        <option value="" disabled selected>Selecionar</option>
+                                        <option value="Integral">Integral</option>
+                                        <option value="Manhã">Manhã</option>
+                                        <option value="Tarde">Tarde</option>
+                                        <option value="Noite">Noite</option>
+                                        <option value="Madrugada">Madrugada</option>
+                                    </select>                                 
+                                </div>
+                            </div>
+                            <div>
+                                <div class="campo">
+                                    <label for="descricaoDelete">Descrição</label>
+                                    <textarea type="text" name="descricao" id="descricaoDelete" disabled></textarea>
+                                </div>
+                                <div class="campo">
+                                    <label for="idEmpresaDelete">ID da Empresa</label>
+                                    <input type="number" name="idEmpresa" id="idEmpresaDelete" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <menu>
+                            <button type="button" class="cancelar acaoModal" data-acao="fechar" data-modal="delete">Cancelar</button>
+                            <button type="submit" class="confirmar">Confirmar exclusão</button>
+                        </menu>
+                    </form>
+                </dialog>
+            </section>
         </div>
+
+        <!-- READ -->
+
+        <main>
+            <div class="tabelaScroll">
+                <table class="tabelaHabilidades">
+                    <thead>
+                        <tr>
+                            <th>Ver</th>
+                            <th>Excluir</th>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Empresa</th>
+                            <th>Quantidade de Funcionários</th>
+                            <th>Turnos</th>
+                            <th>Descrição</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <%
+                        List<Setor> listaSetores = (List<Setor>) request.getAttribute("listaSetores");
+                        if (listaSetores != null && !listaSetores.isEmpty()) {
+                            for (Setor setor : listaSetores) {
+                    %>
+                        <tr>
+                            <td>
+                                <button type="button" class="detalhes acaoModal" data-acao="abrir" data-modal="update" data-pk="<%= setor.getId() %>" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"setores-crud"}'><img src="${pageContext.request.contextPath}/assets/crud/img/mais-detalhes.png" alt=""></button>
+                            </td>
+                            <td>
+                                <button type="button" class="detalhes acaoModal" data-acao="abrir" data-modal="delete" data-pk="<%= setor.getId() %>" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"setores-crud"}'><img src="${pageContext.request.contextPath}/assets/crud/img/deletar-kronos.png" alt=""></button>
+                            </td>
+                            <td><%= setor.getId() %></td>
+                            <td><%= setor.getNome() %></td>
+                            <td>Empresa Join</td>
+                            <td><%= setor.getQntFuncionarios() %></td>
+                            <td><%= setor.getTurnos() %></td>
+                            <td><%= setor.getDescricao() %></td>
+                        </tr>
+                    <%
+                        }
+                    } else {
+                    %>
+                        <tr>
+                            <td colspan="8">Nenhum setor encontrado.</td>
+                        </tr>
+                    <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </main>
     </div>
 </body>
 </html>

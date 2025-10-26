@@ -88,7 +88,14 @@
                             <div>
                                 <div class="campo">
                                     <label for="porteCreate">Porte</label>
-                                    <input type="text" name="porte" id="porteCreate" autocomplete="off" required>
+                                    <select type="text" name="porte" id="porteCreate" required>
+                                        <option value="" selected disabled>Selecionar</option>
+                                        <option value="Micro">Micro</option>
+                                        <option value="Pequena">Pequena</option>
+                                        <option value="Média">Média</option>
+                                        <option value="Grande">Grande</option>
+                                        <option value="Global">Global</option>
+                                    </select>
                                 </div>
                                 <div class="campo">
                                     <label for="horaAberturaCreate">Horário de abertura</label>
@@ -110,10 +117,10 @@
                         </menu>
                     </form>
                 </dialog>
-
+                
                 <button type="button" class="cadastrar acaoModal" data-acao="abrir" data-modal="create">Cadastrar</button>
             </section>
-
+            
             <!-- UPDATE -->
 
             <section class="update">
@@ -150,7 +157,14 @@
                             <div>
                                 <div class="campo">
                                     <label for="porteUpdate">Porte</label>
-                                    <input type="text" name="porte" id="porteUpdate" autocomplete="off" required>
+                                    <select type="text" name="porte" id="porteUpdate" required>
+                                        <option value="" selected disabled>Selecionar</option>
+                                        <option value="Micro">Micro</option>
+                                        <option value="Pequena">Pequena</option>
+                                        <option value="Média">Média</option>
+                                        <option value="Grande">Grande</option>
+                                        <option value="Global">Global</option>
+                                    </select>
                                 </div>
                                 <div class="campo">
                                     <label for="horaAberturaUpdate">Horário de abertura</label>
@@ -173,7 +187,9 @@
                     </form>
                 </dialog>
             </section>
-
+            
+            <!-- DELETE -->
+            
             <section class="delete">
                 <dialog id="delete">
                     <h2>Excluir empresa</h2>
@@ -208,7 +224,14 @@
                             <div>
                                 <div class="campo">
                                     <label for="porteDelete">Porte</label>
-                                    <input type="text" name="porte" id="porteDelete" autocomplete="off" disabled>
+                                    <select type="text" name="porte" id="porteDelete" required>
+                                        <option value="" selected disabled>Selecionar</option>
+                                        <option value="Micro">Micro</option>
+                                        <option value="Pequena">Pequena</option>
+                                        <option value="Média">Média</option>
+                                        <option value="Grande">Grande</option>
+                                        <option value="Global">Global</option>
+                                    </select>
                                 </div>
                                 <div class="campo">
                                     <label for="horaAberturaDelete">Horário de abertura</label>
@@ -225,13 +248,15 @@
                             </div>
                         </div>
                         <menu>
-                            <button type="button" class="cancelar acaoModal" data-acao="fechar" data-modal="delete" value="false">Cancelar</button>
-                            <button type="submit" class="confirmar" value="true">Confirmar exclusão</button>
+                            <button type="button" class="cancelar acaoModal" data-acao="fechar" data-modal="delete">Cancelar</button>
+                            <button type="submit" class="confirmar">Confirmar exclusão</button>
                         </menu>
                     </form>
                 </dialog>
             </section>
         </div>
+
+        <!-- READ -->
 
         <div class="tabelaScroll">
             <table class="tabelaEmpresas">
@@ -241,11 +266,11 @@
                         <th>Excluir</th>
                         <th>ID</th>
                         <th>Nome</th>
+                        <th>Porte</th>
                         <th>E-mail</th>
                         <th>CEP</th>
                         <th>CNPJ</th>
                         <th>Telefone</th>
-                        <th>Porte</th>
                         <th>Abertura</th>
                         <th>Fechamento</th>
                         <th>Regras</th>
@@ -266,11 +291,11 @@
                         </td>
                         <td><%= empresa.getId() %></td>
                         <td><%= empresa.getNome() %></td>
+                        <td><%= empresa.getPorte() %></td>
                         <td><%= empresa.getEmail() %></td>
                         <td><%= empresa.getCep() %></td>
                         <td><%= empresa.getCnpj() %></td>
                         <td><%= empresa.getTelefone() %></td>
-                        <td><%= empresa.getPorte() %></td>
                         <td><%= empresa.getHorarioAbertura() %></td>
                         <td><%= empresa.getHorarioFechamento() %></td>
                         <td>...</td>

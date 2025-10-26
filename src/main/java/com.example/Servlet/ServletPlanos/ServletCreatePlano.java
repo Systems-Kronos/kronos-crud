@@ -1,16 +1,17 @@
 package com.example.Servlet.ServletPlanos;
 
+import java.io.IOException;
+
 import com.example.Model.Plano;
 import com.example.dao.PlanoDAO;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import java.io.IOException;
-
-@WebServlet("/create-plano")
+@WebServlet("/plano-create")
 public class ServletCreatePlano extends HttpServlet {
 
     @Override
