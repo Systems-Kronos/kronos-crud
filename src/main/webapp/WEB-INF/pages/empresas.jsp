@@ -87,10 +87,6 @@
                             </div>
                             <div>
                                 <div class="campo">
-                                    <label for="porteCreate">Porte</label>
-                                    <input type="text" name="porte" id="porteCreate" autocomplete="off" required>
-                                </div>
-                                <div class="campo">
                                     <label for="horaAberturaCreate">Horário de abertura</label>
                                     <input type="time" name="horaAbertura" id="horaAberturaCreate" required>
                                 </div>
@@ -102,6 +98,17 @@
                                     <label for="regrasNegociosCreate">Regras de Negócios</label>
                                     <textarea type="text" name="regrasNegocios" id="regrasNegociosCreate" required></textarea>
                                 </div>
+                                <div class="campo">
+                                    <label for="porteCreate">Porte</label>
+                                    <select type="text" name="porte" id="porteCreate" required>
+                                        <option value="" selected disabled>Selecionar</option>
+                                        <option value="Micro">Micro</option>
+                                        <option value="Pequeno">Pequeno</option>
+                                        <option value="Médio">Médio</option>
+                                        <option value="Grande">Grande</option>
+                                        <option value="Global">Global</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
                         <menu>
@@ -110,10 +117,10 @@
                         </menu>
                     </form>
                 </dialog>
-
+                
                 <button type="button" class="cadastrar acaoModal" data-acao="abrir" data-modal="create">Cadastrar</button>
             </section>
-
+            
             <!-- UPDATE -->
 
             <section class="update">
@@ -149,10 +156,6 @@
                             </div>
                             <div>
                                 <div class="campo">
-                                    <label for="porteUpdate">Porte</label>
-                                    <input type="text" name="porte" id="porteUpdate" autocomplete="off" required>
-                                </div>
-                                <div class="campo">
                                     <label for="horaAberturaUpdate">Horário de abertura</label>
                                     <input type="time" name="horaAbertura" id="horaAberturaUpdate" required>
                                 </div>
@@ -164,6 +167,17 @@
                                     <label for="regrasNegociosUpdate">Regras de Negócios</label>
                                     <textarea type="text" name="regrasNegocios" id="regrasNegociosUpdate" required></textarea>
                                 </div>
+                                <div class="campo">
+                                    <label for="porteCreate">Porte</label>
+                                    <select type="text" name="porte" id="porteCreate" required>
+                                        <option value="" selected disabled>Selecionar</option>
+                                        <option value="Micro">Micro</option>
+                                        <option value="Pequeno">Pequeno</option>
+                                        <option value="Médio">Médio</option>
+                                        <option value="Grande">Grande</option>
+                                        <option value="Global">Global</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
                         <menu>
@@ -173,9 +187,9 @@
                     </form>
                 </dialog>
             </section>
-
+            
             <!-- DELETE -->
-
+            
             <section class="delete">
                 <dialog id="delete">
                     <h2>Excluir empresa</h2>
@@ -209,10 +223,6 @@
                             </div>
                             <div>
                                 <div class="campo">
-                                    <label for="porteDelete">Porte</label>
-                                    <input type="text" name="porte" id="porteDelete" autocomplete="off" disabled>
-                                </div>
-                                <div class="campo">
                                     <label for="horaAberturaDelete">Horário de abertura</label>
                                     <input type="time" name="horaAbertura" id="horaAberturaDelete" disabled>
                                 </div>
@@ -224,10 +234,14 @@
                                     <label for="regrasNegociosDelete">Regras de Negócios</label>
                                     <textarea type="text" name="regrasNegocios" id="regrasNegociosDelete" disabled></textarea>
                                 </div>
+                                <div class="campo">
+                                    <label for="porteDelete">Porte</label>
+                                    <input type="text" name="porte" id="porteDelete" autocomplete="off" disabled>
+                                </div>
                             </div>
                         </div>
                         <menu>
-                            <button type="button" class="cancelar acaoModal" data-acao="fechar" data-modal="update">Cancelar</button>
+                            <button type="button" class="cancelar acaoModal" data-acao="fechar" data-modal="delete">Cancelar</button>
                             <button type="submit" class="confirmar">Confirmar exclusão</button>
                         </menu>
                     </form>
@@ -245,11 +259,11 @@
                         <th>Excluir</th>
                         <th>ID</th>
                         <th>Nome</th>
+                        <th>Porte</th>
                         <th>E-mail</th>
                         <th>CEP</th>
                         <th>CNPJ</th>
                         <th>Telefone</th>
-                        <th>Porte</th>
                         <th>Abertura</th>
                         <th>Fechamento</th>
                         <th>Regras</th>
@@ -270,11 +284,11 @@
                         </td>
                         <td><%= empresa.getId() %></td>
                         <td><%= empresa.getNome() %></td>
+                        <td><%= empresa.getPorte() %></td>
                         <td><%= empresa.getEmail() %></td>
                         <td><%= empresa.getCep() %></td>
                         <td><%= empresa.getCnpj() %></td>
                         <td><%= empresa.getTelefone() %></td>
-                        <td><%= empresa.getPorte() %></td>
                         <td><%= empresa.getHorarioAbertura() %></td>
                         <td><%= empresa.getHorarioFechamento() %></td>
                         <td>...</td>
