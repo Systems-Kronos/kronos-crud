@@ -14,8 +14,6 @@ import java.util.List;
 @WebServlet("/admin-update")
 public class ServletUpdateAdministracao extends HttpServlet {
 
-    // doGet permanece o mesmo, buscando dados para o modal
-    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
