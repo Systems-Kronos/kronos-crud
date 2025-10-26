@@ -100,7 +100,7 @@
                     <form action="" method="post">
                         <div class="idAtual">
                             <label for="idUpdate">ID:</label>
-                            <input type="button" name="id" id="idUpdate" disabled>
+                            <input type="button" name="id" id="idUpdate" readonly>
                         </div>
                         <div class="campos">
                             <div>
@@ -136,7 +136,7 @@
                     <form action="" method="post">
                         <div class="idAtual">
                             <label for="idDelete">ID:</label>
-                            <input type="button" name="id" id="idDelete" disabled>
+                            <input type="button" name="id" id="idDelete" readonly>
                         </div>
                         <div class="campos">
                             <div>
