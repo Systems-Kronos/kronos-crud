@@ -11,75 +11,92 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+
 @WebServlet("/admin-delete")
 public class ServletDeleteAdministracao extends HttpServlet {
 
-    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         AdministracaoDAO dao = new AdministracaoDAO();
 
-        // Sempre carrega lista para o READ
+        // Busca a lista completa para a tabela de fundo
         List<Administracao> listaAdmins = dao.read();
         request.setAttribute("listaAdmins", listaAdmins);
 
-        // Captura parâmetros da URL
-        String acao = request.getParameter("acao");
-        String idParam = request.getParameter("pk");
+        // Pega o ID da URL
+        String idParam = request.getParameter("id"); // Usando "id"
+        Administracao adminModal = null;
 
-        if ("delete".equals(acao) && idParam != null) {
-            try {
-                int id = Integer.parseInt(idParam);
-                Administracao adminModal = dao.read(id);
+        try {
+            int id = Integer.parseInt(idParam);
+            adminModal = dao.read(id); // Busca admin específico
 
-                if (adminModal != null) {
-                    request.setAttribute("adminModal", adminModal);
-                    request.setAttribute("acao", "delete");
-                    request.setAttribute("pk", id);
-                } else {
-                    request.setAttribute("erro", "Administrador não encontrado.");
-                }
-
-            } catch (NumberFormatException e) {
-                request.setAttribute("erro", "ID inválido para exclusão.");
+            if (adminModal != null) {
+                request.setAttribute("adminModal", adminModal); // Envia objeto para o JSP
+                request.setAttribute("abrirModal", "delete"); // Avisa o JSP para abrir o modal
+            } else {
+                request.setAttribute("erro", "Admin ID " + id + " não encontrado (doGet).");
             }
+        } catch (NumberFormatException e) {
+            request.setAttribute("erro", "ID inválido fornecido (doGet).");
+            System.err.println("ID inválido ('id') em admin doGet: " + idParam);
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("erro", "Erro ao buscar dados admin (doGet).");
         }
-
+        // Encaminha para o JSP de Admin
         request.getRequestDispatcher("/WEB-INF/pages/administrador.jsp").forward(request, response);
     }
 
-    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         AdministracaoDAO dao = new AdministracaoDAO();
-        String idParam = request.getParameter("pk");
+        int id = 0;
+        boolean success = false;
 
-        if (idParam != null && !idParam.isEmpty()) {
-            try {
-                int id = Integer.parseInt(idParam);
-                int resultado = dao.delete(id);
+        try {
+            // Pega o ID do campo oculto do formulário modal
+            String idParam = request.getParameter("id");
+            id = Integer.parseInt(idParam);
 
-                if (resultado > 0) {
-                    System.out.println("Administrador ID " + id + " deletado com sucesso.");
-                    response.sendRedirect(request.getContextPath() + "/admin-crud");
-                    return;
-                } else {
-                    request.setAttribute("erro", "Erro ao deletar administrador ID: " + id);
-                }
+            // Executa a deleção
+            int resultado = dao.delete(id);
 
-            } catch (NumberFormatException e) {
-                request.setAttribute("erro", "ID inválido.");
+            if (resultado > 0) {
+                success = true;
+            } else {
+                // Falha no DAO (ex: ID não existe mais, restrição de FK)
+                request.setAttribute("erro", "Não foi possível deletar o administrador (ID: " + id + "). Verifique dependências.");
             }
-        } else {
-            request.setAttribute("erro", "Nenhum ID informado para exclusão.");
+
+        } catch (NumberFormatException e) {
+            request.setAttribute("erro", "ID inválido fornecido para exclusão.");
+            System.err.println("ID inválido ('id') em admin doPost: " + request.getParameter("id"));
+        } catch (Exception e) { // Captura outros erros
+            e.printStackTrace();
+            request.setAttribute("erro", "Erro inesperado ao processar a exclusão: " + e.getMessage());
         }
 
-        // Recarrega lista e mantém modal aberto se falhar
-        List<Administracao> listaAdmins = dao.read();
-        request.setAttribute("listaAdmins", listaAdmins);
-        request.setAttribute("acao", "delete");
-        request.getRequestDispatcher("/WEB-INF/pages/administrador.jsp").forward(request, response);
+        // --- Fluxo de Resposta ---
+        if (success) {
+            // SUCESSO: Redireciona (PRG)
+            response.sendRedirect(request.getContextPath() + "/admin-crud"); // URL da listagem
+        } else {
+            // FALHA: Faz forward com erro
+            System.err.println("Falha ao deletar admin ID " + id + ". Fazendo forward.");
+
+            // Recarrega dados necessários para o JSP
+            List<Administracao> listaAdmins = dao.read();
+            request.setAttribute("listaAdmins", listaAdmins);
+            // Tenta recarregar modal com dados (se ID for válido)
+            if (id > 0 && request.getAttribute("adminModal") == null) {
+                try { request.setAttribute("adminModal", dao.read(id)); } catch (Exception readEx) { /* Ignora */ }
+            }
+
+            request.setAttribute("abrirModal", "delete"); // Avisa para reabrir modal
+            request.getRequestDispatcher("/WEB-INF/pages/administrador.jsp").forward(request, response); // Caminho JSP Admin
+        }
     }
 }

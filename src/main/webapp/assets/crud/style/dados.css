@@ -287,13 +287,17 @@ section dialog form .idAtual {
     color: #370963;
 }
 
-section dialog form .idAtual input[type="button"] {
+section dialog form .idAtual input[type="number"] {
     font-family: "Montserrat", sans-serif;
     border: none;
     background: none;
     font-weight: bold;
     font-size: 1.5vw;
     color: #370963;
+    width: 2vw;
+    outline: none;
+    user-select: none;
+    cursor:default;
 }
 
 section dialog form .campos input {

@@ -115,7 +115,7 @@
                     <form action="" method="post">
                         <div class="idAtual">
                             <label for="idUpdate">ID:</label>
-                            <input type="button" name="id" id="idUpdate" readonly>
+                            <input type="number" name="id" id="idUpdate" readonly>
                         </div>
                         <div class="campos">
                             <div>
@@ -167,7 +167,7 @@
                     <form action="${pageContext.request.contextPath}/setores-delete" method="post">
                         <div class="idAtual">
                             <label for="idDelete">ID:</label>
-                            <input type="button" name="id" id="idDelete" readonly>
+                            <input type="number" name="id" id="idDelete" readonly>
                         </div>
                         <div class="campos">
                             <div>
