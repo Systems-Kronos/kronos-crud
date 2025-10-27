@@ -72,7 +72,7 @@
                                 </div>
                                 <div class="campo">
                                     <label for="senhaCreate">Senha</label>
-                                    <input type="password" name="senha" id="senhaCreate" autocomplete="new-password" required>
+                                    <input type="password" name="senha" id="senhaCreate" autocomplete="new-password" pattern="^(?=.{8,}$)(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^\sA-Za-z0-9]).+$" required>
                                 </div>
                             </div>
                             <div>

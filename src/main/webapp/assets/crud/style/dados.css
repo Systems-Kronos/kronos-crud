@@ -294,10 +294,11 @@ section dialog form .idAtual input[type="number"] {
     font-weight: bold;
     font-size: 1.5vw;
     color: #370963;
-    width: 2vw;
     outline: none;
     user-select: none;
-    cursor:default;
+    cursor: default;
+    width: 5vw;
+    text-align: center;
 }
 
 section dialog form .campos input {

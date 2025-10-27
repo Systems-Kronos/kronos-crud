@@ -90,11 +90,9 @@
                                     <label for="porteCreate">Porte</label>
                                     <select type="text" name="porte" id="porteCreate" required>
                                         <option value="" selected disabled>Selecionar</option>
-                                        <option value="Micro">Micro</option>
-                                        <option value="Pequena">Pequena</option>
-                                        <option value="Média">Média</option>
+                                        <option value="Pequeno">Pequeno</option>
+                                        <option value="Médio">Médio</option>
                                         <option value="Grande">Grande</option>
-                                        <option value="Global">Global</option>
                                     </select>
                                 </div>
                                 <div class="campo">
@@ -159,11 +157,9 @@
                                     <label for="porteUpdate">Porte</label>
                                     <select type="text" name="porte" id="porteUpdate" required>
                                         <option value="" selected disabled>Selecionar</option>
-                                        <option value="Micro">Micro</option>
-                                        <option value="Pequena">Pequena</option>
-                                        <option value="Média">Média</option>
+                                        <option value="Pequeno">Pequeno</option>
+                                        <option value="Médio">Médio</option>
                                         <option value="Grande">Grande</option>
-                                        <option value="Global">Global</option>
                                     </select>
                                 </div>
                                 <div class="campo">
@@ -224,13 +220,11 @@
                             <div>
                                 <div class="campo">
                                     <label for="porteDelete">Porte</label>
-                                    <select type="text" name="porte" id="porteDelete" required>
+                                    <select type="text" name="porte" id="porteDelete" disabled>
                                         <option value="" selected disabled>Selecionar</option>
-                                        <option value="Micro">Micro</option>
-                                        <option value="Pequena">Pequena</option>
-                                        <option value="Média">Média</option>
+                                        <option value="Pequeno">Pequeno</option>
+                                        <option value="Médio">Médio</option>
                                         <option value="Grande">Grande</option>
-                                        <option value="Global">Global</option>
                                     </select>
                                 </div>
                                 <div class="campo">
