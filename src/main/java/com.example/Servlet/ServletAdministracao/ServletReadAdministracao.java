@@ -1,4 +1,3 @@
-
 package com.example.Servlet.ServletAdministracao;
 
 import com.example.dao.AdministracaoDAO;
@@ -11,53 +10,42 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.ArrayList;
 
 @WebServlet("/admin-crud")
 public class ServletReadAdministracao extends HttpServlet {
-    
-    // Instancia DAO
-    private AdministracaoDAO dao = new AdministracaoDAO();
 
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String pk = request.getParameter("pk");
+        AdministracaoDAO dao = new AdministracaoDAO();
+        List<Administracao> listaAdmins = null;
+        String erro = null;
 
-        if (pk != null && !pk.isEmpty()) {
+        try {
+            listaAdmins = dao.read(); // Busca a lista
 
-            response.setContentType("application/json");
-            response.setCharacterEncoding("UTF-8");
-
-            try {
-                Administracao admin = dao.read(Integer.parseInt(pk));
-
-                if (admin != null) {
-
-                    String json = "{"
-                            + "\"id\":\"" + pk + "\","
-                            + "\"nome\":\"" + admin.getNome() + "\","
-                            + "\"email\":\"" + admin.getEmail() + "\","
-                            + "\"senha\":\"" + admin.getSenha() + "\""
-                            + "}";
-
-                    response.getWriter().write(json);
-                }
-            } catch (NumberFormatException e) {
-                response.getWriter().write("{\"erro\":\"PK inválida\"}");
-            } catch (Exception e) {
-                response.getWriter().write("{\"erro\":\"" + e.getMessage() + "\"}");
+            if (listaAdmins == null) {
+                // Opcional: Tratar DAO retornando null
+                System.err.println("DAO retornou lista nula de administradores.");
+                erro = "Não foi possível carregar a lista de administradores.";
+                listaAdmins = new ArrayList<>(); // Garante lista vazia no JSP
             }
 
-        } else {
-
-            // Pega todos os administradores do banco
-            List<Administracao> listaAdmins = dao.read();
-
-            // Passa para o JSP
-            request.setAttribute("listaAdmins", listaAdmins);
-
-            // Encaminha para JSP dentro do WEB-INF
-            request.getRequestDispatcher("/WEB-INF/pages/administrador.jsp").forward(request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            erro = "Erro ao buscar a lista de administradores.";
+            listaAdmins = new ArrayList<>(); // Garante lista vazia no JSP em caso de erro
         }
+
+        request.setAttribute("listaAdmins", listaAdmins); // Envia a lista (ou vazia)
+
+        if (erro != null) {
+            request.setAttribute("erro", erro); // Envia o erro, se houver
+        }
+
+        // Encaminha para o JSP
+        request.getRequestDispatcher("/WEB-INF/pages/administrador.jsp").forward(request, response);
     }
 }

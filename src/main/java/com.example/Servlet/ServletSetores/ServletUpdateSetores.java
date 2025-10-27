@@ -12,8 +12,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.ArrayList;
 
-@WebServlet("/setores-delete")
-public class ServletDeleteSetores extends HttpServlet {
+@WebServlet("/setor-update")
+public class ServletUpdateSetores extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -41,13 +41,13 @@ public class ServletDeleteSetores extends HttpServlet {
             setorModal = dao.read(id);
             if (setorModal != null) {
                 request.setAttribute("setorModal", setorModal);
-                request.setAttribute("abrirModal", "delete");
+                request.setAttribute("abrirModal", "update");
             } else {
                 if (erro == null) erro = "Setor ID " + id + " não encontrado.";
             }
         } catch (NumberFormatException e) {
             erro = "ID inválido fornecido.";
-            System.err.println("ID inválido ('id') delete setor (doGet): " + idParam);
+            System.err.println("ID inválido ('id') update setor (doGet): " + idParam);
         } catch (Exception e) {
             e.printStackTrace();
             if (erro == null) erro = "Erro ao buscar dados do setor.";
@@ -63,39 +63,75 @@ public class ServletDeleteSetores extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        request.setCharacterEncoding("UTF-8");
         SetorDAO dao = new SetorDAO();
         int id = 0;
         boolean success = false;
 
+
+        String idParam = request.getParameter("id");
+        String nome = request.getParameter("nome");
+        String qtnFuncionariosStr = request.getParameter("qtnFuncionarios");
+        String turnos = request.getParameter("turnos");
+        String descricao = request.getParameter("descricao");
+        String idEmpresaStr = request.getParameter("idEmpresa");
+
         try {
-            String idParam = request.getParameter("id");
+
             id = Integer.parseInt(idParam);
-            int resultado = dao.delete(id);
+            int qtnFuncionarios = Integer.parseInt(qtnFuncionariosStr);
+            int idEmpresa = Integer.parseInt(idEmpresaStr);
+
+
+            Setor setorParaAtualizar = dao.read(id);
+            if (setorParaAtualizar == null) {
+                throw new Exception("Setor ID " + id + " não encontrado.");
+            }
+
+
+            setorParaAtualizar.setNome(nome);
+            setorParaAtualizar.setQntFuncionarios(qtnFuncionarios);
+            setorParaAtualizar.setTurnos(turnos);
+            setorParaAtualizar.setDescricao(descricao);
+            setorParaAtualizar.setIdEmpresa(idEmpresa);
+
+            // Save
+            int resultado = dao.update(setorParaAtualizar);
+
             if (resultado > 0) {
                 success = true;
             } else {
-                request.setAttribute("erro", "Não foi possível deletar o setor (ID: " + id + "). Verifique dependências.");
+                request.setAttribute("erro", "Não foi possível atualizar (ID: " + id + ").");
             }
-        } catch (NumberFormatException e) {
-            request.setAttribute("erro", "ID inválido fornecido.");
-            System.err.println("ID inválido ('id') delete setor doPost: " + request.getParameter("id"));
+
+        } catch (IllegalArgumentException | NullPointerException | IllegalStateException  e) {
+            request.setAttribute("erro", "Erro: " + e.getMessage());
+            request.setAttribute("nome_previo", nome);
+            request.setAttribute("qtnFuncionarios_previo", qtnFuncionariosStr); // Use correct name
+            request.setAttribute("turnos_previo", turnos);
+            request.setAttribute("descricao_previo", descricao);
+            request.setAttribute("idEmpresa_previo", idEmpresaStr);
+
         } catch (Exception e) {
             e.printStackTrace();
             request.setAttribute("erro", "Erro inesperado: " + e.getMessage());
         }
 
+
         if (success) {
-            response.sendRedirect(request.getContextPath() + "/setores-crud");
+            response.sendRedirect(request.getContextPath() + "/setores-crud"); // Redirect to sector list
         } else {
-            System.err.println("Falha delete setor ID " + id + ". Forwarding.");
+            System.err.println("Falha update setor ID " + id + ". Forwarding.");
             List<Setor> listaSetores = null;
             try { listaSetores = dao.read(); } catch (Exception readEx){ listaSetores = new ArrayList<>(); }
             request.setAttribute("listaSetores", listaSetores);
+
+
             if (id > 0 && request.getAttribute("setorModal") == null) {
-                try { request.setAttribute("setorModal", dao.read(id)); } catch (Exception readEx) { /* Ignora */ }
+                try { request.setAttribute("setorModal", dao.read(id)); } catch (Exception readEx) { /* Ignore */ }
             }
-            request.setAttribute("abrirModal", "delete");
-            request.getRequestDispatcher("/WEB-INF/pages/setores.jsp").forward(request, response);
+            request.setAttribute("abrirModal", "update"); // Signal to reopen
+            request.getRequestDispatcher("/WEB-INF/pages/setores.jsp").forward(request, response); // Forward JSP
         }
     }
 }

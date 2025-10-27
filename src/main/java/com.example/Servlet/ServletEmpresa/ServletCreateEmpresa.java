@@ -11,7 +11,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
-import java.util.List; // Importe o List
+import java.util.List;
+import java.util.ArrayList; // Para lista vazia
 
 @WebServlet("/empresa-create")
 public class ServletCreateEmpresa extends HttpServlet {
@@ -21,47 +22,44 @@ public class ServletCreateEmpresa extends HttpServlet {
             throws ServletException, IOException {
 
         request.setCharacterEncoding("UTF-8");
-
+        // Pegar parâmetros...
         String nome = request.getParameter("nome");
         String cep = request.getParameter("cep");
         String cnpj = request.getParameter("cnpj");
         String email = request.getParameter("email");
         String telefone = request.getParameter("telefone");
         String porte = request.getParameter("porte");
-        String horaEntradaStr = request.getParameter("horaEntrada");
+        String horaEntradaStr = request.getParameter("horaAbertura");
         String horaFechamentoStr = request.getParameter("horaFechamento");
         String regrasNegocios = request.getParameter("regrasNegocios");
 
         EmpresaDAO dao = new EmpresaDAO();
+        boolean success = false;
 
         try {
+            // LocalTime.parse pode lançar DateTimeParseException
             LocalTime horaEntrada = LocalTime.parse(horaEntradaStr);
             LocalTime horaFechamento = LocalTime.parse(horaFechamentoStr);
+            // Integer/Float.parseInt lançaria NumberFormatException (que é um IllegalArgumentException)
 
-            // 5. Criar o objeto Empresa (suas validações do Model são disparadas aqui)
+            // Construtor/Setters podem lançar IllegalArgumentException, NullPointerException, IllegalStateException
             Empresa novaEmpresa = new Empresa(
                     nome, cep, cnpj, email, telefone, porte,
                     horaEntrada, horaFechamento, regrasNegocios
             );
 
-            // 6. Inserir no banco de dados
-            boolean sucesso = dao.create(novaEmpresa);
+            success = dao.create(novaEmpresa);
 
-            if (sucesso) {
-                System.out.println("Empresa criada com sucesso!");
-                // SUCESSO: Redireciona para a lista (Padrão PRG)
+            if (success) {
                 response.sendRedirect(request.getContextPath() + "/empresas-crud");
-                return; // IMPORTANTE: Encerra o método aqui
+                return;
             } else {
-                // Falha no DAO (ex: erro de SQL)
-                request.setAttribute("erro", "Erro ao cadastrar empresa no banco de dados.");
+                request.setAttribute("erro", "Erro ao cadastrar empresa no banco.");
             }
 
         } catch (IllegalArgumentException | NullPointerException | IllegalStateException | DateTimeParseException e) {
-            // Captura exceções de validação (do Model ou do LocalTime.parse)
-            request.setAttribute("erro", "Erro de validação: " + e.getMessage());
-
-            // Mantém os dados preenchidos no formulário
+            // --- CORRIGIDO: NumberFormatException REMOVIDO daqui ---
+            request.setAttribute("erro", "Erro: " + e.getMessage());
             request.setAttribute("nome_previo", nome);
             request.setAttribute("cep_previo", cep);
             request.setAttribute("cnpj_previo", cnpj);
@@ -71,21 +69,24 @@ public class ServletCreateEmpresa extends HttpServlet {
             request.setAttribute("horaEntrada_previo", horaEntradaStr);
             request.setAttribute("horaFechamento_previo", horaFechamentoStr);
             request.setAttribute("regrasNegocios_previo", regrasNegocios);
+
+        } catch (Exception e) { // Outros erros
+            e.printStackTrace();
+            request.setAttribute("erro", "Erro inesperado: " + e.getMessage());
         }
 
-        // --- PLANO B (Se deu erro) ---
-        // Se o código chegou aqui, é porque uma falha ocorreu (no 'else' ou no 'catch').
-
-        System.err.println("Falha na criação. Fazendo forward para o JSP com erro.");
-
-        // 1. Recarrega a lista (para a tabela de fundo do JSP não quebrar)
-        List<Empresa> listaEmpresas = dao.read();
-        request.setAttribute("listaEmpresas", listaEmpresas);
-
-        // 2. Avisa o JSP para reabrir o modal de CREATE
-        request.setAttribute("abrirModal", "create");
-
-        // 3. Encaminha (forward) o request (com os erros e dados) de volta para o JSP
-        request.getRequestDispatcher("/WEB-INF/pages/empresas.jsp").forward(request, response);
+        if (!success) {
+            System.err.println("Falha na criação. Fazendo forward.");
+            List<Empresa> listaEmpresas = null;
+            try {
+                listaEmpresas = dao.read();
+            } catch (Exception readEx) {
+                System.err.println("Erro ao recarregar lista após falha no create: " + readEx.getMessage());
+                listaEmpresas = new ArrayList<>();
+            }
+            request.setAttribute("listaEmpresas", listaEmpresas);
+            request.setAttribute("abrirModal", "create");
+            request.getRequestDispatcher("/WEB-INF/pages/empresas.jsp").forward(request, response);
+        }
     }
 }

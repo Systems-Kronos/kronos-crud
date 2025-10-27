@@ -9,51 +9,74 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.util.List;
 
+/**
+ * Servlet focado SOMENTE em CRIAR (Create) um novo Administrador.
+ */
 @WebServlet("/admin-create")
 public class ServletCreateAdministracao extends HttpServlet {
 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // 1. Receber os parâmetros do formulário
+        request.setCharacterEncoding("UTF-8");
+
+        // Pegar parâmetros do formulário
         String nome = request.getParameter("nome");
         String email = request.getParameter("email");
-        String senha = request.getParameter("senha");
+        String senha = request.getParameter("senha"); // Lembre-se de CRIPTOGRAFAR!
 
-        // 2. Instanciar o DAO
         AdministracaoDAO dao = new AdministracaoDAO();
+        boolean success = false; // Flag para controlar redirect vs forward
 
         try {
-            // 3. Criar o objeto Administracao. As validações de Model (como campos obrigatórios e formato)
-            // serão lançadas como exceções aqui, se falharem.
+            // Criar objeto (dispara validações do Model)
+            // Seu Model lança IllegalArgumentException ou NullPointerException
             Administracao novoAdmin = new Administracao(nome, email, senha);
 
-            // 4. Inserir no banco de dados
-            boolean sucesso = dao.create(novoAdmin);
+            // Inserir no banco
+            // !!! IMPORTANTE: CRIPTOGRAFE a senha ANTES de chamar dao.create !!!
+            // Exemplo: String senhaHash = BCrypt.hashpw(senha, BCrypt.gensalt());
+            //          novoAdmin.setSenha(senhaHash); // Ou passe o hash no construtor
+            success = dao.create(novoAdmin);
 
-            if (sucesso) {
-                // Sucesso: Pode adicionar uma mensagem de sucesso no request, se desejar.
+            if (success) {
                 System.out.println("Administrador criado com sucesso!");
+                // SUCESSO: Redireciona para a lista (PRG)
+                response.sendRedirect(request.getContextPath() + "/admin-crud"); // URL da listagem
+                return; // IMPORTANTE: Encerra aqui após redirect
             } else {
-                // Falha na inserção no DAO (ex: erro de SQL)
-                request.setAttribute("erro", "Erro ao cadastrar administrador no banco de dados.");
+                // Falha no DAO (ex: email duplicado se for UNIQUE no DB)
+                request.setAttribute("erro", "Erro ao cadastrar administrador. Verifique se o e-mail já existe.");
             }
 
         } catch (IllegalArgumentException | NullPointerException e) {
-            // Captura exceções do Model (validação de dados)
+            // Captura erros de VALIDAÇÃO do Model
             request.setAttribute("erro", "Erro de validação: " + e.getMessage());
-            // Opcional: manter os dados preenchidos no formulário
+            // Guarda dados para repopular (exceto senha)
             request.setAttribute("nome_previo", nome);
             request.setAttribute("email_previo", email);
 
-            // Se houver erro de validação, encaminha de volta para o JSP para exibir o erro
-            // Note que se você usar sendRedirect, a mensagem de erro será perdida,
-            // então uma alternativa seria usar session ou reencaminhar o request.
+        } catch (Exception e) { // Captura outros erros inesperados
+            e.printStackTrace();
+            request.setAttribute("erro", "Erro inesperado ao criar administrador: " + e.getMessage());
         }
 
-        // 5. Redirecionar de volta para a página de listagem (admin-crud) para exibir a lista atualizada
-        // E limpar os parâmetros de pesquisa/ordem para garantir que a lista completa seja mostrada após o cadastro.
-        response.sendRedirect(request.getContextPath() + "/admin-crud");
+        // --- PLANO B (Se deu erro no try OU o dao.create falhou) ---
+        // Se 'success' for false, faz forward de volta para o JSP com erro
+
+        System.err.println("Falha na criação do admin. Fazendo forward para o JSP.");
+
+        // Recarrega lista para a tabela de fundo do JSP
+        List<Administracao> listaAdmins = dao.read();
+        request.setAttribute("listaAdmins", listaAdmins);
+
+        // Avisa o JSP para reabrir o modal de CREATE
+        request.setAttribute("abrirModal", "create");
+
+        // Encaminha (forward) com erro e dados prévios
+        request.getRequestDispatcher("/WEB-INF/pages/administrador.jsp").forward(request, response);
     }
 }

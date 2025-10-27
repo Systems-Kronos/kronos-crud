@@ -9,141 +9,144 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.sql.Time;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 
-
+/**
+ * Servlet para ATUALIZAR (Update) uma Empresa existente.
+ */
 @WebServlet("/empresas-update")
 public class ServletUpdateEmpresa extends HttpServlet {
 
-
+    /**
+     * doGet: Busca dados para preencher o modal de edição.
+     * Espera ser chamado via GET com o parâmetro 'id'.
+     */
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         EmpresaDAO dao = new EmpresaDAO();
 
-
+        // Busca a lista completa para a tabela de fundo
         List<Empresa> listaEmpresas = dao.read();
         request.setAttribute("listaEmpresas", listaEmpresas);
 
-
-        String pk = request.getParameter("pk");
+        String idParam = request.getParameter("id"); // Usando "id" como padrão
         Empresa empresaModal = null;
 
         try {
-            if (pk != null && !pk.isEmpty()) {
-                int id = Integer.parseInt(pk);
-                empresaModal = dao.read(id);
+            int id = Integer.parseInt(idParam);
+            empresaModal = dao.read(id); // Usa o read(id) do DAO
 
-                if (empresaModal != null) {
-                    request.setAttribute("empresaModal", empresaModal);
-                    request.setAttribute("abrirModal", "update");
-                } else {
-                    request.setAttribute("erro", "Empresa com ID " + id + " não encontrada.");
-                }
+            if (empresaModal != null) {
+                request.setAttribute("empresaModal", empresaModal);
+                request.setAttribute("abrirModal", "update");
             } else {
-                request.setAttribute("erro", "ID da empresa não fornecido para edição.");
+                request.setAttribute("erro", "Empresa com ID " + id + " não encontrada.");
             }
         } catch (NumberFormatException e) {
-            System.err.println("ID inválido para update: " + pk);
-            request.setAttribute("erro", "ID inválido fornecido para edição.");
+            request.setAttribute("erro", "ID inválido fornecido.");
+            System.err.println("ID inválido ('id') para update de empresa (doGet): " + idParam);
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("erro", "Erro ao buscar dados da empresa para editar.");
+            request.setAttribute("erro", "Erro ao buscar dados da empresa.");
         }
 
-
+        // Encaminha para o JSP
         request.getRequestDispatcher("/WEB-INF/pages/empresas.jsp").forward(request, response);
     }
 
-
+    /**
+     * doPost: Recebe dados do modal e salva as alterações.
+     */
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         request.setCharacterEncoding("UTF-8");
         EmpresaDAO dao = new EmpresaDAO();
-        int id = 0; // Inicializa ID
+        int id = 0;
+        boolean success = false;
+
+        // Pegar dados do request (para repopular em caso de erro)
+        String idParam = request.getParameter("id"); // Pega do hidden input
+        String nome = request.getParameter("nome");
+        String cep = request.getParameter("cep");
+        String cnpj = request.getParameter("cnpj");
+        String email = request.getParameter("email");
+        String telefone = request.getParameter("telefone");
+        String porte = request.getParameter("porte"); // Vem do <select>
+        String horaEntradaStr = request.getParameter("horaAbertura");
+        String horaFechamentoStr = request.getParameter("horaFechamento");
+        String regrasNegocios = request.getParameter("regrasNegocios");
 
         try {
-            id = Integer.parseInt(request.getParameter("pk"));
-            String nome = request.getParameter("nome");
-            String cep = request.getParameter("cep");
-            String cnpj = request.getParameter("cnpj");
-            String email = request.getParameter("email");
-            String telefone = request.getParameter("telefone");
-            String porte = request.getParameter("porte");
-            String horaEntradaStr = request.getParameter("horaEntrada");
-            String horaFechamentoStr = request.getParameter("horaFechamento");
-            String regrasNegocios = request.getParameter("regrasNegocios");
-
-
+            // Converte e valida ID e tempos
+            id = Integer.parseInt(idParam);
             LocalTime horaEntrada = LocalTime.parse(horaEntradaStr);
             LocalTime horaFechamento = LocalTime.parse(horaFechamentoStr);
 
-
+            // Busca objeto original
             Empresa empresa = dao.read(id);
             if (empresa == null) {
-                throw new Exception("Empresa com ID " + id + " não encontrada para atualizar.");
+                throw new Exception("Empresa ID " + id + " não encontrada.");
             }
+
+            // Atualiza (dispara validações do Model)
             empresa.setNome(nome);
             empresa.setCep(cep);
             empresa.setCnpj(cnpj);
             empresa.setEmail(email);
             empresa.setTelefone(telefone);
-            empresa.setPorte(porte);
+            empresa.setPorte(porte); // Atualiza o porte
             empresa.setHorarioAbertura(horaEntrada);
             empresa.setHorarioFechamento(horaFechamento);
             empresa.setRegraDeNegocios(regrasNegocios);
 
+            // Salva
             int resultado = dao.update(empresa);
 
-
             if (resultado > 0) {
-                System.out.println("Empresa ID " + id + " atualizada com sucesso.");
-                response.sendRedirect(request.getContextPath() + "/empresas-crud");
-                return; // Encerra o método
+                success = true;
             } else {
-                request.setAttribute("erro", "Não foi possível atualizar a empresa (ID: " + id + ").");
+                request.setAttribute("erro", "Não foi possível atualizar (ID: " + id + ").");
             }
 
-        } catch (IllegalArgumentException | NullPointerException | IllegalStateException | DateTimeParseException e) {
-            // Captura erros de VALIDAÇÃO (do Model ou do LocalTime.parse)
-            request.setAttribute("erro", "Erro de validação ao atualizar: " + e.getMessage());
-            System.err.println("Erro de validação no update: " + e.getMessage());
+        } catch (IllegalArgumentException | NullPointerException | IllegalStateException | DateTimeParseException  e) {
+            // Erro de validação ou formato
+            request.setAttribute("erro", "Erro: " + e.getMessage());
+            // Guarda dados para repopular
+            request.setAttribute("nome_previo", nome);
+            request.setAttribute("cep_previo", cep);
+            request.setAttribute("cnpj_previo", cnpj);
+            request.setAttribute("email_previo", email);
+            request.setAttribute("telefone_previo", telefone);
+            request.setAttribute("porte_previo", porte); // Guarda o porte
+            request.setAttribute("horaEntrada_previo", horaEntradaStr);
+            request.setAttribute("horaFechamento_previo", horaFechamentoStr);
+            request.setAttribute("regrasNegocios_previo", regrasNegocios);
 
-        }catch (Exception e) {
+        } catch (Exception e) { // Outros erros
             e.printStackTrace();
-            request.setAttribute("erro", "Erro inesperado ao processar a atualização: " + e.getMessage());
+            request.setAttribute("erro", "Erro inesperado: " + e.getMessage());
         }
 
-
-
-        System.err.println("Falha ao atualizar empresa ID " + id + ". Fazendo forward para o JSP com erro.");
-
-        List<Empresa> listaEmpresas = dao.read();
-        request.setAttribute("listaEmpresas", listaEmpresas);
-
-
-        if (id > 0) {
-            try {
-
-                Empresa empresaModal = dao.read(id);
-                if(empresaModal != null) {
-
-                    request.setAttribute("empresaModal", empresaModal);
-                } else {
-
-                }
-            } catch (Exception readEx) {
-                System.err.println("Erro ao tentar reler empresa " + id + " após falha no update: " + readEx.getMessage());
+        // --- Resposta ---
+        if (success) {
+            response.sendRedirect(request.getContextPath() + "/empresas-crud"); // Redirect para lista
+        } else {
+            // FALHA: Forward com erro
+            System.err.println("Falha update empresa ID " + id + ". Forwarding.");
+            List<Empresa> listaEmpresas = dao.read(); // Recarrega lista
+            request.setAttribute("listaEmpresas", listaEmpresas);
+            // Tenta recarregar modal com dados atuais
+            if (id > 0 && request.getAttribute("empresaModal") == null) {
+                try { request.setAttribute("empresaModal", dao.read(id)); } catch (Exception readEx) { /* Ignora */ }
             }
+            request.setAttribute("abrirModal", "update"); // Avisa para reabrir modal
+            request.getRequestDispatcher("/WEB-INF/pages/empresas.jsp").forward(request, response); // Forward JSP
         }
-
-        request.setAttribute("abrirModal", "update");
-
-
-        request.getRequestDispatcher("/WEB-INF/pages/empresas.jsp").forward(request, response);
     }
 }
