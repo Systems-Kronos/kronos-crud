@@ -134,7 +134,7 @@
             <section class="delete">
                 <dialog id="delete">
                     <h2>Excluir administrador</h2>
-                    <form action="" method="post">
+                    <form action="<%= request.getContextPath() %>/admin-delete" method="post">
                         <div class="idAtual">
                             <label for="idDelete">ID:</label>
                             <input type="number" name="id" id="idDelete" readonly>

@@ -126,7 +126,7 @@
             <section class="update">
                 <dialog id="update">
                     <h2>Editar empresa</h2>
-                    <form action="" method="post">
+                    <form action="<%= request.getContextPath() %>/empresas-update" method="post">
                         <div class="idAtual">
                             <label for="idUpdate">ID:</label>
                             <input type="number" name="id" id="idUpdate" readonly>
@@ -193,7 +193,7 @@
             <section class="delete">
                 <dialog id="delete">
                     <h2>Excluir empresa</h2>
-                    <form action="" method="post">
+                    <form action="<%= request.getContextPath() %>/empresas-delete" method="post">
                         <div class="idAtual">
                             <label for="idDelete">ID:</label>
                             <input type="number" name="id" id="idDelete" readonly>

@@ -14,24 +14,21 @@ import java.util.List;
 @WebServlet("/empresas-delete")
 public class ServletDeleteEmpresa extends HttpServlet {
 
-    /**
-     * doGet: Busca os dados para PREENCHER o modal de confirmação.
-     * (Este método já está correto como você enviou)
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         EmpresaDAO dao = new EmpresaDAO();
-
-
         List<Empresa> listaEmpresas = dao.read();
         request.setAttribute("listaEmpresas", listaEmpresas);
 
+        // --- MUDANÇA: Usando "id" ---
+        String idParam = request.getParameter("id");
+        Empresa empresaModal = null;
 
         try {
-            int id = Integer.parseInt(request.getParameter("pk"));
-            Empresa empresaModal = dao.read(id); // Use seu método read(id)
+            int id = Integer.parseInt(idParam);
+            empresaModal = dao.read(id);
             if (empresaModal != null) {
                 request.setAttribute("empresaModal", empresaModal);
                 request.setAttribute("abrirModal", "delete");
@@ -39,14 +36,14 @@ public class ServletDeleteEmpresa extends HttpServlet {
                 request.setAttribute("erro", "Empresa com ID " + id + " não encontrada.");
             }
         } catch (NumberFormatException e) {
-            System.err.println("ID inválido para delete: " + request.getParameter("pk"));
+            System.err.println("ID inválido para delete: " + idParam); // Mensagem atualizada
             request.setAttribute("erro", "ID inválido fornecido para deleção.");
         } catch (Exception e) {
             e.printStackTrace();
             request.setAttribute("erro", "Erro ao buscar dados da empresa para deletar.");
         }
-
-        request.getRequestDispatcher("/WEB-INF/empresas.jsp").forward(request, response);
+        // --- MUDANÇA: Caminho JSP ---
+        request.getRequestDispatcher("/WEB-INF/pages/empresas.jsp").forward(request, response);
     }
 
     @Override
@@ -54,48 +51,47 @@ public class ServletDeleteEmpresa extends HttpServlet {
             throws ServletException, IOException {
 
         EmpresaDAO dao = new EmpresaDAO();
-        int id = 0; // Inicializa o ID
+        int id = 0;
+        boolean success = false;
 
         try {
-            id = Integer.parseInt(request.getParameter("pk"));
+            // --- MUDANÇA: Usando "id" ---
+            String idParam = request.getParameter("id");
+            id = Integer.parseInt(idParam);
 
             int resultado = dao.delete(id);
 
             if (resultado > 0) {
-
-                System.out.println("Empresa ID " + id + " deletada com sucesso.");
-                response.sendRedirect(request.getContextPath() + "/empresas-crud");
-                return;
+                success = true; // Marca para redirect
             } else {
-                request.setAttribute("erro", "Não foi possível deletar a empresa (ID: " + id + "). " +
-                        "Verifique se ela não está sendo usada por outros registros.");
+                request.setAttribute("erro", "Não foi possível deletar a empresa (ID: " + id + "). Verifique dependências.");
             }
 
         } catch (NumberFormatException e) {
             request.setAttribute("erro", "ID inválido fornecido para deleção.");
-            System.err.println("ID inválido para delete: " + request.getParameter("pk"));
+            System.err.println("ID inválido para delete: " + request.getParameter("id")); // Mensagem atualizada
         } catch (Exception e) {
             e.printStackTrace();
             request.setAttribute("erro", "Erro inesperado ao processar a deleção: " + e.getMessage());
         }
 
-        System.err.println("Falha ao deletar empresa ID " + id + ". Fazendo forward para o JSP com erro.");
-
-        List<Empresa> listaEmpresas = dao.read();
-        request.setAttribute("listaEmpresas", listaEmpresas);
-
-        if (id > 0) {
-            try {
-                Empresa empresaModal = dao.read(id);
-                if(empresaModal != null) {
-                    request.setAttribute("empresaModal", empresaModal);
-                }
-            } catch (Exception readEx) {
-                System.err.println("Erro ao tentar reler empresa " + id + " após falha no delete: " + readEx.getMessage());
+        if (success) {
+            response.sendRedirect(request.getContextPath() + "/empresas-crud"); // Redirect para lista
+        } else {
+            // FALHA: Forward com erro
+            System.err.println("Falha ao deletar empresa ID " + id + ". Fazendo forward.");
+            List<Empresa> listaEmpresas = dao.read(); // Recarrega lista
+            request.setAttribute("listaEmpresas", listaEmpresas);
+            // Tenta recarregar modal
+            if (id > 0) {
+                try {
+                    Empresa empresaModal = dao.read(id);
+                    if(empresaModal != null) request.setAttribute("empresaModal", empresaModal);
+                } catch (Exception readEx) { /* Ignora */ }
             }
+            request.setAttribute("abrirModal", "delete"); // Avisa para reabrir
+            // --- MUDANÇA: Caminho JSP ---
+            request.getRequestDispatcher("/WEB-INF/pages/empresas.jsp").forward(request, response);
         }
-        request.setAttribute("abrirModal", "delete");
-
-        request.getRequestDispatcher("/WEB-INF/pages/empresas.jsp").forward(request, response);
     }
 }

@@ -2,10 +2,9 @@ package com.example.Servlet.ServletHabilidades;
 
 import java.io.IOException;
 import java.util.List;
-
+import java.util.ArrayList;
 import com.example.Model.Habilidades;
 import com.example.dao.HabilidadesDAO;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -14,50 +13,43 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @WebServlet("/habilidades-crud")
 public class ServletReadHabilidades extends HttpServlet {
-    
-    // Instancia DAO
-    private HabilidadesDAO dao = new HabilidadesDAO();
 
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String pk = request.getParameter("pk");
+        HabilidadesDAO dao = new HabilidadesDAO();
+        List<Habilidades> listaHabilidades = null;
+        String erro = null;
 
-        if (pk != null && !pk.isEmpty()) {
+        // --- Handle Search/Filter/Sort ---
+        String nomePesquisa = request.getParameter("pesquisa");
+        String ordem = request.getParameter("ordem"); // crescente ou decrescente
+        // Determine orderBy column based on your logic if needed, default to ID
+        String orderBy = "id"; // Default, adjust if your JSP sends a sort column
+        String direction = ("decrescente".equalsIgnoreCase(ordem)) ? "DESC" : "ASC";
 
-            response.setContentType("application/json");
-            response.setCharacterEncoding("UTF-8");
+        try {
+            // Use the DAO method that accepts filters/sorting
+            listaHabilidades = dao.read(nomePesquisa, orderBy, direction);
 
-            try {
-                Habilidades habilidade = dao.read(Integer.parseInt(pk));
-
-                if (habilidade != null) {
-
-                    String json = "{"
-                            + "\"id\":\"" + pk + "\","
-                            + "\"nome\":\"" + habilidade.getNome() + "\","
-                            + "\"tag\":\"" + habilidade.getTag() + "\","
-                            + "\"descricao\":\"" + habilidade.getDescricao() + "\""
-                            + "}";
-
-                    response.getWriter().write(json);
-                }
-            } catch (NumberFormatException e) {
-                response.getWriter().write("{\"erro\":\"PK inválida\"}");
-            } catch (Exception e) {
-                response.getWriter().write("{\"erro\":\"" + e.getMessage() + "\"}");
+            if (listaHabilidades == null) {
+                erro = "Lista de habilidades não carregada.";
+                listaHabilidades = new ArrayList<>();
             }
 
-        } else {
-
-            // Pega todas as habilidades do banco
-            List<Habilidades> listaHabilidades = dao.read();
-
-            // Passa para o JSP
-            request.setAttribute("listaHabilidades", listaHabilidades);
-
-            // Encaminha para o JSP dentro do WEB-INF
-            request.getRequestDispatcher("/WEB-INF/pages/habilidades.jsp").forward(request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            erro = "Erro ao buscar lista de habilidades.";
+            listaHabilidades = new ArrayList<>();
         }
+
+        request.setAttribute("listaHabilidades", listaHabilidades);
+
+        if (erro != null) {
+            request.setAttribute("erro", erro);
+        }
+
+        request.getRequestDispatcher("/WEB-INF/pages/habilidades.jsp").forward(request, response);
     }
 }

@@ -102,7 +102,7 @@
             <section class="update">
                 <dialog id="update">
                     <h2>Editar plano</h2>
-                    <form action="" method="post">
+                    <form action="<%= request.getContextPath() %>/planos-update" method="post">
                         <div class="idAtual">
                             <label for="idUpdate">ID:</label>
                             <input type="number" name="id" id="idUpdate" readonly>
@@ -142,7 +142,7 @@
             <section class="delete">
                 <dialog id="delete">
                     <h2>Excluir plano</h2>
-                    <form action="" method="post">
+                    <form action="<%= request.getContextPath() %>/planos-delete" method="post">
                         <div class="idAtual">
                             <label for="idDelete">ID:</label>
                             <input type="number" name="id" id="idDelete" readonly>

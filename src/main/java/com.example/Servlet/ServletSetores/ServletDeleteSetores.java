@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.ArrayList;
 
 @WebServlet("/setores-delete")
 public class ServletDeleteSetores extends HttpServlet {
@@ -19,33 +20,42 @@ public class ServletDeleteSetores extends HttpServlet {
             throws ServletException, IOException {
 
         SetorDAO dao = new SetorDAO();
+        List<Setor> listaSetores = null;
+        String erro = null;
 
-        // Carrega lista completa
-        List<Setor> listaSetores = dao.read();
+        try {
+            listaSetores = dao.read();
+            if (listaSetores == null) listaSetores = new ArrayList<>();
+        } catch(Exception e){
+            e.printStackTrace();
+            erro = "Erro ao carregar lista de setores.";
+            listaSetores = new ArrayList<>();
+        }
         request.setAttribute("listaSetores", listaSetores);
 
-        // Pega parâmetros
-        String acao = request.getParameter("acao");
-        String idParam = request.getParameter("pk");
+        String idParam = request.getParameter("id");
+        Setor setorModal = null;
 
-        if ("delete".equals(acao) && idParam != null) {
-            try {
-                int id = Integer.parseInt(idParam);
-                Setor setorModal = dao.read(id);
-
-                if (setorModal != null) {
-                    request.setAttribute("setorModal", setorModal);
-                    request.setAttribute("acao", "delete");
-                    request.setAttribute("pk", id);
-                } else {
-                    request.setAttribute("erro", "Setor não encontrado.");
-                }
-
-            } catch (NumberFormatException e) {
-                request.setAttribute("erro", "ID inválido para exclusão.");
+        try {
+            int id = Integer.parseInt(idParam);
+            setorModal = dao.read(id);
+            if (setorModal != null) {
+                request.setAttribute("setorModal", setorModal);
+                request.setAttribute("abrirModal", "delete");
+            } else {
+                if (erro == null) erro = "Setor ID " + id + " não encontrado.";
             }
+        } catch (NumberFormatException e) {
+            erro = "ID inválido fornecido.";
+            System.err.println("ID inválido ('id') delete setor (doGet): " + idParam);
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (erro == null) erro = "Erro ao buscar dados do setor.";
         }
 
+        if (erro != null) {
+            request.setAttribute("erro", erro);
+        }
         request.getRequestDispatcher("/WEB-INF/pages/setores.jsp").forward(request, response);
     }
 
@@ -54,32 +64,38 @@ public class ServletDeleteSetores extends HttpServlet {
             throws ServletException, IOException {
 
         SetorDAO dao = new SetorDAO();
-        String idParam = request.getParameter("pk");
+        int id = 0;
+        boolean success = false;
 
-        if (idParam != null && !idParam.isEmpty()) {
-            try {
-                int id = Integer.parseInt(idParam);
-                int resultado = dao.delete(id);
-
-                if (resultado > 0) {
-                    System.out.println("Setor ID " + id + " deletado com sucesso.");
-                    response.sendRedirect(request.getContextPath() + "/setores-crud");
-                    return;
-                } else {
-                    request.setAttribute("erro", "Erro ao deletar setor ID: " + id);
-                }
-
-            } catch (NumberFormatException e) {
-                request.setAttribute("erro", "ID inválido.");
+        try {
+            String idParam = request.getParameter("id");
+            id = Integer.parseInt(idParam);
+            int resultado = dao.delete(id);
+            if (resultado > 0) {
+                success = true;
+            } else {
+                request.setAttribute("erro", "Não foi possível deletar o setor (ID: " + id + "). Verifique dependências.");
             }
-        } else {
-            request.setAttribute("erro", "Nenhum ID informado para exclusão.");
+        } catch (NumberFormatException e) {
+            request.setAttribute("erro", "ID inválido fornecido.");
+            System.err.println("ID inválido ('id') delete setor doPost: " + request.getParameter("id"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("erro", "Erro inesperado: " + e.getMessage());
         }
 
-        // Recarrega lista e mantém modal aberto se falhar
-        List<Setor> listaSetores = dao.read();
-        request.setAttribute("listaSetores", listaSetores);
-        request.setAttribute("acao", "delete");
-        request.getRequestDispatcher("/WEB-INF/pages/setores.jsp").forward(request, response);
+        if (success) {
+            response.sendRedirect(request.getContextPath() + "/setores-crud");
+        } else {
+            System.err.println("Falha delete setor ID " + id + ". Forwarding.");
+            List<Setor> listaSetores = null;
+            try { listaSetores = dao.read(); } catch (Exception readEx){ listaSetores = new ArrayList<>(); }
+            request.setAttribute("listaSetores", listaSetores);
+            if (id > 0 && request.getAttribute("setorModal") == null) {
+                try { request.setAttribute("setorModal", dao.read(id)); } catch (Exception readEx) { /* Ignora */ }
+            }
+            request.setAttribute("abrirModal", "delete");
+            request.getRequestDispatcher("/WEB-INF/pages/setores.jsp").forward(request, response);
+        }
     }
 }

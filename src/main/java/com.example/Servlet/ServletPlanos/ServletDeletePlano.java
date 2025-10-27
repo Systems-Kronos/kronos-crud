@@ -1,7 +1,7 @@
-package com.example.Servlet.ServletPlanos;
+package com.example.Servlet.ServletPlanos; // Verifique o pacote
 
-import com.example.dao.PlanoDAO;
-import com.example.Model.Plano;
+import com.example.dao.PlanoDAO;     // Verifique o import
+import com.example.Model.Plano;      // Verifique o import
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -10,8 +10,9 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.ArrayList;
 
-@WebServlet("/delete-plano")
+@WebServlet("/planos-delete") // URL para delete
 public class ServletDeletePlano extends HttpServlet {
 
     @Override
@@ -19,39 +20,43 @@ public class ServletDeletePlano extends HttpServlet {
             throws ServletException, IOException {
 
         PlanoDAO dao = new PlanoDAO();
+        List<Plano> listaPlanos = null;
+        String erro = null;
 
-        // Carrega lista de planos
-        List<Plano> listaPlanos = dao.read();
+        try {
+            listaPlanos = dao.read();
+            if (listaPlanos == null) listaPlanos = new ArrayList<>();
+        } catch(Exception e){
+            e.printStackTrace();
+            erro = "Erro ao carregar lista.";
+            listaPlanos = new ArrayList<>();
+        }
         request.setAttribute("listaPlanos", listaPlanos);
 
-        // Captura parâmetros
-        String acao = request.getParameter("acao");
-        String idParam = request.getParameter("pk");
+        String idParam = request.getParameter("id"); // Usando "id"
+        Plano planoModal = null;
 
-        // Se a ação for delete e tiver ID
-        if ("delete".equals(acao) && idParam != null && !idParam.isEmpty()) {
-            try {
-                int id = Integer.parseInt(idParam);
-                Plano planoModal = dao.read(id);
-
-                if (planoModal != null) {
-                    request.setAttribute("planoModal", planoModal);
-                    request.setAttribute("pk", id);
-                    request.setAttribute("acao", "delete");
-
-                    // ⚡ Força abertura automática do modal
-                    request.setAttribute("deleteAberto", true);
-
-                } else {
-                    request.setAttribute("erro", "Plano não encontrado.");
-                }
-
-            } catch (NumberFormatException e) {
-                request.setAttribute("erro", "ID inválido para exclusão.");
+        try {
+            int id = Integer.parseInt(idParam);
+            planoModal = dao.read(id);
+            if (planoModal != null) {
+                request.setAttribute("planoModal", planoModal);
+                request.setAttribute("abrirModal", "delete"); // Usa "abrirModal"
+            } else {
+                if (erro == null) erro = "Plano ID " + id + " não encontrado.";
             }
+        } catch (NumberFormatException e) {
+            erro = "ID inválido.";
+            System.err.println("ID inválido ('id') delete plano (doGet): " + idParam);
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (erro == null) erro = "Erro ao buscar dados.";
         }
 
-        // Encaminha para o JSP
+        if (erro != null) {
+            request.setAttribute("erro", erro);
+        }
+        // Caminho JSP correto
         request.getRequestDispatcher("/WEB-INF/pages/planos.jsp").forward(request, response);
     }
 
@@ -60,33 +65,41 @@ public class ServletDeletePlano extends HttpServlet {
             throws ServletException, IOException {
 
         PlanoDAO dao = new PlanoDAO();
-        String idParam = request.getParameter("pk");
+        int id = 0;
+        boolean success = false;
 
-        if (idParam != null && !idParam.isEmpty()) {
-            try {
-                int id = Integer.parseInt(idParam);
-                int resultado = dao.delete(id);
-
-                if (resultado > 0) {
-                    System.out.println("Plano ID " + id + " deletado com sucesso.");
-                    response.sendRedirect(request.getContextPath() + "/planos-crud");
-                    return;
-                } else {
-                    request.setAttribute("erro", "Erro ao deletar plano ID: " + id);
-                }
-
-            } catch (NumberFormatException e) {
-                request.setAttribute("erro", "ID inválido.");
+        try {
+            String idParam = request.getParameter("id"); // Usando "id"
+            id = Integer.parseInt(idParam);
+            int resultado = dao.delete(id);
+            if (resultado > 0) {
+                success = true;
+            } else {
+                request.setAttribute("erro", "Não foi possível deletar (ID: " + id + ").");
             }
-        } else {
-            request.setAttribute("erro", "Nenhum ID informado para exclusão.");
+        } catch (NumberFormatException e) {
+            request.setAttribute("erro", "ID inválido.");
+            System.err.println("ID inválido ('id') delete plano doPost: " + request.getParameter("id"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("erro", "Erro inesperado: " + e.getMessage());
         }
 
-        // Recarrega lista e mantém modal aberto se falhar
-        List<Plano> listaPlanos = dao.read();
-        request.setAttribute("listaPlanos", listaPlanos);
-        request.setAttribute("acao", "delete");
-        request.setAttribute("deleteAberto", true);
-        request.getRequestDispatcher("/WEB-INF/pages/planos.jsp").forward(request, response);
+        if (success) {
+            response.sendRedirect(request.getContextPath() + "/planos-crud"); // Redirect lista
+        } else {
+            // FALHA: Forward com erro
+            System.err.println("Falha delete plano ID " + id + ". Forwarding.");
+            List<Plano> listaPlanos = null;
+            try { listaPlanos = dao.read(); } catch (Exception readEx){ listaPlanos = new ArrayList<>(); }
+            request.setAttribute("listaPlanos", listaPlanos); // Recarrega lista
+            // Tenta recarregar modal
+            if (id > 0 && request.getAttribute("planoModal") == null) {
+                try { request.setAttribute("planoModal", dao.read(id)); } catch (Exception readEx) { /* Ignora */ }
+            }
+            request.setAttribute("abrirModal", "delete"); // Avisa para reabrir
+            // Caminho JSP correto
+            request.getRequestDispatcher("/WEB-INF/pages/planos.jsp").forward(request, response);
+        }
     }
 }

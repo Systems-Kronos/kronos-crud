@@ -1,10 +1,11 @@
-package com.example.Servlet.ServletPlanos;
+package com.example.Servlet.ServletPlanos; // Verifique o pacote
 
 import java.io.IOException;
 import java.util.List;
+import java.util.ArrayList;
 
-import com.example.Model.Plano;
-import com.example.dao.PlanoDAO;
+import com.example.Model.Plano;      // Verifique o import
+import com.example.dao.PlanoDAO;     // Verifique o import
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -12,53 +13,44 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet("/planos-crud")
+/**
+ * Servlet focado SOMENTE em LER (Read) a lista de Planos.
+ */
+@WebServlet("/planos-crud") // URL principal
 public class ServletReadPlano extends HttpServlet {
 
-    // Instancia DAO
-    private PlanoDAO dao = new PlanoDAO();
-    
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String pk = request.getParameter("pk");
+        PlanoDAO dao = new PlanoDAO(); // DAO Correto
+        List<Plano> listaPlanos = null; // Tipo Correto
+        String erro = null;
 
-        if (pk != null && !pk.isEmpty()) {
+        try {
+            // Busca a lista completa
+            listaPlanos = dao.read(); // Usa o read() do PlanoDAO
 
-            response.setContentType("application/json");
-            response.setCharacterEncoding("UTF-8");
-
-            try {
-                Plano plano = dao.read(Integer.parseInt(pk));
-
-                if (plano != null) {
-
-                    String json = "{"
-                            + "\"id\":\"" + pk + "\","
-                            + "\"nome\":\"" + plano.getNome() + "\","
-                            + "\"custo\":\"" + plano.getCusto() + "\","
-                            + "\"maxFuncionarios\":\"" + plano.getMaxFuncionarios() + "\","
-                            + "\"descricao\":\"" + plano.getDescricao() + "\""
-                            + "}";
-
-                    response.getWriter().write(json);
-                }
-            } catch (NumberFormatException e) {
-                response.getWriter().write("{\"erro\":\"PK inválida\"}");
-            } catch (Exception e) {
-                response.getWriter().write("{\"erro\":\"" + e.getMessage() + "\"}");
+            if (listaPlanos == null) {
+                erro = "Lista não carregada.";
+                listaPlanos = new ArrayList<>();
             }
 
-        } else {
-
-            // Pega todos os planos do banco
-            List<Plano> listaPlanos = dao.read();
-
-            // Passa para o JSP
-            request.setAttribute("listaPlanos", listaPlanos);
-
-            // Encaminha para o JSP dentro do WEB-INF
-            request.getRequestDispatcher("/WEB-INF/pages/planos.jsp").forward(request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            erro = "Erro ao buscar lista.";
+            listaPlanos = new ArrayList<>();
         }
+
+        // Passa a lista (ou vazia) para o JSP
+        request.setAttribute("listaPlanos", listaPlanos); // Nome usado no JSP
+
+        // Passa erro, se houver
+        if (erro != null) {
+            request.setAttribute("erro", erro);
+        }
+
+        // Encaminha para o JSP correto
+        request.getRequestDispatcher("/WEB-INF/pages/planos.jsp").forward(request, response);
     }
 }
