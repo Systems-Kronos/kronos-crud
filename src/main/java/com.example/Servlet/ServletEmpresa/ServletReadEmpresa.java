@@ -65,34 +65,36 @@ public class ServletReadEmpresa extends HttpServlet {
             List<Empresa> listaEmpresas = null;
             String erro = null;
 
+            // --- Handle Search/Filter/Sort ---
+            String nomePesquisa = request.getParameter("pesquisa");
+            String ordem = request.getParameter("ordem"); // crescente ou decrescente
+
+            // Determine orderBy column based on your logic if needed, default to ID
+            String orderBy = "id"; // Default, adjust if your JSP sends a sort column
+            String direction = ("decrescente".equalsIgnoreCase(ordem)) ? "DESC" : "ASC";
+
             try {
-                // --- LÓGICA SIMPLIFICADA ---
-                // Pega todas as empresas do banco
-                listaEmpresas = dao.read(); // Usa o read() sem parâmetros
+                // Use the DAO method that accepts filters/sorting
+                listaEmpresas = dao.read(nomePesquisa, orderBy, direction);
 
                 if (listaEmpresas == null) {
-                    // Trata caso de DAO retornar null
-                    System.err.println("DAO retornou lista nula de empresas.");
-                    erro = "Não foi possível carregar a lista de empresas.";
-                    listaEmpresas = new ArrayList<>(); // Garante lista vazia no JSP
+                    erro = "Lista de administradores não carregada.";
+                    listaEmpresas = new ArrayList<>();
                 }
 
             } catch (Exception e) {
                 e.printStackTrace();
-                erro = "Erro ao buscar a lista de empresas.";
-                listaEmpresas = new ArrayList<>(); // Garante lista vazia
+                erro = "Erro ao buscar lista de administradores.";
+                listaEmpresas = new ArrayList<>();
             }
 
-            // Passa a lista para o JSP
             request.setAttribute("listaEmpresas", listaEmpresas);
 
-            // Passa erro, se houver
             if (erro != null) {
                 request.setAttribute("erro", erro);
             }
 
-            // Encaminha para o JSP dentro do WEB-INF/pages
             request.getRequestDispatcher("/WEB-INF/pages/empresas.jsp").forward(request, response);
         }
-    } // Não precisa de doPost neste servlet
+    }
 }

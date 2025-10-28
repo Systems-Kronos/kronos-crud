@@ -1,10 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     // --- LÓGICA PARA BOTÕES DE FILTRAGEM ---
-    const botaoLimparFiltro = document.getElementById("botaoLimparFiltro");
+    const botaoLimparFiltro = document.getElementById('botaoLimparFiltro');
 
     if (botaoLimparFiltro) {
-        botaoLimparFiltro.addEventListener("click", function() {
+        botaoLimparFiltro.addEventListener('click', function() {
             const caminho = JSON.parse(botaoLimparFiltro.dataset.caminho);
             const caminhoBase = caminho.base;
             const tabelaAtual = caminho.tabela;
@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const botoesModal = document.querySelectorAll('.acaoModal');
     botoesModal.forEach(botaoModal => {
         botaoModal.addEventListener('click', () => {
+            botaoModal.disabled = true;
             const modal = document.getElementById(botaoModal.dataset.modal);
             const acao = botaoModal.dataset.acao;
 
@@ -24,6 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     if (modal.id === 'create') {
                         modal.showModal();
+                        botaoModal.disabled = false;
                         return;
                     }
 
@@ -45,11 +47,16 @@ document.addEventListener('DOMContentLoaded', () => {
                                 preencherCamposModal('delete', dados, tabelaAtual);
                             }
                             modal.showModal();
+                            botaoModal.disabled = false;
                             })
-                        .catch(err => console.error("Erro ao buscar dados:", err));
+                        .catch(err => console.error('Erro ao buscar dados:', err));
                         }
                     } else if (acao === 'fechar') {
                     modal.close();
+                    botaoModal.disabled = false;
+                }
+                else {
+                    botaoModal.disabled = false;
                 }
             }
         });
@@ -67,7 +74,22 @@ document.addEventListener('DOMContentLoaded', () => {
     else if (modalDelete && modalDelete.dataset.abrir === 'true') {
         modalDelete.showModal();
     }
+
+    // --- LÓIGCA PARA O BOTÃO DE CONFIRMAR SÓ PODER SER CLICADO 1 VEZ
+    const formModalCreate = document.getElementById('formCreate');
+    const botoesConfirmarModal = document.querySelectorAll('.confirmar');
+    
+    formModalCreate.addEventListener('submit', (event) => {
+        if (formModalCreate.checkValidity()) {
+            botoesConfirmarModal.forEach(botaoConfirmarModal => {
+                botaoConfirmarModal.disabled = true;
+            });
+        } else {
+            event.preventDefault();
+        }
+    });
 });
+
 
 // --- FUNÇÕES DE PRÉ-PREENCHIMENTO DOS MODAIS ---
 
@@ -81,7 +103,7 @@ function preencherCamposModal(tipo, dados, tabela) {
         case 'planos-crud': campos = ['id', 'nome', 'custo', 'maxFuncionarios', 'descricao']; break;
         case 'habilidades-crud': campos = ['id', 'nome', 'tag', 'descricao']; break;
         case 'setores-crud': campos = ['id', 'nome', 'qtnFuncionarios', 'turnos', 'descricao', 'idEmpresa']; break;
-        case 'usuarios-crud': campos = ['id', 'nome', 'cpf', 'senha', 'genero', 'status', 'idSetor', 'idSupervisor']; break;
+        case 'usuarios-crud': campos = ['id', 'nome', 'cpf', 'senha', 'genero', 'cargo', 'status', 'idSetor', 'idSupervisor']; break;
     }
 
     campos.forEach(campo => {

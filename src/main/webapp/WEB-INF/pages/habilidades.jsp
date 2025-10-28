@@ -63,7 +63,7 @@
             <section class="create">
                 <dialog id="create">
                     <h2>Cadastrar habilidade</h2>
-                    <form action="${pageContext.request.contextPath}/habilidade-create" method="post">
+                    <form action="${pageContext.request.contextPath}/habilidade-create" id="formCreate" method="post">
                         <div class="campos">
                             <div>
                                 <div class="campo">
@@ -97,7 +97,7 @@
             <section class="update">
                 <dialog id="update">
                     <h2>Editar habilidade</h2>
-                    <form action="<%= request.getContextPath() %>/habilidade-update" method="post">
+                    <form action="${pageContext.request.contextPath}/habilidade-update" method="post">
                         <div class="idAtual">
                             <label for="idUpdate">ID:</label>
                             <input type="number" name="id" id="idUpdate" readonly>
@@ -133,7 +133,7 @@
             <section class="delete">
                 <dialog id="delete">
                     <h2>Excluir habilidade</h2>
-                    <form action="<%= request.getContextPath() %>/habilidades-delete" method="post">
+                    <form action="${pageContext.request.contextPath}/habilidades-delete" method="post">
                         <div class="idAtual">
                             <label for="idDelete">ID:</label>
                             <input type="number" name="id" id="idDelete" readonly>

@@ -61,7 +61,7 @@
             <section class="create">
                 <dialog id="create">
                     <h2>Cadastrar empresa</h2>
-                    <form action="${pageContext.request.contextPath}/empresa-create" method="post">
+                    <form action="${pageContext.request.contextPath}/empresa-create" id="formCreate" method="post">
                         <div class="campos">
                             <div>
                                 <div class="campo">
@@ -124,7 +124,7 @@
             <section class="update">
                 <dialog id="update">
                     <h2>Editar empresa</h2>
-                    <form action="<%= request.getContextPath() %>/empresas-update" method="post">
+                    <form action="${pageContext.request.contextPath}/empresas-update" method="post">
                         <div class="idAtual">
                             <label for="idUpdate">ID:</label>
                             <input type="number" name="id" id="idUpdate" readonly>
@@ -189,7 +189,7 @@
             <section class="delete">
                 <dialog id="delete">
                     <h2>Excluir empresa</h2>
-                    <form action="<%= request.getContextPath() %>/empresas-delete" method="post">
+                    <form action="${pageContext.request.contextPath}/empresas-delete" method="post">
                         <div class="idAtual">
                             <label for="idDelete">ID:</label>
                             <input type="number" name="id" id="idDelete" readonly>

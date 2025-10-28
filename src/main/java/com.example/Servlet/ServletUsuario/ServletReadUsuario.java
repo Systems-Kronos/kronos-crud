@@ -41,6 +41,7 @@ public class ServletReadUsuario extends HttpServlet {
                             + "\"cpf\":\"" + usuario.getCpf() + "\","
                             + "\"senha\":\"" + usuario.getSenha() + "\","
                             + "\"genero\":\"" + usuario.getGenero() + "\","
+                            + "\"cargo\":\"" + usuario.getCargo() + "\","
                             + "\"status\":\"" + usuario.getStatus() + "\","
                             + "\"idSetor\":\"" + usuario.getIdSetor() + "\","
                             + "\"idSupervisor\":\"" + usuario.getIdSupervisor() + "\""
