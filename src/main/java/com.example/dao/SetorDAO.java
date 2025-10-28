@@ -2,6 +2,7 @@ package com.example.dao;
 
 import com.example.Controller.Conexao;
 import com.example.Model.Empresa;
+import com.example.Model.Plano;
 import com.example.Model.Setor;
 
 import java.sql.*;
@@ -109,12 +110,17 @@ public class SetorDAO {
         List<Setor> setores = new LinkedList<>();
 
         StringBuilder sql = new StringBuilder("""
-            SELECT s.id, s.nome, s.descricao, s.turnos, s.qnt_funcionarios,
-                   e.id AS empresa_id, e.nome AS empresa_nome
-            FROM setor s
-            LEFT JOIN empresa e ON s.fk_empresa_id = e.id
-            WHERE 1=1
-        """);
+        SELECT 
+            s.id, s.nome, s.descricao, s.turnos, s.qnt_funcionarios,
+            e.id AS empresa_id, e.nome AS empresa_nome, e.cep, e.cnpj, e.email,
+            e.telefone, e.porte, e.horario_abertura, e.horario_encerramento, e.regradenegocio,
+            p.id AS plano_id, p.nomeplano, p.descricao AS plano_descricao,
+            p.qnt_max_funcionario, p.custo
+        FROM setor s
+        LEFT JOIN empresa e ON s.fk_empresa_id = e.id
+        LEFT JOIN planos p ON e.fk_plano_id = p.id
+        WHERE 1=1
+    """);
 
         if (nome != null && !nome.isEmpty()) {
             sql.append(" AND s.nome ILIKE '%").append(nome).append("%'");
@@ -126,9 +132,7 @@ public class SetorDAO {
             else if (orderBy.equalsIgnoreCase("qnt_funcionarios")) colunaOrdenacao = "s.qnt_funcionarios";
         }
 
-        String dir = "ASC";
-        if (direction != null && direction.equalsIgnoreCase("DESC")) dir = "DESC";
-
+        String dir = (direction != null && direction.equalsIgnoreCase("DESC")) ? "DESC" : "ASC";
         sql.append(" ORDER BY ").append(colunaOrdenacao).append(" ").append(dir);
 
         try {
@@ -137,13 +141,33 @@ public class SetorDAO {
             rset = pstmt.executeQuery();
 
             while (rset.next()) {
+                Plano plano = null;
+                int planoId = rset.getInt("plano_id");
+                if (planoId > 0) {
+                    plano = new Plano(
+                            planoId,
+                            rset.getString("nomeplano"),
+                            rset.getFloat("custo"),
+                            rset.getString("plano_descricao"),
+                            rset.getInt("qnt_max_funcionario")
+                    );
+                }
+
                 Empresa empresa = null;
                 int empresaId = rset.getInt("empresa_id");
                 if (empresaId > 0) {
                     empresa = new Empresa(
                             empresaId,
                             rset.getString("empresa_nome"),
-                            null, null, null, null, null, null, null, null, null
+                            rset.getString("cep"),
+                            rset.getString("cnpj"),
+                            rset.getString("email"),
+                            rset.getString("telefone"),
+                            rset.getString("porte"),
+                            rset.getTime("horario_abertura") != null ? rset.getTime("horario_abertura").toLocalTime() : null,
+                            rset.getTime("horario_encerramento") != null ? rset.getTime("horario_encerramento").toLocalTime() : null,
+                            rset.getString("regradenegocio"),
+                            plano
                     );
                 }
 
@@ -160,7 +184,7 @@ public class SetorDAO {
             }
 
         } catch (SQLException e) {
-            System.err.println("Erro ao buscar setores por nome: " + e.getMessage());
+            System.err.println("Erro ao buscar setores: " + e.getMessage());
         } finally {
             try {
                 if (rset != null) rset.close();
@@ -173,6 +197,7 @@ public class SetorDAO {
 
         return setores;
     }
+
 
     // READ by ID
     public Setor read(int id) {
@@ -233,7 +258,7 @@ public class SetorDAO {
     }
 
     // UPDATE por objeto
-    public boolean update(Setor setor) {
+    public int update(Setor setor) {
         Conexao conexao = new Conexao();
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -253,11 +278,14 @@ public class SetorDAO {
             pstmt.setInt(5, setor.getEmpresa().getId());
             pstmt.setInt(6, setor.getId());
 
-            return pstmt.executeUpdate() > 0;
+            if (pstmt.executeUpdate() > 0){
+                return 1;
+            }
+            return 0;
 
         } catch (SQLException e) {
             System.err.println("Erro ao atualizar setor: " + e.getMessage());
-            return false;
+            return -1;
         } finally {
             try {
                 if (pstmt != null) pstmt.close();
@@ -269,7 +297,7 @@ public class SetorDAO {
     }
 
     // UPDATE por parâmetros
-    public boolean update(int id, String nome, String descricao, String turnos, int qntFunc, Empresa empresa) {
+    public int update(int id, String nome, String descricao, String turnos, int qntFunc, Empresa empresa) {
         Conexao conexao = new Conexao();
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -289,11 +317,14 @@ public class SetorDAO {
             pstmt.setInt(5, empresa != null ? empresa.getId() : Types.INTEGER);
             pstmt.setInt(6, id);
 
-            return pstmt.executeUpdate() > 0;
+            if (pstmt.executeUpdate() > 0){
+                return 1;
+            }
+            return 0;
 
         } catch (SQLException e) {
             System.err.println("Erro ao atualizar setor por parâmetros: " + e.getMessage());
-            return false;
+            return -1;
         } finally {
             try {
                 if (pstmt != null) pstmt.close();
@@ -305,7 +336,7 @@ public class SetorDAO {
     }
 
     // DELETE por ID
-    public boolean delete(int id) {
+    public int delete(int id) {
         Conexao conexao = new Conexao();
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -316,11 +347,14 @@ public class SetorDAO {
             pstmt = conn.prepareStatement(delete);
             pstmt.setInt(1, id);
 
-            return pstmt.executeUpdate() > 0;
+            if (pstmt.executeUpdate() > 0){
+                return 1;
+            }
+            return 0;
 
         } catch (SQLException e) {
             System.err.println("Erro ao deletar setor: " + e.getMessage());
-            return false;
+            return -1;
         } finally {
             try {
                 if (pstmt != null) pstmt.close();
@@ -332,7 +366,7 @@ public class SetorDAO {
     }
 
     // DELETE por nome
-    public boolean delete(String nome) {
+    public int delete(String nome) {
         Conexao conexao = new Conexao();
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -343,11 +377,14 @@ public class SetorDAO {
             pstmt = conn.prepareStatement(delete);
             pstmt.setString(1, nome);
 
-            return pstmt.executeUpdate() > 0;
+            if (pstmt.executeUpdate() > 0){
+                return 1;
+            }
+            return 0;
 
         } catch (SQLException e) {
             System.err.println("Erro ao deletar setor por nome: " + e.getMessage());
-            return false;
+            return -1;
         } finally {
             try {
                 if (pstmt != null) pstmt.close();

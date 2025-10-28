@@ -115,7 +115,9 @@ public class Setor {
                 this.descricao,
                 this.turnos,
                 this.qntFuncionarios,
+                this.empresa != null ? this.empresa.getId() : 0, // aqui
                 this.empresa != null ? this.empresa.getNome() : "Nenhuma"
         );
     }
+
 }
