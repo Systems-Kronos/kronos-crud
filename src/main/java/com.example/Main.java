@@ -37,11 +37,6 @@ public class Main {
 //            planoDAO.inserir(plano);
 
 
-
-
-
-
-
 //  ************************************
 //  ********* Teste EmpresaDAO *********
 //  ************************************
@@ -105,11 +100,6 @@ public class Main {
 //            System.out.println("DELETE by CNPJ: " + deletadoCnpj);
 
 
-
-
-
-
-
             // ************************************
             // ********* Teste HabilidadesDAO ******
             // ************************************
@@ -165,12 +155,6 @@ public class Main {
 //            System.out.println("DELETE by Nome: " + deletadoNome);
 
 
-
-
-
-
-
-
 //
 //            // ************************************
 //            // ********* Teste PlanoDAO   *********
@@ -223,12 +207,6 @@ public class Main {
 //
 
 
-
-
-
-
-
-
 //             ************************************
 //             ********* Teste administracaoDAO   *********
 //             ************************************
@@ -278,12 +256,6 @@ public class Main {
 //            administracaoDAO.create(adminAtualizado);
 //            int deleteNome = administracaoDAO.delete("Carlos Almeida");
 //            System.out.println("DELETE NOME: " + (deleteNome > 0 ? "sucesso" : "falhou"));
-
-
-
-
-
-
 
 
 //             ************************************
@@ -364,11 +336,6 @@ public class Main {
 //            } else {
 //                System.out.println("Erro ao deletar setor.");
 //            }
-
-
-
-
-
 
 
 //             ************************************
@@ -464,7 +431,6 @@ public class Main {
 //                    System.out.println("ID: " + u.getId() + " | Nome: " + u.getNome() + " | Cargo: " + u.getCargo());
 //                }
 //            }
-
 
             conecta.desconectar(conn);
         } catch (Exception e) {
