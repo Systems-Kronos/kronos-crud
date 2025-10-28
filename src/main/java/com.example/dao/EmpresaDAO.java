@@ -268,7 +268,7 @@ public class EmpresaDAO {
     }
 
     // UPDATE por objeto
-    public boolean update(Empresa empresa) {
+    public int update(Empresa empresa) {
         Conexao conexao = new Conexao();
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -299,11 +299,14 @@ public class EmpresaDAO {
             }
             pstmt.setInt(11, empresa.getId());
 
-            return pstmt.executeUpdate() > 0;
+            if (pstmt.executeUpdate() > 0){
+                return 1;
+            }
+            return 0;
 
         } catch (SQLException e) {
             System.err.println("Erro ao atualizar empresa: " + e.getMessage());
-            return false;
+            return -1;
         } finally {
             try {
                 if (pstmt != null) pstmt.close();
@@ -315,7 +318,7 @@ public class EmpresaDAO {
     }
 
     // UPDATE por parâmetros (novo)
-    public boolean update(int id, String nome, String cep, String cnpj, String email, String telefone, String porte, LocalTime abertura, LocalTime fechamento, String regra, Plano plano) {
+    public int update(int id, String nome, String cep, String cnpj, String email, String telefone, String porte, LocalTime abertura, LocalTime fechamento, String regra, Plano plano) {
         Conexao conexao = new Conexao();
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -343,11 +346,14 @@ public class EmpresaDAO {
             else pstmt.setNull(10, Types.INTEGER);
             pstmt.setInt(11, id);
 
-            return pstmt.executeUpdate() > 0;
+            if (pstmt.executeUpdate() > 0){
+                return 1;
+            }
+            return 0;
 
         } catch (SQLException e) {
             System.err.println("Erro ao atualizar empresa por ID: " + e.getMessage());
-            return false;
+            return -1;
         } finally {
             try {
                 if (pstmt != null) pstmt.close();
@@ -359,7 +365,7 @@ public class EmpresaDAO {
     }
 
     // DELETE por ID
-    public boolean delete(int id) {
+    public int delete(int id) {
         Conexao conexao = new Conexao();
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -370,11 +376,14 @@ public class EmpresaDAO {
             pstmt = conn.prepareStatement(delete);
             pstmt.setInt(1, id);
 
-            return pstmt.executeUpdate() > 0;
+            if (pstmt.executeUpdate() > 0){
+                return 1;
+            }
+            return 0;
 
         } catch (SQLException e) {
             System.err.println("Erro ao deletar empresa: " + e.getMessage());
-            return false;
+            return -1;
         } finally {
             try {
                 if (pstmt != null) pstmt.close();
@@ -386,7 +395,7 @@ public class EmpresaDAO {
     }
 
     // DELETE por nome (novo)
-    public boolean delete(String nome) {
+    public int delete(String nome) {
         Conexao conexao = new Conexao();
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -397,11 +406,14 @@ public class EmpresaDAO {
             pstmt = conn.prepareStatement(delete);
             pstmt.setString(1, nome);
 
-            return pstmt.executeUpdate() > 0;
+            if (pstmt.executeUpdate() > 0){
+                return 1;
+            }
+            return 0;
 
         } catch (SQLException e) {
             System.err.println("Erro ao deletar empresa por nome: " + e.getMessage());
-            return false;
+            return -1;
         } finally {
             try {
                 if (pstmt != null) pstmt.close();
