@@ -37,11 +37,6 @@ public class Main {
 //            planoDAO.inserir(plano);
 
 
-
-
-
-
-
 //  ************************************
 //  ********* Teste EmpresaDAO *********
 //  ************************************
@@ -105,11 +100,6 @@ public class Main {
 //            System.out.println("DELETE by CNPJ: " + deletadoCnpj);
 
 
-
-
-
-
-
             // ************************************
             // ********* Teste HabilidadesDAO ******
             // ************************************
@@ -165,12 +155,6 @@ public class Main {
 //            System.out.println("DELETE by Nome: " + deletadoNome);
 
 
-
-
-
-
-
-
 //
 //            // ************************************
 //            // ********* Teste PlanoDAO   *********
@@ -223,12 +207,6 @@ public class Main {
 //
 
 
-
-
-
-
-
-
 //             ************************************
 //             ********* Teste administracaoDAO   *********
 //             ************************************
@@ -278,12 +256,6 @@ public class Main {
 //            administracaoDAO.create(adminAtualizado);
 //            int deleteNome = administracaoDAO.delete("Carlos Almeida");
 //            System.out.println("DELETE NOME: " + (deleteNome > 0 ? "sucesso" : "falhou"));
-
-
-
-
-
-
 
 
 //             ************************************
@@ -364,11 +336,6 @@ public class Main {
 //            } else {
 //                System.out.println("Erro ao deletar setor.");
 //            }
-
-
-
-
-
 
 
 //             ************************************
@@ -465,6 +432,86 @@ public class Main {
 //                }
 //            }
 
+            EmpresaDAO empresaDAO = new EmpresaDAO();
+            SetorDAO setorDAO = new SetorDAO();
+
+            System.out.println("===== TESTE SIMPLES SETOR DAO =====");
+
+            // Busca uma empresa existente para associar
+            Plano planoTeste = new Plano(1, "Plano Básico", 100.0f, "Descrição teste", 10);
+
+            // 1. Criar empresa
+            Empresa novaEmpresa = new Empresa(// id será gerado pelo banco
+                    "Empresa Teste",
+                    "12345-678",
+                    "12.345.678/0001-99",
+                    "teste@empresa.com",
+                    "11999999999",
+                    "Pequeno",
+                    LocalTime.of(8, 0),
+                    LocalTime.of(18, 0),
+                    "Regras de negócio teste",
+                    planoTeste
+                    );
+                    // 1️⃣ CREATE
+            Setor novoSetor = new Setor(
+                    "Qualidade",
+                    "Responsável pelo controle de qualidade",
+                    "Manhã",
+                    12,
+                    novaEmpresa
+            );
+
+            if (setorDAO.create(novoSetor)) {
+                System.out.println("✅ Setor criado com sucesso!");
+            } else {
+                System.out.println("❌ Falha ao criar setor.");
+            }
+
+            // 2️⃣ READ com filtro (busca por nome)
+            List<Setor> setores = setorDAO.read("Qualidade", "nome", "ASC");
+
+            System.out.println("\n📋 Setores encontrados com filtro:");
+            for (Setor s : setores) {
+                System.out.println(s);
+            }
+
+            // 3️⃣ UPDATE via objeto
+            if (!setores.isEmpty()) {
+                Setor setor = setores.get(0);
+                setor.setDescricao("Controle e auditoria da qualidade");
+                if (setorDAO.update(setor)) {
+                    System.out.println("✅ Setor atualizado via objeto!");
+                } else {
+                    System.out.println("❌ Falha ao atualizar setor.");
+                }
+            }
+
+            // 4️⃣ UPDATE via parâmetros
+            if (!setores.isEmpty()) {
+                Setor setor = setores.get(0);
+                boolean atualizado = setorDAO.update(
+                        setor.getId(),
+                        setor.getNome(),
+                        "Descrição atualizada via parâmetros",
+                        setor.getTurnos(),
+                        setor.getQntFuncionarios(),
+                        setor.getEmpresa()
+                );
+                System.out.println(atualizado ? "✅ Setor atualizado via parâmetros!" : "❌ Falha no update via parâmetros.");
+            }
+
+            // 5️⃣ DELETE
+            if (!setores.isEmpty()) {
+                int id = setores.get(0).getId();
+                if (setorDAO.delete(id)) {
+                    System.out.println("✅ Setor deletado!");
+                } else {
+                    System.out.println("❌ Falha ao deletar setor.");
+                }
+            }
+
+            System.out.println("\n===== FIM DO TESTE =====");
 
             conecta.desconectar(conn);
         } catch (Exception e) {
