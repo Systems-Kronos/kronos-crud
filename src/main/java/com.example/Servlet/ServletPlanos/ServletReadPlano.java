@@ -60,30 +60,35 @@ public class ServletReadPlano extends HttpServlet {
             List<Plano> listaPlanos = null; 
             String erro = null;
 
-            try {
+            // --- Handle Search/Filter/Sort ---
+            String nomePesquisa = request.getParameter("pesquisa");
+            String ordem = request.getParameter("ordem"); // crescente ou decrescente
 
-                listaPlanos = dao.read(); 
+            // Determine orderBy column based on your logic if needed, default to ID
+            String orderBy = "id"; // Default, adjust if your JSP sends a sort column
+            String direction = ("decrescente".equalsIgnoreCase(ordem)) ? "DESC" : "ASC";
+
+            try {
+                // Use the DAO method that accepts filters/sorting
+                listaPlanos = dao.read(nomePesquisa, orderBy, direction);
 
                 if (listaPlanos == null) {
-                    erro = "Lista não carregada.";
+                    erro = "Lista de administradores não carregada.";
                     listaPlanos = new ArrayList<>();
                 }
 
             } catch (Exception e) {
                 e.printStackTrace();
-                erro = "Erro ao buscar lista.";
+                erro = "Erro ao buscar lista de administradores.";
                 listaPlanos = new ArrayList<>();
             }
 
-            // Passa a lista (ou vazia) para o JSP
-            request.setAttribute("listaPlanos", listaPlanos); // Nome usado no JSP
+            request.setAttribute("listaPlanos", listaPlanos);
 
-            // Passa erro, se houver
             if (erro != null) {
                 request.setAttribute("erro", erro);
             }
 
-            // Encaminha para o JSP correto
             request.getRequestDispatcher("/WEB-INF/pages/planos.jsp").forward(request, response);
         }
     }

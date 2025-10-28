@@ -61,7 +61,7 @@
             <section class="create">
                 <dialog id="create">
                     <h2>Cadastrar usuário</h2>
-                    <form action="<%= request.getContextPath() %>/plano-create" method="post">
+                    <form action="${pageContext.request.contextPath}/usuario-create" id="formCreate method="post">
                         <div class="campos">
                             <div>
                                 <div class="campo">
@@ -100,6 +100,10 @@
                             </div>
                             <div>
                                 <div class="campo">
+                                    <label for="cargoCreate">Cargo</label>
+                                    <input type="text" name="cargo" id="cargoCreate" required>
+                                </div>
+                                <div class="campo">
                                     <label for="idSetorCreate">ID do Setor</label>
                                     <input type="number" name="idSetor" id="idSetorCreate" min="1" required>
                                 </div>
@@ -125,7 +129,7 @@
             <section class="update">
                 <dialog id="update">
                     <h2>Editar usuário</h2>
-                    <form action="<%= request.getContextPath() %>/usuario-update" method="post">
+                    <form action="${pageContext.request.contextPath}/usuario-update" method="post">
                         <div class="idAtual">
                             <label for="idUpdate">ID:</label>
                             <input type="number" name="id" id="idUpdate" readonly>
@@ -168,6 +172,10 @@
                             </div>
                             <div>
                                 <div class="campo">
+                                    <label for="cargoUpdate">Cargo</label>
+                                    <input type="text" name="cargo" id="cargoUpdate" required>
+                                </div>
+                                <div class="campo">
                                     <label for="idSetorUpdate">ID do Setor</label>
                                     <input type="number" name="idSetor" id="idSetorUpdate" min="1" required>
                                 </div>
@@ -190,7 +198,7 @@
             <section class="delete">
                 <dialog id="delete">
                     <h2>Excluir usuário</h2>
-                    <form action="<%= request.getContextPath() %>/usuario-delete" method="post">
+                    <form action="${pageContext.request.contextPath}/usuario-delete" method="post">
                         <div class="idAtual">
                             <label for="idDelete">ID:</label>
                             <input type="number" name="id" id="idDelete" readonly>
@@ -233,6 +241,10 @@
                             </div>
                             <div>
                                 <div class="campo">
+                                    <label for="cargoDelete"></label>
+                                    <input type="text" name="cargo" id="cargoDelete" disabled>
+                                </div>
+                                <div class="campo">
                                     <label for="idSetorDelete">ID do Setor</label>
                                     <input type="number" name="idSetor" id="idSetorDelete" min="1" disabled>
                                 </div>
@@ -265,6 +277,7 @@
                             <th>CPF</th>
                             <th>Senha</th>
                             <th>Gênero</th>
+                            <th>Cargo</th>
                             <th>Status</th>
                             <th>Setor</th>
                             <th>Supervisor</th>
@@ -288,6 +301,7 @@
                             <td><%= u.getCpf() %></td>
                             <td><%= u.getSenha() %></td>
                             <td><%= u.getGenero() %></td>
+                            <td><%= u.getCargo() %></td>
                             <td><%= u.getStatus() %></td>
                             <td> Setor Join</td>
                             <td> Supervisor Join</td>

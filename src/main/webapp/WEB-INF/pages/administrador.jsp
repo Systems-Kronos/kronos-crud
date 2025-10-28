@@ -52,7 +52,7 @@
                             <input type="radio" name="ordem" value="decrescente"
                                 <%= "decrescente".equals(request.getParameter("ordem")) ? "checked" : "" %>> Decrescente
                         </label>
-                        <button type="reset" id="botaoLimparFiltro" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"empresas-crud"}'>Limpar filtros</button>
+                        <button type="reset" id="botaoLimparFiltro" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"admin-crud"}'>Limpar filtros</button>
                         <button type="submit">Aplicar</button>
                     </div>
                 </details>
@@ -63,7 +63,7 @@
             <section class="create">
                 <dialog id="create">
                     <h2>Cadastrar administrador</h2>
-                    <form action="${pageContext.request.contextPath}/admin-create" method="post">
+                    <form action="${pageContext.request.contextPath}/admin-create" id="formCreate" method="post">
                         <div class="campos">
                             <div>
                                 <div class="campo">
@@ -98,7 +98,7 @@
             <section class="update">
                 <dialog id="update">
                     <h2>Editar administrador</h2>
-                    <form action="<%= request.getContextPath() %>/admin-update" method="post">
+                    <form action="${pageContext.request.contextPath}/admin-update" method="post">
                         <div class="idAtual">
                             <label for="idUpdate">ID:</label>
                             <input type="number" name="id" id="idUpdate" readonly>
@@ -134,7 +134,7 @@
             <section class="delete">
                 <dialog id="delete">
                     <h2>Excluir administrador</h2>
-                    <form action="<%= request.getContextPath() %>/admin-delete" method="post">
+                    <form action="${pageContext.request.contextPath}/admin-delete" method="post">
                         <div class="idAtual">
                             <label for="idDelete">ID:</label>
                             <input type="number" name="id" id="idDelete" readonly>
@@ -190,10 +190,10 @@
                     %>
                         <tr>
                             <td>
-                                <button type="button" class="detalhes acaoModal" data-acao="abrir" data-modal="update" data-pk="<%= admin.getId() %>" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"admin-crud"}'><img src="${pageContext.request.contextPath}/assets/crud/img/mais-detalhes.png" alt=""></button>
+                                <button type="button" id="abrirModalUpdate" class="detalhes acaoModal" data-acao="abrir" data-modal="update" data-pk="<%= admin.getId() %>" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"admin-crud"}'><img src="${pageContext.request.contextPath}/assets/crud/img/mais-detalhes.png" alt=""></button>
                             </td>
                             <td>
-                                <button type="button" class="detalhes acaoModal" data-acao="abrir" data-modal="delete" data-pk="<%= admin.getId() %>" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"admin-crud"}'><img src="${pageContext.request.contextPath}/assets/crud/img/deletar-kronos.png" alt=""></button>
+                                <button type="button" id="abrirModalDelete" class="detalhes acaoModal" data-acao="abrir" data-modal="delete" data-pk="<%= admin.getId() %>" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"admin-crud"}'><img src="${pageContext.request.contextPath}/assets/crud/img/deletar-kronos.png" alt=""></button>
                             </td>
                             <td><%= admin.getId() %></td>
                             <td><%= admin.getNome() %></td>

@@ -57,15 +57,26 @@ public class ServletReadSetores extends HttpServlet {
             List<Setor> listaSetores = null;
             String erro = null;
 
+            // --- Handle Search/Filter/Sort ---
+            String nomePesquisa = request.getParameter("pesquisa");
+            String ordem = request.getParameter("ordem"); // crescente ou decrescente
+
+            // Determine orderBy column based on your logic if needed, default to ID
+            String orderBy = "id"; // Default, adjust if your JSP sends a sort column
+            String direction = ("decrescente".equalsIgnoreCase(ordem)) ? "DESC" : "ASC";
+
             try {
-                listaSetores = dao.read();
+                // Use the DAO method that accepts filters/sorting
+                listaSetores = dao.read(nomePesquisa, orderBy, direction);
+
                 if (listaSetores == null) {
-                    erro = "Lista de setores não carregada.";
+                    erro = "Lista de administradores não carregada.";
                     listaSetores = new ArrayList<>();
                 }
+
             } catch (Exception e) {
                 e.printStackTrace();
-                erro = "Erro ao buscar lista de setores.";
+                erro = "Erro ao buscar lista de administradores.";
                 listaSetores = new ArrayList<>();
             }
 

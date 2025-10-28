@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.Model.Administracao;
+import com.example.Model.Habilidades;
 import com.example.dao.AdministracaoDAO;
 
 import jakarta.servlet.ServletException;
@@ -22,7 +23,7 @@ public class ServletReadAdministracao extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        
         String pk = request.getParameter("pk");
 
         if (pk != null && !pk.isEmpty()) {
@@ -55,29 +56,35 @@ public class ServletReadAdministracao extends HttpServlet {
             List<Administracao> listaAdmins = null;
             String erro = null;
 
+            // --- Handle Search/Filter/Sort ---
+            String nomePesquisa = request.getParameter("pesquisa");
+            String ordem = request.getParameter("ordem"); // crescente ou decrescente
+            
+            // Determine orderBy column based on your logic if needed, default to ID
+            String orderBy = "id"; // Default, adjust if your JSP sends a sort column
+            String direction = ("decrescente".equalsIgnoreCase(ordem)) ? "DESC" : "ASC";
+
             try {
-                listaAdmins = dao.read(); // Busca a lista
+                // Use the DAO method that accepts filters/sorting
+                listaAdmins = dao.read(nomePesquisa, orderBy, direction);
 
                 if (listaAdmins == null) {
-                    // Opcional: Tratar DAO retornando null
-                    System.err.println("DAO retornou lista nula de administradores.");
-                    erro = "Não foi possível carregar a lista de administradores.";
-                    listaAdmins = new ArrayList<>(); // Garante lista vazia no JSP
+                    erro = "Lista de administradores não carregada.";
+                    listaAdmins = new ArrayList<>();
                 }
 
             } catch (Exception e) {
                 e.printStackTrace();
-                erro = "Erro ao buscar a lista de administradores.";
-                listaAdmins = new ArrayList<>(); // Garante lista vazia no JSP em caso de erro
+                erro = "Erro ao buscar lista de administradores.";
+                listaAdmins = new ArrayList<>();
             }
 
-            request.setAttribute("listaAdmins", listaAdmins); // Envia a lista (ou vazia)
+            request.setAttribute("listaAdmins", listaAdmins);
 
             if (erro != null) {
-                request.setAttribute("erro", erro); // Envia o erro, se houver
+                request.setAttribute("erro", erro);
             }
 
-            // Encaminha para o JSP
             request.getRequestDispatcher("/WEB-INF/pages/administrador.jsp").forward(request, response);
         }
     }
