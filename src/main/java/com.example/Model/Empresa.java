@@ -21,13 +21,14 @@ public class Empresa {
     private LocalTime horarioAbertura;
     private LocalTime horarioFechamento;
     private String regraDeNegocios;
+    private Plano plano;
 
     // Métodos Construtores
 
     // As validações de exceções são realizadas pelos métodos setters
     public Empresa(int id, String nome, String cep, String cnpj, String email, String telefone,
                    String porte, LocalTime horarioAbertura,
-                   LocalTime horarioFechamento, String regraDeNegocios) {
+                   LocalTime horarioFechamento, String regraDeNegocios, Plano plano) {
         this.setId(id);
         this.setNome(nome);
         this.setCep(cep);
@@ -38,11 +39,12 @@ public class Empresa {
         this.setHorarioAbertura(horarioAbertura);
         this.setHorarioFechamento(horarioFechamento);
         this.setRegraDeNegocios(regraDeNegocios);
+        this.setPlano(plano);
     }
 
     public Empresa(String nome, String cep, String cnpj, String email, String telefone,
                    String porte, LocalTime horarioAbertura,
-                   LocalTime horarioFechamento, String regraDeNegocios) {
+                   LocalTime horarioFechamento, String regraDeNegocios, Plano plano) {
         this.setNome(nome);
         this.setCep(cep);
         this.setCnpj(cnpj);
@@ -52,6 +54,7 @@ public class Empresa {
         this.setHorarioAbertura(horarioAbertura);
         this.setHorarioFechamento(horarioFechamento);
         this.setRegraDeNegocios(regraDeNegocios);
+        this.setPlano(plano);
     }
 
     // Métodos Getters e Setters
@@ -61,7 +64,7 @@ public class Empresa {
         return id;
     }
     public void setId(int id) {
-        if (id <= 0) { // Exceção: verifica se o ID é negativo ou igual a zero
+        if (id <= 0) {
             throw new IllegalArgumentException("O ID não pode ser zero ou negativo.");
         }
         this.id = id;
@@ -72,10 +75,10 @@ public class Empresa {
         return nome;
     }
     public void setNome(String nome) {
-        if (nome == null) { // Exceção: verifica se o nome é nulo
+        if (nome == null) {
             throw new NullPointerException("O nome não pode ser nulo.");
         }
-        if (nome.trim().isEmpty()) { // Exceção: verifica se o nome só contém espaço
+        if (nome.trim().isEmpty()) {
             throw new IllegalArgumentException("O nome não pode estar em branco.");
         }
         this.nome = nome;
@@ -86,10 +89,10 @@ public class Empresa {
         return cep;
     }
     public void setCep(String cep) {
-        if (cep == null) { // Exceção: verifica se o CEP é nulo
+        if (cep == null) {
             throw new NullPointerException("O CEP não pode ser nulo.");
         }
-        if (!isValidCep(cep)) { // Exceção: verifica se o CEP é válido pelo método isValidCep
+        if (!isValidCep(cep)) {
             throw new IllegalArgumentException("O formato do CEP é inválido: '" + cep + "'.");
         }
         this.cep = cep.replaceAll("[^\\d]", "");
@@ -100,10 +103,10 @@ public class Empresa {
         return cnpj;
     }
     public void setCnpj(String cnpj) {
-        if (cnpj == null) { // Exceção: verifica se o CNPJ é nulo
+        if (cnpj == null) {
             throw new NullPointerException("O CNPJ não pode ser nulo.");
         }
-        if (!isValidCnpj(cnpj)) { // Exceção: verifica se o CNPJ é válido pelo método isValidCnpj
+        if (!isValidCnpj(cnpj)) {
             throw new IllegalArgumentException("O formato do CNPJ é inválido: '" + cnpj + "'.");
         }
         this.cnpj = cnpj.replaceAll("[^\\d]", "");
@@ -114,10 +117,10 @@ public class Empresa {
         return email;
     }
     public void setEmail(String email) {
-        if (email == null) { // Exceção: verifica se o email é nulo
+        if (email == null) {
             throw new NullPointerException("O email não pode ser nulo.");
         }
-        if (!isValidEmail(email)) { // Exceção: verifica se o email é válido pelo método isValidEmail
+        if (!isValidEmail(email)) {
             throw new IllegalArgumentException("O formato do e-mail é inválido: '" + email + "'.");
         }
         this.email = email;
@@ -128,10 +131,10 @@ public class Empresa {
         return telefone;
     }
     public void setTelefone(String telefone) {
-        if (telefone == null) { // Exceção: verifica se o telefone é nulo
+        if (telefone == null) {
             throw new NullPointerException("O telefone não pode ser nulo.");
         }
-        if (!isValidTelefone(telefone)) { // Exceção: verifica se o telefone é válido
+        if (!isValidTelefone(telefone)) {
             throw new IllegalArgumentException("O formato do telefone é inválido: '" + telefone + "'.");
         }
         this.telefone = telefone.replaceAll("[^\\d]", "");
@@ -142,10 +145,10 @@ public class Empresa {
         return porte;
     }
     public void setPorte(String porte) {
-        if (porte == null) { // Exceção: verifica se o porte é nulo
+        if (porte == null) {
             throw new NullPointerException("O porte não pode ser nulo.");
         }
-        if (porte.trim().isEmpty()) { // Exceção: verifica se o nome só contém espaço
+        if (porte.trim().isEmpty()) {
             throw new IllegalArgumentException("O porte não pode estar em branco.");
         }
         this.porte = porte;
@@ -156,10 +159,9 @@ public class Empresa {
         return horarioAbertura;
     }
     public void setHorarioAbertura(LocalTime horarioAbertura) {
-        if (horarioAbertura == null) { // Exceção: verifica se o horario de abertura é nulo
+        if (horarioAbertura == null) {
             throw new NullPointerException("O horário de abertura não pode ser nulo.");
         }
-        // Exceção: verifica se o horário de abertura é depois do horário de fechamento
         if (this.horarioFechamento != null && horarioAbertura.isAfter(this.horarioFechamento)) {
             throw new IllegalStateException("O horário de abertura não pode ser posterior ao de fechamento.");
         }
@@ -171,10 +173,9 @@ public class Empresa {
         return horarioFechamento;
     }
     public void setHorarioFechamento(LocalTime horarioFechamento) {
-        if (horarioFechamento == null) { // Exceção: verifica se o horario de fechamento é nulo
+        if (horarioFechamento == null) {
             throw new NullPointerException("O horário de fechamento não pode ser nulo.");
         }
-        // Exceção: verifica se o horário de fechamento é antes do horário de abertura
         if (this.horarioAbertura != null && horarioFechamento.isBefore(this.horarioAbertura)) {
             throw new IllegalStateException("O horário de fechamento não pode ser anterior ao de abertura.");
         }
@@ -186,18 +187,29 @@ public class Empresa {
         return regraDeNegocios;
     }
     public void setRegraDeNegocios(String regraDeNegocios) {
-        if (regraDeNegocios == null) { // Exceção: verifica se a regra de negócios é nula
+        if (regraDeNegocios == null) {
             throw new NullPointerException("A regra de negócios não pode ser nula.");
         }
-        if (regraDeNegocios.trim().isEmpty()) { // Exceção: verifica se a regra de negócios só contém espaço
+        if (regraDeNegocios.trim().isEmpty()) {
             throw new IllegalArgumentException("A regra de negócios não pode estar vazia.");
         }
         this.regraDeNegocios = regraDeNegocios;
     }
 
+    // Para o plano
+    public Plano getPlano() {
+        return plano;
+    }
+    public void setPlano(Plano plano) {
+        if (plano == null) {
+            throw new NullPointerException("O plano não pode ser nulo.");
+        }
+        this.plano = plano;
+    }
+
     // Método toString
     public String toString() {
-        return String.format("Empresa | Id: %-3d | Nome: %-20s | CEP: %-9s | CNPJ: %-18s | Email: %-20s | Telefone: %-12s | Porte: %-7s | Horário Abertura: %-10s | Horário Fechamento: %-10s | Regras de Negócios: %-50s",
+        return String.format("Empresa | Id: %-3d | Nome: %-20s | CEP: %-9s | CNPJ: %-18s | Email: %-20s | Telefone: %-12s | Porte: %-7s | Horário Abertura: %-10s | Horário Fechamento: %-10s | Regras de Negócios: %-50s | Plano: %-15s",
                 this.id,
                 this.nome,
                 this.cep,
@@ -207,17 +219,12 @@ public class Empresa {
                 this.porte,
                 this.horarioAbertura,
                 this.horarioFechamento,
-                this.regraDeNegocios
+                this.regraDeNegocios,
+                this.plano != null ? this.plano.toString() : "Nenhum"
         );
     }
 
     // Métodos de Validação
-
-    /*
-     * Verifica se o CEP é válido
-     * Exemplos de CEP aceitável:
-     * "12345-123", "12345123"
-     */
     private boolean isValidCep(String cep) {
         String regex = "\\b\\d{5}-?\\d{3}\\b";
         Pattern pattern = Pattern.compile(regex);
@@ -225,11 +232,6 @@ public class Empresa {
         return matcher.matches();
     }
 
-    /*
-     * Verifica se o CNPJ é válido
-     * Exemplos de CNPJ aceitável:
-     * "12.345.678/1234-56", "12345678123456"
-     */
     private boolean isValidCnpj(String cnpj) {
         String regex = "\\b\\d{2}\\.?\\d{3}\\.?\\d{3}/?\\.?\\d{4}-?\\d{2}\\b";
         Pattern pattern = Pattern.compile(regex);
@@ -237,11 +239,6 @@ public class Empresa {
         return matcher.matches();
     }
 
-    /*
-     * Verifica se o telefone é válido
-     * Exemplos de telefone aceitável:
-     * "(11) 12345-1234", "11123451234"
-     */
     private boolean isValidTelefone(String telefone) {
         String regex = "\\(?\\d{2}\\)?\\s?\\d{4,5}-?\\d{4}";
         Pattern pattern = Pattern.compile(regex);
@@ -249,9 +246,6 @@ public class Empresa {
         return matcher.matches();
     }
 
-    /*
-    * Verifica se o email é válido
-    */
     private boolean isValidEmail(String email) {
         String regex = "^[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*" +
                 "@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,63}$";
