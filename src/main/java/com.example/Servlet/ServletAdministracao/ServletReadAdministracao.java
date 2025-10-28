@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.Model.Administracao;
-import com.example.Model.Habilidades;
 import com.example.dao.AdministracaoDAO;
 
 import jakarta.servlet.ServletException;

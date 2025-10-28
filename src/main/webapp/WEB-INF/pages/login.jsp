@@ -13,23 +13,24 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/crud/style/autenticacao.css">
     <title>Entrar - Kronos</title>
 </head>
+
 <body>
-<main>
-    <h1>KRONOS</h1>
-    <h2>Entre em sua conta</h2>
-    <form action="login-crud" method="post">
-        <div>
-            <label for="email">Email</label>
-            <input type="email" name="email" id="email" placeholder="Digite seu email" required>
-        </div>
+    <main>
+        <h1>KRONOS</h1>
+        <h2>Entre em sua conta</h2>
+        <form action="login-crud" method="post">
+            <div>
+                <label for="email">Email</label>
+                <input type="email" name="email" id="email" placeholder="Digite seu email" required>
+            </div>
 
-        <div>
-            <label for="senha">Senha</label>
-            <input type="password" name="senha" id="senha" placeholder="Digite sua senha" required>
-        </div>
+            <div>
+                <label for="senha">Senha</label>
+                <input type="password" name="senha" id="senha" placeholder="Digite sua senha" required>
+            </div>
 
-        <button type="submit" class="botaoConta">Entrar</button>
-    </form>
-</main>
+            <button type="submit" class="botaoConta">Entrar</button>
+        </form>
+    </main>
 </body>
 </html>
