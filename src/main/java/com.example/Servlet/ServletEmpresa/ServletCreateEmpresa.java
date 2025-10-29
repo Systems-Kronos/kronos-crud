@@ -1,7 +1,9 @@
 package com.example.Servlet.ServletEmpresa;
 
+import com.example.Model.Plano;
 import com.example.dao.EmpresaDAO;
 import com.example.Model.Empresa;
+import com.example.dao.PlanoDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -32,6 +34,13 @@ public class ServletCreateEmpresa extends HttpServlet {
         String horaEntradaStr = request.getParameter("horaAbertura");
         String horaFechamentoStr = request.getParameter("horaFechamento");
         String regrasNegocios = request.getParameter("regrasNegocios");
+        int idPlano = Integer.parseInt(request.getParameter("idPlano"));
+
+        PlanoDAO planoDAO = new PlanoDAO();
+        Plano plano = planoDAO.read(idPlano);
+
+
+
 
         EmpresaDAO dao = new EmpresaDAO();
         boolean success = false;
@@ -45,7 +54,7 @@ public class ServletCreateEmpresa extends HttpServlet {
             // Construtor/Setters podem lançar IllegalArgumentException, NullPointerException, IllegalStateException
             Empresa novaEmpresa = new Empresa(
                     nome, cep, cnpj, email, telefone, porte,
-                    horaEntrada, horaFechamento, regrasNegocios
+                    horaEntrada, horaFechamento, regrasNegocios, plano
             );
 
             success = dao.create(novaEmpresa);

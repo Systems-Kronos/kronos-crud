@@ -1,5 +1,7 @@
 package com.example.Servlet.ServletSetores;
 
+import com.example.Model.Empresa;
+import com.example.dao.EmpresaDAO;
 import com.example.dao.SetorDAO;
 import com.example.Model.Setor;
 import jakarta.servlet.ServletException;
@@ -82,6 +84,9 @@ public class ServletUpdateSetores extends HttpServlet {
             int qtnFuncionarios = Integer.parseInt(qtnFuncionariosStr);
             int idEmpresa = Integer.parseInt(idEmpresaStr);
 
+            EmpresaDAO empresaDAO = new EmpresaDAO();
+            Empresa empresa = empresaDAO.read(idEmpresa);
+
 
             Setor setorParaAtualizar = dao.read(id);
             if (setorParaAtualizar == null) {
@@ -93,7 +98,7 @@ public class ServletUpdateSetores extends HttpServlet {
             setorParaAtualizar.setQntFuncionarios(qtnFuncionarios);
             setorParaAtualizar.setTurnos(turnos);
             setorParaAtualizar.setDescricao(descricao);
-            setorParaAtualizar.setIdEmpresa(idEmpresa);
+            setorParaAtualizar.setEmpresa(empresa);
 
             // Save
             int resultado = dao.update(setorParaAtualizar);

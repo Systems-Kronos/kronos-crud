@@ -91,8 +91,8 @@
                                     <textarea type="text" name="descricao" id="descricaoCreate" required></textarea>
                                 </div>
                                 <div class="campo">
-                                    <label for="idEmpresaCreate">ID da Empresa</label>
-                                    <input type="number" name="idEmpresa" id="idEmpresaCreate" min="1" required>
+                                    <label for="empresaCreate">ID da Empresa</label>
+                                    <input type="number" name="empresa" id="empresaCreate" min="1" required>
                                 </div>
                             </div>
                         </div>
@@ -145,8 +145,8 @@
                                     <textarea type="text" name="descricao" id="descricaoUpdate" required></textarea>
                                 </div>
                                 <div class="campo">
-                                    <label for="idEmpresaUpdate">ID da Empresa</label>
-                                    <input type="number" name="idEmpresa" id="idEmpresaUpdate" min="1" required>
+                                    <label for="empresaUpdate">ID da Empresa</label>
+                                    <input type="number" name="empresa" id="empresaUpdate" min="1" required>
                                 </div>
                             </div>
                         </div>
@@ -197,8 +197,8 @@
                                     <textarea type="text" name="descricao" id="descricaoDelete" disabled></textarea>
                                 </div>
                                 <div class="campo">
-                                    <label for="idEmpresaDelete">ID da Empresa</label>
-                                    <input type="number" name="idEmpresa" id="idEmpresaDelete" disabled>
+                                    <label for="empresaDelete">ID da Empresa</label>
+                                    <input type="number" name="empresa" id="empresaDelete" disabled>
                                 </div>
                             </div>
                         </div>

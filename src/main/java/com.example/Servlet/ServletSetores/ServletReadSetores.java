@@ -41,7 +41,7 @@ public class ServletReadSetores extends HttpServlet {
                             + "\"qtnFuncionarios\":\"" + setor.getQntFuncionarios() + "\","
                             + "\"turnos\":\"" + setor.getTurnos() + "\","
                             + "\"descricao\":\"" + setor.getDescricao().trim() + "\","
-                            + "\"idEmpresa\":\"" + setor.getIdEmpresa() + "\""
+                            + "\"empresa\":\"" + setor.getEmpresa().getNome() + "\""
                             + "}";
 
                     response.getWriter().write(json);

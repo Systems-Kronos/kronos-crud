@@ -1,5 +1,7 @@
 package com.example.Servlet.ServletSetores;
 
+import com.example.Model.Empresa;
+import com.example.dao.EmpresaDAO;
 import com.example.dao.SetorDAO;
 import com.example.Model.Setor;
 import jakarta.servlet.ServletException;
@@ -25,21 +27,24 @@ public class ServletCreateSetores extends HttpServlet {
         String turnos = request.getParameter("turnos");
         String qtdFuncionariosStr = request.getParameter("qtnFuncionarios");
         String descricao = request.getParameter("descricao");
-        String idEmpresaStr = request.getParameter("idEmpresa");
+        String idEmpresaString = request.getParameter("idEmpresa");
 
         SetorDAO dao = new SetorDAO();
         boolean success = false;
 
+        EmpresaDAO empresaDAO = new EmpresaDAO();
+        Empresa empresa = empresaDAO.read(Integer.parseInt(idEmpresaString));
+
         try {
             int qtdFuncionarios = Integer.parseInt(qtdFuncionariosStr);
-            int idEmpresa = Integer.parseInt(idEmpresaStr);
+            int idEmpresa = Integer.parseInt(idEmpresaString);
 
             Setor novoSetor = new Setor(
                     nome,
                     descricao,
                     turnos,
                     qtdFuncionarios,
-                    idEmpresa
+                    empresa
             );
 
             success = dao.create(novoSetor);
@@ -57,7 +62,7 @@ public class ServletCreateSetores extends HttpServlet {
             request.setAttribute("turnos_previo", turnos);
             request.setAttribute("qtdFuncionarios_previo", qtdFuncionariosStr);
             request.setAttribute("descricao_previo", descricao);
-            request.setAttribute("idEmpresa_previo", idEmpresaStr);
+            request.setAttribute("idEmpresa_previo", idEmpresaString);
 
         } catch (Exception e) {
             e.printStackTrace();
