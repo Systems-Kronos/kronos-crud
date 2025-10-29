@@ -3,6 +3,56 @@
 <%@ page import="java.util.List" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
+<%
+/* --- Processamento de Atributos (Habilidades) --- */
+
+    // 1. Pega os atributos principais
+    String erro = (String) request.getAttribute("erro");
+    String modalAberto = (String) request.getAttribute("abrirModal"); // "create", "update" ou "delete"
+    Habilidades habilidadeModal = (Habilidades) request.getAttribute("habilidadeModal");
+
+    // 2. Prepara variáveis para o modal CREATE
+    String createNome = "";
+    String createTag = "";
+    String createDescricao = "";
+    if ("create".equals(modalAberto)) {
+        createNome = request.getAttribute("nome_previo") != null ? (String)request.getAttribute("nome_previo") : "";
+        createTag = request.getAttribute("tag_previo") != null ? (String)request.getAttribute("tag_previo") : "";
+        createDescricao = request.getAttribute("descricao_previo") != null ? (String)request.getAttribute("descricao_previo") : "";
+    }
+
+    // 3. Prepara variáveis para o modal UPDATE
+    String updateID = "";
+    String updateNome = "";
+    String updateTag = "";
+    String updateDescricao = "";
+    if (habilidadeModal != null) { // Vindo do GET ou POST-failure
+        updateID = String.valueOf(habilidadeModal.getId());
+        updateNome = habilidadeModal.getNome();
+        updateTag = habilidadeModal.getTag();
+        updateDescricao = habilidadeModal.getDescricao();
+    }
+    // Se foi um POST com falha, os dados _previo (tentativa do usuário) têm prioridade
+    if ("update".equals(modalAberto) && request.getAttribute("nome_previo") != null) {
+        // O ID não muda, então não precisamos buscar o "id_previo"
+        updateNome = (String) request.getAttribute("nome_previo");
+        updateTag = (String) request.getAttribute("tag_previo");
+        updateDescricao = (String) request.getAttribute("descricao_previo");
+    }
+
+    // 4. Prepara variáveis para o modal DELETE
+    String deleteID = "";
+    String deleteNome = "";
+    String deleteTag = "";
+    String deleteDescricao = "";
+    if (habilidadeModal != null && "delete".equals(modalAberto)) {
+        deleteID = String.valueOf(habilidadeModal.getId());
+        deleteNome = habilidadeModal.getNome();
+        deleteTag = habilidadeModal.getTag();
+        deleteDescricao = habilidadeModal.getDescricao();
+    }
+%>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -19,7 +69,8 @@
     <title>Habilidades - Kronos CRUD</title>
 </head>
 
-<body>
+<%-- A tag body agora passa a variável "modalAberto" para o HTML --%>
+<body data-modal-para-abrir="<%= modalAberto != null ? modalAberto : "" %>">
     <div class="meuPlaceholder"></div>
 
     <header>
@@ -37,6 +88,17 @@
     </header>
 
     <div class="conteudoPrincipal">
+
+        <%
+            if (erro != null && !erro.isEmpty()) {
+        %>
+        <div style="background-color: #f8d7da; color: #721c24; padding: 1rem; border: 1px solid #f5c6cb; border-radius: 5px; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">
+            <strong>Erro:</strong> <%= erro %>
+        </div>
+        <%
+            }
+        %>
+
         <div class="procurarCadastrar">
             <form class="pesquisa" method="get" action="${pageContext.request.contextPath}/habilidades-crud">
                 <input type="search" placeholder="Pesquisar" id="pesquisa" name="pesquisa" class="buscar" value="<%= request.getParameter("pesquisa") != null ? request.getParameter("pesquisa") : "" %>">
@@ -68,17 +130,17 @@
                             <div>
                                 <div class="campo">
                                     <label for="nomeCreate">Nome</label>
-                                    <input type="text" name="nome" id="nomeCreate" autocomplete="off" required>
+                                    <input type="text" name="nome" id="nomeCreate" autocomplete="off" required value="<%= createNome %>">
                                 </div>
                                 <div class="campo">
                                     <label for="tagCreate">Tag</label>
-                                    <input type="text" name="tag" id="tagCreate" autocomplete="off" required>
+                                    <input type="text" name="tag" id="tagCreate" autocomplete="off" required value="<%= createTag %>">
                                 </div>
                             </div>
                             <div>
                                 <div class="campo">
                                     <label for="descricaoCreate">Descrição</label>
-                                    <textarea name="descricao" id="descricaoCreate" required></textarea>
+                                    <textarea name="descricao" id="descricaoCreate" required><%= createDescricao %></textarea>
                                 </div>
                             </div>
                         </div>
@@ -100,23 +162,23 @@
                     <form action="${pageContext.request.contextPath}/habilidade-update" method="post">
                         <div class="idAtual">
                             <label for="idUpdate">ID:</label>
-                            <input type="number" name="id" id="idUpdate" readonly>
+                            <input type="number" name="id" id="idUpdate" readonly value="<%= updateID %>">
                         </div>
                         <div class="campos">
                             <div>
                                 <div class="campo">
                                     <label for="nomeUpdate">Nome</label>
-                                    <input type="text" name="nome" id="nomeUpdate" autocomplete="off" required>
+                                    <input type="text" name="nome" id="nomeUpdate" autocomplete="off" required value="<%= updateNome %>">
                                 </div>
                                 <div class="campo">
                                     <label for="tagUpdate">Tag</label>
-                                    <input type="text" name="tag" id="tagUpdate" autocomplete="off" required>
+                                    <input type="text" name="tag" id="tagUpdate" autocomplete="off" required value="<%= updateTag %>">
                                 </div>
                             </div>
                             <div>
                                 <div class="campo">
                                     <label for="descricaoUpdate">Descrição</label>
-                                    <textarea name="descricao" id="descricaoUpdate" required></textarea>
+                                    <textarea name="descricao" id="descricaoUpdate" required><%= updateDescricao %></textarea>
                                 </div>
                             </div>
                         </div>
@@ -136,23 +198,23 @@
                     <form action="${pageContext.request.contextPath}/habilidades-delete" method="post">
                         <div class="idAtual">
                             <label for="idDelete">ID:</label>
-                            <input type="number" name="id" id="idDelete" readonly>
+                            <input type="number" name="id" id="idDelete" readonly value="<%= deleteID %>">
                         </div>
                         <div class="campos">
                             <div>
                                 <div class="campo">
                                     <label for="nomeDelete">Nome</label>
-                                    <input type="text" name="nome" id="nomeDelete" autocomplete="off" disabled>
+                                    <input type="text" name="nome" id="nomeDelete" autocomplete="off" disabled value="<%= deleteNome %>">
                                 </div>
                                 <div class="campo">
                                     <label for="tagDelete">Tag</label>
-                                    <input type="text" name="tag" id="tagDelete" autocomplete="off" disabled>
+                                    <input type="text" name="tag" id="tagDelete" autocomplete="off" disabled value="<%= deleteTag %>">
                                 </div>
                             </div>
                             <div>
                                 <div class="campo">
                                     <label for="descricaoDelete">Descrição</label>
-                                    <textarea name="descricao" id="descricaoDelete" disabled></textarea>
+                                    <textarea name="descricao" id="descricaoDelete" disabled><%= deleteDescricao %></textarea>
                                 </div>
                             </div>
                         </div>

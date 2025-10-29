@@ -1,6 +1,7 @@
 package com.example.Servlet.ServletHabilidades;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,69 +14,95 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+/**
+ * Servlet focado em LER (Read) Habilidades.
+ * Serve como o "painel" principal (listagem) e também como uma API JSON
+ * para buscar dados de uma única habilidade (usado pelos modais).
+ */
 @WebServlet("/habilidades-crud")
 public class ServletReadHabilidades extends HttpServlet {
-
-    // Instanciando DAO
-    private HabilidadesDAO dao = new HabilidadesDAO();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        // Instancia o DAO dentro do método
+        HabilidadesDAO dao = new HabilidadesDAO();
         String pk = request.getParameter("pk");
 
         if (pk != null && !pk.isEmpty()) {
+            // 1. REQUISIÇÃO JSON (via AJAX)
+            // Usado para preencher os modais de Update e Delete dinamicamente.
 
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
 
             try {
-                Habilidades habilidade = dao.read(Integer.parseInt(pk));
+                int id = Integer.parseInt(pk);
+                Habilidades habilidade = dao.read(id); // Pode lançar SQLException
 
                 if (habilidade != null) {
-
+                    // Nota: Construção manual de JSON é frágil.
+                    // Em um projeto maior, use uma biblioteca (Gson, Jackson).
                     String json = "{"
-                            + "\"id\":\"" + pk + "\","
-                            + "\"nome\":\"" + habilidade.getNome() + "\","
+                            + "\"id\":\"" + id + "\"," // 'pk' é o mesmo que 'id'
+                            + "\"nome\":\"" + habilidade.getNome() + "\"," // Assume que nome não tem aspas
                             + "\"tag\":\"" + habilidade.getTag() + "\","
-                            + "\"descricao\":\"" + habilidade.getDescricao().trim() + "\""
+                            + "\"descricao\":\"" + habilidade.getDescricao().trim() + "\"" // Risco se a descrição tiver aspas
                             + "}";
 
                     response.getWriter().write(json);
+                } else {
+                    // Habilidade não encontrada (ID válido, mas não existe)
+                    response.setStatus(HttpServletResponse.SC_NOT_FOUND); // Erro 404
+                    response.getWriter().write("{\"erro\":\"Habilidade ID " + id + " não encontrada.\"}");
                 }
             } catch (NumberFormatException e) {
-                response.getWriter().write("{\"erro\":\"PK inválida\"}");
+                // ID não era um número
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST); // Erro 400
+                response.getWriter().write("{\"erro\":\"PK inválida: " + pk + "\"}");
+            } catch (SQLException e) {
+                // Erro de banco de dados
+                e.printStackTrace();
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR); // Erro 500
+                response.getWriter().write("{\"erro\":\"Erro de banco de dados: " + e.getMessage() + "\"}");
             } catch (Exception e) {
+                // Outro erro inesperado
+                e.printStackTrace();
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR); // Erro 500
                 response.getWriter().write("{\"erro\":\"" + e.getMessage() + "\"}");
             }
 
         } else {
+            // --- RAMO 2: CARREGAMENTO DA PÁGINA (Forward JSP) ---
+            // Carrega a lista completa (com filtros) para exibir no 'habilidades.jsp'.
 
-            List<Habilidades> listaHabilidades = null;
+            List<Habilidades> listaHabilidades = new ArrayList<>(); // Inicia vazia
             String erro = null;
 
-            // --- Handle Search/Filter/Sort ---
+            // Coleta de parâmetros de filtro/ordenação
             String nomePesquisa = request.getParameter("pesquisa");
-            String ordem = request.getParameter("ordem"); // crescente ou decrescente
-            
-            // Determine orderBy column based on your logic if needed, default to ID
-            String orderBy = "id"; // Default, adjust if your JSP sends a sort column
+            String ordem = request.getParameter("ordem"); // "crescente" ou "decrescente"
+
+            // Lógica de ordenação (o DAO já valida isso, mas definimos o default aqui)
+            String orderBy = "id"; // Default
             String direction = ("decrescente".equalsIgnoreCase(ordem)) ? "DESC" : "ASC";
 
             try {
-                // Use the DAO method that accepts filters/sorting
+                // Usa o método do DAO que aceita filtros/ordenação
+                // O DAO (corrigido) lança SQLException
                 listaHabilidades = dao.read(nomePesquisa, orderBy, direction);
 
-                if (listaHabilidades == null) {
-                    erro = "Lista de habilidades não carregada.";
-                    listaHabilidades = new ArrayList<>();
-                }
+                // CORREÇÃO: O 'if (listaHabilidades == null)' foi removido,
+                // pois o DAO corrigido NUNCA retorna null para uma lista,
+                // ele retorna uma lista vazia.
 
+            } catch (SQLException e) { // <-- CORREÇÃO: Tratamento específico
+                e.printStackTrace();
+                erro = "Erro ao buscar lista de habilidades: " + e.getMessage();
             } catch (Exception e) {
                 e.printStackTrace();
-                erro = "Erro ao buscar lista de habilidades.";
-                listaHabilidades = new ArrayList<>();
+                erro = "Erro inesperado ao carregar dados: " + e.getMessage();
             }
 
             request.setAttribute("listaHabilidades", listaHabilidades);
@@ -84,6 +111,7 @@ public class ServletReadHabilidades extends HttpServlet {
                 request.setAttribute("erro", erro);
             }
 
+            // Encaminha para a página JSP
             request.getRequestDispatcher("/WEB-INF/pages/habilidades.jsp").forward(request, response);
         }
     }
