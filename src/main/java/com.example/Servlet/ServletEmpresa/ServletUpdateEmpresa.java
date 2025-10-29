@@ -81,6 +81,8 @@ public class ServletUpdateEmpresa extends HttpServlet {
         String horaEntradaStr = request.getParameter("horaAbertura");
         String horaFechamentoStr = request.getParameter("horaFechamento");
         String regrasNegocios = request.getParameter("regrasNegocios");
+        int idPlano = Integer.parseInt(request.getParameter("plano"));
+
 
         try {
             // Converte e valida ID e tempos
@@ -104,6 +106,7 @@ public class ServletUpdateEmpresa extends HttpServlet {
             empresa.setHorarioAbertura(horaEntrada);
             empresa.setHorarioFechamento(horaFechamento);
             empresa.setRegraDeNegocios(regrasNegocios);
+            empresa.setIdPlano(idPlano);
 
             // Salva
             int resultado = dao.update(empresa);
@@ -127,6 +130,7 @@ public class ServletUpdateEmpresa extends HttpServlet {
             request.setAttribute("horaEntrada_previo", horaEntradaStr);
             request.setAttribute("horaFechamento_previo", horaFechamentoStr);
             request.setAttribute("regrasNegocios_previo", regrasNegocios);
+            request.setAttribute("plano", idPlano);
 
         } catch (Exception e) { // Outros erros
             e.printStackTrace();

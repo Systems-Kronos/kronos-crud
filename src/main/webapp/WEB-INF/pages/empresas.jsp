@@ -1,4 +1,3 @@
-
 <%@ page import="com.example.Model.Empresa" %>
 <%@ page import="java.util.List" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
@@ -9,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Montserrat:wght@300;400;500;700;900&family=Crete+Round:wght@400;700&display=swap" rel="stylesheet">
-    
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="${pageContext.request.contextPath}/assets/crud/img/favikronos.ico" type="image/x-icon">
@@ -19,73 +18,74 @@
 </head>
 
 <body>
-    <div class="meuPlaceholder"></div>
-    <header>
-        <h1>KRONOS</h1>
-        <nav>
-            <ul>
-                <li><a href="${pageContext.request.contextPath}/admin-crud"><img src="${pageContext.request.contextPath}/assets/crud/img/img-crud-administrador.png" alt="">Administrador</a></li>
-                <li><a href="${pageContext.request.contextPath}/empresas-crud" class="ativo"><img src="${pageContext.request.contextPath}/assets/crud/img/img-crud-empresas.png" alt="">Empresas</a></li>
-                <li><a href="${pageContext.request.contextPath}/planos-crud"><img src="${pageContext.request.contextPath}/assets/crud/img/img-crud-planos.png" alt="">Planos</a></li>
-                <li><a href="${pageContext.request.contextPath}/habilidades-crud"><img src="${pageContext.request.contextPath}/assets/crud/img/img-crud-habilidades.png" alt="">Habilidades</a></li>
-                <li><a href="${pageContext.request.contextPath}/setores-crud"><img src="${pageContext.request.contextPath}/assets/crud/img/img-crud-setores.png" alt="">Setores</a></li>
-                <li><a href="${pageContext.request.contextPath}/usuarios-crud"><img src="${pageContext.request.contextPath}/assets/crud/img/img-crud-usuario.png" alt="">Usuário</a></li>
-            </ul>
-        </nav>
-    </header>
+<div class="meuPlaceholder"></div>
+<header>
+    <h1>KRONOS</h1>
+    <nav>
+        <ul>
+            <li><a href="${pageContext.request.contextPath}/admin-crud"><img src="${pageContext.request.contextPath}/assets/crud/img/img-crud-administrador.png" alt="">Administrador</a></li>
+            <li><a href="${pageContext.request.contextPath}/empresas-crud" class="ativo"><img src="${pageContext.request.contextPath}/assets/crud/img/img-crud-empresas.png" alt="">Empresas</a></li>
+            <li><a href="${pageContext.request.contextPath}/planos-crud"><img src="${pageContext.request.contextPath}/assets/crud/img/img-crud-planos.png" alt="">Planos</a></li>
+            <li><a href="${pageContext.request.contextPath}/habilidades-crud"><img src="${pageContext.request.contextPath}/assets/crud/img/img-crud-habilidades.png" alt="">Habilidades</a></li>
+            <li><a href="${pageContext.request.contextPath}/setores-crud"><img src="${pageContext.request.contextPath}/assets/crud/img/img-crud-setores.png" alt="">Setores</a></li>
+            <li><a href="${pageContext.request.contextPath}/usuarios-crud"><img src="${pageContext.request.contextPath}/assets/crud/img/img-crud-usuario.png" alt="">Usuário</a></li>
+        </ul>
+    </nav>
+</header>
 
-    <div class="conteudoPrincipal">
-        <div class="procurarCadastrar">
-            <form class="pesquisa" method="get" action="${pageContext.request.contextPath}/empresas-crud">
-                <input type="search" placeholder="Pesquisar" id="pesquisa" name="pesquisa" class="buscar" value="<%= request.getParameter("pesquisa") != null ? request.getParameter("pesquisa") : "" %>">
-    
-                <details class="filtros">
-                    <summary>Filtros</summary>
-                    <div class="conteudoFiltros">
-                        <label class="opcaoFiltro">
-                            <input type="radio" name="ordem" value="crescente"
-                                <%= "crescente".equals(request.getParameter("ordem")) ? "checked" : "" %>> Crescente
-                        </label>
-                        <label class="opcaoFiltro">
-                            <input type="radio" name="ordem" value="decrescente"
-                                <%= "decrescente".equals(request.getParameter("ordem")) ? "checked" : "" %>> Decrescente
-                        </label>
-                        <button type="reset" id="botaoLimparFiltro" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"empresas-crud"}'>Limpar filtros</button>
-                        <button type="submit">Aplicar</button>
-                    </div>
-                </details>
-            </form>
+<div class="conteudoPrincipal">
+    <div class="procurarCadastrar">
+        <form class="pesquisa" method="get" action="${pageContext.request.contextPath}/empresas-crud">
+            <input type="search" placeholder="Pesquisar" id="pesquisa" name="pesquisa" class="buscar" value="<%= request.getParameter("pesquisa") != null ? request.getParameter("pesquisa") : "" %>">
 
-            <!-- CREATE -->
+            <details class="filtros">
+                <summary>Filtros</summary>
+                <div class="conteudoFiltros">
+                    <label class="opcaoFiltro">
+                        <input type="radio" name="ordem" value="crescente"
+                            <%= "crescente".equals(request.getParameter("ordem")) ? "checked" : "" %>> Crescente
+                    </label>
+                    <label class="opcaoFiltro">
+                        <input type="radio" name="ordem" value="decrescente"
+                            <%= "decrescente".equals(request.getParameter("ordem")) ? "checked" : "" %>> Decrescente
+                    </label>
+                    <button type="reset" id="botaoLimparFiltro" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"empresas-crud"}'>Limpar filtros</button>
+                    <button type="submit">Aplicar</button>
+                </div>
+            </details>
+        </form>
 
-            <section class="create">
-                <dialog id="create">
-                    <h2>Cadastrar empresa</h2>
-                    <form action="${pageContext.request.contextPath}/empresa-create" id="formCreate" method="post">
-                        <div class="campos">
-                            <div>
-                                <div class="campo">
-                                    <label for="nomeCreate">Nome</label>
-                                    <input type="text" name="nome" id="nomeCreate" autocomplete="off" required>
-                                </div>
-                                <div class="campo">
-                                    <label for="emailCreate">E-mail</label>
-                                    <input type="email" name="email" id="emailCreate" autocomplete="off" required>
-                                </div>
-                                <div class="campo">
-                                    <label for="cepCreate">CEP</label>
-                                    <input type="text" name="cep" id="cepCreate" inputmode="numeric" autocomplete="off" pattern="\d{5}-?\d{3}" required>
-                                </div>
-                                <div class="campo">
-                                    <label for="cnpjCreate">CNPJ</label>
-                                    <input type="text" name="cnpj" id="cnpjCreate" inputmode="numeric" autocomplete="off" required>
-                                </div>
-                                <div class="campo">
-                                    <label for="telefoneCreate">Telefone</label>
-                                    <input type="tel" name="telefone" id="telefoneCreate" autocomplete="off" required>
-                                </div>
+        <!-- CREATE -->
+
+        <section class="create">
+            <dialog id="create">
+                <h2>Cadastrar empresa</h2>
+                <form action="${pageContext.request.contextPath}/empresa-create" id="formCreate" method="post">
+                    <div class="campos">
+                        <div>
+                            <div class="campo">
+                                <label for="nomeCreate">Nome</label>
+                                <input type="text" name="nome" id="nomeCreate" autocomplete="off" required>
                             </div>
-                            <div>
+                            <div class="campo">
+                                <label for="emailCreate">E-mail</label>
+                                <input type="email" name="email" id="emailCreate" autocomplete="off" required>
+                            </div>
+                            <div class="campo">
+                                <label for="cepCreate">CEP</label>
+                                <input type="text" name="cep" id="cepCreate" inputmode="numeric" autocomplete="off" pattern="\d{5}-?\d{3}" required>
+                            </div>
+                            <div class="campo">
+                                <label for="cnpjCreate">CNPJ</label>
+                                <input type="text" name="cnpj" id="cnpjCreate" inputmode="numeric" autocomplete="off" required>
+                            </div>
+                            <div class="campo">
+                                <label for="telefoneCreate">Telefone</label>
+                                <input type="tel" name="telefone" id="telefoneCreate" autocomplete="off" required>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="campoLado">
                                 <div class="campo">
                                     <label for="porteCreate">Porte</label>
                                     <select type="text" name="porte" id="porteCreate" required>
@@ -96,63 +96,74 @@
                                     </select>
                                 </div>
                                 <div class="campo">
-                                    <label for="horaAberturaCreate">Horário de abertura</label>
-                                    <input type="time" name="horaAbertura" id="horaAberturaCreate" required>
-                                </div>
-                                <div class="campo">
-                                    <label for="horaFechamentoCreate">Horário de fechamento</label>
-                                    <input type="time" name="horaFechamento" id="horaFechamentoCreate" required>
-                                </div>
-                                <div class="campo">
-                                    <label for="regrasNegociosCreate">Regras de Negócios</label>
-                                    <textarea type="text" name="regrasNegocios" id="regrasNegociosCreate" required></textarea>
+                                    <label for="planoCreate">Plano</label>
+                                    <select type="text" name="plano" id="planoCreate" required>
+                                        <option value="" selected disabled>Selecionar</option>
+                                        <option value="1">Enterprise</option>
+                                        <option value="2">Pro</option>
+                                        <option value="3">Light</option>
+                                    </select>
                                 </div>
                             </div>
+                            <div class="campo">
+                                <label for="horaAberturaCreate">Horário de abertura</label>
+                                <input type="time" name="horaAbertura" id="horaAberturaCreate" required>
+                            </div>
+                            <div class="campo">
+                                <label for="horaFechamentoCreate">Horário de fechamento</label>
+                                <input type="time" name="horaFechamento" id="horaFechamentoCreate" required>
+                            </div>
+                            <div class="campo">
+                                <label for="regrasNegociosCreate">Regras de Negócios</label>
+                                <textarea type="text" name="regrasNegocios" id="regrasNegociosCreate" required></textarea>
+                            </div>
                         </div>
-                        <menu>
-                            <button type="button" class="cancelar acaoModal" data-acao="fechar" data-modal="create">Cancelar</button>
-                            <button type="submit" class="confirmar">Cadastrar</button>
-                        </menu>
-                    </form>
-                </dialog>
-                
-                <button type="button" class="cadastrar acaoModal" data-acao="abrir" data-modal="create">Cadastrar</button>
-            </section>
-            
-            <!-- UPDATE -->
+                    </div>
+                    <menu>
+                        <button type="button" class="cancelar acaoModal" data-acao="fechar" data-modal="create">Cancelar</button>
+                        <button type="submit" class="confirmar">Cadastrar</button>
+                    </menu>
+                </form>
+            </dialog>
 
-            <section class="update">
-                <dialog id="update">
-                    <h2>Editar empresa</h2>
-                    <form action="${pageContext.request.contextPath}/empresas-update" method="post">
-                        <div class="idAtual">
-                            <label for="idUpdate">ID:</label>
-                            <input type="number" name="id" id="idUpdate" readonly>
-                        </div>
-                        <div class="campos">
-                            <div>
-                                <div class="campo">
-                                    <label for="nomeUpdate">Nome</label>
-                                    <input type="text" name="nome" id="nomeUpdate" autocomplete="off" required>
-                                </div>
-                                <div class="campo">
-                                    <label for="emailUpdate">E-mail</label>
-                                    <input type="email" name="email" id="emailUpdate" autocomplete="off" required>
-                                </div>
-                                <div class="campo">
-                                    <label for="cepUpdate">CEP</label>
-                                    <input type="text" name="cep" id="cepUpdate" inputmode="numeric" autocomplete="off" pattern="\d{5}-?\d{3}" required>
-                                </div>
-                                <div class="campo">
-                                    <label for="cnpjUpdate">CNPJ</label>
-                                    <input type="text" name="cnpj" id="cnpjUpdate" inputmode="numeric" autocomplete="off" required>
-                                </div>
-                                <div class="campo">
-                                    <label for="telefoneUpdate">Telefone</label>
-                                    <input type="tel" name="telefone" id="telefoneUpdate" autocomplete="off" required>
-                                </div>
+            <button type="button" class="cadastrar acaoModal" data-acao="abrir" data-modal="create">Cadastrar</button>
+        </section>
+
+        <!-- UPDATE -->
+
+        <section class="update">
+            <dialog id="update">
+                <h2>Editar empresa</h2>
+                <form action="${pageContext.request.contextPath}/empresas-update" method="post">
+                    <div class="idAtual">
+                        <label for="idUpdate">ID:</label>
+                        <input type="number" name="id" id="idUpdate" readonly>
+                    </div>
+                    <div class="campos">
+                        <div>
+                            <div class="campo">
+                                <label for="nomeUpdate">Nome</label>
+                                <input type="text" name="nome" id="nomeUpdate" autocomplete="off" required>
                             </div>
-                            <div>
+                            <div class="campo">
+                                <label for="emailUpdate">E-mail</label>
+                                <input type="email" name="email" id="emailUpdate" autocomplete="off" required>
+                            </div>
+                            <div class="campo">
+                                <label for="cepUpdate">CEP</label>
+                                <input type="text" name="cep" id="cepUpdate" inputmode="numeric" autocomplete="off" pattern="\d{5}-?\d{3}" required>
+                            </div>
+                            <div class="campo">
+                                <label for="cnpjUpdate">CNPJ</label>
+                                <input type="text" name="cnpj" id="cnpjUpdate" inputmode="numeric" autocomplete="off" required>
+                            </div>
+                            <div class="campo">
+                                <label for="telefoneUpdate">Telefone</label>
+                                <input type="tel" name="telefone" id="telefoneUpdate" autocomplete="off" required>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="campoLado">
                                 <div class="campo">
                                     <label for="porteUpdate">Porte</label>
                                     <select type="text" name="porte" id="porteUpdate" required>
@@ -163,61 +174,72 @@
                                     </select>
                                 </div>
                                 <div class="campo">
-                                    <label for="horaAberturaUpdate">Horário de abertura</label>
-                                    <input type="time" name="horaAbertura" id="horaAberturaUpdate" required>
-                                </div>
-                                <div class="campo">
-                                    <label for="horaFechamentoUpdate">Horário de fechamento</label>
-                                    <input type="time" name="horaFechamento" id="horaFechamentoUpdate" required>
-                                </div>
-                                <div class="campo">
-                                    <label for="regrasNegociosUpdate">Regras de Negócios</label>
-                                    <textarea type="text" name="regrasNegocios" id="regrasNegociosUpdate" required></textarea>
+                                    <label for="planoUpdate">Plano</label>
+                                    <select type="text" name="plano" id="planoUpdate" required>
+                                        <option value="" selected disabled>Selecionar</option>
+                                        <option value="1">Enterprise</option>
+                                        <option value="2">Pro</option>
+                                        <option value="3">Light</option>
+                                    </select>
                                 </div>
                             </div>
-                        </div>
-                        <menu>
-                            <button type="button" class="cancelar acaoModal" data-acao="fechar" data-modal="update">Cancelar</button>
-                            <button type="submit" class="confirmar">Confirmar alterações</button>
-                        </menu>
-                    </form>
-                </dialog>
-            </section>
-            
-            <!-- DELETE -->
-            
-            <section class="delete">
-                <dialog id="delete">
-                    <h2>Excluir empresa</h2>
-                    <form action="${pageContext.request.contextPath}/empresas-delete" method="post">
-                        <div class="idAtual">
-                            <label for="idDelete">ID:</label>
-                            <input type="number" name="id" id="idDelete" readonly>
-                        </div>
-                        <div class="campos">
-                            <div>
-                                <div class="campo">
-                                    <label for="nomeDelete">Nome</label>
-                                    <input type="text" name="nome" id="nomeDelete" autocomplete="off" disabled>
-                                </div>
-                                <div class="campo">
-                                    <label for="emailDelete">E-mail</label>
-                                    <input type="email" name="email" id="emailDelete" autocomplete="off" disabled>
-                                </div>
-                                <div class="campo">
-                                    <label for="cepDelete">CEP</label>
-                                    <input type="text" name="cep" id="cepDelete" inputmode="numeric" autocomplete="off" pattern="\d{5}-?\d{3}" disabled>
-                                </div>
-                                <div class="campo">
-                                    <label for="cnpjDelete">CNPJ</label>
-                                    <input type="text" name="cnpj" id="cnpjDelete" inputmode="numeric" autocomplete="off" disabled>
-                                </div>
-                                <div class="campo">
-                                    <label for="telefoneDelete">Telefone</label>
-                                    <input type="tel" name="telefone" id="telefoneDelete" autocomplete="off" disabled>
-                                </div>
+                            <div class="campo">
+                                <label for="horaAberturaUpdate">Horário de abertura</label>
+                                <input type="time" name="horaAbertura" id="horaAberturaUpdate" required>
                             </div>
-                            <div>
+                            <div class="campo">
+                                <label for="horaFechamentoUpdate">Horário de fechamento</label>
+                                <input type="time" name="horaFechamento" id="horaFechamentoUpdate" required>
+                            </div>
+                            <div class="campo">
+                                <label for="regrasNegociosUpdate">Regras de Negócios</label>
+                                <textarea type="text" name="regrasNegocios" id="regrasNegociosUpdate" required></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <menu>
+                        <button type="button" class="cancelar acaoModal" data-acao="fechar" data-modal="update">Cancelar</button>
+                        <button type="submit" class="confirmar">Confirmar alterações</button>
+                    </menu>
+                </form>
+            </dialog>
+        </section>
+
+        <!-- DELETE -->
+
+        <section class="delete">
+            <dialog id="delete">
+                <h2>Excluir empresa</h2>
+                <form action="${pageContext.request.contextPath}/empresas-delete" method="post">
+                    <div class="idAtual">
+                        <label for="idDelete">ID:</label>
+                        <input type="number" name="id" id="idDelete" readonly>
+                    </div>
+                    <div class="campos">
+                        <div>
+                            <div class="campo">
+                                <label for="nomeDelete">Nome</label>
+                                <input type="text" name="nome" id="nomeDelete" autocomplete="off" disabled>
+                            </div>
+                            <div class="campo">
+                                <label for="emailDelete">E-mail</label>
+                                <input type="email" name="email" id="emailDelete" autocomplete="off" disabled>
+                            </div>
+                            <div class="campo">
+                                <label for="cepDelete">CEP</label>
+                                <input type="text" name="cep" id="cepDelete" inputmode="numeric" autocomplete="off" pattern="\d{5}-?\d{3}" disabled>
+                            </div>
+                            <div class="campo">
+                                <label for="cnpjDelete">CNPJ</label>
+                                <input type="text" name="cnpj" id="cnpjDelete" inputmode="numeric" autocomplete="off" disabled>
+                            </div>
+                            <div class="campo">
+                                <label for="telefoneDelete">Telefone</label>
+                                <input type="tel" name="telefone" id="telefoneDelete" autocomplete="off" disabled>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="campoLado">
                                 <div class="campo">
                                     <label for="porteDelete">Porte</label>
                                     <select type="text" name="porte" id="porteDelete" disabled>
@@ -228,83 +250,107 @@
                                     </select>
                                 </div>
                                 <div class="campo">
-                                    <label for="horaAberturaDelete">Horário de abertura</label>
-                                    <input type="time" name="horaAbertura" id="horaAberturaDelete" disabled>
-                                </div>
-                                <div class="campo">
-                                    <label for="horaFechamentoDelete">Horário de fechamento</label>
-                                    <input type="time" name="horaFechamento" id="horaFechamentoDelete" disabled>
-                                </div>
-                                <div class="campo">
-                                    <label for="regrasNegociosDelete">Regras de Negócios</label>
-                                    <textarea type="text" name="regrasNegocios" id="regrasNegociosDelete" disabled></textarea>
+                                    <label for="planoDelete">Plano</label>
+                                    <select type="text" name="plano" id="planoDelete" disabled>
+                                        <option value="" selected disabled>Selecionar</option>
+                                        <option value="1">Enterprise</option>
+                                        <option value="2">Pro</option>
+                                        <option value="3">Light</option>
+                                    </select>
                                 </div>
                             </div>
+                            <div class="campo">
+                                <label for="horaAberturaDelete">Horário de abertura</label>
+                                <input type="time" name="horaAbertura" id="horaAberturaDelete" disabled>
+                            </div>
+                            <div class="campo">
+                                <label for="horaFechamentoDelete">Horário de fechamento</label>
+                                <input type="time" name="horaFechamento" id="horaFechamentoDelete" disabled>
+                            </div>
+                            <div class="campo">
+                                <label for="regrasNegociosDelete">Regras de Negócios</label>
+                                <textarea type="text" name="regrasNegocios" id="regrasNegociosDelete" disabled></textarea>
+                            </div>
                         </div>
-                        <menu>
-                            <button type="button" class="cancelar acaoModal" data-acao="fechar" data-modal="delete">Cancelar</button>
-                            <button type="submit" class="confirmar">Confirmar exclusão</button>
-                        </menu>
-                    </form>
-                </dialog>
-            </section>
-        </div>
-
-        <!-- READ -->
-
-        <div class="tabelaScroll">
-            <table class="tabelaEmpresas">
-                <thead>
-                    <tr>
-                        <th>Ver</th>
-                        <th>Excluir</th>
-                        <th>ID</th>
-                        <th>Nome</th>
-                        <th>Porte</th>
-                        <th>E-mail</th>
-                        <th>CEP</th>
-                        <th>CNPJ</th>
-                        <th>Telefone</th>
-                        <th>Abertura</th>
-                        <th>Fechamento</th>
-                        <th>Regras</th>
-                    </tr>
-                </thead>
-                <tbody>
-                <%
-                    List<Empresa> listaEmpresas = (List<Empresa>) request.getAttribute("listaEmpresas");
-                    if (listaEmpresas != null && !listaEmpresas.isEmpty()) {
-                        for (Empresa empresa : listaEmpresas) {
-                %>
-                    <tr>
-                        <td>
-                            <button type="button" class="detalhes acaoModal" data-acao="abrir" data-modal="update" data-pk="<%= empresa.getId() %>" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"empresas-crud"}'><img src="${pageContext.request.contextPath}/assets/crud/img/mais-detalhes.png" alt=""></button>
-                        </td>
-                        <td>
-                            <button type="button" class="detalhes acaoModal" data-acao="abrir" data-modal="delete" data-pk="<%= empresa.getId() %>" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"empresas-crud"}'><img src="${pageContext.request.contextPath}/assets/crud/img/deletar-kronos.png" alt=""></button>
-                        </td>
-                        <td><%= empresa.getId() %></td>
-                        <td><%= empresa.getNome() %></td>
-                        <td><%= empresa.getPorte() %></td>
-                        <td><%= empresa.getEmail() %></td>
-                        <td><%= empresa.getCep() %></td>
-                        <td><%= empresa.getCnpj() %></td>
-                        <td><%= empresa.getTelefone() %></td>
-                        <td><%= empresa.getHorarioAbertura() %></td>
-                        <td><%= empresa.getHorarioFechamento() %></td>
-                        <td>...</td>
-                    </tr>
-                <%
-                    }
-                } else {
-                %>
-                    <tr>
-                        <td colspan="12">Nenhuma empresa encontrada.</td>
-                    </tr>
-                <% } %>
-                </tbody>
-            </table>
-        </div>
+                    </div>
+                    <menu>
+                        <button type="button" class="cancelar acaoModal" data-acao="fechar" data-modal="delete">Cancelar</button>
+                        <button type="submit" class="confirmar">Confirmar exclusão</button>
+                    </menu>
+                </form>
+            </dialog>
+        </section>
     </div>
+
+    <!-- READ -->
+
+
+    <div class="tabelaScroll">
+        <table class="tabelaEmpresas">
+            <thead>
+            <tr>
+                <th>Ver</th>
+                <th>Excluir</th>
+                <th>ID</th>
+                <th>E-mail</th>
+                <th>Nome</th>
+                <th>Porte</th>
+                <th>Plano</th>
+                <th>CEP</th>
+                <th>CNPJ</th>
+                <th>Telefone</th>
+                <th>Abertura</th>
+                <th>Fechamento</th>
+                <th>Regras</th>
+            </tr>
+            </thead>
+            <tbody>
+            <%
+                List<Empresa> listaEmpresas = (List<Empresa>) request.getAttribute("listaEmpresas");
+                if (listaEmpresas != null && !listaEmpresas.isEmpty()) {
+                    for (Empresa empresa : listaEmpresas) {
+
+                        int idPlano = empresa.getIdPlano();
+                        String nomePlano = "";
+                        // verifica se o plano está entre 1 e 3 e define o nome
+                        if (idPlano >= 1 && idPlano <= 3) {
+                            switch (idPlano) {
+                                case 1: nomePlano = "Enterprise"; break;
+                                case 2: nomePlano = "Pro"; break;
+                                case 3: nomePlano = "Light"; break;
+                            }
+            %>
+            <tr>
+                <td>
+                    <button type="button" class="detalhes acaoModal" data-acao="abrir" data-modal="update" data-pk="<%= empresa.getId() %>" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"empresas-crud"}'><img src="${pageContext.request.contextPath}/assets/crud/img/mais-detalhes.png" alt=""></button>
+                </td>
+                <td>
+                    <button type="button" class="detalhes acaoModal" data-acao="abrir" data-modal="delete" data-pk="<%= empresa.getId() %>" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"empresas-crud"}'><img src="${pageContext.request.contextPath}/assets/crud/img/deletar-kronos.png" alt=""></button>
+                </td>
+                <td><%= empresa.getId() %></td>
+                <td><%= empresa.getNome() %></td>
+                <td><%= empresa.getEmail() %></td>
+                <td><%= empresa.getPorte() %></td>
+                <td><%= nomePlano %></td>
+                <td><%= empresa.getCep() %></td>
+                <td><%= empresa.getCnpj() %></td>
+                <td><%= empresa.getTelefone() %></td>
+                <td><%= empresa.getHorarioAbertura() %></td>
+                <td><%= empresa.getHorarioFechamento() %></td>
+                <td><%= empresa.getRegraDeNegocios() %></td>
+            </tr>
+            <%
+                    }
+                }
+            } else {
+            %>
+            <tr>
+                <td colspan="12">Nenhuma empresa encontrada.</td>
+            </tr>
+            <% } %>
+            </tbody>
+        </table>
+    </div>
+</div>
 </body>
 </html>
