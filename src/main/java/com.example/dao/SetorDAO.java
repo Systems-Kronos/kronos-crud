@@ -1,8 +1,6 @@
 package com.example.dao;
 
 import com.example.Controller.Conexao;
-import com.example.Model.Empresa;
-import com.example.Model.Plano;
 import com.example.Model.Setor;
 
 import java.sql.*;
@@ -25,7 +23,7 @@ public class SetorDAO {
             pstmt.setString(2, setor.getDescricao());
             pstmt.setString(3, setor.getTurnos());
             pstmt.setInt(4, setor.getQntFuncionarios());
-            pstmt.setInt(5, setor.getEmpresa().getId());
+            pstmt.setInt(5, setor.getIdEmpresa());
 
             return pstmt.executeUpdate() > 0;
 
@@ -33,12 +31,8 @@ public class SetorDAO {
             System.err.println("Erro ao inserir setor: " + e.getMessage());
             return false;
         } finally {
-            try {
-                if (pstmt != null) pstmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                System.err.println("Erro ao fechar conexão: " + e.getMessage());
-            }
+            try { if (pstmt != null) pstmt.close(); if (conn != null) conn.close(); }
+            catch (SQLException e) { System.err.println("Erro ao fechar conexão: " + e.getMessage()); }
         }
     }
 
@@ -50,13 +44,7 @@ public class SetorDAO {
         ResultSet rset = null;
         List<Setor> setores = new LinkedList<>();
 
-        String read = """
-            SELECT s.id, s.nome, s.descricao, s.turnos, s.qnt_funcionarios,
-                   e.id AS empresa_id, e.nome AS empresa_nome
-            FROM setor s
-            LEFT JOIN empresa e ON s.fk_empresa_id = e.id
-            ORDER BY s.id;
-        """;
+        String read = "SELECT id, nome, descricao, turnos, qnt_funcionarios, fk_empresa_id FROM setor ORDER BY id";
 
         try {
             conn = conexao.conectar();
@@ -64,44 +52,28 @@ public class SetorDAO {
             rset = pstmt.executeQuery();
 
             while (rset.next()) {
-                Empresa empresa = null;
-                int empresaId = rset.getInt("empresa_id");
-                if (empresaId > 0) {
-                    empresa = new Empresa(
-                            empresaId,
-                            rset.getString("empresa_nome"),
-                            null, null, null, null, null, null, null, null, null
-                    );
-                }
-
                 Setor setor = new Setor(
                         rset.getInt("id"),
                         rset.getString("nome"),
                         rset.getString("descricao"),
                         rset.getString("turnos"),
                         rset.getInt("qnt_funcionarios"),
-                        empresa
+                        rset.getInt("fk_empresa_id")
                 );
-
                 setores.add(setor);
             }
 
         } catch (SQLException e) {
             System.err.println("Erro ao buscar setores: " + e.getMessage());
         } finally {
-            try {
-                if (rset != null) rset.close();
-                if (pstmt != null) pstmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                System.err.println("Erro ao fechar conexão: " + e.getMessage());
-            }
+            try { if (rset != null) rset.close(); if (pstmt != null) pstmt.close(); if (conn != null) conn.close(); }
+            catch (SQLException e) { System.err.println("Erro ao fechar conexão: " + e.getMessage()); }
         }
 
         return setores;
     }
 
-    // READ com filtro (nome)
+    // READ com filtro (nome) e ordenação
     public List<Setor> read(String nome, String orderBy, String direction) {
         Conexao conexao = new Conexao();
         Connection conn = null;
@@ -109,27 +81,16 @@ public class SetorDAO {
         ResultSet rset = null;
         List<Setor> setores = new LinkedList<>();
 
-        StringBuilder sql = new StringBuilder("""
-        SELECT 
-            s.id, s.nome, s.descricao, s.turnos, s.qnt_funcionarios,
-            e.id AS empresa_id, e.nome AS empresa_nome, e.cep, e.cnpj, e.email,
-            e.telefone, e.porte, e.horario_abertura, e.horario_encerramento, e.regradenegocio,
-            p.id AS plano_id, p.nomeplano, p.descricao AS plano_descricao,
-            p.qnt_max_funcionario, p.custo
-        FROM setor s
-        LEFT JOIN empresa e ON s.fk_empresa_id = e.id
-        LEFT JOIN planos p ON e.fk_plano_id = p.id
-        WHERE 1=1
-    """);
+        StringBuilder sql = new StringBuilder("SELECT id, nome, descricao, turnos, qnt_funcionarios, fk_empresa_id FROM setor WHERE 1=1");
 
         if (nome != null && !nome.isEmpty()) {
-            sql.append(" AND s.nome ILIKE '%").append(nome).append("%'");
+            sql.append(" AND nome ILIKE ?");
         }
 
-        String colunaOrdenacao = "s.id";
+        String colunaOrdenacao = "id";
         if (orderBy != null) {
-            if (orderBy.equalsIgnoreCase("nome")) colunaOrdenacao = "s.nome";
-            else if (orderBy.equalsIgnoreCase("qnt_funcionarios")) colunaOrdenacao = "s.qnt_funcionarios";
+            if (orderBy.equalsIgnoreCase("nome")) colunaOrdenacao = "nome";
+            else if (orderBy.equalsIgnoreCase("qnt_funcionarios")) colunaOrdenacao = "qnt_funcionarios";
         }
 
         String dir = (direction != null && direction.equalsIgnoreCase("DESC")) ? "DESC" : "ASC";
@@ -138,66 +99,32 @@ public class SetorDAO {
         try {
             conn = conexao.conectar();
             pstmt = conn.prepareStatement(sql.toString());
+            if (nome != null && !nome.isEmpty()) {
+                pstmt.setString(1, "%" + nome + "%");
+            }
+
             rset = pstmt.executeQuery();
-
             while (rset.next()) {
-                Plano plano = null;
-                int planoId = rset.getInt("plano_id");
-                if (planoId > 0) {
-                    plano = new Plano(
-                            planoId,
-                            rset.getString("nomeplano"),
-                            rset.getFloat("custo"),
-                            rset.getString("plano_descricao"),
-                            rset.getInt("qnt_max_funcionario")
-                    );
-                }
-
-                Empresa empresa = null;
-                int empresaId = rset.getInt("empresa_id");
-                if (empresaId > 0) {
-                    empresa = new Empresa(
-                            empresaId,
-                            rset.getString("empresa_nome"),
-                            rset.getString("cep"),
-                            rset.getString("cnpj"),
-                            rset.getString("email"),
-                            rset.getString("telefone"),
-                            rset.getString("porte"),
-                            rset.getTime("horario_abertura") != null ? rset.getTime("horario_abertura").toLocalTime() : null,
-                            rset.getTime("horario_encerramento") != null ? rset.getTime("horario_encerramento").toLocalTime() : null,
-                            rset.getString("regradenegocio"),
-                            plano
-                    );
-                }
-
                 Setor setor = new Setor(
                         rset.getInt("id"),
                         rset.getString("nome"),
                         rset.getString("descricao"),
                         rset.getString("turnos"),
                         rset.getInt("qnt_funcionarios"),
-                        empresa
+                        rset.getInt("fk_empresa_id")
                 );
-
                 setores.add(setor);
             }
 
         } catch (SQLException e) {
-            System.err.println("Erro ao buscar setores: " + e.getMessage());
+            System.err.println("Erro ao buscar setores com filtro: " + e.getMessage());
         } finally {
-            try {
-                if (rset != null) rset.close();
-                if (pstmt != null) pstmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                System.err.println("Erro ao fechar conexão: " + e.getMessage());
-            }
+            try { if (rset != null) rset.close(); if (pstmt != null) pstmt.close(); if (conn != null) conn.close(); }
+            catch (SQLException e) { System.err.println("Erro ao fechar conexão: " + e.getMessage()); }
         }
 
         return setores;
     }
-
 
     // READ by ID
     public Setor read(int id) {
@@ -207,13 +134,7 @@ public class SetorDAO {
         ResultSet rset = null;
         Setor setor = null;
 
-        String read = """
-            SELECT s.id, s.nome, s.descricao, s.turnos, s.qnt_funcionarios,
-                   e.id AS empresa_id, e.nome AS empresa_nome
-            FROM setor s
-            LEFT JOIN empresa e ON s.fk_empresa_id = e.id
-            WHERE s.id = ?
-        """;
+        String read = "SELECT id, nome, descricao, turnos, qnt_funcionarios, fk_empresa_id FROM setor WHERE id = ?";
 
         try {
             conn = conexao.conectar();
@@ -222,36 +143,21 @@ public class SetorDAO {
             rset = pstmt.executeQuery();
 
             if (rset.next()) {
-                Empresa empresa = null;
-                int empresaId = rset.getInt("empresa_id");
-                if (empresaId > 0) {
-                    empresa = new Empresa(
-                            empresaId,
-                            rset.getString("empresa_nome"),
-                            null, null, null, null, null, null, null, null, null
-                    );
-                }
-
                 setor = new Setor(
                         rset.getInt("id"),
                         rset.getString("nome"),
                         rset.getString("descricao"),
                         rset.getString("turnos"),
                         rset.getInt("qnt_funcionarios"),
-                        empresa
+                        rset.getInt("fk_empresa_id")
                 );
             }
 
         } catch (SQLException e) {
             System.err.println("Erro ao buscar setor por ID: " + e.getMessage());
         } finally {
-            try {
-                if (rset != null) rset.close();
-                if (pstmt != null) pstmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                System.err.println("Erro ao fechar conexão: " + e.getMessage());
-            }
+            try { if (rset != null) rset.close(); if (pstmt != null) pstmt.close(); if (conn != null) conn.close(); }
+            catch (SQLException e) { System.err.println("Erro ao fechar conexão: " + e.getMessage()); }
         }
 
         return setor;
@@ -262,11 +168,7 @@ public class SetorDAO {
         Conexao conexao = new Conexao();
         Connection conn = null;
         PreparedStatement pstmt = null;
-        String update = """
-            UPDATE setor
-            SET nome = ?, descricao = ?, turnos = ?, qnt_funcionarios = ?, fk_empresa_id = ?
-            WHERE id = ?
-        """;
+        String update = "UPDATE setor SET nome = ?, descricao = ?, turnos = ?, qnt_funcionarios = ?, fk_empresa_id = ? WHERE id = ?";
 
         try {
             conn = conexao.conectar();
@@ -275,37 +177,26 @@ public class SetorDAO {
             pstmt.setString(2, setor.getDescricao());
             pstmt.setString(3, setor.getTurnos());
             pstmt.setInt(4, setor.getQntFuncionarios());
-            pstmt.setInt(5, setor.getEmpresa().getId());
+            pstmt.setInt(5, setor.getIdEmpresa());
             pstmt.setInt(6, setor.getId());
 
-            if (pstmt.executeUpdate() > 0){
-                return 1;
-            }
-            return 0;
+            return pstmt.executeUpdate() > 0 ? 1 : 0;
 
         } catch (SQLException e) {
             System.err.println("Erro ao atualizar setor: " + e.getMessage());
             return -1;
         } finally {
-            try {
-                if (pstmt != null) pstmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                System.err.println("Erro ao fechar conexão: " + e.getMessage());
-            }
+            try { if (pstmt != null) pstmt.close(); if (conn != null) conn.close(); }
+            catch (SQLException e) { System.err.println("Erro ao fechar conexão: " + e.getMessage()); }
         }
     }
 
     // UPDATE por parâmetros
-    public int update(int id, String nome, String descricao, String turnos, int qntFunc, Empresa empresa) {
+    public int update(int id, String nome, String descricao, String turnos, int qntFunc, int idEmpresa) {
         Conexao conexao = new Conexao();
         Connection conn = null;
         PreparedStatement pstmt = null;
-        String update = """
-            UPDATE setor
-            SET nome = ?, descricao = ?, turnos = ?, qnt_funcionarios = ?, fk_empresa_id = ?
-            WHERE id = ?
-        """;
+        String update = "UPDATE setor SET nome = ?, descricao = ?, turnos = ?, qnt_funcionarios = ?, fk_empresa_id = ? WHERE id = ?";
 
         try {
             conn = conexao.conectar();
@@ -314,24 +205,17 @@ public class SetorDAO {
             pstmt.setString(2, descricao);
             pstmt.setString(3, turnos);
             pstmt.setInt(4, qntFunc);
-            pstmt.setInt(5, empresa != null ? empresa.getId() : Types.INTEGER);
+            pstmt.setInt(5, idEmpresa);
             pstmt.setInt(6, id);
 
-            if (pstmt.executeUpdate() > 0){
-                return 1;
-            }
-            return 0;
+            return pstmt.executeUpdate() > 0 ? 1 : 0;
 
         } catch (SQLException e) {
             System.err.println("Erro ao atualizar setor por parâmetros: " + e.getMessage());
             return -1;
         } finally {
-            try {
-                if (pstmt != null) pstmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                System.err.println("Erro ao fechar conexão: " + e.getMessage());
-            }
+            try { if (pstmt != null) pstmt.close(); if (conn != null) conn.close(); }
+            catch (SQLException e) { System.err.println("Erro ao fechar conexão: " + e.getMessage()); }
         }
     }
 
@@ -346,22 +230,14 @@ public class SetorDAO {
             conn = conexao.conectar();
             pstmt = conn.prepareStatement(delete);
             pstmt.setInt(1, id);
-
-            if (pstmt.executeUpdate() > 0){
-                return 1;
-            }
-            return 0;
+            return pstmt.executeUpdate() > 0 ? 1 : 0;
 
         } catch (SQLException e) {
             System.err.println("Erro ao deletar setor: " + e.getMessage());
             return -1;
         } finally {
-            try {
-                if (pstmt != null) pstmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                System.err.println("Erro ao fechar conexão: " + e.getMessage());
-            }
+            try { if (pstmt != null) pstmt.close(); if (conn != null) conn.close(); }
+            catch (SQLException e) { System.err.println("Erro ao fechar conexão: " + e.getMessage()); }
         }
     }
 
@@ -376,22 +252,14 @@ public class SetorDAO {
             conn = conexao.conectar();
             pstmt = conn.prepareStatement(delete);
             pstmt.setString(1, nome);
-
-            if (pstmt.executeUpdate() > 0){
-                return 1;
-            }
-            return 0;
+            return pstmt.executeUpdate() > 0 ? 1 : 0;
 
         } catch (SQLException e) {
             System.err.println("Erro ao deletar setor por nome: " + e.getMessage());
             return -1;
         } finally {
-            try {
-                if (pstmt != null) pstmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                System.err.println("Erro ao fechar conexão: " + e.getMessage());
-            }
+            try { if (pstmt != null) pstmt.close(); if (conn != null) conn.close(); }
+            catch (SQLException e) { System.err.println("Erro ao fechar conexão: " + e.getMessage()); }
         }
     }
 
@@ -407,44 +275,13 @@ public class SetorDAO {
             pstmt = conn.prepareStatement(addEmpresa);
             pstmt.setInt(1, idEmpresa);
             pstmt.setInt(2, idSetor);
-
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
             System.err.println("Erro ao adicionar empresa ao setor: " + e.getMessage());
             return false;
         } finally {
-            try {
-                if (pstmt != null) pstmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                System.err.println("Erro ao fechar conexão: " + e.getMessage());
-            }
-        }
-    }
-
-    // REMOVER EMPRESA DO SETOR
-    public boolean removeEmpresaFromSetor(int idSetor) {
-        Conexao conexao = new Conexao();
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        String removeEmpresa = "UPDATE setor SET fk_empresa_id = NULL WHERE id = ?";
-
-        try {
-            conn = conexao.conectar();
-            pstmt = conn.prepareStatement(removeEmpresa);
-            pstmt.setInt(1, idSetor);
-
-            return pstmt.executeUpdate() > 0;
-        } catch (SQLException e) {
-            System.err.println("Erro ao remover empresa do setor: " + e.getMessage());
-            return false;
-        } finally {
-            try {
-                if (pstmt != null) pstmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                System.err.println("Erro ao fechar conexão: " + e.getMessage());
-            }
+            try { if (pstmt != null) pstmt.close(); if (conn != null) conn.close(); }
+            catch (SQLException e) { System.err.println("Erro ao fechar conexão: " + e.getMessage()); }
         }
     }
 }
