@@ -5,6 +5,8 @@ package com.example.Model;
  * A classe garante a integridade dos dados relacionados ao setor e sua associação
  * com a empresa e seus funcionários.
  */
+import com.example.Model.Empresa;
+
 public class Setor {
     // Atributos
     private int id;
