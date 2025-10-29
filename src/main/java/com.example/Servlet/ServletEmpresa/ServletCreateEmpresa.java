@@ -36,12 +36,6 @@ public class ServletCreateEmpresa extends HttpServlet {
         String regrasNegocios = request.getParameter("regrasNegocios");
         int idPlano = Integer.parseInt(request.getParameter("idPlano"));
 
-        PlanoDAO planoDAO = new PlanoDAO();
-        Plano plano = planoDAO.read(idPlano);
-
-
-
-
         EmpresaDAO dao = new EmpresaDAO();
         boolean success = false;
 
@@ -54,7 +48,7 @@ public class ServletCreateEmpresa extends HttpServlet {
             // Construtor/Setters podem lançar IllegalArgumentException, NullPointerException, IllegalStateException
             Empresa novaEmpresa = new Empresa(
                     nome, cep, cnpj, email, telefone, porte,
-                    horaEntrada, horaFechamento, regrasNegocios, plano
+                    horaEntrada, horaFechamento, regrasNegocios, idPlano
             );
 
             success = dao.create(novaEmpresa);

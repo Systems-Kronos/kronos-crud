@@ -376,4 +376,34 @@ public class EmpresaDAO {
             }
         }
     }
+
+    public String joinPlanoEmpresa(int idEmpresa) throws SQLException {
+
+        String nomePlano = null;
+        String sql = """
+                SELECT p.nomeplano
+                FROM planos p
+                LEFT JOIN empresa e ON e.fk_plano_id = p.id
+                WHERE e.id = ?
+            """;
+
+        Conexao conexao = new Conexao();
+
+        try (Connection conn = conexao.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, idEmpresa);
+
+            try (ResultSet rset = pstmt.executeQuery()) {
+                if (rset.next()) {
+                    nomePlano = rset.getString("nomeplano");
+                }
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Erro ao buscar plano da empresa: " + e.getMessage());
+            throw new SQLException("Erro ao consultar o plano da empresa.", e);
+        }
+        return nomePlano;
+    }
 }

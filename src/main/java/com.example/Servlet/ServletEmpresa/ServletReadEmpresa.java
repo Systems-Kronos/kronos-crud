@@ -1,11 +1,14 @@
 package com.example.Servlet.ServletEmpresa;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List; // Para lista vazia
 
 import com.example.Model.Empresa;
+import com.example.Model.Plano;
 import com.example.dao.EmpresaDAO;
+import com.example.dao.PlanoDAO;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -14,13 +17,15 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 /**
- * Servlet focado SOMENTE em LER (Read) a lista de Empresas.
- */
+ Servlet focado SOMENTE em LER (Read) a lista de Empresas.
+**/
+
 @WebServlet("/empresas-crud") // URL principal
 public class ServletReadEmpresa extends HttpServlet {
 
-    // Instanciando DAO
+    // Instanciando DAOS
     private EmpresaDAO dao = new EmpresaDAO();
+    private  PlanoDAO planoDAO = new PlanoDAO();
 
 
     @Override
@@ -49,6 +54,7 @@ public class ServletReadEmpresa extends HttpServlet {
                             + "\"porte\":\"" + empresa.getPorte() + "\","
                             + "\"horaAbertura\":\"" + empresa.getHorarioAbertura() + "\","
                             + "\"horaFechamento\":\"" + empresa.getHorarioFechamento() + "\","
+                            + "\"plano\":\"" + empresa.getIdPlano() + "\","
                             + "\"regrasNegocios\":\"" + empresa.getRegraDeNegocios().trim() + "\""
                             + "}";
 
@@ -63,6 +69,7 @@ public class ServletReadEmpresa extends HttpServlet {
         } else {
 
             List<Empresa> listaEmpresas = null;
+            List<Plano> listaPlanos = null;
             String erro = null;
 
             // --- Handle Search/Filter/Sort ---
@@ -76,10 +83,14 @@ public class ServletReadEmpresa extends HttpServlet {
             try {
                 // Use the DAO method that accepts filters/sorting
                 listaEmpresas = dao.read(nomePesquisa, orderBy, direction);
+                listaPlanos = planoDAO.read(nomePesquisa, orderBy, direction);
 
                 if (listaEmpresas == null) {
                     erro = "Lista de administradores não carregada.";
                     listaEmpresas = new ArrayList<>();
+                } else if (listaPlanos == null) {
+                    erro = "Lista de planos não carregada.";
+                    listaPlanos = new ArrayList<>();
                 }
 
             } catch (Exception e) {
@@ -87,6 +98,17 @@ public class ServletReadEmpresa extends HttpServlet {
                 erro = "Erro ao buscar lista de administradores.";
                 listaEmpresas = new ArrayList<>();
             }
+
+            for (Empresa empresa : listaEmpresas) {
+                String nomePlano;
+                try {
+                    nomePlano = dao.joinPlanoEmpresa(empresa.getId());
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+                empresa.setPlanoNome(nomePlano);
+            }
+
 
             request.setAttribute("listaEmpresas", listaEmpresas);
 

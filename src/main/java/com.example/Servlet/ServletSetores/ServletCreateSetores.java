@@ -44,7 +44,7 @@ public class ServletCreateSetores extends HttpServlet {
                     descricao,
                     turnos,
                     qtdFuncionarios,
-                    empresa
+                    idEmpresa
             );
 
             success = dao.create(novoSetor);

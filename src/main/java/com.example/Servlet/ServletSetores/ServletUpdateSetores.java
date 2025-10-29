@@ -98,7 +98,7 @@ public class ServletUpdateSetores extends HttpServlet {
             setorParaAtualizar.setQntFuncionarios(qtnFuncionarios);
             setorParaAtualizar.setTurnos(turnos);
             setorParaAtualizar.setDescricao(descricao);
-            setorParaAtualizar.setEmpresa(empresa);
+            setorParaAtualizar.setIdEmpresa(idEmpresa);
 
             // Save
             int resultado = dao.update(setorParaAtualizar);

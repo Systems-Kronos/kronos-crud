@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Montserrat:wght@300;400;500;700;900&family=Crete+Round:wght@400;700&display=swap" rel="stylesheet">
-    
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="${pageContext.request.contextPath}/assets/crud/img/favikronos.ico" type="image/x-icon">
@@ -38,7 +38,7 @@
         <div class="procurarCadastrar">
             <form class="pesquisa" method="get" action="${pageContext.request.contextPath}/empresas-crud">
                 <input type="search" placeholder="Pesquisar" id="pesquisa" name="pesquisa" class="buscar" value="<%= request.getParameter("pesquisa") != null ? request.getParameter("pesquisa") : "" %>">
-    
+
                 <details class="filtros">
                     <summary>Filtros</summary>
                     <div class="conteudoFiltros">
@@ -86,14 +86,25 @@
                                 </div>
                             </div>
                             <div>
-                                <div class="campo">
-                                    <label for="porteCreate">Porte</label>
-                                    <select type="text" name="porte" id="porteCreate" required>
-                                        <option value="" selected disabled>Selecionar</option>
-                                        <option value="Pequeno">Pequeno</option>
-                                        <option value="Médio">Médio</option>
-                                        <option value="Grande">Grande</option>
-                                    </select>
+                                <div class="campoLado">
+                                    <div class="campo">
+                                        <label for="porteCreate">Porte</label>
+                                        <select type="text" name="porte" id="porteCreate" required>
+                                            <option value="" selected disabled>Selecionar</option>
+                                            <option value="Pequeno">Pequeno</option>
+                                            <option value="Médio">Médio</option>
+                                            <option value="Grande">Grande</option>
+                                        </select>
+                                    </div>
+                                    <div class="campo">
+                                        <label for="planoCreate">Plano</label>
+                                        <select type="text" name="plano" id="planoCreate" required>
+                                            <option value="" selected disabled>Selecionar</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                        </select>
+                                    </div>
                                 </div>
                                 <div class="campo">
                                     <label for="horaAberturaCreate">Horário de abertura</label>
@@ -115,10 +126,10 @@
                         </menu>
                     </form>
                 </dialog>
-                
+
                 <button type="button" class="cadastrar acaoModal" data-acao="abrir" data-modal="create">Cadastrar</button>
             </section>
-            
+
             <!-- UPDATE -->
 
             <section class="update">
@@ -153,14 +164,25 @@
                                 </div>
                             </div>
                             <div>
-                                <div class="campo">
-                                    <label for="porteUpdate">Porte</label>
-                                    <select type="text" name="porte" id="porteUpdate" required>
-                                        <option value="" selected disabled>Selecionar</option>
-                                        <option value="Pequeno">Pequeno</option>
-                                        <option value="Médio">Médio</option>
-                                        <option value="Grande">Grande</option>
-                                    </select>
+                                <div class="campoLado">
+                                    <div class="campo">
+                                        <label for="porteUpdate">Porte</label>
+                                        <select type="text" name="porte" id="porteUpdate" required>
+                                            <option value="" selected disabled>Selecionar</option>
+                                            <option value="Pequeno">Pequeno</option>
+                                            <option value="Médio">Médio</option>
+                                            <option value="Grande">Grande</option>
+                                        </select>
+                                    </div>
+                                    <div class="campo">
+                                        <label for="planoUpdate">Plano</label>
+                                        <select type="text" name="plano" id="planoUpdate" required>
+                                            <option value="" selected disabled>Selecionar</option>
+                                            <option value="1">Lite</option>
+                                            <option value="2">Pro</option>
+                                            <option value="3">Enterprise</option>
+                                        </select>
+                                    </div>
                                 </div>
                                 <div class="campo">
                                     <label for="horaAberturaUpdate">Horário de abertura</label>
@@ -183,9 +205,9 @@
                     </form>
                 </dialog>
             </section>
-            
+
             <!-- DELETE -->
-            
+
             <section class="delete">
                 <dialog id="delete">
                     <h2>Excluir empresa</h2>
@@ -218,14 +240,25 @@
                                 </div>
                             </div>
                             <div>
-                                <div class="campo">
-                                    <label for="porteDelete">Porte</label>
-                                    <select type="text" name="porte" id="porteDelete" disabled>
-                                        <option value="" selected disabled>Selecionar</option>
-                                        <option value="Pequeno">Pequeno</option>
-                                        <option value="Médio">Médio</option>
-                                        <option value="Grande">Grande</option>
-                                    </select>
+                                <div class="campoLado">
+                                    <div class="campo">
+                                        <label for="porteDelete">Porte</label>
+                                        <select type="text" name="porte" id="porteDelete" disabled>
+                                            <option value="" selected disabled>Selecionar</option>
+                                            <option value="Pequeno">Pequeno</option>
+                                            <option value="Médio">Médio</option>
+                                            <option value="Grande">Grande</option>
+                                        </select>
+                                    </div>
+                                    <div class="campo">
+                                        <label for="planoDelete">Plano</label>
+                                        <select type="text" name="plano" id="planoDelete" disabled>
+                                            <option value="" selected disabled>Selecionar</option>
+                                            <option value="1">Lite</option>
+                                            <option value="2">Pro</option>
+                                            <option value="3">Enterprise</option
+                                        </select>
+                                    </div>
                                 </div>
                                 <div class="campo">
                                     <label for="horaAberturaDelete">Horário de abertura</label>
@@ -261,6 +294,8 @@
                         <th>ID</th>
                         <th>Nome</th>
                         <th>Porte</th>
+                        <th>ID Plano</th>
+                        <th>Plano</th>
                         <th>E-mail</th>
                         <th>CEP</th>
                         <th>CNPJ</th>
@@ -286,6 +321,7 @@
                         <td><%= empresa.getId() %></td>
                         <td><%= empresa.getNome() %></td>
                         <td><%= empresa.getPorte() %></td>
+                        <td><%= empresa.getPlanoNome() %></td>
                         <td><%= empresa.getEmail() %></td>
                         <td><%= empresa.getCep() %></td>
                         <td><%= empresa.getCnpj() %></td>
@@ -308,3 +344,4 @@
     </div>
 </body>
 </html>
+

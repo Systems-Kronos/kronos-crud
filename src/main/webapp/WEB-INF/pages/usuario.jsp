@@ -241,7 +241,7 @@
                             </div>
                             <div>
                                 <div class="campo">
-                                    <label for="cargoDelete"></label>
+                                    <label for="cargoDelete">Cargo</label>
                                     <input type="text" name="cargo" id="cargoDelete" disabled>
                                 </div>
                                 <div class="campo">

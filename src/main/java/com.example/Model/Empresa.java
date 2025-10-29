@@ -22,6 +22,7 @@ public class Empresa {
     private LocalTime horarioFechamento;
     private String regraDeNegocios;
     private int idPlano;
+    private String planoNome;
 
     // Métodos Construtores
 
@@ -205,6 +206,20 @@ public class Empresa {
             throw new IllegalArgumentException("O ID do plano não pode ser zero ou negativo.");
         }
         this.idPlano = idPlano;
+    }
+
+    // Para o nome do plano
+    public String getPlanoNome() {
+        return planoNome;
+    }
+    public void setPlanoNome(String planoNome) {
+        if (planoNome == null) {
+            throw new NullPointerException("O nome do plano não pode ser nulo.");
+        }
+        if (planoNome.trim().isEmpty()) {
+            throw new IllegalArgumentException("O nome do plano não pode estar em branco.");
+        }
+        this.planoNome = planoNome;
     }
 
     // Método toString
