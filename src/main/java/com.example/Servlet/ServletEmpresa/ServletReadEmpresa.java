@@ -49,7 +49,7 @@ public class ServletReadEmpresa extends HttpServlet {
                             + "\"porte\":\"" + empresa.getPorte() + "\","
                             + "\"horaAbertura\":\"" + empresa.getHorarioAbertura() + "\","
                             + "\"horaFechamento\":\"" + empresa.getHorarioFechamento() + "\","
-                            + "\"idPlano\":\"" + empresa.getIdPlano() + "\","
+                            + "\"plano\":\"" + empresa.getIdPlano() + "\","
                             + "\"regrasNegocios\":\"" + empresa.getRegraDeNegocios().trim() + "\""
                             + "}";
 

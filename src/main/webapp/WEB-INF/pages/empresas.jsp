@@ -99,9 +99,9 @@
                                     <label for="planoCreate">Plano</label>
                                     <select type="text" name="plano" id="planoCreate" required>
                                         <option value="" selected disabled>Selecionar</option>
-                                        <option value="1">Enterprise</option>
+                                        <option value="1">Lite</option>
                                         <option value="2">Pro</option>
-                                        <option value="3">Light</option>
+                                        <option value="3">Enterprise</option>
                                     </select>
                                 </div>
                             </div>
@@ -177,9 +177,9 @@
                                     <label for="planoUpdate">Plano</label>
                                     <select type="text" name="plano" id="planoUpdate" required>
                                         <option value="" selected disabled>Selecionar</option>
-                                        <option value="1">Enterprise</option>
+                                        <option value="1">Lite</option>
                                         <option value="2">Pro</option>
-                                        <option value="3">Light</option>
+                                        <option value="3">Enterprise</option>
                                     </select>
                                 </div>
                             </div>
@@ -253,9 +253,9 @@
                                     <label for="planoDelete">Plano</label>
                                     <select type="text" name="plano" id="planoDelete" disabled>
                                         <option value="" selected disabled>Selecionar</option>
-                                        <option value="1">Enterprise</option>
+                                        <option value="1">Lite</option>
                                         <option value="2">Pro</option>
-                                        <option value="3">Light</option>
+                                        <option value="3">Enterprise</option>
                                     </select>
                                 </div>
                             </div>
@@ -315,9 +315,9 @@
                         // verifica se o plano está entre 1 e 3 e define o nome
                         if (idPlano >= 1 && idPlano <= 3) {
                             switch (idPlano) {
-                                case 1: nomePlano = "Enterprise"; break;
+                                case 1: nomePlano = "Lite"; break;
                                 case 2: nomePlano = "Pro"; break;
-                                case 3: nomePlano = "Light"; break;
+                                case 3: nomePlano = "Enterprise"; break;
                             }
             %>
             <tr>

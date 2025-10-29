@@ -102,7 +102,7 @@ function preencherCamposModal(tipo, dados, tabela) {
 
     switch (tabela) {
         case 'admin-crud': campos = ['id', 'nome', 'email', 'senha']; break;
-        case 'empresas-crud': campos = ['id', 'nome', 'email', 'cep', 'cnpj', 'telefone', 'porte', 'horaAbertura', 'horaFechamento', 'regrasNegocios']; break;
+        case 'empresas-crud': campos = ['id', 'nome', 'email', 'cep', 'cnpj', 'telefone', 'porte', 'horaAbertura', 'horaFechamento', 'regrasNegocios', 'plano']; break;
         case 'planos-crud': campos = ['id', 'nome', 'custo', 'maxFuncionarios', 'descricao']; break;
         case 'habilidades-crud': campos = ['id', 'nome', 'tag', 'descricao']; break;
         case 'setores-crud': campos = ['id', 'nome', 'qtnFuncionarios', 'turnos', 'descricao', 'idEmpresa']; break;
