@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 
 /**
  * Representa uma empresa com informações detalhadas como
- * nome, localização, contatos, horário de funcionamento e plano assinado
+ * nome, localização, contatos, horário de funcionamento e plano assinado.
  * A classe garante a integridade dos dados da empresa através de validações rigorosas.
  */
 public class Empresa {
@@ -21,14 +21,14 @@ public class Empresa {
     private LocalTime horarioAbertura;
     private LocalTime horarioFechamento;
     private String regraDeNegocios;
-    private Plano plano;
+    private int idPlano;
 
     // Métodos Construtores
 
     // As validações de exceções são realizadas pelos métodos setters
     public Empresa(int id, String nome, String cep, String cnpj, String email, String telefone,
                    String porte, LocalTime horarioAbertura,
-                   LocalTime horarioFechamento, String regraDeNegocios, Plano plano) {
+                   LocalTime horarioFechamento, String regraDeNegocios, int idPlano) {
         this.setId(id);
         this.setNome(nome);
         this.setCep(cep);
@@ -39,12 +39,12 @@ public class Empresa {
         this.setHorarioAbertura(horarioAbertura);
         this.setHorarioFechamento(horarioFechamento);
         this.setRegraDeNegocios(regraDeNegocios);
-        this.setPlano(plano);
+        this.setIdPlano(idPlano);
     }
 
     public Empresa(String nome, String cep, String cnpj, String email, String telefone,
                    String porte, LocalTime horarioAbertura,
-                   LocalTime horarioFechamento, String regraDeNegocios, Plano plano) {
+                   LocalTime horarioFechamento, String regraDeNegocios, int idPlano) {
         this.setNome(nome);
         this.setCep(cep);
         this.setCnpj(cnpj);
@@ -54,7 +54,7 @@ public class Empresa {
         this.setHorarioAbertura(horarioAbertura);
         this.setHorarioFechamento(horarioFechamento);
         this.setRegraDeNegocios(regraDeNegocios);
-        this.setPlano(plano);
+        this.setIdPlano(idPlano);
     }
 
     // Métodos Getters e Setters
@@ -196,20 +196,20 @@ public class Empresa {
         this.regraDeNegocios = regraDeNegocios;
     }
 
-    // Para o plano
-    public Plano getPlano() {
-        return plano;
+    // Para o ID do plano
+    public int getIdPlano() {
+        return idPlano;
     }
-    public void setPlano(Plano plano) {
-        if (plano == null) {
-            throw new NullPointerException("O plano não pode ser nulo.");
+    public void setIdPlano(int idPlano) {
+        if (idPlano <= 0) {
+            throw new IllegalArgumentException("O ID do plano não pode ser zero ou negativo.");
         }
-        this.plano = plano;
+        this.idPlano = idPlano;
     }
 
     // Método toString
     public String toString() {
-        return String.format("Empresa | Id: %-3d | Nome: %-20s | CEP: %-9s | CNPJ: %-18s | Email: %-20s | Telefone: %-12s | Porte: %-7s | Horário Abertura: %-10s | Horário Fechamento: %-10s | Regras de Negócios: %-50s | Plano: %-15s",
+        return String.format("Empresa | Id: %-3d | Nome: %-20s | CEP: %-9s | CNPJ: %-18s | Email: %-20s | Telefone: %-12s | Porte: %-7s | Horário Abertura: %-10s | Horário Fechamento: %-10s | Regras de Negócios: %-50s | IdPlano: %-5d",
                 this.id,
                 this.nome,
                 this.cep,
@@ -220,7 +220,7 @@ public class Empresa {
                 this.horarioAbertura,
                 this.horarioFechamento,
                 this.regraDeNegocios,
-                this.plano != null ? this.plano.toString() : "Nenhum"
+                this.idPlano
         );
     }
 

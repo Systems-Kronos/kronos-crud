@@ -9,6 +9,7 @@ import java.time.LocalTime;
 import java.util.LinkedList;
 import java.util.List;
 
+
 public class EmpresaDAO {
 
     // CREATE
@@ -31,11 +32,7 @@ public class EmpresaDAO {
             pstmt.setTime(7, Time.valueOf(empresa.getHorarioAbertura()));
             pstmt.setTime(8, Time.valueOf(empresa.getHorarioFechamento()));
             pstmt.setString(9, empresa.getRegraDeNegocios());
-            if (empresa.getPlano() != null) {
-                pstmt.setInt(10, empresa.getPlano().getId());
-            } else {
-                pstmt.setNull(10, Types.INTEGER);
-            }
+            pstmt.setInt(10, empresa.getIdPlano());
 
             return pstmt.executeUpdate() > 0;
 
@@ -63,9 +60,8 @@ public class EmpresaDAO {
         String read = """
             SELECT e.id, e.nome, e.cep, e.cnpj, e.email, e.telefone, e.porte,
                    e.horario_abertura, e.horario_encerramento, e.regradenegocio,
-                   p.id AS plano_id, p.nomeplano, p.descricao, p.qnt_max_funcionario, p.custo
+                   e.fk_plano_id
             FROM empresa e
-            LEFT JOIN planos p ON e.fk_plano_id = p.id
             ORDER BY e.id;
         """;
 
@@ -75,18 +71,6 @@ public class EmpresaDAO {
             rset = pstmt.executeQuery();
 
             while (rset.next()) {
-                Plano plano = null;
-                int planoId = rset.getInt("plano_id");
-                if (planoId > 0) {
-                    plano = new Plano(
-                            planoId,
-                            rset.getString("nomeplano"),
-                            rset.getFloat("custo"),
-                            rset.getString("descricao"),
-                            rset.getInt("qnt_max_funcionario")
-                    );
-                }
-
                 Empresa empresa = new Empresa(
                         rset.getInt("id"),
                         rset.getString("nome"),
@@ -98,7 +82,7 @@ public class EmpresaDAO {
                         rset.getTime("horario_abertura").toLocalTime(),
                         rset.getTime("horario_encerramento").toLocalTime(),
                         rset.getString("regradenegocio"),
-                        plano
+                        rset.getInt("fk_plano_id")
                 );
 
                 empresas.add(empresa);
@@ -130,9 +114,8 @@ public class EmpresaDAO {
         StringBuilder sql = new StringBuilder("""
             SELECT e.id, e.nome, e.cep, e.cnpj, e.email, e.telefone, e.porte,
                    e.horario_abertura, e.horario_encerramento, e.regradenegocio,
-                   p.id AS plano_id, p.nomeplano, p.descricao, p.qnt_max_funcionario, p.custo
+                   e.fk_plano_id
             FROM empresa e
-            LEFT JOIN planos p ON e.fk_plano_id = p.id
             WHERE 1=1
             """);
 
@@ -140,7 +123,7 @@ public class EmpresaDAO {
             sql.append(" AND e.nome ILIKE '%").append(nome).append("%'");
         }
 
-        String colunaOrdenacao = "e.id"; // padrão
+        String colunaOrdenacao = "e.id";
         if (orderBy != null) {
             if (orderBy.equalsIgnoreCase("nome")) colunaOrdenacao = "e.nome";
             else if (orderBy.equalsIgnoreCase("cep")) colunaOrdenacao = "e.cep";
@@ -157,18 +140,6 @@ public class EmpresaDAO {
             rset = pstmt.executeQuery();
 
             while (rset.next()) {
-                Plano plano = null;
-                int planoId = rset.getInt("plano_id");
-                if (planoId > 0) {
-                    plano = new Plano(
-                            planoId,
-                            rset.getString("nomeplano"),
-                            rset.getFloat("custo"),
-                            rset.getString("descricao"),
-                            rset.getInt("qnt_max_funcionario")
-                    );
-                }
-
                 Empresa empresa = new Empresa(
                         rset.getInt("id"),
                         rset.getString("nome"),
@@ -180,7 +151,7 @@ public class EmpresaDAO {
                         rset.getTime("horario_abertura").toLocalTime(),
                         rset.getTime("horario_encerramento").toLocalTime(),
                         rset.getString("regradenegocio"),
-                        plano
+                        rset.getInt("fk_plano_id")
                 );
 
                 empresas.add(empresa);
@@ -212,9 +183,8 @@ public class EmpresaDAO {
         String read = """
             SELECT e.id, e.nome, e.cep, e.cnpj, e.email, e.telefone, e.porte,
                    e.horario_abertura, e.horario_encerramento, e.regradenegocio,
-                   p.id AS plano_id, p.nomeplano, p.descricao, p.qnt_max_funcionario, p.custo
+                   e.fk_plano_id
             FROM empresa e
-            LEFT JOIN planos p ON e.fk_plano_id = p.id
             WHERE e.id = ?
             """;
 
@@ -225,18 +195,6 @@ public class EmpresaDAO {
             rset = pstmt.executeQuery();
 
             if (rset.next()) {
-                Plano plano = null;
-                int planoId = rset.getInt("plano_id");
-                if (planoId > 0) {
-                    plano = new Plano(
-                            planoId,
-                            rset.getString("nomeplano"),
-                            rset.getFloat("custo"),
-                            rset.getString("descricao"),
-                            rset.getInt("qnt_max_funcionario")
-                    );
-                }
-
                 empresa = new Empresa(
                         rset.getInt("id"),
                         rset.getString("nome"),
@@ -248,7 +206,7 @@ public class EmpresaDAO {
                         rset.getTime("horario_abertura").toLocalTime(),
                         rset.getTime("horario_encerramento").toLocalTime(),
                         rset.getString("regradenegocio"),
-                        plano
+                        rset.getInt("fk_plano_id")
                 );
             }
 
@@ -292,14 +250,10 @@ public class EmpresaDAO {
             pstmt.setTime(7, Time.valueOf(empresa.getHorarioAbertura()));
             pstmt.setTime(8, Time.valueOf(empresa.getHorarioFechamento()));
             pstmt.setString(9, empresa.getRegraDeNegocios());
-            if (empresa.getPlano() != null) {
-                pstmt.setInt(10, empresa.getPlano().getId());
-            } else {
-                pstmt.setNull(10, Types.INTEGER);
-            }
+            pstmt.setInt(10, empresa.getIdPlano());
             pstmt.setInt(11, empresa.getId());
 
-            if (pstmt.executeUpdate() > 0){
+            if (pstmt.executeUpdate() > 0) {
                 return 1;
             }
             return 0;
@@ -318,7 +272,7 @@ public class EmpresaDAO {
     }
 
     // UPDATE por parâmetros (novo)
-    public int update(int id, String nome, String cep, String cnpj, String email, String telefone, String porte, LocalTime abertura, LocalTime fechamento, String regra, Plano plano) {
+    public int update(int id, String nome, String cep, String cnpj, String email, String telefone, String porte, LocalTime abertura, LocalTime fechamento, String regra, int idPlano) {
         Conexao conexao = new Conexao();
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -342,11 +296,10 @@ public class EmpresaDAO {
             pstmt.setTime(7, Time.valueOf(abertura));
             pstmt.setTime(8, Time.valueOf(fechamento));
             pstmt.setString(9, regra);
-            if (plano != null) pstmt.setInt(10, plano.getId());
-            else pstmt.setNull(10, Types.INTEGER);
+            pstmt.setInt(10, idPlano);
             pstmt.setInt(11, id);
 
-            if (pstmt.executeUpdate() > 0){
+            if (pstmt.executeUpdate() > 0) {
                 return 1;
             }
             return 0;
@@ -376,7 +329,7 @@ public class EmpresaDAO {
             pstmt = conn.prepareStatement(delete);
             pstmt.setInt(1, id);
 
-            if (pstmt.executeUpdate() > 0){
+            if (pstmt.executeUpdate() > 0) {
                 return 1;
             }
             return 0;
@@ -406,7 +359,7 @@ public class EmpresaDAO {
             pstmt = conn.prepareStatement(delete);
             pstmt.setString(1, nome);
 
-            if (pstmt.executeUpdate() > 0){
+            if (pstmt.executeUpdate() > 0) {
                 return 1;
             }
             return 0;
@@ -414,59 +367,6 @@ public class EmpresaDAO {
         } catch (SQLException e) {
             System.err.println("Erro ao deletar empresa por nome: " + e.getMessage());
             return -1;
-        } finally {
-            try {
-                if (pstmt != null) pstmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                System.err.println("Erro ao fechar conexão: " + e.getMessage());
-            }
-        }
-    }
-
-    // ADICIONAR PLANO
-    public boolean addPlanoToEmpresa(int idEmpresa, int idPlano) {
-        Conexao conexao = new Conexao();
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        String addPlano = "UPDATE empresa SET fk_plano_id = ? WHERE id = ?";
-
-        try {
-            conn = conexao.conectar();
-            pstmt = conn.prepareStatement(addPlano);
-            pstmt.setInt(1, idPlano);
-            pstmt.setInt(2, idEmpresa);
-
-            return pstmt.executeUpdate() > 0;
-        } catch (SQLException e) {
-            System.err.println("Erro ao adicionar plano à empresa: " + e.getMessage());
-            return false;
-        } finally {
-            try {
-                if (pstmt != null) pstmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                System.err.println("Erro ao fechar conexão: " + e.getMessage());
-            }
-        }
-    }
-
-    // REMOVER PLANO
-    public boolean removePlanoFromEmpresa(int idEmpresa) {
-        Conexao conexao = new Conexao();
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        String removePlano = "UPDATE empresa SET fk_plano_id = NULL WHERE id = ?";
-
-        try {
-            conn = conexao.conectar();
-            pstmt = conn.prepareStatement(removePlano);
-            pstmt.setInt(1, idEmpresa);
-
-            return pstmt.executeUpdate() > 0;
-        } catch (SQLException e) {
-            System.err.println("Erro ao remover plano da empresa: " + e.getMessage());
-            return false;
         } finally {
             try {
                 if (pstmt != null) pstmt.close();
