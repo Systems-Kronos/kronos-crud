@@ -32,7 +32,7 @@ public class ServletCreateEmpresa extends HttpServlet {
         String horaEntradaStr = request.getParameter("horaAbertura");
         String horaFechamentoStr = request.getParameter("horaFechamento");
         String regrasNegocios = request.getParameter("regrasNegocios");
-
+        int idPlano = Integer.parseInt(request.getParameter("plano"));
         EmpresaDAO dao = new EmpresaDAO();
         boolean success = false;
 
@@ -45,7 +45,7 @@ public class ServletCreateEmpresa extends HttpServlet {
             // Construtor/Setters podem lançar IllegalArgumentException, NullPointerException, IllegalStateException
             Empresa novaEmpresa = new Empresa(
                     nome, cep, cnpj, email, telefone, porte,
-                    horaEntrada, horaFechamento, regrasNegocios
+                    horaEntrada, horaFechamento, regrasNegocios, idPlano
             );
 
             success = dao.create(novaEmpresa);
@@ -69,7 +69,7 @@ public class ServletCreateEmpresa extends HttpServlet {
             request.setAttribute("horaEntrada_previo", horaEntradaStr);
             request.setAttribute("horaFechamento_previo", horaFechamentoStr);
             request.setAttribute("regrasNegocios_previo", regrasNegocios);
-
+            request.setAttribute("plano", idPlano);
         } catch (Exception e) { // Outros erros
             e.printStackTrace();
             request.setAttribute("erro", "Erro inesperado: " + e.getMessage());
