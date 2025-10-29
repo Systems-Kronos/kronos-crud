@@ -9,10 +9,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Servlet focado SOMENTE em CRIAR (Create) um novo Administrador.
+ * Servlet focado em CRIAR (Create) um novo Administrador.
  */
 @WebServlet("/admin-create")
 public class ServletCreateAdministracao extends HttpServlet {
@@ -21,59 +23,84 @@ public class ServletCreateAdministracao extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        // Define o encoding para UTF-8 ANTES de ler parâmetros, para evitar problemas com acentos
         request.setCharacterEncoding("UTF-8");
 
         // Pegar parâmetros do formulário
         String nome = request.getParameter("nome");
         String email = request.getParameter("email");
-        String senha = request.getParameter("senha"); // Lembre-se de CRIPTOGRAFAR!
+        String senha = request.getParameter("senha");
 
         AdministracaoDAO dao = new AdministracaoDAO();
-        boolean success = false; // Flag para controlar redirect vs forward
+        boolean success = false; // Flag para controlar redirect (sucesso) vs forward (falha)
+        String erro = null; // Variável para armazenar a mensagem de erro
 
         try {
             // Criar objeto (dispara validações do Model)
-            // Seu Model lança IllegalArgumentException ou NullPointerException
+            // O Model deve lançar IllegalArgumentException ou NullPointerException se dados forem inválidos
             Administracao novoAdmin = new Administracao(nome, email, senha);
 
             // Inserir no banco
-            // !!! IMPORTANTE: CRIPTOGRAFE a senha ANTES de chamar dao.create !!!
-            // Exemplo: String senhaHash = BCrypt.hashpw(senha, BCrypt.gensalt());
-            //          novoAdmin.setSenha(senhaHash); // Ou passe o hash no construtor
             success = dao.create(novoAdmin);
 
             if (success) {
                 System.out.println("Administrador criado com sucesso!");
-                // SUCESSO: Redireciona para a lista (PRG)
-                response.sendRedirect(request.getContextPath() + "/admin-crud"); // URL da listagem
-                return; // IMPORTANTE: Encerra aqui após redirect
+                // Redireciona para a lista (Padrão Post-Redirect-Get - PRG)
+                // Isso evita o reenvio do formulário ao atualizar a página
+                response.sendRedirect(request.getContextPath() + "/admin-crud");
+                return; // Encerra a execução do método após um redirect
             } else {
-                // Falha no DAO (ex: email duplicado se for UNIQUE no DB)
-                request.setAttribute("erro", "Erro ao cadastrar administrador. Verifique se o e-mail já existe.");
+                // Falha no DAO (ex: create retornou false sem lançar exceção)
+                erro = "Erro ao cadastrar administrador. Verifique se o e-mail já existe.";
             }
 
         } catch (IllegalArgumentException | NullPointerException e) {
-            // Captura erros de VALIDAÇÃO do Model
-            request.setAttribute("erro", "Erro de validação: " + e.getMessage());
-            // Guarda dados para repopular (exceto senha)
-            request.setAttribute("nome_previo", nome);
-            request.setAttribute("email_previo", email);
+            // Captura erros de VALIDAÇÃO do Model (ex: campos nulos, email inválido)
+            erro = "Erro de validação: " + e.getMessage();
 
-        } catch (Exception e) { // Captura outros erros inesperados
+            // Captura específica para erros de SQL
+        } catch (SQLException e) {
             e.printStackTrace();
-            request.setAttribute("erro", "Erro inesperado ao criar administrador: " + e.getMessage());
+            // Tenta dar uma mensagem amigável para violação de constraint (e-mail duplicado)
+            if (e.getMessage() != null && (e.getMessage().contains("Duplicate entry") || e.getMessage().contains("UNIQUE constraint failed"))) {
+                erro = "Erro: O e-mail informado ('" + email + "') já está cadastrado.";
+            } else {
+                erro = "Erro de banco de dados ao criar: " + e.getMessage();
+            }
+
+        } catch (Exception e) { // Captura qualquer outro erro inesperado
+            e.printStackTrace();
+            erro = "Erro inesperado ao criar administrador: " + e.getMessage();
         }
 
-        // --- PLANO B (Se deu erro no try OU o dao.create falhou) ---
-        // Se 'success' for false, faz forward de volta para o JSP com erro
 
-        System.err.println("Falha na criação do admin. Fazendo forward para o JSP.");
+        // Caminho de Falha (Se 'success' == false ou se uma Exceção foi capturada)
+        // Se a criação falhou, não fazemos redirect, mas sim um forward
+        // para a mesma página (JSP), exibindo a mensagem de erro.
 
-        // Recarrega lista para a tabela de fundo do JSP
-        List<Administracao> listaAdmins = dao.read();
+        System.err.println("Falha na criação do admin. Fazendo forward para o JSP. Erro: " + erro);
+
+        // Define os atributos de erro e de repopulação do formulário
+        request.setAttribute("erro", erro);
+        // Guarda dados para repopular o formulário (user-friendly), exceto a senha
+        request.setAttribute("nome_previo", nome);
+        request.setAttribute("email_previo", email);
+
+        // Recarrega a lista de administradores para exibir na tabela do JSP
+        List<Administracao> listaAdmins;
+        try {
+            listaAdmins = dao.read();
+        } catch (SQLException e) {
+            e.printStackTrace(); // Loga o erro de leitura
+            listaAdmins = new ArrayList<>(); // Usa uma lista vazia para não quebrar o JSP
+
+            // Concatena o erro da LEITURA com o erro original da CRIAÇÃO
+            request.setAttribute("erro", erro + " | ERRO ADICIONAL: Falha ao recarregar a lista de administradores.");
+        }
         request.setAttribute("listaAdmins", listaAdmins);
 
         // Avisa o JSP para reabrir o modal de CREATE
+        // Isso permite que o usuário veja o erro e os dados que preencheu
         request.setAttribute("abrirModal", "create");
 
         // Encaminha (forward) com erro e dados prévios

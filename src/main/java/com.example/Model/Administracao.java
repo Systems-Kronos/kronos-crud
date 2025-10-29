@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 /**
  * Representa um usuário com o cargo de administração.
  * Esta classe armazena informações essenciais de um administrador,
- * incluindo credenciais de acesso e dados pessoais, 
+ * incluindo credenciais de acesso e dados pessoais,
  * garantindo a integridade dos dados através de validações.
  */
 public class Administracao {
@@ -67,9 +67,7 @@ public class Administracao {
         if (email == null) { // Exceção: verifica se o email é nulo
             throw new NullPointerException("O e-mail não pode ser nulo.");
         }
-        if (!isValidEmail(email)) { // Exceção: verifica se o email é válido pelo método isValidEmail
-            throw new IllegalArgumentException("O formato do e-mail é inválido: '" + email + "'.");
-        }
+        validateEmail(email);
         this.email = email;
     }
 
@@ -84,12 +82,12 @@ public class Administracao {
         if (senha.trim().isEmpty()) { // Exceção: verifica se a senha só contém espaço
             throw new IllegalArgumentException("A senha não pode estar em branco.");
         }
-        if (isValidSenha(senha)) { // Exceção: verifica se a senha é válida pelo método isValidSenha
-            this.senha = senha;
-        }
+        validateSenha(senha);
+        this.senha = senha;
     }
 
     // Método toString
+    @Override
     public String toString() {
         return String.format("Administração | Id: %-3d | Nome: %-20s | E-mail: %-20s | Senha: [PROTEGIDA]",
                 this.id,
@@ -98,19 +96,36 @@ public class Administracao {
         );
     }
 
+    // Patterns de Regex para as validações de regras complexas
+
+    // Pattern para o email: verifica se tem um formato válido
+    private static final Pattern PATTERN_EMAIL = Pattern.compile(
+            "^[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@" +
+                    "(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,63}$"
+    );
+
+    // Pattern para a senha: verifica se tem, no mínimo, uma letra minúscula
+    private static final Pattern PATTERN_MINUSCULA = Pattern.compile("[a-z]");
+
+    // Pattern para a senha: verifica se tem, no mínimo, uma letra maiúscula
+    private static final Pattern PATTERN_MAIUSCULA = Pattern.compile("[A-Z]");
+
+    // Pattern para a senha: verifica se tem, no mínimo, um dígito
+    private static final Pattern PATTERN_DIGITO = Pattern.compile("\\d");
+
+    // Pattern para a senha: verifica se tem, no mínimo, um caractere especial
+    private static final Pattern PATTERN_ESPECIAL = Pattern.compile("[^A-Za-z0-9]");
+
     // Métodos de Validação
 
-    /* ---------PLACEHOLDER---------
+    /*
      * Verifica se o email é válido
-     * Exemplos de email aceitável:
-     *
      */
-    private boolean isValidEmail(String email) {
-        String regex = "^[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*" +
-                "@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,63}$";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(email);
-        return matcher.matches();
+    private void validateEmail(String email) {
+        Matcher matcher = PATTERN_EMAIL.matcher(email);
+        if (!matcher.matches()) { // Exceção: verifica se o e-mail tem formato válido.
+            throw new IllegalArgumentException("O formato do e-mail é inválido: '" + email + "'.");
+        }
     }
 
     /*
@@ -122,35 +137,21 @@ public class Administracao {
      * -Mínimo 1 caractere especial
      * -Mínimo 1 número
      */
-
-     private boolean isValidSenha(String senha) {
+     private void validateSenha(String senha) {
          if (senha.length() < 8) { // Exceção: verifica se a senha tem no mínimo 8 caracteres
              throw new IllegalArgumentException("A senha deve ter no mínimo 8 caracteres.");
          }
-         String regex = "[a-z]";
-         Pattern pattern = Pattern.compile(regex);
-         Matcher matcher = pattern.matcher(senha);
-         if (!matcher.find()) { // Exceção: verifica se a senha tem no mínimo 1 letra minúscula
+         if (!PATTERN_MINUSCULA.matcher(senha).find()) {
              throw new IllegalArgumentException("A senha deve ter no mínimo 1 letra minúscula.");
          }
-         regex = "[A-Z]";
-         pattern = Pattern.compile(regex);
-         matcher = pattern.matcher(senha);
-         if (!matcher.find()) { // Exceção: verifica se a senha tem no mínimo 1 letra maiúscula
+         if (!PATTERN_MAIUSCULA.matcher(senha).find()) {
              throw new IllegalArgumentException("A senha deve ter no mínimo 1 letra maiúscula.");
          }
-         regex = "\\d";
-         pattern = Pattern.compile(regex);
-         matcher = pattern.matcher(senha);
-         if (!matcher.find()) { // Exceção: verifica se a senha tem no mínimo 1 dígito
+         if (!PATTERN_DIGITO.matcher(senha).find()) {
              throw new IllegalArgumentException("A senha deve ter no mínimo 1 dígito.");
          }
-         regex = "[^A-Za-z0-9]";
-         pattern = Pattern.compile(regex);
-         matcher = pattern.matcher(senha);
-         if (!matcher.find()) { // Exceção: verifica se a senha tem no mínimo 1 caractere especial
+         if (!PATTERN_ESPECIAL.matcher(senha).find()) {
              throw new IllegalArgumentException("A senha deve ter no mínimo 1 caractere especial.");
          }
-         return true;
      }
 }
