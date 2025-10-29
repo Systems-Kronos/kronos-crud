@@ -1,5 +1,18 @@
 document.addEventListener('DOMContentLoaded', () => {
 
+    // LÓGICA DE AUTO-ABERTURA DE MODAL EM CASO DE ERRO
+    const modalIdParaAbrir = document.body.dataset.modalParaAbrir;
+    if (modalIdParaAbrir) {
+        const modal = document.getElementById(modalIdParaAbrir);
+        if (modal && typeof modal.showModal === 'function') {
+            modal.showModal();
+        } else {
+            console.error("Tentativa de abrir um modal que não existe: '" + modalIdParaAbrir + "'");
+        }
+    }
+    // --- (FIM DA NOVA LÓGICA) ---
+
+
     // --- LÓGICA PARA BOTÕES DE FILTRAGEM ---
     const botaoLimparFiltro = document.getElementById('botaoLimparFiltro');
 
@@ -35,23 +48,23 @@ document.addEventListener('DOMContentLoaded', () => {
                         const caminho = JSON.parse(botaoModal.dataset.caminho);
                         const caminhoBase = caminho.base;
                         const tabelaAtual = caminho.tabela;
-                        
+
                         fetch(`${caminhoBase}/${tabelaAtual}?pk=${pk}`)
-                        .then(response => response.json())
-                        .then(dados => {
-                            
-                            // Preenche os campos do modal correspondente
-                            if (modal.id === 'update') {
-                                preencherCamposModal('update', dados, tabelaAtual);
-                            } else if (modal.id === 'delete') {
-                                preencherCamposModal('delete', dados, tabelaAtual);
-                            }
-                            modal.showModal();
-                            botaoModal.disabled = false;
+                            .then(response => response.json())
+                            .then(dados => {
+
+                                // Preenche os campos do modal correspondente
+                                if (modal.id === 'update') {
+                                    preencherCamposModal('update', dados, tabelaAtual);
+                                } else if (modal.id === 'delete') {
+                                    preencherCamposModal('delete', dados, tabelaAtual);
+                                }
+                                modal.showModal();
+                                botaoModal.disabled = false;
                             })
-                        .catch(err => console.error('Erro ao buscar dados:', err));
-                        }
-                    } else if (acao === 'fechar') {
+                            .catch(err => console.error('Erro ao buscar dados:', err));
+                    }
+                } else if (acao === 'fechar') {
                     modal.close();
                     botaoModal.disabled = false;
                 }
@@ -62,32 +75,22 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // --- LÓGICA PARA ABRIR MODAIS (UPDATE/DELETE) AUTOMATICAMENTE ---
-    // (Isto vem do seu JSP, agora está seguro dentro do listener)
-    const modalUpdate = document.getElementById('update');
-    const modalDelete = document.getElementById('delete');
-
-    // Adicionamos 'modalUpdate &&' para evitar erros em páginas que não tenham esse modal
-    if (modalUpdate && modalUpdate.dataset.abrir === 'true') {
-        modalUpdate.showModal();
-    }
-    else if (modalDelete && modalDelete.dataset.abrir === 'true') {
-        modalDelete.showModal();
-    }
-
-    // --- LÓIGCA PARA O BOTÃO DE CONFIRMAR SÓ PODER SER CLICADO 1 VEZ
+    // --- LÓGICA PARA O BOTÃO DE CONFIRMAR SÓ PODER SER CLICADO 1 VEZ
     const formModalCreate = document.getElementById('formCreate');
     const botoesConfirmarModal = document.querySelectorAll('.confirmar');
-    
-    formModalCreate.addEventListener('submit', (event) => {
-        if (formModalCreate.checkValidity()) {
-            botoesConfirmarModal.forEach(botaoConfirmarModal => {
-                botaoConfirmarModal.disabled = true;
-            });
-        } else {
-            event.preventDefault();
-        }
-    });
+
+    // Verifica se o formModalCreate existe antes de adicionar o listener
+    if (formModalCreate) {
+        formModalCreate.addEventListener('submit', (event) => {
+            if (formModalCreate.checkValidity()) {
+                botoesConfirmarModal.forEach(botaoConfirmarModal => {
+                    botaoConfirmarModal.disabled = true;
+                });
+            } else {
+                event.preventDefault();
+            }
+        });
+    }
 });
 
 

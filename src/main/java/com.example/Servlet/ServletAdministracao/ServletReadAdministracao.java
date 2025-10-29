@@ -22,7 +22,7 @@ public class ServletReadAdministracao extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         String pk = request.getParameter("pk");
 
         if (pk != null && !pk.isEmpty()) {
@@ -51,14 +51,14 @@ public class ServletReadAdministracao extends HttpServlet {
             }
 
         } else {
-                
+
             List<Administracao> listaAdmins = null;
             String erro = null;
 
             // --- Handle Search/Filter/Sort ---
             String nomePesquisa = request.getParameter("pesquisa");
             String ordem = request.getParameter("ordem"); // crescente ou decrescente
-            
+
             // Determine orderBy column based on your logic if needed, default to ID
             String orderBy = "id"; // Default, adjust if your JSP sends a sort column
             String direction = ("decrescente".equalsIgnoreCase(ordem)) ? "DESC" : "ASC";

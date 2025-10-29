@@ -43,13 +43,13 @@
     <!-- Método não permitido -->
     <error-page>
         <error-code>405</error-code>
-        <location>/WEB-INF/pages/error/500.jsp</location>
+        <location>/WEB-INF/pages/error/400.jsp</location>
     </error-page>
 
     <!-- Tempo de requisição excedido -->
     <error-page>
         <error-code>408</error-code>
-        <location>/WEB-INF/pages/error/500.jsp</location>
+        <location>/WEB-INF/pages/error/400.jsp</location>
     </error-page>
 
     <!-- Conteúdo removido -->
@@ -61,7 +61,7 @@
     <!-- Tipo de mídia não suportado -->
     <error-page>
         <error-code>415</error-code>
-        <location>/WEB-INF/pages/error/500.jsp</location>
+        <location>/WEB-INF/pages/error/400.jsp</location>
     </error-page>
 
     <!-- Erro interno do servidor -->
