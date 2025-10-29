@@ -62,7 +62,7 @@ visualização (View).
     - Link de acesso para a área de login do CRUD.
 
 ## ⚙️ Instalação
-É necessário ter o Java JDK (19 ou superior), um Servidor (Apache Tomcat) e um Banco de Dados (PostgreSQL) instalados.
+É necessário ter o Java JDK (11 ou superior), um Servidor (Apache Tomcat) e um Banco de Dados (PostgreSQL) instalados.
 ```
 # Clonar o repositório
 git clone https://github.com/Systems-Kronos/kronos-crud.git
@@ -75,7 +75,7 @@ cd kronos-crud
 # 2. Importe o script SQL do projeto para criar as tabelas.
 
 # Criar o arquivo de variáveis de ambiente
-cp src/main/resources/.env.example .env
+cp src/main/resources/.env.example src/main/resources/.env
 
 # Configurar o .env (Passo Manual)
 # 1. Abra o arquivo 'src/main/resources/.env'
