@@ -1,6 +1,7 @@
 package com.example.Servlet.ServletAdministracao;
 
 import java.io.IOException;
+import java.sql.SQLException; // <--- IMPORT ADICIONADO
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,17 +14,21 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+/**
+ * Servlet focado em LER (Read) Administradores.
+ * Serve como o "painel" principal (listagem com filtros) e também como uma API JSON
+ * para buscar dados de um único administrador (usado pelos modais).
+ */
 @WebServlet("/admin-crud")
 public class ServletReadAdministracao extends HttpServlet {
-
-    //  Instanciando DAO
-    private AdministracaoDAO dao = new AdministracaoDAO();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String pk = request.getParameter("pk");
+        // Instancia o DAO dentro do método para ser thread-safe
+        AdministracaoDAO dao = new AdministracaoDAO();
+        String pk = request.getParameter("pk"); // Primary Key (ID) para busca individual
 
         if (pk != null && !pk.isEmpty()) {
 
@@ -31,60 +36,89 @@ public class ServletReadAdministracao extends HttpServlet {
             response.setCharacterEncoding("UTF-8");
 
             try {
-                Administracao admin = dao.read(Integer.parseInt(pk));
+                int id = Integer.parseInt(pk);
+                Administracao admin = dao.read(id); // Pode lançar SQLException
 
                 if (admin != null) {
-
+                    // Constrói a resposta JSON manualmente
                     String json = "{"
-                            + "\"id\":\"" + pk + "\","
-                            + "\"nome\":\"" + admin.getNome() + "\","
-                            + "\"email\":\"" + admin.getEmail() + "\","
+                            + "\"id\":\"" + id + "\","
+                            + "\"nome\":\"" + escapeJson(admin.getNome()) + "\","
+                            + "\"email\":\"" + escapeJson(admin.getEmail()) + "\","
                             + "\"senha\":\"" + admin.getSenha() + "\""
                             + "}";
 
                     response.getWriter().write(json);
+                } else {
+                    // Admin não encontrado (ID válido, mas não existe)
+                    response.setStatus(HttpServletResponse.SC_NOT_FOUND); // Erro 404
+                    response.getWriter().write("{\"erro\":\"Administrador ID " + id + " não encontrado.\"}");
                 }
+
             } catch (NumberFormatException e) {
-                response.getWriter().write("{\"erro\":\"PK inválida\"}");
+                // ID não era um número
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST); // Erro 400
+                response.getWriter().write("{\"erro\":\"PK inválida: " + pk + "\"}");
+
+            } catch (SQLException e) { // <-- CORREÇÃO: Tratamento específico
+                // Erro de banco de dados
+                e.printStackTrace();
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR); // Erro 500
+                response.getWriter().write("{\"erro\":\"Erro de banco de dados: " + e.getMessage() + "\"}");
+
             } catch (Exception e) {
-                response.getWriter().write("{\"erro\":\"" + e.getMessage() + "\"}");
+                // Outro erro inesperado
+                e.printStackTrace();
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR); // Erro 500
+                response.getWriter().write("{\"erro\":\"Erro inesperado: " + e.getMessage() + "\"}");
             }
 
         } else {
-
-            List<Administracao> listaAdmins = null;
+            // Carrega a lista completa (com filtros) para exibir no 'administrador.jsp'.
+            List<Administracao> listaAdmins = new ArrayList<>(); // Inicia vazia
             String erro = null;
 
-            // --- Handle Search/Filter/Sort ---
+            // Coleta de parâmetros de filtro/ordenação
             String nomePesquisa = request.getParameter("pesquisa");
-            String ordem = request.getParameter("ordem"); // crescente ou decrescente
+            String ordem = request.getParameter("ordem"); // "crescente" ou "decrescente"
 
-            // Determine orderBy column based on your logic if needed, default to ID
-            String orderBy = "id"; // Default, adjust if your JSP sends a sort column
+            // Lógica de ordenação
+            String orderBy = "id"; // Default
             String direction = ("decrescente".equalsIgnoreCase(ordem)) ? "DESC" : "ASC";
 
             try {
-                // Use the DAO method that accepts filters/sorting
+                // Usa o método do DAO que aceita filtros/ordenação
                 listaAdmins = dao.read(nomePesquisa, orderBy, direction);
 
-                if (listaAdmins == null) {
-                    erro = "Lista de administradores não carregada.";
-                    listaAdmins = new ArrayList<>();
-                }
-
+            } catch (SQLException e) {
+                e.printStackTrace();
+                erro = "Erro ao buscar lista de administradores: " + e.getMessage();
+                // A listaAdmins permanecerá vazia, o que é correto para o JSP.
             } catch (Exception e) {
                 e.printStackTrace();
-                erro = "Erro ao buscar lista de administradores.";
-                listaAdmins = new ArrayList<>();
+                erro = "Erro inesperado ao carregar dados: " + e.getMessage();
+                // A listaAdmins permanecerá vazia.
             }
 
+            // Define os atributos para o JSP
             request.setAttribute("listaAdmins", listaAdmins);
-
             if (erro != null) {
                 request.setAttribute("erro", erro);
             }
 
+            // Encaminha para a página JSP
             request.getRequestDispatcher("/WEB-INF/pages/administrador.jsp").forward(request, response);
         }
+    }
+
+    /*
+     * Helper method to escape double quotes in JSON strings.
+     * A proper JSON library (Gson/Jackson) handles this automatically.
+     */
+    private String escapeJson(String s) {
+        if (s == null) {
+            return "";
+        }
+        return s.replace("\"", "\\\"");
     }
 }

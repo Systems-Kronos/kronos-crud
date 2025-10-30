@@ -476,3 +476,36 @@ table button.detalhes {
     background: #370963;
     border-radius: 0vw 0vw 2vw 2vw;
 }
+
+.mensagem-erro {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 1rem;
+    border: 1px solid #f5c6cb;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+    font-family: 'Montserrat', sans-serif;
+    text-align: center;
+}
+.erro-senha {
+    background-color: transparent;
+    color: #dc3545;
+    padding: 0;
+    border: none;
+    margin-bottom: 0;
+    margin-top: 0.25rem;
+    font-size: 0.875em;
+    text-align: left;
+    display: none;
+}
+
+.erro-senha:not(:empty) {
+    display: block;
+}
+
+#lista-checkboxes-habilidades {
+    max-height: 150px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    padding: 5px;
+}

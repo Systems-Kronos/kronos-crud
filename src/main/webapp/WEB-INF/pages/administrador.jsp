@@ -2,43 +2,31 @@
 <%@ page import="java.util.List" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
-<%--
-  BLOCO DE PROCESSAMENTO DE ATRIBUTOS (Administracao)
-  Lê todos os atributos de "falha" enviados pelo Servlet.
---%>
 <%
-    /* --- Processamento de Atributos (Administracao) --- */
-
-    // 1. Pega os atributos principais
     String erro = (String) request.getAttribute("erro");
     String modalAberto = (String) request.getAttribute("abrirModal");
     Administracao adminModal = (Administracao) request.getAttribute("adminModal");
 
-    // 2. Prepara variáveis para o modal CREATE
     String createNome = "";
     String createEmail = "";
-    // (Não repopulamos a senha por segurança)
     if ("create".equals(modalAberto)) {
         createNome = request.getAttribute("nome_previo") != null ? (String)request.getAttribute("nome_previo") : "";
         createEmail = request.getAttribute("email_previo") != null ? (String)request.getAttribute("email_previo") : "";
     }
 
-    // 3. Prepara variáveis para o modal UPDATE
     String updateID = "";
     String updateNome = "";
     String updateEmail = "";
-    if (adminModal != null) { // Vindo do GET ou POST-failure
+    if (adminModal != null) {
         updateID = String.valueOf(adminModal.getId());
         updateNome = adminModal.getNome();
         updateEmail = adminModal.getEmail();
     }
-    // Se foi um POST com falha, os dados _previo (tentativa do usuário) têm prioridade
     if ("update".equals(modalAberto) && request.getAttribute("nome_previo") != null) {
         updateNome = (String) request.getAttribute("nome_previo");
         updateEmail = (String) request.getAttribute("email_previo");
     }
 
-    // 4. Prepara variáveis para o modal DELETE
     String deleteID = "";
     String deleteNome = "";
     String deleteEmail = "";
@@ -55,7 +43,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Montserrat:wght@300;400;500;700;900&family=Crete+Round:wght@400;700&display=swap" rel="stylesheet">
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="${pageContext.request.contextPath}/assets/crud/img/favikronos.ico" type="image/x-icon">
@@ -64,7 +51,6 @@
     <title>Administrador - Kronos CRUD</title>
 </head>
 
-<%-- A tag body agora passa a variável "modalAberto" para o script.js ler --%>
 <body data-modal-para-abrir="<%= modalAberto != null ? modalAberto : "" %>">
 <div class="meuPlaceholder"></div>
 
@@ -84,32 +70,24 @@
 
 <div class="conteudoPrincipal">
 
-    <%-- Bloco de Exibição de Erro --%>
-    <%
+        <%
         if (erro != null && !erro.isEmpty()) {
     %>
-    <div style="background-color: #f8d7da; color: #721c24; padding: 1rem; border: 1px solid #f5c6cb; border-radius: 5px; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">
+    <div class="mensagem-erro">
         <strong>Erro:</strong> <%= erro %>
     </div>
-    <%
+        <%
         }
     %>
 
     <div class="procurarCadastrar">
         <form class="pesquisa" method="get" action="${pageContext.request.contextPath}/admin-crud">
             <input type="search" placeholder="Pesquisar" id="pesquisa" name="pesquisa" class="buscar" value="<%= request.getParameter("pesquisa") != null ? request.getParameter("pesquisa") : "" %>">
-
             <details class="filtros">
                 <summary>Filtros</summary>
                 <div class="conteudoFiltros">
-                    <label class="opcaoFiltro">
-                        <input type="radio" name="ordem" value="crescente"
-                            <%= "crescente".equals(request.getParameter("ordem")) ? "checked" : "" %>> Crescente
-                    </label>
-                    <label class="opcaoFiltro">
-                        <input type="radio" name="ordem" value="decrescente"
-                            <%= "decrescente".equals(request.getParameter("ordem")) ? "checked" : "" %>> Decrescente
-                    </label>
+                    <label class="opcaoFiltro"> <input type="radio" name="ordem" value="crescente" <%= "crescente".equals(request.getParameter("ordem")) ? "checked" : "" %>> Crescente </label>
+                    <label class="opcaoFiltro"> <input type="radio" name="ordem" value="decrescente" <%= "decrescente".equals(request.getParameter("ordem")) ? "checked" : "" %>> Decrescente </label>
                     <button type="reset" id="botaoLimparFiltro" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"admin-crud"}'>Limpar filtros</button>
                     <button type="submit">Aplicar</button>
                 </div>
@@ -128,7 +106,8 @@
                             </div>
                             <div class="campo">
                                 <label for="senhaCreate">Senha</label>
-                                <input type="password" name="senha" id="senhaCreate" autocomplete="new-password" pattern="^(?=.{8,}$)(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^\sA-Za-z0-9]).+$" required>
+                                <input type="password" name="senha" id="senhaCreate" autocomplete="new-password" required>
+                                <span id="senhaErro" class="erro-senha"></span>
                             </div>
                         </div>
                         <div>
@@ -144,36 +123,21 @@
                     </menu>
                 </form>
             </dialog>
-
             <button type="button" class="cadastrar acaoModal" data-acao="abrir" data-modal="create">Cadastrar</button>
         </section>
-
 
         <section class="update">
             <dialog id="update">
                 <h2>Editar administrador</h2>
                 <form action="${pageContext.request.contextPath}/admin-update" method="post">
-                    <div class="idAtual">
-                        <label for="idUpdate">ID:</label>
-                        <input type="number" name="id" id="idUpdate" readonly value="<%= updateID %>">
-                    </div>
+                    <div class="idAtual"> <label for="idUpdate">ID:</label> <input type="number" name="id" id="idUpdate" readonly value="<%= updateID %>"> </div>
                     <div class="campos">
                         <div>
-                            <div class="campo">
-                                <label for="nomeUpdate">Nome</label>
-                                <input type="text" name="nome" id="nomeUpdate" required value="<%= updateNome %>">
-                            </div>
-                            <div class="campo">
-                                <label for="senhaUpdate">Senha</label>
-                                <%-- CORREÇÃO: Senha no update é opcional e não deve ser 'required' --%>
-                                <input type="password" name="senha" id="senhaUpdate" autocomplete="new-password" placeholder="Deixe em branco para manter a atual">
-                            </div>
+                            <div class="campo"> <label for="nomeUpdate">Nome</label> <input type="text" name="nome" id="nomeUpdate" required value="<%= updateNome %>"> </div>
+                            <div class="campo"> <label for="senhaUpdate">Senha</label> <input type="password" name="senha" id="senhaUpdate" autocomplete="new-password" placeholder="Deixe em branco para manter a atual"> </div>
                         </div>
                         <div>
-                            <div class="campo">
-                                <label for="emailUpdate">E-mail</label>
-                                <input type="email" name="email" id="emailUpdate" required value="<%= updateEmail %>">
-                            </div>
+                            <div class="campo"> <label for="emailUpdate">E-mail</label> <input type="email" name="email" id="emailUpdate" required value="<%= updateEmail %>"> </div>
                         </div>
                     </div>
                     <menu>
@@ -188,26 +152,14 @@
             <dialog id="delete">
                 <h2>Excluir administrador</h2>
                 <form action="${pageContext.request.contextPath}/admin-delete" method="post">
-                    <div class="idAtual">
-                        <label for="idDelete">ID:</label>
-                        <input type="number" name="id" id="idDelete" readonly value="<%= deleteID %>">
-                    </div>
+                    <div class="idAtual"> <label for="idDelete">ID:</label> <input type="number" name="id" id="idDelete" readonly value="<%= deleteID %>"> </div>
                     <div class="campos">
                         <div>
-                            <div class="campo">
-                                <label for="nomeDelete">Nome</label>
-                                <input type="text" name="nome" id="nomeDelete" disabled value="<%= deleteNome %>">
-                            </div>
-                            <div class="campo">
-                                <label for="senhaDelete">Senha</label>
-                                <input type="password" name="senha" id="senhaDelete" disabled value="********">
-                            </div>
+                            <div class="campo"> <label for="nomeDelete">Nome</label> <input type="text" name="nome" id="nomeDelete" disabled value="<%= deleteNome %>"> </div>
+                            <div class="campo"> <label for="senhaDelete">Senha</label> <input type="password" name="senha" id="senhaDelete" disabled value="********"> </div>
                         </div>
                         <div>
-                            <div class="campo">
-                                <label for="emailDelete">E-mail</label>
-                                <input type="email" name="email" id="emailDelete" disabled value="<%= deleteEmail %>">
-                            </div>
+                            <div class="campo"> <label for="emailDelete">E-mail</label> <input type="email" name="email" id="emailDelete" disabled value="<%= deleteEmail %>"> </div>
                         </div>
                     </div>
                     <menu>
@@ -222,47 +174,30 @@
     <main>
         <div class="tabelaScroll">
             <table class="tabelaAdministrador">
-                <thead>
-                <tr>
-                    <th>Ver</th>
-                    <th>Excluir</th>
-                    <th>ID</th>
-                    <th>Nome</th>
-                    <th>E-mail</th>
-                    <th>Senha</th>
-                </tr>
-                </thead>
+                <thead> <tr> <th>Ver</th> <th>Excluir</th> <th>ID</th> <th>Nome</th> <th>E-mail</th> <th>Senha</th> </tr> </thead>
                 <tbody>
-
                 <%
                     List<Administracao> listaAdmins = (List<Administracao>) request.getAttribute("listaAdmins");
                     if (listaAdmins != null && !listaAdmins.isEmpty()) {
                         for (Administracao admin : listaAdmins) {
                 %>
                 <tr>
-                    <td>
-                        <button type="button" id="abrirModalUpdate" class="detalhes acaoModal" data-acao="abrir" data-modal="update" data-pk="<%= admin.getId() %>" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"admin-crud"}'><img src="${pageContext.request.contextPath}/assets/crud/img/mais-detalhes.png" alt=""></button>
-                    </td>
-                    <td>
-                        <button type="button" id="abrirModalDelete" class="detalhes acaoModal" data-acao="abrir" data-modal="delete" data-pk="<%= admin.getId() %>" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"admin-crud"}'><img src="${pageContext.request.contextPath}/assets/crud/img/deletar-kronos.png" alt=""></button>
-                    </td>
+                    <td> <button type="button" class="detalhes acaoModal" data-acao="abrir" data-modal="update" data-pk="<%= admin.getId() %>" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"admin-crud"}'><img src="${pageContext.request.contextPath}/assets/crud/img/mais-detalhes.png" alt=""></button> </td>
+                    <td> <button type="button" class="detalhes acaoModal" data-acao="abrir" data-modal="delete" data-pk="<%= admin.getId() %>" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"admin-crud"}'><img src="${pageContext.request.contextPath}/assets/crud/img/deletar-kronos.png" alt=""></button> </td>
                     <td><%= admin.getId() %></td>
                     <td><%= admin.getNome() %></td>
                     <td><%= admin.getEmail() %></td>
-                    <td><%= admin.getSenha() %></td>
+                    <td><%= admin.getSenha() %></td> <%-- Nunca exiba a senha (ou hash) --%>
                 </tr>
                 <%
                     }
                 } else {
                 %>
-                <tr>
-                    <td colspan="6">Nenhum administrador encontrado.</td>
-                </tr>
+                <tr> <td colspan="6">Nenhum administrador encontrado.</td> </tr>
                 <% } %>
                 </tbody>
             </table>
         </div>
     </main>
-</div>
 </body>
 </html>

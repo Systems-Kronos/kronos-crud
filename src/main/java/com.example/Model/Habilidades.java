@@ -87,4 +87,18 @@ public class Habilidades {
         return String.format("Habilidades | Id: %-3d | Nome: %-20s | Tag: %-25s | Descrição: %-50s",
                 id, nome, tag, descricao);
     }
+
+    // Métodos para listaHabilidades, do Usuario
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Habilidades that = (Habilidades) o;
+        return id == that.id; // Duas habilidades são "iguais" se tiverem o mesmo ID.
+    }
+
+    @Override
+    public int hashCode() {
+        return Integer.hashCode(id); // Baseado apenas no ID.
+    }
 }
