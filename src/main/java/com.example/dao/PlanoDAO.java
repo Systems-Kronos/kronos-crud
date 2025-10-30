@@ -1,7 +1,6 @@
 package com.example.dao;
 
 import com.example.Controller.Conexao;
-import com.example.Model.Empresa;
 import com.example.Model.Plano;
 
 import java.sql.Connection;
@@ -11,192 +10,162 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Classe DAO (Data Access Object) para a entidade Plano.
+ * Responsável pelas operações CRUD no banco de dados.
+ * Segue o padrão de propagar SQLException e usar try-with-resources.
+ */
 public class PlanoDAO {
-     //    Create
-        public boolean create(Plano plano) {
-            Conexao conexao = new Conexao();
-            Connection conn = null;
-            PreparedStatement pstmt = null;
-            String create = "INSERT INTO  planos (nomeplano, custo, descricao, qnt_max_funcionario) VALUES (?,?,?,?)";
-            try {
-                conn = conexao.conectar();
-                pstmt = conn.prepareStatement(create);
-                pstmt.setString(1, plano.getNome());
-                pstmt.setFloat(2, plano.getCusto());
-                pstmt.setString(3, plano.getDescricao());
-                pstmt.setInt(4, plano.getMaxFuncionarios());
 
-                return pstmt.executeUpdate() > 0; // true se inseriu
-            } catch (SQLException e) {
-                System.err.println("Erro ao inserir plano: " + e.getMessage());
-                return false;
-            } finally {
-                if (pstmt != null) {
-                    try {
-                        pstmt.close();
-                    } catch (SQLException e) {
-                        System.out.println("Erro ao fechar PreparedStatement");
-                    }
-                }
-                if (conn != null) {
-                    try {
-                        conn.close();
-                    } catch (SQLException e) {
-                        System.out.println("Erro ao fechar Connection");
-                    }
-                }
-
-            }
-        }
-
-//        READ ALL
-        public List<Plano> read() {
-            Conexao conexao = new Conexao();
-            Connection conn = null;
-            PreparedStatement pstmt = null;
-            ResultSet rset = null;
-            String read = "SELECT * FROM planos";
-            List<Plano> listaPlano = new LinkedList<>();
-
-            try {
-                conn = conexao.conectar();
-                pstmt = conn.prepareStatement(read);
-                rset = pstmt.executeQuery();
-
-                while (rset.next()) {
-                    Plano plano = new Plano(rset.getInt("id"),
-                            rset.getString("nomeplano"),
-                            rset.getFloat("custo"),
-                            rset.getString("descricao"),
-                            rset.getInt("qnt_max_funcionario"));
-                    listaPlano.add(plano);
-                }
-            } catch (SQLException e) {
-                System.err.println("Erro ao buscar planos: " + e.getMessage());
-                return null;
-            } finally {
-                try {
-                    if (rset != null) rset.close();
-                    if (pstmt != null) pstmt.close();
-                    if (conn != null) conn.close();
-                } catch (SQLException e) {
-                    System.err.println("Erro ao fechar recursos ao buscar planos: " + e.getMessage());
-                }
-            }
-
-            return listaPlano;
-            }
-
-//            READ BY ID
-// READ COM FILTRO
-public List<Plano> read(String nome, String orderBy, String direction) {
-    Conexao conexao = new Conexao();
-    Connection conn = null;
-    PreparedStatement pstmt = null;
-    ResultSet rset = null;
-    List<Plano> listaPlano = new LinkedList<>();
-
-    String sql = "SELECT * FROM planos";
-
-    if (nome != null && !nome.isEmpty()) {
-        sql += " WHERE nomeplano ILIKE '%" + nome + "%'";
-    }
-
-    String colunaOrdenacao = "id";
-    if (orderBy != null) {
-        if (orderBy.equals("nome")) {
-            colunaOrdenacao = "nomeplano";
-        } else if (orderBy.equals("custo")) {
-            colunaOrdenacao = "custo";
-        } else if (orderBy.equals("descricao")) {
-            colunaOrdenacao = "descricao";
-        } else if (orderBy.equals("qnt_max_funcionario")) {
-            colunaOrdenacao = "qnt_max_funcionario";
-        }
-    }
-
-    String dir = "ASC";
-    if (direction != null && direction.equalsIgnoreCase("DESC")) {
-        dir = "DESC";
-    }
-
-    sql += " ORDER BY " + colunaOrdenacao + " " + dir;
-
-    try {
-        conn = conexao.conectar();
-        pstmt = conn.prepareStatement(sql);
-        rset = pstmt.executeQuery();
-
-        while (rset.next()) {
-            Plano plano = new Plano(
-                    rset.getInt("id"),
-                    rset.getString("nomeplano"),
-                    rset.getFloat("custo"),
-                    rset.getString("descricao"),
-                    rset.getInt("qnt_max_funcionario")
-            );
-            listaPlano.add(plano);
-        }
-
-    } catch (SQLException e) {
-        System.err.println("Erro ao buscar planos com filtro: " + e.getMessage());
-        return null;
-    } finally {
-        try {
-            if (rset != null) rset.close();
-            if (pstmt != null) pstmt.close();
-            if (conn != null) conn.close();
-        } catch (SQLException e) {
-            System.err.println("Erro ao fechar recursos ao buscar planos com filtro: " + e.getMessage());
-        }
-    }
-
-    return listaPlano;
-}
-
-    //            READ BY ID
-    public Plano read(int id) {
+    /*
+     * Cria um novo registro de plano no banco de dados.
+     */
+    public boolean create(Plano plano) throws SQLException {
         Conexao conexao = new Conexao();
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rset = null;
-        String readId = "SELECT * FROM planos WHERE id = ?";
-        try {
-            conn = conexao.conectar();
-            pstmt = conn.prepareStatement(readId);
-            pstmt.setInt(1, id);
-            rset = pstmt.executeQuery();
+        String createSQL = "INSERT INTO planos (nomeplano, custo, descricao, qnt_max_funcionario) VALUES (?, ?, ?, ?)";
 
-            if (rset.next()) {
-                return new Plano(rset.getInt("id"),
+        try (Connection conn = conexao.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(createSQL)) {
+
+            pstmt.setString(1, plano.getNome());
+            pstmt.setFloat(2, plano.getCusto());
+            pstmt.setString(3, plano.getDescricao());
+            pstmt.setInt(4, plano.getMaxFuncionarios());
+
+            return pstmt.executeUpdate() > 0;
+        }
+    }
+
+    /*
+     * Busca todos os planos cadastrados, ordenados por ID.
+     */
+    public List<Plano> read() throws SQLException {
+        Conexao conexao = new Conexao();
+        String readSQL = "SELECT * FROM planos ORDER BY id ASC";
+        List<Plano> listaPlanos = new LinkedList<>();
+
+        try (Connection conn = conexao.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(readSQL);
+             ResultSet rset = pstmt.executeQuery()) {
+
+            while (rset.next()) {
+                Plano plano = new Plano(
+                        rset.getInt("id"),
                         rset.getString("nomeplano"),
                         rset.getFloat("custo"),
                         rset.getString("descricao"),
-                        rset.getInt("qnt_max_funcionario"));
-            }
-        } catch (SQLException e) {
-            System.err.println("Erro ao buscar planos com filtro: " + e.getMessage());
-        } finally {
-            try {
-                if (rset != null) rset.close();
-                if (pstmt != null) pstmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                System.err.println("Erro ao fechar recursos ao buscar planos com filtro: " + e.getMessage());
+                        rset.getInt("qnt_max_funcionario")
+                );
+                listaPlanos.add(plano);
             }
         }
-        return null;
+        return listaPlanos;
+    }
+
+    /*
+     * Busca planos filtrando por nome (case-insensitive) e permitindo ordenação.
+     * Usa validação de coluna (whitelisting) e prepared statements para segurança.
+     */
+    public List<Plano> read(String nome, String orderBy, String direction) throws SQLException {
+        Conexao conexao = new Conexao();
+        List<Plano> listaPlanos = new LinkedList<>();
+
+        StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM planos WHERE 1=1");
+        List<Object> parametros = new LinkedList<>();
+
+        // 1. Filtro de nome (SQL Injection prevenido)
+        if (nome != null && !nome.trim().isEmpty()) {
+            sqlBuilder.append(" AND nomeplano ILIKE ?");
+            parametros.add("%" + nome.trim() + "%");
         }
 
-    //    Update pelo objeto
-    public int update(Plano plano) {
+        // 2. Validação da coluna de ordenação (Simplificada)
+        String colunaOrdenacao = "id"; // Default seguro
+
+        if (orderBy != null) {
+            String lowerOrderBy = orderBy.trim().toLowerCase();
+            if (lowerOrderBy.equals("nome")) {
+                colunaOrdenacao = "nomeplano";
+            } else if (lowerOrderBy.equals("custo")) {
+                colunaOrdenacao = "custo";
+            } else if (lowerOrderBy.equals("descricao")) {
+                colunaOrdenacao = "descricao";
+            } else if (lowerOrderBy.equals("qnt_max_funcionario")) {
+                colunaOrdenacao = "qnt_max_funcionario";
+            }
+        }
+
+        // 3. Validação da direção
+        String dir = "ASC";
+        if (direction != null && direction.trim().equalsIgnoreCase("DESC")) {
+            dir = "DESC";
+        }
+
+        sqlBuilder.append(" ORDER BY ").append(colunaOrdenacao).append(" ").append(dir);
+
+        String sql = sqlBuilder.toString();
+
+        try (Connection conn = conexao.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            // Define os parâmetros (para o filtro LIKE)
+            for (int i = 0; i < parametros.size(); i++) {
+                pstmt.setObject(i + 1, parametros.get(i));
+            }
+
+            try (ResultSet rset = pstmt.executeQuery()) {
+                while (rset.next()) {
+                    Plano plano = new Plano(
+                            rset.getInt("id"),
+                            rset.getString("nomeplano"),
+                            rset.getFloat("custo"),
+                            rset.getString("descricao"),
+                            rset.getInt("qnt_max_funcionario")
+                    );
+                    listaPlanos.add(plano);
+                }
+            }
+        }
+        return listaPlanos;
+    }
+
+    /*
+     * Busca um plano específico pelo ID.
+     */
+    public Plano read(int id) throws SQLException {
         Conexao conexao = new Conexao();
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        String update = "UPDATE planos SET nomeplano = ?, custo = ?, descricao = ?, qnt_max_funcionario = ? WHERE id = ?";
-        try {
-            conn = conexao.conectar();
-            pstmt = conn.prepareStatement(update);
+        String readIdSQL = "SELECT * FROM planos WHERE id = ?";
+        Plano plano = null;
+
+        try (Connection conn = conexao.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(readIdSQL)) {
+
+            pstmt.setInt(1, id);
+
+            try (ResultSet rset = pstmt.executeQuery()) {
+                if (rset.next()) {
+                    plano = new Plano(
+                            rset.getInt("id"),
+                            rset.getString("nomeplano"),
+                            rset.getFloat("custo"),
+                            rset.getString("descricao"),
+                            rset.getInt("qnt_max_funcionario")
+                    );
+                }
+            }
+        }
+        return plano;
+    }
+
+    /*
+     * Atualiza um plano existente com base em um objeto Plano.
+     */
+    public int update(Plano plano) throws SQLException {
+        Conexao conexao = new Conexao();
+        String updateSQL = "UPDATE planos SET nomeplano = ?, custo = ?, descricao = ?, qnt_max_funcionario = ? WHERE id = ?";
+
+        try (Connection conn = conexao.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(updateSQL)) {
 
             pstmt.setString(1, plano.getNome());
             pstmt.setFloat(2, plano.getCusto());
@@ -204,111 +173,57 @@ public List<Plano> read(String nome, String orderBy, String direction) {
             pstmt.setInt(4, plano.getMaxFuncionarios());
             pstmt.setInt(5, plano.getId());
 
-            if (pstmt.executeUpdate() > 0){
-                return 1;
-            }
-            return 0;
-        }
-        catch (SQLException e) {
-            System.err.println("Erro ao atualizar planos: " + e.getMessage());
-            return -1;
-        } finally {
-            try {
-                if (pstmt != null) pstmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                System.err.println("Erro ao fechar conexão após atualizar planos: " + e.getMessage());
-            }
-        }
-
-    }
-
-//    Update por parametro
-    public int update(String nomeplano, float custo, String descricao, int qnt_max_funcionario, int id) {
-    Conexao conexao = new Conexao();
-    Connection conn = null;
-    PreparedStatement pstmt = null;
-    String update = "UPDATE planos SET nomeplano = ?, custo = ?, descricao = ?, qnt_max_funcionario = ? WHERE id = ?";
-    try {
-        conn = conexao.conectar();
-        pstmt = conn.prepareStatement(update);
-
-        pstmt.setString(1, nomeplano);
-        pstmt.setFloat(2, custo);
-        pstmt.setString(3, descricao);
-        pstmt.setInt(4, qnt_max_funcionario);
-        pstmt.setInt(5, id);
-
-        if (pstmt.executeUpdate() > 0){
-            return 1;
-        }
-        return 0;
-    }
-    catch (SQLException e) {
-        System.err.println("Erro ao atualizar planos: " + e.getMessage());
-        return -1;
-    } finally {
-        try {
-            if (pstmt != null) pstmt.close();
-            if (conn != null) conn.close();
-        } catch (SQLException e) {
-            System.err.println("Erro ao fechar conexão após atualizar planos: " + e.getMessage());
+            return pstmt.executeUpdate();
         }
     }
-}
 
-// Delete by Id
-    public int delete(int id) {
+    /*
+     * Atualiza um plano existente com base nos parâmetros individuais.
+     */
+    public int update(int id, String nome, float custo, String descricao, int qntMaxFuncionario) throws SQLException {
         Conexao conexao = new Conexao();
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        String delete = "DELETE FROM planos WHERE id = ?";
-        try {
-            conn = conexao.conectar();
-            pstmt = conn.prepareStatement(delete);
+        String updateSQL = "UPDATE planos SET nomeplano = ?, custo = ?, descricao = ?, qnt_max_funcionario = ? WHERE id = ?";
+
+        try (Connection conn = conexao.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(updateSQL)) {
+
+            pstmt.setString(1, nome);
+            pstmt.setFloat(2, custo);
+            pstmt.setString(3, descricao);
+            pstmt.setInt(4, qntMaxFuncionario);
+            pstmt.setInt(5, id);
+
+            return pstmt.executeUpdate();
+        }
+    }
+
+    /*
+     * Exclui um plano do banco de dados pelo ID.
+     */
+    public int delete(int id) throws SQLException {
+        Conexao conexao = new Conexao();
+        String deleteSQL = "DELETE FROM planos WHERE id = ?";
+
+        try (Connection conn = conexao.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(deleteSQL)) {
+
             pstmt.setInt(1, id);
-
-            if (pstmt.executeUpdate() > 0){
-                return 1;
-            }
-            return 0;
-        }catch (SQLException e) {
-            System.err.println("Erro ao deletar planos: " + e.getMessage());
-            return -1;
-        } finally {
-            try {
-                if (pstmt != null) pstmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                System.err.println("Erro ao fechar conexão após deletar planos: " + e.getMessage());
-            }
+            return pstmt.executeUpdate();
         }
-}
-//  DELETE By Nome
-    public int delete(String nomeplano) {
+    }
+
+    /*
+     * Exclui um plano do banco de dados pelo nome.
+     */
+    public int delete(String nomePlano) throws SQLException {
         Conexao conexao = new Conexao();
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        String delete = "DELETE FROM planos WHERE nomeplano = ?";
-        try {
-            conn = conexao.conectar();
-            pstmt = conn.prepareStatement(delete);
-            pstmt.setString(1, nomeplano);
+        String deleteSQL = "DELETE FROM planos WHERE nomeplano = ?";
 
-            if (pstmt.executeUpdate() > 0){
-                return 1;
-            }
-            return 0;
-        }catch (SQLException e) {
-            System.err.println("Erro ao deletar plano: " + e.getMessage());
-            return -1;
-        } finally {
-            try {
-                if (pstmt != null) pstmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                System.err.println("Erro ao fechar conexão após deletar plano: " + e.getMessage());
-            }
-        }}
+        try (Connection conn = conexao.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(deleteSQL)) {
+
+            pstmt.setString(1, nomePlano);
+            return pstmt.executeUpdate();
+        }
+    }
 }
-

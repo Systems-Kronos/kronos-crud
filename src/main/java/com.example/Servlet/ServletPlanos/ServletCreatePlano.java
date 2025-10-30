@@ -1,75 +1,111 @@
-package com.example.Servlet.ServletPlanos; // Verifique o pacote
+package com.example.Servlet.ServletPlanos;
 
-import com.example.dao.PlanoDAO;     // Verifique o import
-import com.example.Model.Plano;      // Verifique o import
+import com.example.dao.PlanoDAO;
+import com.example.Model.Plano;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
 import java.io.IOException;
-import java.util.List;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
-@WebServlet("/plano-create") // Action do form Create
+/**
+ * Servlet focado SOMENTE em CRIAR (Create) um novo Plano.
+ * Segue o mesmo padrão técnico do ServletCreateHabilidade.
+ */
+@WebServlet("/plano-create")
 public class ServletCreatePlano extends HttpServlet {
 
+    /*
+     * Processa a criação de um novo Plano.
+     * Segue o fluxo: Coleta → Validação (Model) → Persistência (DAO) → PRG Pattern.
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         request.setCharacterEncoding("UTF-8");
 
-        // Pegar parâmetros
+        // 1. Coleta de parâmetros
         String nome = request.getParameter("nome");
-        String custoStr = request.getParameter("custo"); // JSP usa 'custo'
-        String maxFuncionariosStr = request.getParameter("maxFuncionarios");
+        String custoStr = request.getParameter("custo");
         String descricao = request.getParameter("descricao");
+        String maxFuncionariosStr = request.getParameter("maxFuncionarios");
 
         PlanoDAO dao = new PlanoDAO();
         boolean success = false;
+        String erro = null;
 
         try {
-            // Converter números
+            // 2. Conversão e validação (Model)
             float custo = Float.parseFloat(custoStr);
             int maxFuncionarios = Integer.parseInt(maxFuncionariosStr);
 
-            // Criar objeto (validações do Model ocorrem aqui)
+            // O Model pode lançar IllegalArgumentException ou NullPointerException
             Plano novoPlano = new Plano(nome, custo, descricao, maxFuncionarios);
 
-            // Inserir no banco
+            // 3. Persistência (DAO)
             success = dao.create(novoPlano);
 
             if (success) {
-                response.sendRedirect(request.getContextPath() + "/planos-crud"); // Redirect sucesso
-                return; // Encerra
+                // 4. SUCESSO — PRG Pattern
+                System.out.println("Plano criado com sucesso!");
+                response.sendRedirect(request.getContextPath() + "/planos-crud");
+                return; // IMPORTANTE: encerra após redirect
             } else {
-                request.setAttribute("erro", "Erro ao cadastrar plano no banco.");
+                erro = "Erro ao cadastrar plano (DAO retornou falso).";
             }
 
-        } catch (IllegalArgumentException | NullPointerException | IllegalStateException  e) {
-            // Erro de validação ou formato
-            request.setAttribute("erro", "Erro: " + e.getMessage());
-            // Guarda dados para repopular
-            request.setAttribute("nome_previo", nome);
-            request.setAttribute("custo_previo", custoStr);
-            request.setAttribute("maxFuncionarios_previo", maxFuncionariosStr);
-            request.setAttribute("descricao_previo", descricao);
+        } catch (NumberFormatException e) {
+            erro = "Erro: valores numéricos inválidos. Verifique o custo e a quantidade máxima de funcionários.";
 
-        } catch (Exception e) { // Outros erros
+        } catch (IllegalArgumentException | NullPointerException e) {
+            // Erros de validação do Model
+            erro = "Erro de validação: " + e.getMessage();
+
+        } catch (SQLException e) {
+            // Erros de banco de dados (DAO)
             e.printStackTrace();
-            request.setAttribute("erro", "Erro inesperado: " + e.getMessage());
+            if (e.getMessage().contains("Duplicate entry") || e.getMessage().contains("UNIQUE constraint failed")) {
+                erro = "Erro: Já existe um plano com este nome ('" + nome + "').";
+            } else {
+                erro = "Erro de banco de dados ao criar plano: " + e.getMessage();
+            }
+
+        } catch (Exception e) {
+            // Qualquer outro erro inesperado
+            e.printStackTrace();
+            erro = "Erro inesperado ao criar plano: " + e.getMessage();
         }
 
-        // --- Se deu erro ---
-        if (!success) {
-            System.err.println("Falha na criação do plano. Forwarding.");
-            List<Plano> listaPlanos = null;
-            try { listaPlanos = dao.read(); } catch (Exception readEx){ listaPlanos = new ArrayList<>(); }
-            request.setAttribute("listaPlanos", listaPlanos); // Recarrega lista
-            request.setAttribute("abrirModal", "create"); // Avisa para reabrir
-            request.getRequestDispatcher("/WEB-INF/pages/planos.jsp").forward(request, response); // Forward JSP
+        // 5. CAMINHO DE FALHA (Forward)
+        System.err.println("Falha na criação do plano. Fazendo forward. Erro: " + erro);
+
+        // Define atributos de erro e repopulação
+        request.setAttribute("erro", erro);
+        request.setAttribute("nome_previo", nome);
+        request.setAttribute("custo_previo", custoStr);
+        request.setAttribute("descricao_previo", descricao);
+        request.setAttribute("maxFuncionarios_previo", maxFuncionariosStr);
+
+        // Recarrega lista de planos (para o JSP)
+        List<Plano> listaPlanos = new ArrayList<>();
+        try {
+            // Trata SQLException do dao.read()
+            listaPlanos = dao.read();
+        } catch (SQLException e) {
+            e.printStackTrace(); // Loga o erro de leitura
+            request.setAttribute("erro", erro + " | ERRO ADICIONAL: Falha ao recarregar a lista de planos.");
         }
+        request.setAttribute("listaPlanos", listaPlanos);
+
+        // Avisa o JSP para reabrir o modal de CREATE
+        request.setAttribute("abrirModal", "create");
+
+        // Encaminha para o JSP de planos
+        request.getRequestDispatcher("/WEB-INF/pages/planos.jsp").forward(request, response);
     }
 }
