@@ -7,24 +7,24 @@
 <%@ page import="java.util.Arrays" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
-
+<%-- Bloco de Processamento de Atributos (para erros e repopulação) --%>
 <%
-    /* --- Processamento de Atributos (Usuario) --- */
-
-    // 1. Pega os atributos principais
+    // Erros e modal atual
     String erro = (String) request.getAttribute("erro");
     String modalAberto = (String) request.getAttribute("abrirModal");
-    Usuario usuarioModal = (Usuario) request.getAttribute("usuarioModal"); // Objeto para preencher modais Update/Delete
+    Usuario usuarioModal = (Usuario) request.getAttribute("usuarioModal");
 
-    // 2. Prepara variáveis para o modal CREATE (Repopulação pós-erro)
+    // ==== CREATE ====
+    // Variáveis para repopular campos após erro
     String createNome = "";
     String createCpf = "";
-    String createGenero = ""; // Armazena a letra ('M', 'F', 'O', 'N')
+    String createGenero = "";
     String createStatus = "";
     String createIdSetor = "";
     String createIdSupervisor = "";
     String createCargo = "";
     Set<String> createHabilidadesSet = new HashSet<>();
+
     if ("create".equals(modalAberto)) {
         createNome = request.getAttribute("nome_previo") != null ? (String)request.getAttribute("nome_previo") : "";
         createCpf = request.getAttribute("cpf_previo") != null ? (String)request.getAttribute("cpf_previo") : "";
@@ -39,7 +39,8 @@
         }
     }
 
-    // 3. Prepara variáveis para o modal UPDATE
+    // ==== UPDATE ====
+    // Variáveis para o modal UPDATE (GET ou erro de POST)
     String updateID = "";
     String updateNome = "";
     String updateCpf = "";
@@ -49,6 +50,7 @@
     String updateIdSupervisor = "";
     String updateCargo = "";
     Set<Integer> updateHabilidadesSet = new HashSet<>();
+
     if (usuarioModal != null) {
         updateID = String.valueOf(usuarioModal.getId());
         updateNome = usuarioModal.getNome();
@@ -58,7 +60,8 @@
         updateIdSetor = String.valueOf(usuarioModal.getIdSetor());
         updateIdSupervisor = String.valueOf(usuarioModal.getIdSupervisor());
         updateCargo = usuarioModal.getCargo();
-        // Pega a List<Integer> de IDs do servlet (do GET ou POST falho)
+
+        // Pega habilidades do servlet (para update/delete)
         Object habilidadesPreviasObj = request.getAttribute("habilidades_previas_ids");
         if (("update".equals(modalAberto) || "delete".equals(modalAberto)) && habilidadesPreviasObj instanceof List) {
             try {
@@ -68,6 +71,7 @@
             }
         }
     }
+
     if ("update".equals(modalAberto) && request.getAttribute("nome_previo") != null) {
         // ID não muda
         updateNome = (String) request.getAttribute("nome_previo");
@@ -79,7 +83,8 @@
         updateCargo = (String) request.getAttribute("cargo_previo");
     }
 
-    // 4. Prepara variáveis para o modal DELETE
+    // ==== DELETE ====
+    // Variáveis para o modal DELETE (para GET)
     String deleteID = "";
     String deleteNome = "";
     String deleteCpf = "";
@@ -88,6 +93,7 @@
     String deleteIdSetor = "";
     String deleteIdSupervisor = "";
     String deleteCargo = "";
+
     if (usuarioModal != null && "delete".equals(modalAberto)) {
         deleteID = String.valueOf(usuarioModal.getId());
         deleteNome = usuarioModal.getNome();
@@ -99,10 +105,13 @@
         deleteCargo = usuarioModal.getCargo();
     }
 
+    // ==== LISTA DE HABILIDADES (para o CRUD principal) ====
     List<Habilidades> todasAsHabilidades = (List<Habilidades>) request.getAttribute("todasAsHabilidades");
     if (todasAsHabilidades == null) {
-        todasAsHabilidades = new ArrayList<>(); // Evita NullPointerException
+        todasAsHabilidades = new ArrayList<>();
     }
+%>
+
 %>
 
 <!DOCTYPE html>
@@ -119,6 +128,7 @@
     <title>Usuários - Kronos CRUD</title>
 </head>
 
+<%-- Passa o modal a ser aberto (em caso de erro) para o script.js --%>
 <body data-modal-para-abrir="<%= modalAberto != null ? modalAberto : "" %>">
 <div class="meuPlaceholder"></div>
 
@@ -137,7 +147,8 @@
 </header>
 
 <div class="conteudoPrincipal">
-            <%
+    <%-- Bloco de Exibição de Erro (Geral e Parcial) --%>
+<%
             if (erro != null && !erro.isEmpty()) {
         %>
         <div class="mensagem-erro">
@@ -157,7 +168,10 @@
                 session.removeAttribute("erro_parcial");
             }
         %>
+
     <div class="procurarCadastrar">
+
+        <%-- ==== FILTRO DE PESQUISA ==== --%>
         <form class="pesquisa" method="get" action="${pageContext.request.contextPath}/usuarios-crud">
             <input type="search" placeholder="Pesquisar" id="pesquisa" name="pesquisa" class="buscar" value="<%= request.getParameter("pesquisa") != null ? request.getParameter("pesquisa") : "" %>">
             <details class="filtros">
@@ -171,7 +185,8 @@
             </details>
         </form>
 
-        <section class="create">
+            <%-- ==== CREATE ==== --%>
+            <section class="create">
             <dialog id="create">
                 <h2>Cadastrar usuário</h2>
                 <form action="${pageContext.request.contextPath}/usuario-create" id="formCreate" method="post">
@@ -238,7 +253,8 @@
             <button type="button" class="cadastrar acaoModal" data-acao="abrir" data-modal="create">Cadastrar</button>
         </section>
 
-        <section class="update">
+            <%-- ==== UPDATE ==== --%>
+            <section class="update">
             <dialog id="update">
                 <h2>Editar usuário</h2>
                 <form action="${pageContext.request.contextPath}/usuario-update" method="post">
@@ -304,7 +320,8 @@
             </dialog>
         </section>
 
-        <section class="delete">
+            <%-- ==== DELETE ==== --%>
+            <section class="delete">
             <dialog id="delete">
                 <h2>Excluir usuário</h2>
                 <form action="${pageContext.request.contextPath}/usuario-delete" method="post">
@@ -349,7 +366,8 @@
         </section>
     </div>
 
-    <main>
+        <%-- ==== TABELA DE VISUALIZAÇÃO (READ) ==== --%>
+        <main>
         <div class="tabelaScroll">
             <table class="tabelaUsuarios">
                 <thead>

@@ -7,18 +7,23 @@ import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Classe DAO (Data Access Object) para a entidade Setor.
+ * Responsável pelas operações CRUD no banco de dados.
+ * Segue o padrão de propagar SQLException e usar try-with-resources.
+ */
 public class SetorDAO {
 
-    // CREATE
-    public boolean create(Setor setor) {
+    /*
+     * Cria um novo registro de setor no banco de dados.
+     */
+    public boolean create(Setor setor) throws SQLException {
         Conexao conexao = new Conexao();
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        String create = "INSERT INTO setor (nome, descricao, turnos, qnt_funcionarios, fk_empresa_id) VALUES (?, ?, ?, ?, ?)";
+        String createSQL = "INSERT INTO setor (nome, descricao, turnos, qnt_funcionarios, fk_empresa_id) VALUES (?, ?, ?, ?, ?)";
 
-        try {
-            conn = conexao.conectar();
-            pstmt = conn.prepareStatement(create);
+        try (Connection conn = conexao.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(createSQL)) {
+
             pstmt.setString(1, setor.getNome());
             pstmt.setString(2, setor.getDescricao());
             pstmt.setString(3, setor.getTurnos());
@@ -26,30 +31,20 @@ public class SetorDAO {
             pstmt.setInt(5, setor.getIdEmpresa());
 
             return pstmt.executeUpdate() > 0;
-
-        } catch (SQLException e) {
-            System.err.println("Erro ao inserir setor: " + e.getMessage());
-            return false;
-        } finally {
-            try { if (pstmt != null) pstmt.close(); if (conn != null) conn.close(); }
-            catch (SQLException e) { System.err.println("Erro ao fechar conexão: " + e.getMessage()); }
         }
     }
 
-    // READ ALL
-    public List<Setor> read() {
+    /*
+     * Busca todos os Setores no banco de dados, ordenados por ID.
+     */
+    public List<Setor> read() throws SQLException {
         Conexao conexao = new Conexao();
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rset = null;
         List<Setor> setores = new LinkedList<>();
+        String readSQL = "SELECT id, nome, descricao, turnos, qnt_funcionarios, fk_empresa_id FROM setor ORDER BY id ASC";
 
-        String read = "SELECT id, nome, descricao, turnos, qnt_funcionarios, fk_empresa_id FROM setor ORDER BY id";
-
-        try {
-            conn = conexao.conectar();
-            pstmt = conn.prepareStatement(read);
-            rset = pstmt.executeQuery();
+        try (Connection conn = conexao.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(readSQL);
+             ResultSet rset = pstmt.executeQuery()) {
 
             while (rset.next()) {
                 Setor setor = new Setor(
@@ -62,117 +57,102 @@ public class SetorDAO {
                 );
                 setores.add(setor);
             }
-
-        } catch (SQLException e) {
-            System.err.println("Erro ao buscar setores: " + e.getMessage());
-        } finally {
-            try { if (rset != null) rset.close(); if (pstmt != null) pstmt.close(); if (conn != null) conn.close(); }
-            catch (SQLException e) { System.err.println("Erro ao fechar conexão: " + e.getMessage()); }
         }
-
         return setores;
     }
 
-    // READ com filtro (nome) e ordenação
-    public List<Setor> read(String nome, String orderBy, String direction) {
+    /*
+     * Busca Setores filtrando por nome (case-insensitive) e permitindo ordenação.
+     */
+    public List<Setor> read(String nome, String orderBy, String direction) throws SQLException {
         Conexao conexao = new Conexao();
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rset = null;
         List<Setor> setores = new LinkedList<>();
 
-        StringBuilder sql = new StringBuilder("SELECT id, nome, descricao, turnos, qnt_funcionarios, fk_empresa_id FROM setor WHERE 1=1");
+        List<Object> parametros = new LinkedList<>();
+        StringBuilder sqlBuilder = new StringBuilder("SELECT id, nome, descricao, turnos, qnt_funcionarios, fk_empresa_id FROM setor WHERE 1=1");
 
-        if (nome != null && !nome.isEmpty()) {
-            sql.append(" AND nome ILIKE ?");
+        if (nome != null && !nome.trim().isEmpty()) {
+            sqlBuilder.append(" AND nome ILIKE ?");
+            parametros.add("%" + nome.trim() + "%");
         }
 
+        // Whitelisting da coluna de ordenação
         String colunaOrdenacao = "id";
         if (orderBy != null) {
-            if (orderBy.equalsIgnoreCase("nome")) colunaOrdenacao = "nome";
-            else if (orderBy.equalsIgnoreCase("qnt_funcionarios")) colunaOrdenacao = "qnt_funcionarios";
+            String lowerOrderBy = orderBy.trim().toLowerCase();
+            if (lowerOrderBy.equals("nome")) colunaOrdenacao = "nome";
+            else if (lowerOrderBy.equals("qnt_funcionarios")) colunaOrdenacao = "qnt_funcionarios";
         }
 
-        String dir = (direction != null && direction.equalsIgnoreCase("DESC")) ? "DESC" : "ASC";
-        sql.append(" ORDER BY ").append(colunaOrdenacao).append(" ").append(dir);
+        String dir = (direction != null && direction.trim().equalsIgnoreCase("DESC")) ? "DESC" : "ASC";
+        sqlBuilder.append(" ORDER BY ").append(colunaOrdenacao).append(" ").append(dir);
 
-        try {
-            conn = conexao.conectar();
-            pstmt = conn.prepareStatement(sql.toString());
-            if (nome != null && !nome.isEmpty()) {
-                pstmt.setString(1, "%" + nome + "%");
+        String sql = sqlBuilder.toString();
+
+        try (Connection conn = conexao.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            // Define os parâmetros (?)
+            for (int i = 0; i < parametros.size(); i++) {
+                pstmt.setObject(i + 1, parametros.get(i));
             }
 
-            rset = pstmt.executeQuery();
-            while (rset.next()) {
-                Setor setor = new Setor(
-                        rset.getInt("id"),
-                        rset.getString("nome"),
-                        rset.getString("descricao"),
-                        rset.getString("turnos"),
-                        rset.getInt("qnt_funcionarios"),
-                        rset.getInt("fk_empresa_id")
-                );
-                setores.add(setor);
+            try (ResultSet rset = pstmt.executeQuery()) {
+                while (rset.next()) {
+                    Setor setor = new Setor(
+                            rset.getInt("id"),
+                            rset.getString("nome"),
+                            rset.getString("descricao"),
+                            rset.getString("turnos"),
+                            rset.getInt("qnt_funcionarios"),
+                            rset.getInt("fk_empresa_id")
+                    );
+                    setores.add(setor);
+                }
             }
-
-        } catch (SQLException e) {
-            System.err.println("Erro ao buscar setores com filtro: " + e.getMessage());
-        } finally {
-            try { if (rset != null) rset.close(); if (pstmt != null) pstmt.close(); if (conn != null) conn.close(); }
-            catch (SQLException e) { System.err.println("Erro ao fechar conexão: " + e.getMessage()); }
         }
-
         return setores;
     }
 
-    // READ by ID
-    public Setor read(int id) {
+    /*
+     * Busca um Setor específico pelo seu ID.
+     */
+    public Setor read(int id) throws SQLException {
         Conexao conexao = new Conexao();
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rset = null;
         Setor setor = null;
+        String readSQL = "SELECT id, nome, descricao, turnos, qnt_funcionarios, fk_empresa_id FROM setor WHERE id = ?";
 
-        String read = "SELECT id, nome, descricao, turnos, qnt_funcionarios, fk_empresa_id FROM setor WHERE id = ?";
+        try (Connection conn = conexao.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(readSQL)) {
 
-        try {
-            conn = conexao.conectar();
-            pstmt = conn.prepareStatement(read);
             pstmt.setInt(1, id);
-            rset = pstmt.executeQuery();
 
-            if (rset.next()) {
-                setor = new Setor(
-                        rset.getInt("id"),
-                        rset.getString("nome"),
-                        rset.getString("descricao"),
-                        rset.getString("turnos"),
-                        rset.getInt("qnt_funcionarios"),
-                        rset.getInt("fk_empresa_id")
-                );
+            try (ResultSet rset = pstmt.executeQuery()) {
+                if (rset.next()) {
+                    setor = new Setor(
+                            rset.getInt("id"),
+                            rset.getString("nome"),
+                            rset.getString("descricao"),
+                            rset.getString("turnos"),
+                            rset.getInt("qnt_funcionarios"),
+                            rset.getInt("fk_empresa_id")
+                    );
+                }
             }
-
-        } catch (SQLException e) {
-            System.err.println("Erro ao buscar setor por ID: " + e.getMessage());
-        } finally {
-            try { if (rset != null) rset.close(); if (pstmt != null) pstmt.close(); if (conn != null) conn.close(); }
-            catch (SQLException e) { System.err.println("Erro ao fechar conexão: " + e.getMessage()); }
         }
-
         return setor;
     }
 
-    // UPDATE por objeto
-    public int update(Setor setor) {
+    /*
+     * Atualiza os dados de um setor existente, baseado em um objeto.
+     */
+    public int update(Setor setor) throws SQLException {
         Conexao conexao = new Conexao();
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        String update = "UPDATE setor SET nome = ?, descricao = ?, turnos = ?, qnt_funcionarios = ?, fk_empresa_id = ? WHERE id = ?";
+        String updateSQL = "UPDATE setor SET nome = ?, descricao = ?, turnos = ?, qnt_funcionarios = ?, fk_empresa_id = ? WHERE id = ?";
 
-        try {
-            conn = conexao.conectar();
-            pstmt = conn.prepareStatement(update);
+        try (Connection conn = conexao.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(updateSQL)) {
+
             pstmt.setString(1, setor.getNome());
             pstmt.setString(2, setor.getDescricao());
             pstmt.setString(3, setor.getTurnos());
@@ -180,27 +160,20 @@ public class SetorDAO {
             pstmt.setInt(5, setor.getIdEmpresa());
             pstmt.setInt(6, setor.getId());
 
-            return pstmt.executeUpdate() > 0 ? 1 : 0;
-
-        } catch (SQLException e) {
-            System.err.println("Erro ao atualizar setor: " + e.getMessage());
-            return -1;
-        } finally {
-            try { if (pstmt != null) pstmt.close(); if (conn != null) conn.close(); }
-            catch (SQLException e) { System.err.println("Erro ao fechar conexão: " + e.getMessage()); }
+            return pstmt.executeUpdate();
         }
     }
 
-    // UPDATE por parâmetros
-    public int update(int id, String nome, String descricao, String turnos, int qntFunc, int idEmpresa) {
+    /*
+     * Atualiza os dados de um setor existente, baseado nos parâmetros.
+     */
+    public int update(int id, String nome, String descricao, String turnos, int qntFunc, int idEmpresa) throws SQLException {
         Conexao conexao = new Conexao();
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        String update = "UPDATE setor SET nome = ?, descricao = ?, turnos = ?, qnt_funcionarios = ?, fk_empresa_id = ? WHERE id = ?";
+        String updateSQL = "UPDATE setor SET nome = ?, descricao = ?, turnos = ?, qnt_funcionarios = ?, fk_empresa_id = ? WHERE id = ?";
 
-        try {
-            conn = conexao.conectar();
-            pstmt = conn.prepareStatement(update);
+        try (Connection conn = conexao.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(updateSQL)) {
+
             pstmt.setString(1, nome);
             pstmt.setString(2, descricao);
             pstmt.setString(3, turnos);
@@ -208,80 +181,53 @@ public class SetorDAO {
             pstmt.setInt(5, idEmpresa);
             pstmt.setInt(6, id);
 
-            return pstmt.executeUpdate() > 0 ? 1 : 0;
-
-        } catch (SQLException e) {
-            System.err.println("Erro ao atualizar setor por parâmetros: " + e.getMessage());
-            return -1;
-        } finally {
-            try { if (pstmt != null) pstmt.close(); if (conn != null) conn.close(); }
-            catch (SQLException e) { System.err.println("Erro ao fechar conexão: " + e.getMessage()); }
+            return pstmt.executeUpdate();
         }
     }
 
-    // DELETE por ID
-    public int delete(int id) {
+    /*
+     * Exclui um setor do banco de dados pelo ID.
+     */
+    public int delete(int id) throws SQLException {
         Conexao conexao = new Conexao();
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        String delete = "DELETE FROM setor WHERE id = ?";
+        String deleteSQL = "DELETE FROM setor WHERE id = ?";
 
-        try {
-            conn = conexao.conectar();
-            pstmt = conn.prepareStatement(delete);
+        try (Connection conn = conexao.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(deleteSQL)) {
+
             pstmt.setInt(1, id);
-            return pstmt.executeUpdate() > 0 ? 1 : 0;
-
-        } catch (SQLException e) {
-            System.err.println("Erro ao deletar setor: " + e.getMessage());
-            return -1;
-        } finally {
-            try { if (pstmt != null) pstmt.close(); if (conn != null) conn.close(); }
-            catch (SQLException e) { System.err.println("Erro ao fechar conexão: " + e.getMessage()); }
+            return pstmt.executeUpdate();
         }
     }
 
-    // DELETE por nome
-    public int delete(String nome) {
+    /*
+     * Exclui um setor do banco de dados pelo nome. (Não recomendado).
+     */
+    public int delete(String nome) throws SQLException {
         Conexao conexao = new Conexao();
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        String delete = "DELETE FROM setor WHERE nome = ?";
+        String deleteSQL = "DELETE FROM setor WHERE nome = ?";
 
-        try {
-            conn = conexao.conectar();
-            pstmt = conn.prepareStatement(delete);
+        try (Connection conn = conexao.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(deleteSQL)) {
+
             pstmt.setString(1, nome);
-            return pstmt.executeUpdate() > 0 ? 1 : 0;
-
-        } catch (SQLException e) {
-            System.err.println("Erro ao deletar setor por nome: " + e.getMessage());
-            return -1;
-        } finally {
-            try { if (pstmt != null) pstmt.close(); if (conn != null) conn.close(); }
-            catch (SQLException e) { System.err.println("Erro ao fechar conexão: " + e.getMessage()); }
+            return pstmt.executeUpdate();
         }
     }
 
-    // ADICIONAR EMPRESA AO SETOR
-    public boolean addEmpresaToSetor(int idSetor, int idEmpresa) {
+    /*
+     * Associa um Setor a uma Empresa (atualiza a FK).
+     */
+    public boolean addEmpresaToSetor(int idSetor, int idEmpresa) throws SQLException {
         Conexao conexao = new Conexao();
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        String addEmpresa = "UPDATE setor SET fk_empresa_id = ? WHERE id = ?";
+        String addEmpresaSQL = "UPDATE setor SET fk_empresa_id = ? WHERE id = ?";
 
-        try {
-            conn = conexao.conectar();
-            pstmt = conn.prepareStatement(addEmpresa);
+        try (Connection conn = conexao.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(addEmpresaSQL)) {
+
             pstmt.setInt(1, idEmpresa);
             pstmt.setInt(2, idSetor);
             return pstmt.executeUpdate() > 0;
-        } catch (SQLException e) {
-            System.err.println("Erro ao adicionar empresa ao setor: " + e.getMessage());
-            return false;
-        } finally {
-            try { if (pstmt != null) pstmt.close(); if (conn != null) conn.close(); }
-            catch (SQLException e) { System.err.println("Erro ao fechar conexão: " + e.getMessage()); }
         }
     }
 }

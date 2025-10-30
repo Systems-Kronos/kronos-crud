@@ -1,12 +1,15 @@
 <%@ page import="com.example.Model.Administracao" %>
 <%@ page import="java.util.List" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
+<%-- Bloco de Processamento de Atributos (para erros e repopulação) --%>
 <%
     String erro = (String) request.getAttribute("erro");
     String modalAberto = (String) request.getAttribute("abrirModal");
     Administracao adminModal = (Administracao) request.getAttribute("adminModal");
 
+    // Variáveis para o modal CREATE (em caso de erro)
     String createNome = "";
     String createEmail = "";
     if ("create".equals(modalAberto)) {
@@ -14,6 +17,7 @@
         createEmail = request.getAttribute("email_previo") != null ? (String)request.getAttribute("email_previo") : "";
     }
 
+    // Variáveis para o modal UPDATE (para GET ou erro de POST)
     String updateID = "";
     String updateNome = "";
     String updateEmail = "";
@@ -27,6 +31,7 @@
         updateEmail = (String) request.getAttribute("email_previo");
     }
 
+    // Variáveis para o modal DELETE (para GET)
     String deleteID = "";
     String deleteNome = "";
     String deleteEmail = "";
@@ -34,6 +39,12 @@
         deleteID = String.valueOf(adminModal.getId());
         deleteNome = adminModal.getNome();
         deleteEmail = adminModal.getEmail();
+    }
+
+    // Pega a lista principal de admins (para a tabela)
+    List<Administracao> listaAdmins = (List<Administracao>) request.getAttribute("listaAdmins");
+    if (listaAdmins == null) {
+        listaAdmins = new ArrayList<>();
     }
 %>
 
@@ -51,6 +62,7 @@
     <title>Administrador - Kronos CRUD</title>
 </head>
 
+<%-- Passa o modal a ser aberto (em caso de erro) para o script.js --%>
 <body data-modal-para-abrir="<%= modalAberto != null ? modalAberto : "" %>">
 <div class="meuPlaceholder"></div>
 
@@ -70,6 +82,7 @@
 
 <div class="conteudoPrincipal">
 
+    <%-- Bloco de Exibição de Erro (Geral e Parcial) --%>
         <%
         if (erro != null && !erro.isEmpty()) {
     %>
@@ -79,8 +92,22 @@
         <%
         }
     %>
+        <%
+        String erroParcial = (String) session.getAttribute("erro_parcial");
+        if (erroParcial != null) {
+    %>
+    <div class="mensagem-aviso">
+        <strong>Aviso:</strong> <%= erroParcial %>
+    </div>
+        <%
+            session.removeAttribute("erro_parcial");
+        }
+    %>
+
 
     <div class="procurarCadastrar">
+
+        <%-- ==== FILTRO DE PESQUISA ==== --%>
         <form class="pesquisa" method="get" action="${pageContext.request.contextPath}/admin-crud">
             <input type="search" placeholder="Pesquisar" id="pesquisa" name="pesquisa" class="buscar" value="<%= request.getParameter("pesquisa") != null ? request.getParameter("pesquisa") : "" %>">
             <details class="filtros">
@@ -94,10 +121,12 @@
             </details>
         </form>
 
-        <section class="create">
+            <%-- ==== CREATE ==== --%>
+            <section class="create">
             <dialog id="create">
                 <h2>Cadastrar administrador</h2>
-                <form action="${pageContext.request.contextPath}/admin-create" id="formCreate" method="post">
+                <%-- Este formulário é validado pelo script.js (lógica de senha) --%>
+                <form action="${pageContext.request.contextPath}/admin-create" id="formCreateAdmin" class="form-validar-senha" method="post" novalidate>
                     <div class="campos">
                         <div>
                             <div class="campo">
@@ -105,9 +134,9 @@
                                 <input type="text" name="nome" id="nomeCreate" autocomplete="off" required value="<%= createNome %>">
                             </div>
                             <div class="campo">
-                                <label for="senhaCreate">Senha</label>
-                                <input type="password" name="senha" id="senhaCreate" autocomplete="new-password" required>
-                                <span id="senhaErro" class="erro-senha"></span>
+                                <label for="senhaCreateAdmin">Senha</label>
+                                <input type="password" name="senha" id="senhaCreateAdmin" class="input-senha-validar" autocomplete="new-password" required>
+                                <span id="senhaErrorAdmin" class="error-message span-erro-senha"></span>
                             </div>
                         </div>
                         <div>
@@ -126,7 +155,8 @@
             <button type="button" class="cadastrar acaoModal" data-acao="abrir" data-modal="create">Cadastrar</button>
         </section>
 
-        <section class="update">
+            <%-- ==== UPDATE ==== --%>
+            <section class="update">
             <dialog id="update">
                 <h2>Editar administrador</h2>
                 <form action="${pageContext.request.contextPath}/admin-update" method="post">
@@ -148,7 +178,8 @@
             </dialog>
         </section>
 
-        <section class="delete">
+            <%-- ==== DELETE ==== --%>
+            <section class="delete">
             <dialog id="delete">
                 <h2>Excluir administrador</h2>
                 <form action="${pageContext.request.contextPath}/admin-delete" method="post">
@@ -171,23 +202,24 @@
         </section>
     </div>
 
-    <main>
+        <%-- ==== TABELA DE VISUALIZAÇÃO (READ) ==== --%>
+        <main>
         <div class="tabelaScroll">
             <table class="tabelaAdministrador">
                 <thead> <tr> <th>Ver</th> <th>Excluir</th> <th>ID</th> <th>Nome</th> <th>E-mail</th> <th>Senha</th> </tr> </thead>
                 <tbody>
+                <%-- Loop para renderizar a tabela principal (Read) --%>
                 <%
-                    List<Administracao> listaAdmins = (List<Administracao>) request.getAttribute("listaAdmins");
                     if (listaAdmins != null && !listaAdmins.isEmpty()) {
                         for (Administracao admin : listaAdmins) {
                 %>
                 <tr>
-                    <td> <button type="button" class="detalhes acaoModal" data-acao="abrir" data-modal="update" data-pk="<%= admin.getId() %>" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"admin-crud"}'><img src="${pageContext.request.contextPath}/assets/crud/img/mais-detalhes.png" alt=""></button> </td>
-                    <td> <button type="button" class="detalhes acaoModal" data-acao="abrir" data-modal="delete" data-pk="<%= admin.getId() %>" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"admin-crud"}'><img src="${pageContext.request.contextPath}/assets/crud/img/deletar-kronos.png" alt=""></button> </td>
+                    <td> <button type="button" class="detalhes acaoModal" data-acao="abrir" data-modal="update" data-pk="<%= admin.getId() %>" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"admin-crud"}'><img src="${pageContext.request.contextPath}/assets/crud/img/mais-detalhes.png" alt="Ver/Editar"></button> </td>
+                    <td> <button type="button" class="detalhes acaoModal" data-acao="abrir" data-modal="delete" data-pk="<%= admin.getId() %>" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"admin-crud"}'><img src="${pageContext.request.contextPath}/assets/crud/img/deletar-kronos.png" alt="Excluir"></button> </td>
                     <td><%= admin.getId() %></td>
                     <td><%= admin.getNome() %></td>
                     <td><%= admin.getEmail() %></td>
-                    <td><%= admin.getSenha() %></td> <%-- Nunca exiba a senha (ou hash) --%>
+                    <td><%= admin.getSenha() %></td>
                 </tr>
                 <%
                     }
