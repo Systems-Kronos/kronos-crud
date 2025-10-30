@@ -211,9 +211,9 @@
                             <div class="campo"> <label for="cargoCreate">Cargo</label> <input type="text" name="cargo" id="cargoCreate" required value="<%= createCargo %>"> </div>
                             <div class="campo"> <label for="idSetorCreate">ID do Setor</label> <input type="number" name="idSetor" id="idSetorCreate" min="1" required value="<%= createIdSetor %>"> </div>
                             <div class="campo"> <label for="idSupervisorCreate">ID do Supervisor</label> <input type="number" name="idSupervisor" id="idSupervisorCreate" min="0" required value="<%= createIdSupervisor %>"> </div> <%-- Ajustado min="0" se aplicável --%>
-                            <fieldset>
+                            <fieldset class="campo">
                                 <legend>Habilidades</legend>
-                                <div id="lista-checkboxes-habilidades-create" style="max-height: 150px; overflow-y: auto; border: 1px solid #ccc; padding: 5px;">
+                                <div id="listaHabilidadesCreate">
                                     <% for (Habilidades hab : todasAsHabilidades) { %>
                                     <label style="display: block; margin: 2px;">
                                         <input type="checkbox"
@@ -279,9 +279,9 @@
                             <div class="campo"> <label for="cargoUpdate">Cargo</label> <input type="text" name="cargo" id="cargoUpdate" required value="<%= updateCargo %>"> </div>
                             <div class="campo"> <label for="idSetorUpdate">ID do Setor</label> <input type="number" name="idSetor" id="idSetorUpdate" min="1" required value="<%= updateIdSetor %>"> </div>
                             <div class="campo"> <label for="idSupervisorUpdate">ID do Supervisor</label> <input type="number" name="idSupervisor" id="idSupervisorUpdate" min="0" required value="<%= updateIdSupervisor %>"> </div>
-                            <fieldset>
+                            <fieldset class="campo">
                                 <legend>Habilidades</legend>
-                                <div id="lista-checkboxes-habilidades">
+                                <div id="listaHabilidadesUpdate">
                                     <% for (Habilidades hab : todasAsHabilidades) { %>
                                     <label style="display: block; margin: 2px;">
                                         <input type="checkbox"

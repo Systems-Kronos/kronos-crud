@@ -2,26 +2,29 @@ package com.example.dao;
 
 import com.example.Controller.Conexao;
 import com.example.Model.Empresa;
-import com.example.Model.Plano;
 
 import java.sql.*;
 import java.time.LocalTime;
 import java.util.LinkedList;
 import java.util.List;
 
-
+/**
+ * Classe DAO (Data Access Object) para a entidade Empresa.
+ * Responsável pelas operações CRUD no banco de dados.
+ * Segue o padrão de propagar SQLException e usar try-with-resources.
+ */
 public class EmpresaDAO {
 
-    // CREATE
-    public boolean create(Empresa empresa) {
+    /*
+     * Cria um novo registro de empresa no banco de dados.
+     */
+    public boolean create(Empresa empresa) throws SQLException {
         Conexao conexao = new Conexao();
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        String create = "INSERT INTO empresa (nome, cep, cnpj, email, telefone, porte, horario_abertura, horario_encerramento, regradenegocio, fk_plano_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String createSQL = "INSERT INTO empresa (nome, cep, cnpj, email, telefone, porte, horario_abertura, horario_encerramento, regradenegocio, fk_plano_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        try {
-            conn = conexao.conectar();
-            pstmt = conn.prepareStatement(create);
+        // Usa try-with-resources para garantir fechamento automático
+        try (Connection conn = conexao.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(createSQL)) {
 
             pstmt.setString(1, empresa.getNome());
             pstmt.setString(2, empresa.getCep());
@@ -35,211 +38,156 @@ public class EmpresaDAO {
             pstmt.setInt(10, empresa.getIdPlano());
 
             return pstmt.executeUpdate() > 0;
-
-        } catch (SQLException e) {
-            System.err.println("Erro ao inserir empresa: " + e.getMessage());
-            return false;
-        } finally {
-            try {
-                if (pstmt != null) pstmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                System.err.println("Erro ao fechar conexão: " + e.getMessage());
-            }
         }
+        // SQLException é propagada
     }
 
-    // READ ALL
-    public List<Empresa> read() {
+    /*
+     * Busca todas as Empresas no banco de dados, ordenadas por ID.
+     */
+    public List<Empresa> read() throws SQLException {
         Conexao conexao = new Conexao();
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rset = null;
         List<Empresa> empresas = new LinkedList<>();
 
-        String read = """
-            SELECT e.id, e.nome, e.cep, e.cnpj, e.email, e.telefone, e.porte,
-                   e.horario_abertura, e.horario_encerramento, e.regradenegocio,
-                   e.fk_plano_id
-            FROM empresa e
-            ORDER BY e.id;
-        """;
+        String readSQL = "SELECT * FROM empresa ORDER BY id ASC";
 
-        try {
-            conn = conexao.conectar();
-            pstmt = conn.prepareStatement(read);
-            rset = pstmt.executeQuery();
+        try (Connection connDb = conexao.conectar();
+             PreparedStatement pstmtDb = connDb.prepareStatement(readSQL);
+             ResultSet rsetDb = pstmtDb.executeQuery()) {
 
-            while (rset.next()) {
+            while (rsetDb.next()) {
                 Empresa empresa = new Empresa(
-                        rset.getInt("id"),
-                        rset.getString("nome"),
-                        rset.getString("cep"),
-                        rset.getString("cnpj"),
-                        rset.getString("email"),
-                        rset.getString("telefone"),
-                        rset.getString("porte"),
-                        rset.getTime("horario_abertura").toLocalTime(),
-                        rset.getTime("horario_encerramento").toLocalTime(),
-                        rset.getString("regradenegocio"),
-                        rset.getInt("fk_plano_id")
+                        rsetDb.getInt("id"),
+                        rsetDb.getString("nome"),
+                        rsetDb.getString("cep"),
+                        rsetDb.getString("cnpj"),
+                        rsetDb.getString("email"),
+                        rsetDb.getString("telefone"),
+                        rsetDb.getString("porte"),
+                        rsetDb.getTime("horario_abertura").toLocalTime(),
+                        rsetDb.getTime("horario_encerramento").toLocalTime(),
+                        rsetDb.getString("regradenegocio"),
+                        rsetDb.getInt("fk_plano_id")
                 );
-
                 empresas.add(empresa);
             }
-
-        } catch (SQLException e) {
-            System.err.println("Erro ao buscar empresas: " + e.getMessage());
-        } finally {
-            try {
-                if (rset != null) rset.close();
-                if (pstmt != null) pstmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                System.err.println("Erro ao fechar conexão: " + e.getMessage());
-            }
         }
-
+        // SQLException é propagada
         return empresas;
     }
 
-    // READ by filter (por nome)
-    public List<Empresa> read(String nome, String orderBy, String direction) {
+    /*
+     * Busca Empresas filtrando por nome (case-insensitive) e permitindo ordenação.
+     */
+    public List<Empresa> read(String nome, String orderBy, String direction) throws SQLException {
         Conexao conexao = new Conexao();
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rset = null;
         List<Empresa> empresas = new LinkedList<>();
 
-        StringBuilder sql = new StringBuilder("""
-            SELECT e.id, e.nome, e.cep, e.cnpj, e.email, e.telefone, e.porte,
-                   e.horario_abertura, e.horario_encerramento, e.regradenegocio,
-                   e.fk_plano_id
-            FROM empresa e
-            WHERE 1=1
-            """);
+        List<Object> parametros = new LinkedList<>();
+        // WHERE 1=1 é um placeholder "coringa" que garante que todas as suas condições de
+        // filtro dinâmicas possam ser adicionadas usando a palavra-chave AND
+        StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM empresa WHERE 1=1");
 
-        if (nome != null && !nome.isEmpty()) {
-            sql.append(" AND e.nome ILIKE '%").append(nome).append("%'");
+        if (nome != null && !nome.trim().isEmpty()) {
+            sqlBuilder.append(" AND nome ILIKE ?");
+            parametros.add("%" + nome.trim() + "%");
         }
 
-        String colunaOrdenacao = "e.id";
+        // Whitelisting da coluna de ordenação
+        String colunaOrdenacao = "id";
         if (orderBy != null) {
-            if (orderBy.equalsIgnoreCase("nome")) colunaOrdenacao = "e.nome";
-            else if (orderBy.equalsIgnoreCase("cep")) colunaOrdenacao = "e.cep";
+            String lowerOrderBy = orderBy.trim().toLowerCase();
+            if (lowerOrderBy.equals("nome")) colunaOrdenacao = "nome";
+            else if (lowerOrderBy.equals("cep")) colunaOrdenacao = "cep";
+            // Adicione outras colunas permitidas aqui
         }
 
         String dir = "ASC";
-        if (direction != null && direction.equalsIgnoreCase("DESC")) dir = "DESC";
+        if (direction != null && direction.trim().equalsIgnoreCase("DESC")) dir = "DESC";
 
-        sql.append(" ORDER BY ").append(colunaOrdenacao).append(" ").append(dir);
+        sqlBuilder.append(" ORDER BY ").append(colunaOrdenacao).append(" ").append(dir);
+        String sql = sqlBuilder.toString();
 
-        try {
-            conn = conexao.conectar();
-            pstmt = conn.prepareStatement(sql.toString());
-            rset = pstmt.executeQuery();
+        try (Connection conn = conexao.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            while (rset.next()) {
-                Empresa empresa = new Empresa(
-                        rset.getInt("id"),
-                        rset.getString("nome"),
-                        rset.getString("cep"),
-                        rset.getString("cnpj"),
-                        rset.getString("email"),
-                        rset.getString("telefone"),
-                        rset.getString("porte"),
-                        rset.getTime("horario_abertura").toLocalTime(),
-                        rset.getTime("horario_encerramento").toLocalTime(),
-                        rset.getString("regradenegocio"),
-                        rset.getInt("fk_plano_id")
-                );
-
-                empresas.add(empresa);
+            // Define os parâmetros (?)
+            for (int i = 0; i < parametros.size(); i++) {
+                pstmt.setObject(i + 1, parametros.get(i));
             }
 
-        } catch (SQLException e) {
-            System.err.println("Erro ao buscar empresas por nome: " + e.getMessage());
-        } finally {
-            try {
-                if (rset != null) rset.close();
-                if (pstmt != null) pstmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                System.err.println("Erro ao fechar conexão: " + e.getMessage());
+            try (ResultSet rset = pstmt.executeQuery()) {
+                while (rset.next()) {
+                    Empresa empresa = new Empresa(
+                            rset.getInt("id"),
+                            rset.getString("nome"),
+                            rset.getString("cep"),
+                            rset.getString("cnpj"),
+                            rset.getString("email"),
+                            rset.getString("telefone"),
+                            rset.getString("porte"),
+                            rset.getTime("horario_abertura").toLocalTime(),
+                            rset.getTime("horario_encerramento").toLocalTime(),
+                            rset.getString("regradenegocio"),
+                            rset.getInt("fk_plano_id")
+                    );
+                    empresas.add(empresa);
+                }
             }
         }
-
+        // SQLException é propagada
         return empresas;
     }
 
-    // READ by ID
-    public Empresa read(int id) {
+    /*
+     * Busca uma Empresa específica pelo seu ID.
+     */
+    public Empresa read(int id) throws SQLException {
         Conexao conexao = new Conexao();
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rset = null;
         Empresa empresa = null;
+        String readSQL = "SELECT * FROM empresa WHERE id = ?";
 
-        String read = """
-            SELECT e.id, e.nome, e.cep, e.cnpj, e.email, e.telefone, e.porte,
-                   e.horario_abertura, e.horario_encerramento, e.regradenegocio,
-                   e.fk_plano_id
-            FROM empresa e
-            WHERE e.id = ?
-            """;
+        try (Connection conn = conexao.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(readSQL)) {
 
-        try {
-            conn = conexao.conectar();
-            pstmt = conn.prepareStatement(read);
             pstmt.setInt(1, id);
-            rset = pstmt.executeQuery();
 
-            if (rset.next()) {
-                empresa = new Empresa(
-                        rset.getInt("id"),
-                        rset.getString("nome"),
-                        rset.getString("cep"),
-                        rset.getString("cnpj"),
-                        rset.getString("email"),
-                        rset.getString("telefone"),
-                        rset.getString("porte"),
-                        rset.getTime("horario_abertura").toLocalTime(),
-                        rset.getTime("horario_encerramento").toLocalTime(),
-                        rset.getString("regradenegocio"),
-                        rset.getInt("fk_plano_id")
-                );
-            }
-
-        } catch (SQLException e) {
-            System.err.println("Erro ao buscar empresa por ID: " + e.getMessage());
-        } finally {
-            try {
-                if (rset != null) rset.close();
-                if (pstmt != null) pstmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                System.err.println("Erro ao fechar conexão: " + e.getMessage());
+            try (ResultSet rset = pstmt.executeQuery()) {
+                if (rset.next()) {
+                    empresa = new Empresa(
+                            rset.getInt("id"),
+                            rset.getString("nome"),
+                            rset.getString("cep"),
+                            rset.getString("cnpj"),
+                            rset.getString("email"),
+                            rset.getString("telefone"),
+                            rset.getString("porte"),
+                            rset.getTime("horario_abertura").toLocalTime(),
+                            rset.getTime("horario_encerramento").toLocalTime(),
+                            rset.getString("regradenegocio"),
+                            rset.getInt("fk_plano_id")
+                    );
+                }
             }
         }
-
+        // SQLException é propagada
         return empresa;
     }
 
-    // UPDATE por objeto
-    public int update(Empresa empresa) {
+    /*
+     * Atualiza os dados de uma empresa existente, baseado em um objeto.
+     */
+    public int update(Empresa empresa) throws SQLException {
         Conexao conexao = new Conexao();
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        String update = """
-            UPDATE empresa
-            SET nome = ?, cep = ?, cnpj = ?, email = ?, telefone = ?, porte = ?,
-                horario_abertura = ?, horario_encerramento = ?, regradenegocio = ?, fk_plano_id = ?
-            WHERE id = ?
-            """;
+        String updateSQL = "UPDATE empresa SET nome = ?, cep = ?, cnpj = ?, email = ?, telefone = ?, porte = ?, " +
+                "horario_abertura = ?, horario_encerramento = ?, regradenegocio = ?, fk_plano_id = ? " +
+                "WHERE id = ?";
 
-        try {
-            conn = conexao.conectar();
-            pstmt = conn.prepareStatement(update);
+        try (Connection conn = conexao.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(updateSQL)) {
 
             pstmt.setString(1, empresa.getNome());
             pstmt.setString(2, empresa.getCep());
@@ -253,39 +201,22 @@ public class EmpresaDAO {
             pstmt.setInt(10, empresa.getIdPlano());
             pstmt.setInt(11, empresa.getId());
 
-            if (pstmt.executeUpdate() > 0) {
-                return 1;
-            }
-            return 0;
-
-        } catch (SQLException e) {
-            System.err.println("Erro ao atualizar empresa: " + e.getMessage());
-            return -1;
-        } finally {
-            try {
-                if (pstmt != null) pstmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                System.err.println("Erro ao fechar conexão: " + e.getMessage());
-            }
+            return pstmt.executeUpdate();
         }
+        // SQLException é propagada
     }
 
-    // UPDATE por parâmetros (novo)
-    public int update(int id, String nome, String cep, String cnpj, String email, String telefone, String porte, LocalTime abertura, LocalTime fechamento, String regra, int idPlano) {
+    /*
+     * Atualiza os dados de uma empresa existente, baseado nos parâmetros.
+     */
+    public int update(int id, String nome, String cep, String cnpj, String email, String telefone, String porte, LocalTime abertura, LocalTime fechamento, String regra, int idPlano) throws SQLException {
         Conexao conexao = new Conexao();
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        String update = """
-            UPDATE empresa
-            SET nome = ?, cep = ?, cnpj = ?, email = ?, telefone = ?, porte = ?,
-                horario_abertura = ?, horario_encerramento = ?, regradenegocio = ?, fk_plano_id = ?
-            WHERE id = ?
-            """;
+        String updateSQL = "UPDATE empresa SET nome = ?, cep = ?, cnpj = ?, email = ?, telefone = ?, porte = ?, " +
+                "horario_abertura = ?, horario_encerramento = ?, regradenegocio = ?, fk_plano_id = ? " +
+                "WHERE id = ?";
 
-        try {
-            conn = conexao.conectar();
-            pstmt = conn.prepareStatement(update);
+        try (Connection conn = conexao.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(updateSQL)) {
 
             pstmt.setString(1, nome);
             pstmt.setString(2, cep);
@@ -299,81 +230,40 @@ public class EmpresaDAO {
             pstmt.setInt(10, idPlano);
             pstmt.setInt(11, id);
 
-            if (pstmt.executeUpdate() > 0) {
-                return 1;
-            }
-            return 0;
-
-        } catch (SQLException e) {
-            System.err.println("Erro ao atualizar empresa por ID: " + e.getMessage());
-            return -1;
-        } finally {
-            try {
-                if (pstmt != null) pstmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                System.err.println("Erro ao fechar conexão: " + e.getMessage());
-            }
+            return pstmt.executeUpdate();
         }
+        // SQLException é propagada
     }
 
-    // DELETE por ID
-    public int delete(int id) {
+    /*
+     * Exclui uma empresa do banco de dados pelo ID.
+     */
+    public int delete(int id) throws SQLException {
         Conexao conexao = new Conexao();
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        String delete = "DELETE FROM empresa WHERE id = ?";
+        String deleteSQL = "DELETE FROM empresa WHERE id = ?";
 
-        try {
-            conn = conexao.conectar();
-            pstmt = conn.prepareStatement(delete);
+        try (Connection conn = conexao.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(deleteSQL)) {
+
             pstmt.setInt(1, id);
-
-            if (pstmt.executeUpdate() > 0) {
-                return 1;
-            }
-            return 0;
-
-        } catch (SQLException e) {
-            System.err.println("Erro ao deletar empresa: " + e.getMessage());
-            return -1;
-        } finally {
-            try {
-                if (pstmt != null) pstmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                System.err.println("Erro ao fechar conexão: " + e.getMessage());
-            }
+            return pstmt.executeUpdate();
         }
+        // SQLException é propagada
     }
 
-    // DELETE por nome (novo)
-    public int delete(String nome) {
+    /*
+     * Exclui uma empresa do banco de dados pelo nome.
+     */
+    public int delete(String nome) throws SQLException {
         Conexao conexao = new Conexao();
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        String delete = "DELETE FROM empresa WHERE nome = ?";
+        String deleteSQL = "DELETE FROM empresa WHERE nome = ?";
 
-        try {
-            conn = conexao.conectar();
-            pstmt = conn.prepareStatement(delete);
+        try (Connection conn = conexao.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(deleteSQL)) {
+
             pstmt.setString(1, nome);
-
-            if (pstmt.executeUpdate() > 0) {
-                return 1;
-            }
-            return 0;
-
-        } catch (SQLException e) {
-            System.err.println("Erro ao deletar empresa por nome: " + e.getMessage());
-            return -1;
-        } finally {
-            try {
-                if (pstmt != null) pstmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                System.err.println("Erro ao fechar conexão: " + e.getMessage());
-            }
+            return pstmt.executeUpdate();
         }
+        // SQLException é propagada
     }
 }

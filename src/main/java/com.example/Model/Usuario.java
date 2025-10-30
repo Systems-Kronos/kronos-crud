@@ -231,8 +231,6 @@ public class Usuario {
 
     /*
      * Verifica se o CPF é válido
-     * Exemplos de CPF aceitável:
-     * "123.123.123-12", "12312312312"
      */
     private void validateCpf(String cpfLimpo) {
         if (cpfLimpo.length() != 11) {
