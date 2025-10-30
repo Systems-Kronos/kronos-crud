@@ -99,11 +99,11 @@ public class Setor {
     public int getIdEmpresa() {
         return idEmpresa;
     }
-    public void setIdEmpresa(int id) {
+    public void setIdEmpresa(int idEmpresa) {
         if (id <= 0) { // Exceção: verifica se o ID de empresa é negativo ou igual a zero
             throw new IllegalArgumentException("O ID de empresa não pode ser zero ou negativo.");
         }
-        this.idEmpresa = id;
+        this.idEmpresa = idEmpresa;
     }
 
     // Método toString

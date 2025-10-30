@@ -16,6 +16,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (botaoLimparFiltro) {
         botaoLimparFiltro.addEventListener('click', function () {
+            // Previne o comportamento padrão 'reset' do formulário
+            event.preventDefault();
             const caminho = JSON.parse(botaoLimparFiltro.dataset.caminho);
             const caminhoBase = caminho.base;
             const tabelaAtual = caminho.tabela;
@@ -25,13 +27,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- LÓGICA PARA VALIDAÇÃO ESPECÍFICA DE SENHA ---
     // (Este bloco agora também lida com a lógica de "clique único" para este formulário)
-    const formCreate = document.getElementById('formCreate');
-    const senhaInput = document.getElementById('senhaCreate'); // Procura por 'senhaCreate' (Admin)
-    const senhaErrorSpan = document.getElementById('senhaErro'); // Procura por 'senhaErro' (Admin)
 
-    // (Adicione seletores para 'usuario.jsp' se os IDs forem diferentes e adapte a lógica)
-    // const senhaInputUsuario = document.getElementById('senhaCreateUsuario');
-    // const senhaErrorSpanUsuario = document.getElementById('senhaErrorUsuario');
+    // NOTA: Esta lógica presume que 'formCreate', 'senhaCreate' e 'senhaErro' são os IDs
+    // tanto na página de admin quanto na de usuário. Se forem diferentes,
+    // a lógica precisará ser duplicada com os IDs corretos.
+    const formCreate = document.getElementById('formCreate');
+    const senhaInput = document.getElementById('senhaCreate');
+    const senhaErrorSpan = document.getElementById('senhaErro');
 
     // Função que valida a senha (igual)
     function validarSenha(senha) {
@@ -44,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return ""; // Válida
     }
 
-    // Valida a senha enquanto digita (feedback em tempo real) - Focado no Admin
+    // Valida a senha enquanto digita (feedback em tempo real)
     if (senhaInput && senhaErrorSpan) {
         senhaInput.addEventListener('input', () => {
             const mensagemErro = validarSenha(senhaInput.value);
@@ -57,7 +59,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     }
-    // (Adicione um 'if (senhaInputUsuario && senhaErrorSpanUsuario)' similar para a página de usuário)
 
     // Listener de submit ÚNICO E COMBINADO para 'formCreate'
     if (formCreate) {
@@ -66,13 +67,13 @@ document.addEventListener('DOMContentLoaded', () => {
             let mensagemErroSenha = "";
 
             // 1. Valida a senha (se o campo de senha existir)
-            //    (Adapte este 'if' se 'formCreate' for usado em múltiplas páginas)
             if (senhaInput && senhaErrorSpan) {
                 mensagemErroSenha = validarSenha(senhaInput.value);
                 senhaErrorSpan.textContent = mensagemErroSenha;
             }
 
             // 2. Verifica se a senha OU outros campos (required, email, etc) falharam
+            //    (Se o form tiver 'novalidate', checkValidity() ainda funciona)
             if (mensagemErroSenha || !formCreate.checkValidity()) {
                 // Se falhou, impede o envio e garante que o botão esteja ATIVO
                 event.preventDefault();
@@ -85,9 +86,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- BLOCO REMOVIDO (LINHAS 78-89) ---
+    // --- BLOCO REMOVIDO (LINHAS 78-89 do seu código) ---
     // O bloco que começava com 'if (formCreateAdmin)' foi removido
-    // pois era quebrado (ReferenceError) e redundante.
+    // pois estava quebrado (ReferenceError) e redundante.
+    // --- FIM DA REMOÇÃO ---
+
 
     // --- LÓGICA PARA ABRIR/FECHAR MODAIS COM CLIQUE ---
     // (Este código agora será executado, pois o erro anterior foi removido)
@@ -102,12 +105,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (acao === 'abrir') {
 
                     if (modal.id === 'create') {
-                        // Limpa erro da senha se existir nesse modal ao abrir
-                        const errorSpan = modal.querySelector('#senhaErro'); // Procura ID da senha admin
-                        if (errorSpan) errorSpan.textContent = '';
-                        // Adicionar limpeza para span de senha de usuário se/quando for implementado
-                        const errorSpanUser = modal.querySelector('#senhaErrorUsuario');
-                        if (errorSpanUser) errorSpanUser.textContent = '';
+                        // Limpa qualquer span de erro de senha dentro do modal create
+                        const errorSpans = modal.querySelectorAll('.error-message, .erro-senha'); // Pega ambas as classes
+                        if (errorSpans) {
+                            errorSpans.forEach(span => span.textContent = '');
+                        }
+
+                        // Reseta o formulário para limpar campos
+                        const form = modal.querySelector('form');
+                        if (form) form.reset();
 
                         modal.showModal();
                         botaoModal.disabled = false;
@@ -166,9 +172,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // --- BLOCO REMOVIDO (LINHAS 137-158) ---
+    // --- BLOCO REMOVIDO (LINHAS 137-158 do seu código) ---
     // A lógica de "clicar uma vez" para 'formCreate' foi removida
-    // pois já está integrada no listener de 'submit' (linhas 57-75).
+    // pois já está integrada no listener de 'submit' combinado (linhas 62-85).
+    // --- FIM DA REMOÇÃO ---
 
     // --- LÓGICA PARA O BOTÃO DE CONFIRMAR (OUTROS FORMS) ---
     // (Esta lógica está correta e agora será executada)
@@ -176,9 +183,12 @@ document.addEventListener('DOMContentLoaded', () => {
     outrosFormsPost.forEach(form => {
         form.addEventListener('submit', (event) => {
             const submitButton = form.querySelector('button[type="submit"].confirmar');
+            // Desabilita o botão SOMENTE se a validação HTML5 do navegador passar
             if (form.checkValidity()) {
                 if (submitButton) submitButton.disabled = true;
             } else {
+                // Se a validação falhar, o navegador (sem 'novalidate')
+                // mostrará os erros, e o botão deve permanecer ativo
                 if (submitButton) submitButton.disabled = false;
             }
         });
@@ -200,7 +210,7 @@ function preencherCamposModal(tipo, dados, tabela) {
             campos = ['id', 'nome', 'email'];
             break;
         case 'empresas-crud':
-            campos = ['id', 'nome', 'email', 'cep', 'cnpj', 'telefone', 'porte', 'horaAbertura', 'horaFechamento', 'regrasNegocios'];
+            campos = ['id', 'nome', 'email', 'cep', 'cnpj', 'telefone', 'porte', 'horaAbertura', 'horaFechamento', 'regrasNegocios', 'plano']; // 'plano' adicionado se o ID for 'planoUpdate'/'planoDelete'
             break;
         case 'planos-crud':
             campos = ['id', 'nome', 'custo', 'maxFuncionarios', 'descricao'];
@@ -228,7 +238,9 @@ function preencherCamposModal(tipo, dados, tabela) {
         const elementoId = `${campo}${sufixo}`;
         const elemento = document.getElementById(elementoId);
         if (elemento) {
-            elemento.value = dadosParaCampos[campo] !== null && dadosParaCampos[campo] !== undefined ? dadosParaCampos[campo] : '';
+            // Renomeia 'idPlano' do JSON para 'plano' do ID do select
+            let valor = (campo === 'plano' && dadosParaCampos['idPlano']) ? dadosParaCampos['idPlano'] : dadosParaCampos[campo];
+            elemento.value = valor !== null && valor !== undefined ? valor : '';
         } else {
             console.warn(`Elemento não encontrado no modal ${tipo} para ${tabela}: #${elementoId}`);
         }

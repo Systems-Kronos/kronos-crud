@@ -92,10 +92,9 @@ public class Empresa {
         if (cep == null) {
             throw new NullPointerException("O CEP não pode ser nulo.");
         }
-        if (!isValidCep(cep)) {
-            throw new IllegalArgumentException("O formato do CEP é inválido: '" + cep + "'.");
-        }
-        this.cep = cep.replaceAll("[^\\d]", "");
+        String cepLimpo = cep.replaceAll("[^\\d]", "");
+        validateCep(cepLimpo);
+        this.cep = cepLimpo;
     }
 
     // Para o CNPJ
@@ -106,10 +105,9 @@ public class Empresa {
         if (cnpj == null) {
             throw new NullPointerException("O CNPJ não pode ser nulo.");
         }
-        if (!isValidCnpj(cnpj)) {
-            throw new IllegalArgumentException("O formato do CNPJ é inválido: '" + cnpj + "'.");
-        }
-        this.cnpj = cnpj.replaceAll("[^\\d]", "");
+        String cnpjLimpo = cnpj.replaceAll("[^\\d]", "");
+        validateCnpj(cnpjLimpo);
+        this.cnpj = cnpjLimpo;
     }
 
     // Para o email
@@ -120,9 +118,7 @@ public class Empresa {
         if (email == null) {
             throw new NullPointerException("O email não pode ser nulo.");
         }
-        if (!isValidEmail(email)) {
-            throw new IllegalArgumentException("O formato do e-mail é inválido: '" + email + "'.");
-        }
+        validateEmail(email);
         this.email = email;
     }
 
@@ -134,10 +130,9 @@ public class Empresa {
         if (telefone == null) {
             throw new NullPointerException("O telefone não pode ser nulo.");
         }
-        if (!isValidTelefone(telefone)) {
-            throw new IllegalArgumentException("O formato do telefone é inválido: '" + telefone + "'.");
-        }
-        this.telefone = telefone.replaceAll("[^\\d]", "");
+        String telefoneLimpo = telefone.replaceAll("[^\\d]", "");
+        validateTelefone(telefoneLimpo);
+        this.telefone = telefoneLimpo;
     }
 
     // Para o porte
@@ -224,33 +219,49 @@ public class Empresa {
         );
     }
 
+    // Pattern para a email: verifica se tem formato válido
+    private static final Pattern PATTERN_EMAIL = Pattern.compile(
+            "^[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@" +
+                    "(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,63}$"
+    );
+
     // Métodos de Validação
-    private boolean isValidCep(String cep) {
-        String regex = "\\b\\d{5}-?\\d{3}\\b";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(cep.trim());
-        return matcher.matches();
+
+    /*
+     * Verifica se o CEP é válido
+     */
+    private void validateCep(String cepLimpo) {
+        if (cepLimpo.length() != 8) {
+            throw new IllegalArgumentException("CEP inválido. Deve conter 8 dígitos. Recebido: '" + cepLimpo + "'");
+        }
     }
 
-    private boolean isValidCnpj(String cnpj) {
-        String regex = "\\b\\d{2}\\.?\\d{3}\\.?\\d{3}/?\\.?\\d{4}-?\\d{2}\\b";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(cnpj.trim());
-        return matcher.matches();
+    /*
+     * Verifica se o CNPJ é válido
+     */
+    private void validateCnpj(String cnpjLimpo) {
+        if (cnpjLimpo.length() != 14) {
+            throw new IllegalArgumentException("CNPJ inválido. Deve conter 14 dígitos. Recebido: '" + cnpjLimpo + "'");
+        }
     }
 
-    private boolean isValidTelefone(String telefone) {
-        String regex = "\\(?\\d{2}\\)?\\s?\\d{4,5}-?\\d{4}";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(telefone.trim());
-        return matcher.matches();
+    /*
+     * Verifica se o telefone é válido
+     */
+    private void validateTelefone(String telefoneLimpo) {
+        int len = telefoneLimpo.length();
+        if (len != 10 && len != 11) {
+            throw new IllegalArgumentException("Telefone inválido. Deve conter 10 ou 11 dígitos (com DDD). Recebido: '" + telefoneLimpo + "'");
+        }
     }
 
-    private boolean isValidEmail(String email) {
-        String regex = "^[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*" +
-                "@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,63}$";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(email);
-        return matcher.matches();
+    /*
+     * Verifica se o email é válido
+     */
+    private void validateEmail(String email) {
+        Matcher matcher = PATTERN_EMAIL.matcher(email);
+        if (!matcher.matches()) {
+            throw new IllegalArgumentException("O formato do e-mail é inválido: '" + email + "'.");
+        }
     }
 }
