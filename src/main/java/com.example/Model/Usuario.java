@@ -1,10 +1,8 @@
 package com.example.Model;
 
 import java.util.Collections;
-import java.util.EmptyStackException;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -89,25 +87,22 @@ public class Usuario {
         return genero;
     }
     public void setGenero(Character genero) {
-        if (genero == null) { // Exceção: verifica se o gênero é nulo
+        if (genero == null) {
             throw new NullPointerException("O gênero não pode ser nulo.");
         }
-        if (!isValidGender(genero)) { // Exceção: verifica se o gênero é válido pelo método isValidGender
-            throw new IllegalArgumentException("O gênero não é válido. Use 'M', 'F', 'O' ou 'N'.");
-        }
+        validateGenero(genero); // Chama método que lança exceção
         this.genero = Character.toUpperCase(genero);
     }
 
     // Para o CPF
     public String getCpf() { return cpf; }
     public void setCpf(String cpf) {
-        if (cpf == null) { // Exceção: verifica se o CPF é nulo
+        if (cpf == null) {
             throw new NullPointerException("O CPF não pode ser nulo.");
         }
-        if (!isValidCpf(cpf)) { // Exceção: verifica se o CPF é válido pelo método isValidCpf
-            throw new IllegalArgumentException("O formato do CPF é inválido: '" + cpf + "'.");
-        }
-        this.cpf = cpf.replaceAll("[^\\d]", "");
+        String cpfLimpo = cpf.replaceAll("[^\\d]", ""); // <-- CORREÇÃO: Limpa ANTES
+        validateCpf(cpfLimpo); // <-- CORREÇÃO: Valida o limpo
+        this.cpf = cpfLimpo;
     }
 
     // Para a senha
@@ -115,15 +110,14 @@ public class Usuario {
         return senha;
     }
     public void setSenha(String senha) {
-        if (senha == null) { // Exceção: verifica se a senha é nula
-            throw new NullPointerException("A senha não pode ser nula.");
+        if (senha == null) {
+            throw new NullPointerException("A senha do usuário não pode ser nula.");
         }
-        if (senha.trim().isEmpty()) { // Exceção: verifica se a senha só contém espaço
-            throw new IllegalArgumentException("A senha não pode estar em branco.");
+        if (senha.trim().isEmpty()) {
+            throw new IllegalArgumentException("A senha do usuário não pode estar em branco.");
         }
-        if (isValidSenha(senha)) { // Exceção: verifica se a senha é válida pelo método isValidSenha
-            this.senha = senha;
-        }
+        validateSenha(senha);
+        this.senha = senha;
     }
 
     // Para o status
@@ -209,6 +203,16 @@ public class Usuario {
                 this.cargo
                 );
     }
+    // Patterns de Regex para as validações de regras complexas
+
+    // Pattern para a senha: verifica se tem, no mínimo, uma letra minúscula
+    private static final Pattern PATTERN_MINUSCULA = Pattern.compile("[a-z]");
+    // Pattern para a senha: verifica se tem, no mínimo, uma letra maiúscula
+    private static final Pattern PATTERN_MAIUSCULA = Pattern.compile("[A-Z]");
+    // Pattern para a senha: verifica se tem, no mínimo, um dígito
+    private static final Pattern PATTERN_DIGITO = Pattern.compile("\\d");
+    // Pattern para a senha: verifica se tem, no mínimo, um caractere especial
+    private static final Pattern PATTERN_ESPECIAL = Pattern.compile("[^\\sA-Za-z0-9]"); // Ajustado para aceitar espaço se necessário, senão use [^A-Za-z0-9]
 
     // Métodos de Validação
 
@@ -217,9 +221,11 @@ public class Usuario {
      * Aceitados:
      * 'M' de masculino, 'F' de feminino, 'O' de outro, 'N' de "prefiro não informar"
     */
-    private boolean isValidGender(Character genero) {
+    private void validateGenero(Character genero) {
         char generoUpper = Character.toUpperCase(genero);
-        return generoUpper == 'M' || generoUpper == 'F' || generoUpper == 'O' || generoUpper == 'N';
+        if (!(generoUpper == 'M' || generoUpper == 'F' || generoUpper == 'O' || generoUpper == 'N')) {
+            throw new IllegalArgumentException("Gênero inválido. Use 'M', 'F', 'O' ou 'N'. Encontrado: '" + genero + "'.");
+        }
     }
 
 
@@ -228,11 +234,10 @@ public class Usuario {
      * Exemplos de CPF aceitável:
      * "123.123.123-12", "12312312312"
      */
-    private boolean isValidCpf(String cpf) {
-        String regex = "^\\d{3}\\.?\\d{3}\\.?\\d{3}-?\\d{2}$";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(cpf.trim());
-        return matcher.matches();
+    private void validateCpf(String cpfLimpo) {
+        if (cpfLimpo.length() != 11) {
+            throw new IllegalArgumentException("CPF inválido. Deve conter 11 dígitos (após remover formatação). Recebido: '" + cpfLimpo + "'.");
+        }
     }
 
     /*
@@ -245,34 +250,21 @@ public class Usuario {
      * -Mínimo 1 número
      */
 
-    private boolean isValidSenha(String senha) {
-        if (senha.length() < 8) { // Exceção: verifica se a senha tem no mínimo 8 caracteres
-            throw new IllegalArgumentException("A senha deve ter no mínimo 8 caracteres");
+    private void validateSenha(String senha) {
+        if (senha.length() < 8) {
+            throw new IllegalArgumentException("A senha deve ter no mínimo 8 caracteres.");
         }
-        String regex = "[a-z]";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(senha);
-        if (!matcher.find()) { // Exceção: verifica se a senha tem no mínimo 1 letra minúscula
-            throw new IllegalArgumentException("A senha deve ter no mínimo 1 letra minúscula");
+        if (!PATTERN_MINUSCULA.matcher(senha).find()) {
+            throw new IllegalArgumentException("A senha deve ter no mínimo 1 letra minúscula.");
         }
-        regex = "[A-Z]";
-        pattern = Pattern.compile(regex);
-        matcher = pattern.matcher(senha);
-        if (!matcher.find()) { // Exceção: verifica se a senha tem no mínimo 1 letra maiúscula
-            throw new IllegalArgumentException("A senha deve ter no mínimo 1 letra maiúscula");
+        if (!PATTERN_MAIUSCULA.matcher(senha).find()) {
+            throw new IllegalArgumentException("A senha deve ter no mínimo 1 letra maiúscula.");
         }
-        regex = "\\d";
-        pattern = Pattern.compile(regex);
-        matcher = pattern.matcher(senha);
-        if (!matcher.find()) { // Exceção: verifica se a senha tem no mínimo 1 dígito
-            throw new IllegalArgumentException("A senha deve ter no mínimo 1 dígito");
+        if (!PATTERN_DIGITO.matcher(senha).find()) {
+            throw new IllegalArgumentException("A senha deve ter no mínimo 1 dígito.");
         }
-        regex = "[^A-Za-z0-9]";
-        pattern = Pattern.compile(regex);
-        matcher = pattern.matcher(senha);
-        if (!matcher.find()) { // Exceção: verifica se a senha tem no mínimo 1 caractere especial
-            throw new IllegalArgumentException("A senha deve ter no mínimo 1 caractere especial");
+        if (!PATTERN_ESPECIAL.matcher(senha).find()) {
+            throw new IllegalArgumentException("A senha deve ter no mínimo 1 caractere especial.");
         }
-        return true;
     }
 }

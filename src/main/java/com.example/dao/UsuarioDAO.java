@@ -1,304 +1,259 @@
 package com.example.dao;
 
 import com.example.Controller.Conexao;
-import com.example.Model.Empresa;
 import com.example.Model.Habilidades;
-import com.example.Model.Setor;
 import com.example.Model.Usuario;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*; // Import Statement
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * DAO para Usuario. Segue o padrão de propagar SQLException.
+ */
 public class UsuarioDAO {
-    public boolean create(Usuario usuario) {
+
+    /*
+     * Cria um novo usuário e RETORNA O ID gerado.
+     */
+    public int create(Usuario usuario) throws SQLException {
         Conexao conexao = new Conexao();
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        String create = "INSERT INTO  usuario (nome, cpf, genero, status, senha, fk_setor_id, fk_supervisor_id, cargo) VALUES (?,?,?,?,?,?,?,?)";
-        try {
-            conn = conexao.conectar();
-            pstmt = conn.prepareStatement(create);
+        // 1. SQL pede o retorno das chaves geradas (o ID)
+        String createSQL = "INSERT INTO usuario (nome, cpf, genero, status, senha, fk_setor_id, fk_supervisor_id, cargo) VALUES (?,?,?,?,?,?,?,?)";
+
+        // 2. try-with-resources para gerenciar Conexão e PreparedStatement
+        try (Connection conn = conexao.conectar();
+             // 3. Pede ao PreparedStatement para retornar a chave gerada (o ID)
+             PreparedStatement pstmt = conn.prepareStatement(createSQL, Statement.RETURN_GENERATED_KEYS)) {
+
             pstmt.setString(1, usuario.getNome());
-            pstmt.setString(2, usuario.getCpf());
-            pstmt.setString(3, String.valueOf(usuario.getGenero()));
+            pstmt.setString(2, usuario.getCpf()); // Model deve garantir que está limpo
+            pstmt.setString(3, usuario.getGenero() != null ? String.valueOf(usuario.getGenero()) : null);
             pstmt.setString(4, usuario.getStatus());
-            pstmt.setString(5, usuario.getSenha());
+            pstmt.setString(5, usuario.getSenha()); // SENHA DEVE SER HASH
             pstmt.setInt(6, usuario.getIdSetor());
             pstmt.setInt(7, usuario.getIdSupervisor());
             pstmt.setString(8, usuario.getCargo());
 
-            return pstmt.executeUpdate() > 0;
-        } catch (SQLException e) {
-            System.err.println("Erro ao inserir usuário: " + e.getMessage());
-            return false;
-        } finally {
-            if (pstmt != null) {
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                    System.out.println("Erro ao fechar PreparedStatement");
-                }
-            }
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                    System.out.println("Erro ao fechar Connection");
-                }
+            int affectedRows = pstmt.executeUpdate();
+
+            if (affectedRows == 0) {
+                // 4. Lança exceção se a inserção falhar
+                throw new SQLException("Criação do usuário falhou, nenhuma linha afetada.");
             }
 
+            // 5. Busca o ID retornado pelo banco
+            try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    return generatedKeys.getInt(1); // Retorna o ID
+                } else {
+                    throw new SQLException("Criação do usuário falhou, nenhum ID foi retornado.");
+                }
+            }
         }
+        // SQLException (de conexão, duplicata, etc.) é propagada
     }
 
-//    READ ALL
-    public List<Usuario> read() {
+    /*
+     * Busca todos os Usuários e suas Habilidades associadas.
+     */
+    public List<Usuario> read() throws SQLException {
         Conexao conexao = new Conexao();
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rset = null;
-        String read = "SELECT u.id AS usuario_id, u.nome AS usuario_nome, u.cpf AS usuario_cpf, u.genero AS usuario_genero, u.status AS usuario_status, u.senha AS usuario_senha, u.fk_setor_id AS usuario_id_setor, u.fk_supervisor_id AS usuario_id_supervisor, u.cargo AS usuario_cargo, h.id AS habilidade_id, h.nome AS habilidade_nome, h.tag AS habilidade_tag, h.descricao AS habilidade_descricao FROM usuario u LEFT JOIN usuario_habilidade uh ON u.id = uh.fk_usuario_id LEFT JOIN habilidade h ON h.id = uh.fk_habilidade_id ORDER BY u.id";
-        Usuario usuarioAtual = null;
+        String readSQL = "SELECT u.id AS u_id, u.nome AS u_nome, u.cpf AS u_cpf, u.genero AS u_genero, " +
+                "u.status AS u_status, u.senha AS u_senha, u.fk_setor_id AS u_id_setor, " +
+                "u.fk_supervisor_id AS u_id_supervisor, u.cargo AS u_cargo, " +
+                "h.id AS h_id, h.nome AS h_nome, h.tag AS h_tag, h.descricao AS h_descricao " +
+                "FROM usuario u " +
+                "LEFT JOIN usuario_habilidade uh ON u.id = uh.fk_usuario_id " +
+                "LEFT JOIN habilidade h ON h.id = uh.fk_habilidade_id " +
+                "ORDER BY u.id, h.id";
+
         List<Usuario> listaUsuario = new LinkedList<>();
+        Usuario usuarioAtual = null;
 
-        try {
-            conn = conexao.conectar();
-            pstmt = conn.prepareStatement(read);
-            rset = pstmt.executeQuery();
-
-            int idUltimoUsuario = -1;
+        try (Connection conn = conexao.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(readSQL);
+             ResultSet rset = pstmt.executeQuery()) {
 
             while (rset.next()) {
-                int idUsuario = rset.getInt("usuario_id");
-
-                // Cria novo usuário se mudou de ID
-                if (usuarioAtual == null || idUsuario != idUltimoUsuario) {
+                int idUsuario = rset.getInt("u_id");
+                if (usuarioAtual == null || idUsuario != usuarioAtual.getId()) {
                     usuarioAtual = new Usuario(
                             idUsuario,
-                            rset.getString("usuario_nome"),
-                            rset.getString("usuario_cpf"),
-                            rset.getString("usuario_genero").charAt(0),
-                            rset.getString("usuario_status"),
-                            rset.getString("usuario_senha"),
-                            rset.getInt("usuario_id_setor"),
-                            rset.getInt("usuario_id_supervisor"),
-                            rset.getString("usuario_cargo")
+                            rset.getString("u_nome"),
+                            rset.getString("u_cpf"),
+                            (rset.getString("u_genero") != null && !rset.getString("u_genero").isEmpty()) ? rset.getString("u_genero").charAt(0) : null,
+                            rset.getString("u_status"),
+                            rset.getString("u_senha"),
+                            rset.getInt("u_id_setor"),
+                            rset.getInt("u_id_supervisor"),
+                            rset.getString("u_cargo")
                     );
                     listaUsuario.add(usuarioAtual);
-                    idUltimoUsuario = idUsuario;
                 }
-
-                // Adiciona habilidade, se existir
-                int idHabilidade = rset.getInt("habilidade_id");
-                if (idHabilidade > 0) {
+                int idHabilidade = rset.getInt("h_id");
+                if (!rset.wasNull()) {
                     Habilidades habilidade = new Habilidades(
                             idHabilidade,
-                            rset.getString("habilidade_nome"),
-                            rset.getString("habilidade_tag"),
-                            rset.getString("habilidade_descricao")
+                            rset.getString("h_nome"),
+                            rset.getString("h_tag"),
+                            rset.getString("h_descricao")
                     );
-                    usuarioAtual.adicionarHabilidade(habilidade);
+                    try {
+                        if (usuarioAtual != null) usuarioAtual.adicionarHabilidade(habilidade);
+                    } catch (IllegalArgumentException e) {
+                        System.err.println("Aviso: Habilidade duplicada (ID: " + idHabilidade + ") para usuário (ID: " + idUsuario + ").");
+                    }
                 }
-            }
-        } catch (SQLException e) {
-            System.err.println("Erro ao buscar usuario: " + e.getMessage());
-            return null;
-        } finally {
-            try {
-                if (rset != null) rset.close();
-                if (pstmt != null) pstmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                System.err.println("Erro ao fechar recursos ao buscar usuario: " + e.getMessage());
             }
         }
         return listaUsuario;
     }
 
-//    READ by filter
-public List<Usuario> read(
-        String nome,
-        String orderBy,
-        String direction
-) {
-    Conexao conexao = new Conexao();
-    Connection conn = null;
-    PreparedStatement pstmt = null;
-    ResultSet rset = null;
-    LinkedList<Usuario> usuarios = new LinkedList<>();
-
-    StringBuilder sql = new StringBuilder("\n" +
-            "SELECT u.id AS usuario_id, u.nome AS usuario_nome, u.cpf AS usuario_cpf, u.genero AS usuario_genero, u.status AS usuario_status, u.senha AS usuario_senha, u.fk_setor_id AS usuario_id_setor, u.fk_supervisor_id AS usuario_id_supervisor, u.cargo AS usuario_cargo, h.id AS habilidade_id, h.nome AS habilidade_nome, h.tag AS habilidade_tag, h.descricao AS habilidade_descricao FROM usuario u LEFT JOIN usuario_habilidade uh ON u.id = uh.fk_usuario_id LEFT JOIN habilidade h ON h.id = uh.fk_habilidade_id WHERE 1=1 \n");
-
-    // Filtro por nome
-    if (nome != null && !nome.isEmpty()) {
-        sql.append(" AND u.nome ILIKE '%").append(nome).append("%'");
-    }
-
-    // Ordenação segura
-    String colunaOrdenacao = "u.id"; // padrão
-    if (orderBy != null) {
-        if (orderBy.equals("nome")) {
-            colunaOrdenacao = "u.nome";
-        } else if (orderBy.equals("cargo")) {
-            colunaOrdenacao = "u.cargo";
-        } else if (orderBy.equals("status")) {
-            colunaOrdenacao = "u.status";
-        }
-    }
-
-    String dir = "ASC"; // padrão
-    if (direction != null) {
-        if (direction.equalsIgnoreCase("DESC")) {
-            dir = "DESC";
-        }
-    }
-
-    sql.append(" ORDER BY ").append(colunaOrdenacao).append(" ").append(dir);
-
-    try {
-        conn = conexao.conectar();
-        pstmt = conn.prepareStatement(sql.toString());
-        rset = pstmt.executeQuery();
-
+    /*
+     * Busca Usuários (e suas Habilidades) filtrando por nome e ordenando.
+     */
+    public List<Usuario> read(String nome, String orderBy, String direction) throws SQLException {
+        Conexao conexao = new Conexao();
+        List<Usuario> usuarios = new LinkedList<>();
         Usuario usuarioAtual = null;
-        int idUltimoUsuario = -1;
 
-        while (rset.next()) {
-            int idUsuario = rset.getInt("usuario_id");
+        List<Object> parametros = new LinkedList<>();
+        StringBuilder sqlBuilder = new StringBuilder(
+                "SELECT u.id AS u_id, u.nome AS u_nome, u.cpf AS u_cpf, u.genero AS u_genero, " +
+                        "u.status AS u_status, u.senha AS u_senha, u.fk_setor_id AS u_id_setor, " +
+                        "u.fk_supervisor_id AS u_id_supervisor, u.cargo AS u_cargo, " +
+                        "h.id AS h_id, h.nome AS h_nome, h.tag AS h_tag, h.descricao AS h_descricao " +
+                        "FROM usuario u " +
+                        "LEFT JOIN usuario_habilidade uh ON u.id = uh.fk_usuario_id " +
+                        "LEFT JOIN habilidade h ON h.id = uh.fk_habilidade_id " +
+                        "WHERE 1=1 ");
 
-            if (usuarioAtual == null || idUsuario != idUltimoUsuario) {
-                usuarioAtual = new Usuario(
-                        idUsuario,
-                        rset.getString("usuario_nome"),
-                        rset.getString("usuario_cpf"),
-                        rset.getString("usuario_genero").charAt(0),
-                        rset.getString("usuario_status"),
-                        rset.getString("usuario_senha"),
-                        rset.getInt("usuario_id_setor"),
-                        rset.getInt("usuario_id_supervisor"),
-                        rset.getString("usuario_cargo")
-                );
-                usuarios.add(usuarioAtual);
-                idUltimoUsuario = idUsuario;
-            }
-
-            int idHabilidade = rset.getInt("habilidade_id");
-            if (idHabilidade > 0) {
-                Habilidades habilidade = new Habilidades(
-                        idHabilidade,
-                        rset.getString("habilidade_nome"),
-                        rset.getString("habilidade_tag"),
-                        rset.getString("habilidade_descricao")
-                );
-                usuarioAtual.adicionarHabilidade(habilidade);
-            }
+        if (nome != null && !nome.trim().isEmpty()) {
+            sqlBuilder.append(" AND u.nome ILIKE ?"); // Placeholder
+            parametros.add("%" + nome.trim() + "%");
         }
 
-    } catch (SQLException e) {
-        System.err.println("Erro ao buscar usuários por nome: " + e.getMessage());
-    } finally {
-        try {
-            if (rset != null) rset.close();
-            if (pstmt != null) pstmt.close();
-            if (conn != null) conn.close();
-        } catch (SQLException e) {
-            System.err.println("Erro ao fechar recursos ao buscar usuários por nome: " + e.getMessage());
+        // Whitelisting da coluna de ordenação
+        String colunaOrdenacao = "u.id";
+        if (orderBy != null) {
+            String lowerOrderBy = orderBy.trim().toLowerCase();
+            if (lowerOrderBy.equals("nome")) colunaOrdenacao = "u.nome";
+            else if (lowerOrderBy.equals("cargo")) colunaOrdenacao = "u.cargo";
+            else if (lowerOrderBy.equals("status")) colunaOrdenacao = "u.status";
         }
+        String dir = "ASC";
+        if (direction != null && direction.trim().equalsIgnoreCase("DESC")) dir = "DESC";
+        sqlBuilder.append(" ORDER BY ").append(colunaOrdenacao).append(" ").append(dir).append(", h.id");
+
+        String sql = sqlBuilder.toString();
+
+        try (Connection conn = conexao.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            // Define os parâmetros (?)
+            for (int i = 0; i < parametros.size(); i++) {
+                pstmt.setObject(i + 1, parametros.get(i));
+            }
+
+            try (ResultSet rset = pstmt.executeQuery()) {
+                while (rset.next()) {
+                    int idUsuario = rset.getInt("u_id");
+                    if (usuarioAtual == null || idUsuario != usuarioAtual.getId()) {
+                        usuarioAtual = new Usuario(
+                                idUsuario,
+                                rset.getString("u_nome"),
+                                rset.getString("u_cpf"),
+                                (rset.getString("u_genero") != null && !rset.getString("u_genero").isEmpty()) ? rset.getString("u_genero").charAt(0) : null,
+                                rset.getString("u_status"),
+                                rset.getString("u_senha"),
+                                rset.getInt("u_id_setor"),
+                                rset.getInt("u_id_supervisor"),
+                                rset.getString("u_cargo")
+                        );
+                        usuarios.add(usuarioAtual);
+                    }
+                    int idHabilidade = rset.getInt("h_id");
+                    if (!rset.wasNull()) {
+                        Habilidades habilidade = new Habilidades(
+                                idHabilidade,
+                                rset.getString("h_nome"),
+                                rset.getString("h_tag"),
+                                rset.getString("h_descricao")
+                        );
+                        try {
+                            if (usuarioAtual != null) usuarioAtual.adicionarHabilidade(habilidade);
+                        } catch (IllegalArgumentException e) {
+                            System.err.println("Aviso: Habilidade duplicada (ID: " + idHabilidade + ") para usuário (ID: " + idUsuario + ").");
+                        }
+                    }
+                }
+            }
+        }
+        return usuarios;
     }
 
-    return usuarios;
-}
-
-//READ BY ID
-    public Usuario read(int id) {
+    /*
+     * Busca um usuário específico pelo ID (NÃO carrega habilidades).
+     */
+    public Usuario read(int id) throws SQLException {
         Conexao conexao = new Conexao();
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rset = null;
-        String readId = "SELECT * FROM usuario WHERE id = ?";
+        String readIdSQL = "SELECT * FROM usuario WHERE id = ?";
+        Usuario usuario = null;
 
-        try {
-            conn = conexao.conectar();
-            pstmt = conn.prepareStatement(readId);
+        try (Connection conn = conexao.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(readIdSQL)) {
             pstmt.setInt(1, id);
-            rset = pstmt.executeQuery();
-
-            if (rset.next()) {
-                return new Usuario(rset.getInt("id"),
-                        rset.getString("nome"),
-                        rset.getString("cpf"),
-                        rset.getString("genero").charAt(0),
-                        rset.getString("status"),
-                        rset.getString("senha"),
-                        rset.getInt("fk_setor_id"),
-                        rset.getInt("fk_supervisor_id"),
-                        rset.getString("cargo"));
-            }
-        } catch (SQLException e) {
-            System.err.println("Erro ao buscar usuários por nome: " + e.getMessage());
-        } finally {
-            try {
-                if (rset != null) rset.close();
-                if (pstmt != null) pstmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                System.err.println("Erro ao fechar recursos ao buscar usuários por nome: " + e.getMessage());
+            try (ResultSet rset = pstmt.executeQuery()) {
+                if (rset.next()) {
+                    usuario = new Usuario(
+                            rset.getInt("id"),
+                            rset.getString("nome"),
+                            rset.getString("cpf"),
+                            (rset.getString("genero") != null && !rset.getString("genero").isEmpty()) ? rset.getString("genero").charAt(0) : null,
+                            rset.getString("status"),
+                            rset.getString("senha"),
+                            rset.getInt("fk_setor_id"),
+                            rset.getInt("fk_supervisor_id"),
+                            rset.getString("cargo")
+                    );
+                }
             }
         }
-        return null;
+        return usuario;
     }
 
-    //    UPDATE objeto
-    public int update(Usuario usuario) {
+    /*
+     * Atualiza dados da tabela 'usuario'. NÃO mexe nas habilidades.
+     */
+    public int update(Usuario usuario) throws SQLException {
         Conexao conexao = new Conexao();
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        String update = "UPDATE usuario SET nome = ?, cpf = ?, genero = ?, status = ?, senha = ?, fk_setor_id = ?, fk_supervisor_id = ?, cargo = ? WHERE id = ?";
-        try {
-            conn = conexao.conectar();
-            pstmt = conn.prepareStatement(update);
+        String updateSQL = "UPDATE usuario SET nome = ?, cpf = ?, genero = ?, status = ?, senha = ?, fk_setor_id = ?, fk_supervisor_id = ?, cargo = ? WHERE id = ?";
 
+        try (Connection conn = conexao.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(updateSQL)) {
             pstmt.setString(1, usuario.getNome());
             pstmt.setString(2, usuario.getCpf());
-            pstmt.setString(3, usuario.getGenero().toString());
+            pstmt.setString(3, usuario.getGenero() != null ? usuario.getGenero().toString() : null);
             pstmt.setString(4, usuario.getStatus());
             pstmt.setString(5, usuario.getSenha());
             pstmt.setInt(6, usuario.getIdSetor());
             pstmt.setInt(7, usuario.getIdSupervisor());
             pstmt.setString(8, usuario.getCargo());
             pstmt.setInt(9, usuario.getId());
-            if (pstmt.executeUpdate() > 0){
-                return 1;
-            }
-            return 0;
-        }
-        catch (SQLException e) {
-            System.err.println("Erro ao atualizar usuario: " + e.getMessage());
-            return -1;
-        } finally {
-            try {
-                if (pstmt != null) pstmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                System.err.println("Erro ao fechar conexão após atualizar usuario: " + e.getMessage());
-            }
+            return pstmt.executeUpdate();
         }
     }
 
-//    UPDATE todos os parametros
-    public int update(String nome, String cpf, char genero, String status, String senha, int idSetor, int idSupervisor, String cargo, int id){
+    /*
+     * Atualiza dados da tabela 'usuario'. NÃO mexe nas habilidades.
+     */
+    public int update(int id, String nome, String cpf, char genero, String status, String senha, int idSetor, int idSupervisor, String cargo) throws SQLException {
         Conexao conexao = new Conexao();
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        String update = "UPDATE usuario SET nome = ?, cpf = ?, genero = ?, status = ?, senha = ?, fk_setor_id = ?, fk_supervisor_id = ?, cargo = ? WHERE id = ?";
-        try {
-            conn = conexao.conectar();
-            pstmt = conn.prepareStatement(update);
+        String updateSQL = "UPDATE usuario SET nome = ?, cpf = ?, genero = ?, status = ?, senha = ?, fk_setor_id = ?, fk_supervisor_id = ?, cargo = ? WHERE id = ?";
 
+        try (Connection conn = conexao.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(updateSQL)) {
             pstmt.setString(1, nome);
             pstmt.setString(2, cpf);
             pstmt.setString(3, String.valueOf(genero));
@@ -308,146 +263,95 @@ public List<Usuario> read(
             pstmt.setInt(7, idSupervisor);
             pstmt.setString(8, cargo);
             pstmt.setInt(9, id);
-            if (pstmt.executeUpdate() > 0){
-                return 1;
-            }
-            return 0;
-        }
-        catch (SQLException e) {
-            System.err.println("Erro ao atualizar usuario: " + e.getMessage());
-            return -1;
-        } finally {
-            try {
-                if (pstmt != null) pstmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                System.err.println("Erro ao fechar conexão após atualizar usuario: " + e.getMessage());
-            }
+            return pstmt.executeUpdate();
         }
     }
 
-//    DELETE By id
-    public int delete(int id){
+    /*
+     * Exclui um usuário da tabela 'usuario'.
+     */
+    public int delete(int id) throws SQLException {
         Conexao conexao = new Conexao();
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        String delete = "DELETE FROM usuario WHERE id = ?";
-        try {
-            conn = conexao.conectar();
-            pstmt = conn.prepareStatement(delete);
-            pstmt.setInt(1, id);
-
-            if (pstmt.executeUpdate() > 0){
-                return 1;
-            }
-            return 0;
-        }catch (SQLException e) {
-            System.err.println("Erro ao deletar usuario: " + e.getMessage());
-            return -1;
-        } finally {
-            try {
-                if (pstmt != null) pstmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                System.err.println("Erro ao fechar conexão após deletar usuario: " + e.getMessage());
-            }
+        String deleteUsuarioSQL = "DELETE FROM usuario WHERE id = ?";
+        try (Connection conn = conexao.conectar();
+             PreparedStatement pstmtUsuario = conn.prepareStatement(deleteUsuarioSQL)) {
+            pstmtUsuario.setInt(1, id);
+            return pstmtUsuario.executeUpdate();
         }
     }
 
-//    DELETE By nome
-public int delete(String nome) {
-    Conexao conexao = new Conexao();
-    Connection conn = null;
-    PreparedStatement pstmt = null;
-    String delete = "DELETE FROM usuario WHERE nome = ?";
-    try {
-        conn = conexao.conectar();
-        pstmt = conn.prepareStatement(delete);
-        pstmt.setString(1, nome);
-
-        if (pstmt.executeUpdate() > 0){
-            return 1;
-        }
-        return 0;
-    }catch (SQLException e) {
-        System.err.println("Erro ao deletar usuario: " + e.getMessage());
-        return -1;
-    } finally {
-        try {
-            if (pstmt != null) pstmt.close();
-            if (conn != null) conn.close();
-        } catch (SQLException e) {
-            System.err.println("Erro ao fechar conexão após deletar usuario: " + e.getMessage());
-        }
-    }}
-
-//    METODO PARA ASSOCIAR COM HABILIDADE
-
-//    ADD Habilidade to Usuario
-    public boolean addHabilidadeToUsuario(int idUsuario, int idHabilidade) {
+    /*
+     * Exclui um usuário pelo nome. (Não recomendado, pode apagar muitos).
+     */
+    public int delete(String nome) throws SQLException {
         Conexao conexao = new Conexao();
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        String createHabilidade = "INSERT INTO usuario_habilidade (fk_usuario_id, fk_habilidade_id) VALUES (?, ?)";
+        String deleteSQL = "DELETE FROM usuario WHERE nome = ?";
+        try (Connection conn = conexao.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(deleteSQL)) {
+            pstmt.setString(1, nome);
+            return pstmt.executeUpdate();
+        }
+    }
 
-        try {
-            conn = conexao.conectar();
-            pstmt = conn.prepareStatement(createHabilidade);
+    // --- MÉTODOS PARA ASSOCIAR/DESASSOCIAR HABILIDADES ---
 
+    /*
+     * Associa uma Habilidade a um Usuário na tabela 'usuario_habilidade'.
+     */
+    public boolean addHabilidadeToUsuario(int idUsuario, int idHabilidade) throws SQLException {
+        Conexao conexao = new Conexao();
+        String createHabilidadeSQL = "INSERT INTO usuario_habilidade (fk_usuario_id, fk_habilidade_id) VALUES (?, ?)";
+        try (Connection conn = conexao.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(createHabilidadeSQL)) {
             pstmt.setInt(1, idUsuario);
             pstmt.setInt(2, idHabilidade);
-
             return pstmt.executeUpdate() > 0;
-        } catch (SQLException e) {
-            System.err.println("Erro ao inserir usuário: " + e.getMessage());
-            return false;
-        } finally {
-            if (pstmt != null) {
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                    System.out.println("Erro ao fechar PreparedStatement");
-                }
-            }
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                    System.out.println("Erro ao fechar Connection");
-                }
-            }
-
         }
     }
 
-//    REMOVE Habilidade from Usuario
-    public int removeHabilidadeFromUsuario(int idUsuario, int idHabilidade) {
+    /*
+     * Remove UMA associação entre Usuário e Habilidade.
+     */
+    public int removeHabilidadeFromUsuario(int idUsuario, int idHabilidade) throws SQLException {
         Conexao conexao = new Conexao();
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        String removeHabilidade = "DELETE FROM usuario_habilidade WHERE fk_usuario_id=? AND fk_habilidade_id=?";
-
-        try {
-            conn = conexao.conectar();
-            pstmt = conn.prepareStatement(removeHabilidade);
-
+        String removeHabilidadeSQL = "DELETE FROM usuario_habilidade WHERE fk_usuario_id=? AND fk_habilidade_id=?";
+        try (Connection conn = conexao.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(removeHabilidadeSQL)) {
             pstmt.setInt(1, idUsuario);
             pstmt.setInt(2, idHabilidade);
+            return pstmt.executeUpdate();
+        }
+    }
 
-            if (pstmt.executeUpdate() > 0){
-                return 1;
-            }
-            return 0;
-        }catch (SQLException e) {
-            System.err.println("Erro ao deletar usuario: " + e.getMessage());
-            return -1;
-        } finally {
-            try {
-                if (pstmt != null) pstmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                System.err.println("Erro ao fechar conexão após deletar usuario: " + e.getMessage());
+    /*
+     * Remove TODAS as associações de habilidades para um único usuário.
+     */
+    public int removeAllHabilidadesFromUsuario(int idUsuario) throws SQLException {
+        Conexao conexao = new Conexao();
+        String removeAllSQL = "DELETE FROM usuario_habilidade WHERE fk_usuario_id = ?";
+        try (Connection conn = conexao.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(removeAllSQL)) {
+            pstmt.setInt(1, idUsuario);
+            return pstmt.executeUpdate();
+        }
+    }
+
+    /*
+     * Busca APENAS os IDs de todas as habilidades associadas a um usuário.
+     */
+    public List<Integer> getHabilidadeIdsPorUsuario(int idUsuario) throws SQLException {
+        List<Integer> idsHabilidades = new LinkedList<>();
+        String sql = "SELECT fk_habilidade_id FROM usuario_habilidade WHERE fk_usuario_id = ?";
+        Conexao conexao = new Conexao();
+        try (Connection conn = conexao.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, idUsuario);
+            try (ResultSet rset = pstmt.executeQuery()) {
+                while (rset.next()) {
+                    idsHabilidades.add(rset.getInt("fk_habilidade_id"));
+                }
             }
         }
+        return idsHabilidades;
     }
 }
