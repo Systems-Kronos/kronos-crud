@@ -16,7 +16,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-/*
+/**
  * Servlet focado em LER (Read) Setores.
  * Serve como o "painel" principal (listagem com filtros) e também como uma API JSON
  * para buscar dados de um único setor (usado pelos modais).
@@ -45,7 +45,7 @@ public class ServletReadSetores extends HttpServlet {
                 Setor setor = dao.read(id); // Pode lançar SQLException
 
                 if (setor != null) {
-                    // Constrói a resposta JSON (usando helper 'escapeJson')
+                    // Constrói a resposta JSON
                     String json = "{"
                             + "\"id\":\"" + id + "\","
                             + "\"nome\":\"" + escapeJson(setor.getNome()) + "\","
@@ -63,7 +63,7 @@ public class ServletReadSetores extends HttpServlet {
             } catch (NumberFormatException e) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST); // 400
                 response.getWriter().write("{\"erro\":\"PK inválida: " + pk + "\"}");
-            } catch (SQLException e) { // <-- CORREÇÃO: Específico
+            } catch (SQLException e) {
                 e.printStackTrace();
                 response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR); // 500
                 response.getWriter().write("{\"erro\":\"Erro de banco de dados: " + e.getMessage() + "\"}");
@@ -90,7 +90,7 @@ public class ServletReadSetores extends HttpServlet {
                 // 1. Carrega a lista principal de setores (filtrada)
                 listaSetores = dao.read(nomePesquisa, orderBy, direction); // Pode lançar SQLException
 
-                // 2. Carrega a lista de TODAS as empresas (para os <select> dos modais)
+                // 2. Carrega a lista de todas as empresas (para os <select> dos modais)
                 EmpresaDAO empresaDAO = new EmpresaDAO(); // Assume que EmpresaDAO existe
                 listaEmpresas = empresaDAO.read(); // Pode lançar SQLException
 

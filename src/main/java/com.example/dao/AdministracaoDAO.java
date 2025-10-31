@@ -251,7 +251,6 @@ public class AdministracaoDAO {
         // SQLException é propagada
     }
 
-
     /*
      * Exclui um administrador do banco de dados pelo nome.
      */

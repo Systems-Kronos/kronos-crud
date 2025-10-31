@@ -54,6 +54,7 @@ public class ServletReadUsuario extends HttpServlet {
                             + "\"id\":\"" + id + "\","
                             + "\"nome\":\"" + escapeJson(usuario.getNome()) + "\","
                             + "\"cpf\":\"" + escapeJson(usuario.getCpf()) + "\","
+                            + "\"telefone\":\"" + escapeJson(usuario.getTelefone()) + "\","
                             + "\"senha\":\"" + usuario.getSenha() + "\","
                             + "\"genero\":\"" + (usuario.getGenero() != null ? usuario.getGenero() : "") + "\","
                             + "\"cargo\":\"" + escapeJson(usuario.getCargo()) + "\","
@@ -72,7 +73,7 @@ public class ServletReadUsuario extends HttpServlet {
                 // ID não era um número
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST); // 400
                 response.getWriter().write("{\"erro\":\"PK inválida: " + pk + "\"}");
-            } catch (SQLException e) { // <-- CORREÇÃO: Tratamento específico
+            } catch (SQLException e) {
                 // Erro de banco de dados
                 e.printStackTrace();
                 response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR); // 500
@@ -86,7 +87,7 @@ public class ServletReadUsuario extends HttpServlet {
 
         } else {
             List<Usuario> listaUsuarios = new ArrayList<>(); // Inicia vazia
-            List<Habilidades> listaHabilidades = new ArrayList<>();
+            List<Habilidades> todasAsHabilidades = new ArrayList<>();
             String erro = null;
 
             try {
@@ -102,9 +103,9 @@ public class ServletReadUsuario extends HttpServlet {
                 // Usa o método do DAO que aceita filtros E carrega habilidades (JOINs)
                 listaUsuarios = dao.read(pesquisa, orderBy, direction); // Pode lançar SQLException
 
-                // Carrega a lista de TODAS as habilidades disponíveis
-                HabilidadesDAO habilidadesDAO = new HabilidadesDAO(); // <-- Precisa do DAO de Habilidades
-                listaHabilidades = habilidadesDAO.read();
+                // Carrega a lista de todas as habilidades disponíveis
+                HabilidadesDAO habilidadesDAO = new HabilidadesDAO();
+                todasAsHabilidades = habilidadesDAO.read();
 
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -115,7 +116,7 @@ public class ServletReadUsuario extends HttpServlet {
             }
 
             request.setAttribute("listaUsuarios", listaUsuarios);
-            request.setAttribute("todasAsHabilidades", listaHabilidades);
+            request.setAttribute("todasAsHabilidades", todasAsHabilidades);
 
             if (erro != null) {
                 request.setAttribute("erro", erro);

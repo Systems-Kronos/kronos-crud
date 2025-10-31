@@ -15,6 +15,7 @@ public class Usuario {
     private int id;
     private String nome;
     private String cpf;
+    private String telefone;
     private Character genero;
     private String status;
     private String senha;
@@ -26,13 +27,14 @@ public class Usuario {
     // Métodos Construtores
 
     // As validações de exceções são realizadas pelos métodos setters
-    public Usuario(int id, String nome, String cpf,
+    public Usuario(int id, String nome, String cpf, String telefone,
                    Character genero, String status,
                    String senha, int idSetor, int idSupervisor,
                    String cargo) {
         this.setId(id);
         this.setNome(nome);
         this.setCpf(cpf);
+        this.setTelefone(telefone);
         this.setGenero(genero);
         this.setStatus(status);
         this.setSenha(senha);
@@ -41,12 +43,13 @@ public class Usuario {
         this.setCargo(cargo);
     }
 
-    public Usuario(String nome, String cpf,
+    public Usuario(String nome, String cpf, String telefone,
                    Character genero, String status,
                    String senha, int idSetor, int idSupervisor,
                    String cargo) {
         this.setNome(nome);
         this.setCpf(cpf);
+        this.setTelefone(telefone);
         this.setGenero(genero);
         this.setStatus(status);
         this.setSenha(senha);
@@ -105,6 +108,19 @@ public class Usuario {
         this.cpf = cpfLimpo;
     }
 
+    // Para o telefone
+    public String getTelefone() {
+        return telefone;
+    }
+    public void setTelefone(String telefone) {
+        if (telefone == null) {
+            throw new NullPointerException("O telefone não pode ser nulo.");
+        }
+        String telefoneLimpo = telefone.replaceAll("[^\\d]", "");
+        validateTelefone(telefoneLimpo);
+        this.telefone = telefoneLimpo;
+    }
+
     // Para a senha
     public String getSenha() {
         return senha;
@@ -150,7 +166,7 @@ public class Usuario {
         return idSupervisor;
     }
     public void setIdSupervisor(int id) {
-        if (id <= 0) { // Exceção: verifica se o ID do supervisor é negativo ou igual a zero
+        if (id < 0) { // Exceção: verifica se o ID do supervisor é negativo ou igual a zero
             throw new IllegalArgumentException("O ID do supervisor não pode ser zero ou negativo.");
         }
         this.idSupervisor = id;
@@ -192,7 +208,7 @@ public class Usuario {
 
     // Para o método toString
     public String toString() {
-        return String.format("Usuário | Id: %-3d | Nome: %-20s | Cpf: %-14s | Gênero: %-1s | Status: %-7s | Senha:[PROTEGIDA] | ID Setor: %-3d | ID Supervisor: %-3d | Cargo: %-20s",
+        return String.format("Usuário | Id: %-3d | Nome: %-20s | Cpf: %-14s | Telefone: %-12s | Gênero: %-1s | Status: %-7s | Senha:[PROTEGIDA] | ID Setor: %-3d | ID Supervisor: %-3d | Cargo: %-20s",
                 this.id,
                 this.nome,
                 this.cpf,
@@ -235,6 +251,16 @@ public class Usuario {
     private void validateCpf(String cpfLimpo) {
         if (cpfLimpo.length() != 11) {
             throw new IllegalArgumentException("CPF inválido. Deve conter 11 dígitos (após remover formatação). Recebido: '" + cpfLimpo + "'.");
+        }
+    }
+
+    /*
+     * Verifica se o telefone é válido
+     */
+    private void validateTelefone(String telefoneLimpo) {
+        int len = telefoneLimpo.length();
+        if (len != 10 && len != 11) {
+            throw new IllegalArgumentException("Telefone inválido. Deve conter 10 ou 11 dígitos (com DDD). Recebido: '" + telefoneLimpo + "'");
         }
     }
 

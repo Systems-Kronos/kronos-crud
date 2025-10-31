@@ -1,9 +1,8 @@
 package com.example.Servlet.ServletSetores;
 
 import com.example.dao.SetorDAO;
-import com.example.dao.EmpresaDAO; // <-- IMPORT ADICIONADO
+import com.example.dao.EmpresaDAO;
 import com.example.Model.Setor;
-import com.example.Model.Empresa; // <-- IMPORT ADICIONADO
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -11,12 +10,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.sql.SQLException; // <-- IMPORT ADICIONADO
+import java.sql.SQLException;
 import java.util.List;
 import java.util.ArrayList;
 
 /**
- * Servlet focado SOMENTE em CRIAR (Create) um novo Setor.
+ * Servlet focado em CRIAR (Create) um novo Setor.
  * Segue o padrão robusto, tratando exceções do Model e DAO,
  * e repopulando o formulário em caso de erro.
  */
@@ -73,7 +72,7 @@ public class ServletCreateSetores extends HttpServlet {
                 erro = "Erro ao cadastrar setor (DAO retornou false).";
             }
 
-            // Captura erros de VALIDAÇÃO do Model ou de CONVERSÃO de tipos
+            // Captura erros de validação do Model ou de conversão de tipos
         } catch (IllegalArgumentException | NullPointerException e) {
             // NumberFormatException é subclasse de IllegalArgumentException
             erro = "Erro de validação: " + e.getMessage();
@@ -94,7 +93,7 @@ public class ServletCreateSetores extends HttpServlet {
             erro = "Erro inesperado ao criar setor: " + e.getMessage();
         }
 
-        // --- 6. CAMINHO DE FALHA (Forward) ---
+        // 6. Caminho de Falha (Forward)
         // O código só chega aqui se 'success' for false ou se uma exceção foi pega.
         System.err.println("Falha na criação do setor. Fazendo forward. Erro: " + erro);
 
@@ -106,7 +105,7 @@ public class ServletCreateSetores extends HttpServlet {
         request.setAttribute("descricao_previo", descricao);
         request.setAttribute("idEmpresa_previo", idEmpresaStr); // Envia a String do ID
 
-        // Recarrega a lista de SETORES para a tabela de fundo
+        // Recarrega a lista de setores para a tabela de fundo
         List<Setor> listaSetores = new ArrayList<>();
         try {
             listaSetores = dao.read();
@@ -116,12 +115,11 @@ public class ServletCreateSetores extends HttpServlet {
         }
         request.setAttribute("listaSetores", listaSetores);
 
-        // Recarrega a lista de EMPRESAS (necessária para o <select> do modal)
-        // O JSP 'setores.jsp' DEVE ter um loop para exibir os <option> desta lista.
+        // Recarrega a lista de empresas (necessária para o <select> do modal)
         try {
-            EmpresaDAO empresaDAO = new EmpresaDAO(); // Assume que EmpresaDAO existe
+            EmpresaDAO empresaDAO = new EmpresaDAO();
             request.setAttribute("listaEmpresas", empresaDAO.read());
-        } catch (Exception empresaEx) { // Captura genérica caso EmpresaDAO falhe
+        } catch (Exception empresaEx) {
             empresaEx.printStackTrace();
             request.setAttribute("erro", erro + " | ERRO ADICIONAL: Falha ao recarregar lista de empresas.");
         }

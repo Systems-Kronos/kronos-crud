@@ -1,9 +1,9 @@
 package com.example.Servlet.ServletEmpresa;
 
 import com.example.dao.EmpresaDAO;
-import com.example.dao.PlanoDAO; // <-- IMPORT ADICIONADO
+import com.example.dao.PlanoDAO;
 import com.example.Model.Empresa;
-import com.example.Model.Plano;   // <-- IMPORT ADICIONADO
+import com.example.Model.Plano;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -11,11 +11,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.sql.SQLException; // <-- IMPORT ADICIONADO
+import java.sql.SQLException;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
 import java.util.List;
-import java.util.ArrayList; // <-- IMPORT ADICIONADO
+import java.util.ArrayList;
 
 /**
  * Servlet focado em ATUALIZAR (Update) uma Empresa existente.
@@ -44,7 +44,7 @@ public class ServletUpdateEmpresa extends HttpServlet {
             // 1. Busca a lista completa de empresas para a tabela de fundo
             listaEmpresas = dao.read(); // Pode lançar SQLException
 
-            // 2. CORREÇÃO: Busca a lista completa de planos para os modais
+            // 2. Busca a lista completa de planos para os modais
             listaPlanos = planoDAO.read(); // Pode lançar SQLException
 
             // 3. Pega o ID da URL para carregar o modal de update
@@ -145,7 +145,7 @@ public class ServletUpdateEmpresa extends HttpServlet {
                 erro = "Não foi possível atualizar (ID: " + id + "). O registro pode não existir mais.";
             }
 
-            // Captura erros de VALIDAÇÃO do Model ou de CONVERSÃO
+            // Captura erros de validação do Model ou de conversão
         } catch (IllegalArgumentException | NullPointerException | IllegalStateException | DateTimeParseException e) {
             erro = "Erro de validação: " + e.getMessage();
 
@@ -171,7 +171,7 @@ public class ServletUpdateEmpresa extends HttpServlet {
             return; // Encerra
         }
 
-        // 7. CAMINHO DE FALHA (Forward)
+        // 7. Caminho de Falha (Forward)
         System.err.println("Falha update empresa ID " + id + ". Forwarding. Erro: " + erro);
 
         // Define atributos de erro e repopulação
@@ -187,7 +187,7 @@ public class ServletUpdateEmpresa extends HttpServlet {
         request.setAttribute("regrasNegocios_previo", regrasNegocios);
         request.setAttribute("plano_previo", idPlanoStr); // Envia a String do ID
 
-        // Recarrega lista de EMPRESAS para a tabela
+        // Recarrega lista de empresas para a tabela
         List<Empresa> listaEmpresas = new ArrayList<>();
         try {
             listaEmpresas = dao.read(); // Trata SQLException
@@ -197,7 +197,7 @@ public class ServletUpdateEmpresa extends HttpServlet {
         }
         request.setAttribute("listaEmpresas", listaEmpresas);
 
-        // Recarrega lista de PLANOS para os dropdowns
+        // Recarrega lista de planos para os dropdowns
         try {
             PlanoDAO planoDAO = new PlanoDAO();
             request.setAttribute("listaPlanos", planoDAO.read());

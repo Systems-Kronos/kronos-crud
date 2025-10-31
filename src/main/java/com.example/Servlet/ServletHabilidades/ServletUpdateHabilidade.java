@@ -120,7 +120,7 @@ public class ServletUpdateHabilidade extends HttpServlet {
                 erro = "Não foi possível atualizar a habilidade (ID: " + id + ").";
             }
 
-            // Captura erros de VALIDAÇÃO do Model ou de CONVERSÃO de ID
+            // Captura erros de validação do Model ou de conversão de ID
         } catch (IllegalArgumentException | NullPointerException e) {
             // NumberFormatException é uma subclasse de IllegalArgumentException
             erro = "Erro de validação ou formato inválido: " + e.getMessage();
@@ -147,7 +147,7 @@ public class ServletUpdateHabilidade extends HttpServlet {
             return; // Encerra a execução
         }
 
-        // CAMINHO DE FALHA (Se 'success' == false ou se uma Exceção foi capturada)
+        // Caminho de Falha (Se 'success' == false ou se uma Exceção foi capturada)
         System.err.println("Falha ao atualizar habilidade ID " + id + ". Fazendo forward. Erro: " + erro);
 
         // Repopula o formulário em TODOS os casos de erro

@@ -64,7 +64,7 @@ public class ServletDeletePlano extends HttpServlet {
             erro = "ID inválido fornecido (doGet): " + idParam;
             System.err.println("ID inválido ('id') delete plano (doGet): " + idParam);
 
-        } catch (Exception e) {
+        } catch (Exception e) { // Outros erros inesperados
             e.printStackTrace();
             erro = "Erro inesperado ao buscar dados: " + e.getMessage();
         }
@@ -116,26 +116,26 @@ public class ServletDeletePlano extends HttpServlet {
                 erro = "Erro de banco de dados ao excluir: " + e.getMessage();
             }
 
-        } catch (Exception e) {
+        } catch (Exception e) { // Outros erros inesperados
             e.printStackTrace();
             erro = "Erro inesperado ao processar a exclusão: " + e.getMessage();
         }
 
-        // 3. Fluxo de sucesso (PRG)
+        // 3. Fluxo de sucesso
         if (success) {
             System.out.println("Plano ID " + id + " deletado com sucesso.");
             response.sendRedirect(request.getContextPath() + "/planos-crud");
-            return; // PRG Pattern
+            return;
         }
 
-        // 4. CAMINHO DE FALHA (forward) — recarrega dados e reabre modal
+        // 4. Caminho de Falha (forward) — recarrega dados e reabre modal
         System.err.println("Falha ao deletar plano ID " + id + ". Forwarding. Erro: " + erro);
         request.setAttribute("erro", erro);
 
         // Recarrega lista de planos
         List<Plano> listaPlanos = new ArrayList<>();
         try {
-            // CORREÇÃO: Trata SQLException
+            // Trata SQLException
             listaPlanos = dao.read();
         } catch (SQLException e) {
             e.printStackTrace();

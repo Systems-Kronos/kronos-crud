@@ -140,7 +140,7 @@ public class ServletDeleteEmpresa extends HttpServlet {
             return; // Encerra a execução
         }
 
-        // CAMINHO DE FALHA (Forward)
+        // Caminho de Falha (Forward)
         System.err.println("Falha ao deletar empresa ID " + id + ". Fazendo forward. Erro: " + erro);
         request.setAttribute("erro", erro);
 

@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * Servlet focado SOMENTE em CRIAR (Create) uma nova Empresa.
+ * Servlet focado em CRIAR (Create) uma nova Empresa.
  * Segue o padrão robusto, tratando exceções do Model e DAO,
  * e repopulando o formulário em caso de erro.
  */
@@ -69,16 +69,16 @@ public class ServletCreateEmpresa extends HttpServlet {
             success = dao.create(novaEmpresa);
 
             if (success) {
-                // 5. SUCESSO (PRG Pattern)
+                // 5. SUCESSO
                 System.out.println("Empresa criada com sucesso!");
                 response.sendRedirect(request.getContextPath() + "/empresas-crud");
-                return; // IMPORTANTE: Encerra aqui após redirect
+                return; // Encerra aqui após redirect
             } else {
                 // Falha no DAO (ex: create retornou false sem lançar exceção)
                 erro = "Erro ao cadastrar empresa no banco (DAO retornou false).";
             }
 
-            // Captura erros de VALIDAÇÃO do Model ou de CONVERSÃO de tipos
+            // Captura erros de validação do Model ou de conversão de tipos
         } catch (IllegalArgumentException | NullPointerException | IllegalStateException | DateTimeParseException e) {
             // NumberFormatException é subclasse de IllegalArgumentException
             erro = "Erro de validação: " + e.getMessage();
@@ -99,7 +99,7 @@ public class ServletCreateEmpresa extends HttpServlet {
             erro = "Erro inesperado ao criar empresa: " + e.getMessage();
         }
 
-        // --- 6. CAMINHO DE FALHA (Forward) ---
+        // 6. Caminho de Falha (Forward)
         // O código só chega aqui se 'success' for false ou se uma exceção foi pega.
         System.err.println("Falha na criação da empresa. Fazendo forward. Erro: " + erro);
 
@@ -116,7 +116,7 @@ public class ServletCreateEmpresa extends HttpServlet {
         request.setAttribute("regrasNegocios_previo", regrasNegocios);
         request.setAttribute("plano_previo", idPlanoStr);
 
-        // Recarrega a lista de EMPRESAS para a tabela de fundo
+        // Recarrega a lista de empresas para a tabela de fundo
         List<Empresa> listaEmpresas = new ArrayList<>();
         try {
             listaEmpresas = dao.read();
@@ -127,10 +127,10 @@ public class ServletCreateEmpresa extends HttpServlet {
         request.setAttribute("listaEmpresas", listaEmpresas);
 
         try {
-            PlanoDAO planoDAO = new PlanoDAO(); // Assume que PlanoDAO e Plano.java existem
+            PlanoDAO planoDAO = new PlanoDAO();
             List<Plano> listaPlanos = planoDAO.read();
             request.setAttribute("listaPlanos", listaPlanos);
-        } catch (Exception planoEx) { // Captura genérica caso PlanoDAO não exista
+        } catch (Exception planoEx) {
             planoEx.printStackTrace();
             request.setAttribute("erro", erro + " | ERRO ADICIONAL: Falha ao recarregar a lista de planos.");
         }

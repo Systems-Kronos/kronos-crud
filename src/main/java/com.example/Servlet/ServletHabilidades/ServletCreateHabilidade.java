@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * Servlet focado SOMENTE em CRIAR (Create) uma nova Habilidade.
+ * Servlet focado CRIAR (Create) uma nova Habilidade.
  * Segue o padrão dos Servlets de Administracao.
  */
 @WebServlet("/habilidade-create")
@@ -47,17 +47,17 @@ public class ServletCreateHabilidade extends HttpServlet {
             success = dao.create(novaHabilidade);
 
             if (success) {
-                // 4. SUCESSO (PRG Pattern)
+                // 4. SUCESSO
                 System.out.println("Habilidade criada com sucesso!");
                 response.sendRedirect(request.getContextPath() + "/habilidades-crud"); // URL da listagem
-                return; // IMPORTANTE: Encerra aqui após redirect
+                return; // Encerra aqui após redirect
             } else {
                 // Falha no DAO (ex: create retornou false sem lançar exceção)
                 erro = "Erro ao cadastrar habilidade.";
             }
 
         } catch (IllegalArgumentException | NullPointerException e) {
-            // Captura erros de VALIDAÇÃO do Model
+            // Captura erros de validação do Model
             erro = "Erro de validação: " + e.getMessage();
 
         } catch (SQLException e) { // Captura erro do DAO.create()
@@ -73,7 +73,7 @@ public class ServletCreateHabilidade extends HttpServlet {
             erro = "Erro inesperado ao criar habilidade: " + e.getMessage();
         }
 
-        // 5. CAMINHO DE FALHA (Forward)
+        // 5. Caminha de Falha (Forward)
         // O código só chega aqui se 'success' for false ou se uma exceção foi pega.
         System.err.println("Falha na criação da habilidade. Fazendo forward. Erro: " + erro);
 
@@ -91,7 +91,7 @@ public class ServletCreateHabilidade extends HttpServlet {
             listaHabilidades = dao.read();
         } catch (SQLException e) {
             e.printStackTrace(); // Loga o erro de leitura
-            // Concatena o erro da LEITURA com o erro original da CRIAÇÃO
+            // Concatena o erro da leitura com o erro original da criação
             request.setAttribute("erro", erro + " | ERRO ADICIONAL: Falha ao recarregar a lista de habilidades.");
         }
         request.setAttribute("listaHabilidades", listaHabilidades);

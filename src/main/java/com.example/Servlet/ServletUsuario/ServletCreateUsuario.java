@@ -1,8 +1,7 @@
 package com.example.Servlet.ServletUsuario;
 
-import com.example.dao.HabilidadesDAO; // Importado
+import com.example.dao.HabilidadesDAO;
 import com.example.dao.UsuarioDAO;
-import com.example.Model.Habilidades; // Importado
 import com.example.Model.Usuario;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -21,7 +20,7 @@ import java.util.ArrayList;
 @WebServlet("/usuario-create")
 public class ServletCreateUsuario extends HttpServlet {
 
-    /**
+    /*
      * Processa a criação de um novo Usuário via POST request.
      */
     @Override
@@ -33,9 +32,10 @@ public class ServletCreateUsuario extends HttpServlet {
         // 1. Coleta de parâmetros
         String nome = request.getParameter("nome");
         String cpf = request.getParameter("cpf");
+        String telefone = request.getParameter("telefone");
         String generoStr = request.getParameter("genero");
         String status = request.getParameter("status");
-        String senha = request.getParameter("senha"); // Lembre-se: CRIPTOGRAFE
+        String senha = request.getParameter("senha");
         String idSetorStr = request.getParameter("idSetor");
         String idSupervisorStr = request.getParameter("idSupervisor");
         String cargo = request.getParameter("cargo");
@@ -64,16 +64,15 @@ public class ServletCreateUsuario extends HttpServlet {
 
             // 3. Validação (Model)
             Usuario novoUsuario = new Usuario(
-                    nome, cpf, genero, status, senha, // PASSE O HASH da senha
+                    nome, cpf,telefone, genero, status, senha,
                     idSetor, idSupervisor, cargo
             );
 
             // 4. Persistência (DAO) - Usuário
-            // CORREÇÃO: Chama o create() que retorna o ID (int)
             novoIdUsuario = dao.create(novoUsuario); // Pode lançar SQLException
 
             // Se chegou aqui, o usuário foi criado (novoIdUsuario > 0)
-            success = true; // Sucesso na criação do *usuário*
+            success = true;
 
             // 5. Persistência (DAO) - Habilidades
             // Associa as habilidades selecionadas ao ID recém-criado
@@ -88,17 +87,16 @@ public class ServletCreateUsuario extends HttpServlet {
                 } catch (SQLException eHab) {
                     // Erro parcial: Usuário criado, mas habilidades falharam.
                     eHab.printStackTrace();
-                    // Usamos a sessão para enviar um "aviso" (flash message) para a próxima página
                     request.getSession().setAttribute("erro_parcial", "Usuário criado (ID: " + novoIdUsuario + "), mas falha ao adicionar habilidades: " + eHab.getMessage());
                 }
             }
 
-            // 6. SUCESSO (PRG Pattern)
+            // 6. SUCESSO
             System.out.println("Usuário criado com sucesso! ID: " + novoIdUsuario);
             response.sendRedirect(request.getContextPath() + "/usuarios-crud");
             return; // Encerra aqui após redirect
 
-            // Captura erros de VALIDAÇÃO (Model) ou CONVERSÃO (parseInt)
+            // Captura erros de validação (Model) ou conversão (parseInt)
         } catch (IllegalArgumentException | NullPointerException e) {
             erro = "Erro de validação: " + e.getMessage();
 
@@ -117,15 +115,14 @@ public class ServletCreateUsuario extends HttpServlet {
             erro = "Erro inesperado ao criar usuário: " + e.getMessage();
         }
 
-        // --- 7. CAMINHO DE FALHA (Forward) ---
-        // O código SÓ chega aqui se uma exceção foi pega ANTES do success=true.
-
+        // 7. Caminho de Falha (Forward)
         System.err.println("Falha na criação do usuário. Fazendo forward. Erro: " + erro);
 
         // Define os atributos de erro e de repopulação do formulário
         request.setAttribute("erro", erro);
         request.setAttribute("nome_previo", nome);
         request.setAttribute("cpf_previo", cpf);
+        request.setAttribute("telefone_previo", telefone);
         request.setAttribute("genero_previo", generoStr);
         request.setAttribute("status_previo", status);
         request.setAttribute("idSetor_previo", idSetorStr);
@@ -143,7 +140,7 @@ public class ServletCreateUsuario extends HttpServlet {
         }
         request.setAttribute("listaUsuarios", listaUsuarios);
 
-        // Recarrega TODAS as habilidades (para os checkboxes do modal)
+        // Recarrega todas as habilidades (para os checkboxes do modal)
         try {
             HabilidadesDAO hDAO = new HabilidadesDAO();
 

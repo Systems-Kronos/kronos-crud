@@ -75,7 +75,7 @@ public class ServletDeleteAdministracao extends HttpServlet {
         request.getRequestDispatcher("/WEB-INF/pages/administrador.jsp").forward(request, response);
     }
 
-    /**
+    /*
      * Executa a exclusão após a confirmação no modal.
      */
     @Override

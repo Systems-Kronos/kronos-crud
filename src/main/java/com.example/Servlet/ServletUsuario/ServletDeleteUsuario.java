@@ -20,7 +20,7 @@ import java.util.ArrayList;
 @WebServlet("/usuario-delete")
 public class ServletDeleteUsuario extends HttpServlet {
 
-    /**
+    /*
      * Prepara a página para a exclusão do Usuário (Carrega lista e modal).
      */
     @Override
@@ -40,7 +40,7 @@ public class ServletDeleteUsuario extends HttpServlet {
             String idParam = request.getParameter("id");
             if (idParam != null && !idParam.isEmpty()) {
                 int id = Integer.parseInt(idParam);
-                Usuario usuarioModal = dao.read(id); // Busca sem habilidades
+                Usuario usuarioModal = dao.read(id);
 
                 if (usuarioModal != null) {
                     request.setAttribute("usuarioModal", usuarioModal);
@@ -65,7 +65,7 @@ public class ServletDeleteUsuario extends HttpServlet {
         request.getRequestDispatcher("/WEB-INF/pages/usuario.jsp").forward(request, response);
     }
 
-    /**
+    /*
      * Executa a exclusão do Usuário.
      */
     @Override
@@ -81,10 +81,7 @@ public class ServletDeleteUsuario extends HttpServlet {
             String idParam = request.getParameter("id");
             id = Integer.parseInt(idParam);
 
-            // 1. --- CORREÇÃO: Remove associações de habilidades PRIMEIRO ---
-            // Para evitar erro de Foreign Key (FK)
-            // Se o DB tiver "ON DELETE CASCADE", esta linha não é estritamente
-            // necessária, mas é uma remoção programática mais segura.
+            // 1. Remove associações de habilidades
             try {
                 int habilidadesRemovidas = dao.removeAllHabilidadesFromUsuario(id);
                 System.out.println("Removidas " + habilidadesRemovidas + " associações de habilidades para o usuário ID: " + id);
@@ -117,15 +114,15 @@ public class ServletDeleteUsuario extends HttpServlet {
             erro = "Erro inesperado ao processar a exclusão: " + e.getMessage();
         }
 
-        // --- Fluxo de Resposta ---
+        // Fluxo de Resposta
         if (success) {
-            // SUCESSO: Redireciona (PRG)
+            // SUCESSO: Redireciona
             System.out.println("Usuário ID " + id + " deletado com sucesso.");
             response.sendRedirect(request.getContextPath() + "/usuarios-crud");
             return;
         }
 
-        // --- CAMINHO DE FALHA (Forward) ---
+        // Caminho de Falha (Forward)
         System.err.println("Falha ao deletar usuário ID " + id + ". Fazendo forward. Erro: " + erro);
         request.setAttribute("erro", erro);
 

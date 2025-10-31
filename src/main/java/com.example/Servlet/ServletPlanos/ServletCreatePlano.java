@@ -21,7 +21,6 @@ public class ServletCreatePlano extends HttpServlet {
 
     /*
      * Processa a criação de um novo Plano.
-     * Segue o fluxo: Coleta → Validação (Model) → Persistência (DAO) → PRG Pattern.
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -51,10 +50,10 @@ public class ServletCreatePlano extends HttpServlet {
             success = dao.create(novoPlano);
 
             if (success) {
-                // 4. SUCESSO — PRG Pattern
+                // 4. SUCESSO
                 System.out.println("Plano criado com sucesso!");
                 response.sendRedirect(request.getContextPath() + "/planos-crud");
-                return; // IMPORTANTE: encerra após redirect
+                return; // Encerra após redirect
             } else {
                 erro = "Erro ao cadastrar plano (DAO retornou falso).";
             }
@@ -81,7 +80,7 @@ public class ServletCreatePlano extends HttpServlet {
             erro = "Erro inesperado ao criar plano: " + e.getMessage();
         }
 
-        // 5. CAMINHO DE FALHA (Forward)
+        // 5. Caminho de Falha (Forward)
         System.err.println("Falha na criação do plano. Fazendo forward. Erro: " + erro);
 
         // Define atributos de erro e repopulação

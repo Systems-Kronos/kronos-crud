@@ -9,8 +9,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.sql.SQLException; // <--- IMPORT ADICIONADO
-import java.util.ArrayList;  // <--- IMPORT ADICIONADO
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -98,7 +98,7 @@ public class ServletUpdateAdministracao extends HttpServlet {
             id = Integer.parseInt(idParam); // Pode lançar NumberFormatException
             nome = request.getParameter("nome");
             email = request.getParameter("email");
-            String novaSenha = request.getParameter("senha"); // Senha pode ser opcional
+            String novaSenha = request.getParameter("senha");
 
             // 2. Buscar o objeto original no banco
             Administracao adminParaAtualizar = dao.read(id); // Pode lançar SQLException
@@ -111,7 +111,7 @@ public class ServletUpdateAdministracao extends HttpServlet {
             adminParaAtualizar.setNome(nome);
             adminParaAtualizar.setEmail(email);
 
-            // 4. Tratar atualização de senha (opcional)
+            // 4. Tratar atualização de senha
             if (novaSenha != null && !novaSenha.trim().isEmpty()) {
                 adminParaAtualizar.setSenha(novaSenha);
             }
@@ -125,12 +125,12 @@ public class ServletUpdateAdministracao extends HttpServlet {
                 erro = "Não foi possível atualizar o administrador (ID: " + id + ").";
             }
 
-            // Captura erros de VALIDAÇÃO do Model ou de CONVERSÃO de ID
+            // Captura erros de validação do Model ou de conversão de ID
         } catch (IllegalArgumentException | NullPointerException e) {
             // NumberFormatException é uma subclasse de IllegalArgumentException
             erro = "Erro de validação ou formato inválido: " + e.getMessage();
 
-            // Captura erros de BANCO (ex: e-mail duplicado, falha na conexão)
+            // Captura erros de banco (ex: e-mail duplicado, falha na conexão)
         } catch (SQLException e) {
             e.printStackTrace();
             // Tenta dar uma mensagem amigável para e-mail duplicado (UNIQUE constraint)
@@ -164,7 +164,7 @@ public class ServletUpdateAdministracao extends HttpServlet {
         // Recarrega a lista de fundo
         List<Administracao> listaAdmins;
         try {
-            // CORREÇÃO: Trata SQLException ao recarregar a lista
+            // Trata SQLException ao recarregar a lista
             listaAdmins = dao.read();
         } catch (SQLException e) {
             e.printStackTrace();

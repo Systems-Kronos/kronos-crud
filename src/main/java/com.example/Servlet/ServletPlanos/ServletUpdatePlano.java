@@ -137,14 +137,14 @@ public class ServletUpdatePlano extends HttpServlet {
             erro = "Erro inesperado ao atualizar: " + e.getMessage();
         }
 
-        // 5. RESPOSTA
+        // 5. Resposta
         if (success) {
             System.out.println("Plano ID " + id + " atualizado com sucesso.");
             response.sendRedirect(request.getContextPath() + "/planos-crud");
             return;
         }
 
-        // 6. CAMINHO DE FALHA (Forward) — repopula formulário e recarrega lista
+        // 6. Caminho de Falha (Forward)
         System.err.println("Falha ao atualizar plano ID " + id + ". Fazendo forward. Erro: " + erro);
         request.setAttribute("erro", erro);
 

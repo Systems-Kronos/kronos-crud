@@ -40,7 +40,7 @@ public class ServletReadPlano extends HttpServlet {
                 Plano plano = dao.read(id); // Pode lançar SQLException
 
                 if (plano != null) {
-                    // Construção manual de JSON (substituível por Gson em projetos maiores)
+                    // Construção manual de JSON
                     String json = "{"
                             + "\"id\":\"" + id + "\","
                             + "\"nome\":\"" + plano.getNome() + "\","

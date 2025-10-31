@@ -76,11 +76,10 @@ public class ServletUpdateUsuario extends HttpServlet {
             request.setAttribute("erro", erro);
         }
         request.setAttribute("listaUsuarios", listaUsuarios); // Envia a lista (mesmo que vazia)
-        // Confirme o nome do seu JSP de usuários
         request.getRequestDispatcher("/WEB-INF/pages/usuario.jsp").forward(request, response);
     }
 
-    /**
+    /*
      * Processa a atualização de um Usuário e suas Habilidades associadas via POST request.
      */
     @Override
@@ -97,14 +96,14 @@ public class ServletUpdateUsuario extends HttpServlet {
         String idParam = request.getParameter("id");
         String nome = request.getParameter("nome");
         String cpf = request.getParameter("cpf");
+        String telefone = request.getParameter("telefone");
         String generoStr = request.getParameter("genero");
         String status = request.getParameter("status");
-        String novaSenha = request.getParameter("senha"); // Senha nova (opcional)
+        String senha = request.getParameter("senha");
         String idSetorStr = request.getParameter("idSetor");
         String idSupervisorStr = request.getParameter("idSupervisor");
         String cargo = request.getParameter("cargo");
 
-        // --- NOVA LÓGICA (1 de 2): Coleta dos IDs de habilidades do formulário ---
         String[] idsHabilidadesSubmetidasStr = request.getParameterValues("habilidadeId");
         List<Integer> idsHabilidadesSubmetidas = new ArrayList<>();
         if (idsHabilidadesSubmetidasStr != null) {
@@ -117,7 +116,6 @@ public class ServletUpdateUsuario extends HttpServlet {
                 }
             }
         }
-        // --- FIM DA NOVA LÓGICA (1 de 2) ---
 
         try {
             // 2. Conversão e Validação Preliminar
@@ -143,33 +141,30 @@ public class ServletUpdateUsuario extends HttpServlet {
             // 4. Aplica as mudanças (Model dispara validações)
             usuarioParaAtualizar.setNome(nome);
             usuarioParaAtualizar.setCpf(cpf);
+            usuarioParaAtualizar.setTelefone(telefone);
             usuarioParaAtualizar.setGenero(genero);
             usuarioParaAtualizar.setStatus(status);
             usuarioParaAtualizar.setIdSetor(idSetor);
             usuarioParaAtualizar.setIdSupervisor(idSupervisor);
             usuarioParaAtualizar.setCargo(cargo);
 
-            // 5. Tratar atualização de senha (opcional)
-            if (novaSenha != null && !novaSenha.trim().isEmpty()) {
-                // !!! IMPORTANTE: CRIPTOGRAFE a senha ANTES de salvar !!!
-                // Ex: String senhaHash = BCrypt.hashpw(novaSenha, BCrypt.gensalt());
-                //     usuarioParaAtualizar.setSenha(senhaHash);
-                usuarioParaAtualizar.setSenha(novaSenha); // Salva a nova senha (ou hash)
+            // 5. Tratar atualização de senha
+            if (senha != null && !senha.trim().isEmpty()) {
+                usuarioParaAtualizar.setSenha(senha);
             }
 
             // 6. Persiste dados básicos do USUÁRIO
             int resultado = dao.update(usuarioParaAtualizar); // Pode lançar SQLException
 
             if (resultado > 0) {
-                // 7. --- NOVA LÓGICA (2 de 2): SINCRONIZAR HABILIDADES ---
+                // 7. Sincronizar Habilidades
                 // Isso só acontece se a atualização principal do usuário for bem-sucedida.
                 try {
                     // 7A. Busca as habilidades que o usuário tem AGORA no banco
                     List<Integer> idsAtuaisDoBanco = dao.getHabilidadeIdsPorUsuario(id);
 
-                    // 7B. CALCULA O QUE ADICIONAR:
+                    // 7B. Calcula o que adicionar:
                     // Itera sobre as habilidades submetidas (do formulário).
-                    // Se uma submetida NÃO ESTÁ no banco, ADICIONA.
                     for (int idSubmetido : idsHabilidadesSubmetidas) {
                         if (!idsAtuaisDoBanco.contains(idSubmetido)) {
                             System.out.println("Adicionando habilidade " + idSubmetido + " ao usuário " + id);
@@ -177,9 +172,8 @@ public class ServletUpdateUsuario extends HttpServlet {
                         }
                     }
 
-                    // 7C. CALCULA O QUE REMOVER:
+                    // 7C. Calcula o que remover:
                     // Itera sobre as habilidades do banco.
-                    // Se uma do banco NÃO ESTÁ na lista submetida, REMOVE.
                     for (int idDoBanco : idsAtuaisDoBanco) {
                         if (!idsHabilidadesSubmetidas.contains(idDoBanco)) {
                             System.out.println("Removendo habilidade " + idDoBanco + " do usuário " + id);
@@ -189,22 +183,20 @@ public class ServletUpdateUsuario extends HttpServlet {
 
                 } catch (SQLException syncException) {
                     // Erro parcial: A atualização do usuário funcionou, mas a sincronização de habilidades falhou.
-                    // O ideal é usar Transações (commit/rollback) para evitar isso.
-                    // Por agora, logamos o erro e notificamos o usuário via "flash message" (sessão).
                     syncException.printStackTrace();
                     // Esta mensagem de "erro_parcial" deve ser lida e exibida no JSP da *próxima* página (o 'usuarios-crud').
                     request.getSession().setAttribute("erro_parcial", "Usuário atualizado, mas falha ao sincronizar habilidades: " + syncException.getMessage());
                 }
-                // --- FIM DA NOVA LÓGICA (2 de 2) ---
 
                 success = true; // Confirma sucesso da operação principal
             } else {
                 erro = "Não foi possível atualizar o usuário (ID: " + id + ").";
             }
 
-            // --- Blocos Catch (Padrão) ---
+            // Blocos Catch
         } catch (IllegalArgumentException | NullPointerException e) {
             erro = "Erro de validação ou formato inválido: " + e.getMessage();
+
         } catch (SQLException e) {
             e.printStackTrace();
             if (e.getMessage().contains("Duplicate entry") || e.getMessage().contains("UNIQUE constraint failed")) {
@@ -214,32 +206,33 @@ public class ServletUpdateUsuario extends HttpServlet {
             } else {
                 erro = "Erro de banco de dados ao atualizar usuário: " + e.getMessage();
             }
+
         } catch (Exception e) {
             e.printStackTrace();
             erro = "Erro inesperado ao atualizar usuário: " + e.getMessage();
         }
 
-        // --- Fluxo de Resposta (Padrão) ---
+        // Fluxo de Resposta
         if (success) {
             System.out.println("Usuário ID " + id + " atualizado com sucesso.");
             response.sendRedirect(request.getContextPath() + "/usuarios-crud");
             return; // Encerra a execução
         }
 
-        // --- CAMINHO DE FALHA (Forward) (Padrão) ---
+        // Caminho de Falha (Forward)
         System.err.println("Falha ao atualizar usuário ID " + id + ". Fazendo forward. Erro: " + erro);
 
         // Define atributos para repopulação
         request.setAttribute("erro", erro);
         request.setAttribute("nome_previo", nome);
         request.setAttribute("cpf_previo", cpf);
+        request.setAttribute("telefone_previo", telefone);
         request.setAttribute("genero_previo", generoStr);
         request.setAttribute("status_previo", status);
         request.setAttribute("idSetor_previo", idSetorStr);
         request.setAttribute("idSupervisor_previo", idSupervisorStr);
         request.setAttribute("cargo_previo", cargo);
         request.setAttribute("habilidades_previas_ids", idsHabilidadesSubmetidas); // Passa a List<Integer>
-        // (Não repopulamos os checkboxes de habilidade no 'forward', seria complexo)
 
         // Recarrega a lista de fundo (com habilidades)
         List<Usuario> listaUsuarios = new ArrayList<>();
@@ -254,14 +247,14 @@ public class ServletUpdateUsuario extends HttpServlet {
         // Tenta recarregar o objeto do modal (sem habilidades)
         if (id > 0) {
             try {
-                request.setAttribute("usuarioModal", dao.read(id)); // Busca sem JOINs
+                request.setAttribute("usuarioModal", dao.read(id));
             } catch (Exception readEx) {
                 System.err.println("Falha ao recarregar dados do modal de update (ID: " + id + "): " + readEx.getMessage());
             }
         }
 
         request.setAttribute("abrirModal", "update");
-        // Precisamos reenviar a lista de *todas* as habilidades para o JSP
+        // Precisamos reenviar a lista de todas as habilidades para o JSP
         try {
             HabilidadesDAO hDAO = new HabilidadesDAO();
             request.setAttribute("todasAsHabilidades", hDAO.read());
