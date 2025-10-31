@@ -26,11 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- LÓGICA PARA VALIDAÇÃO ESPECÍFICA DE SENHA ---
-    // (Este bloco agora também lida com a lógica de "clique único" para este formulário)
 
-    // NOTA: Esta lógica presume que 'formCreate', 'senhaCreate' e 'senhaErro' são os IDs
-    // tanto na página de admin quanto na de usuário. Se forem diferentes,
-    // a lógica precisará ser duplicada com os IDs corretos.
     const formCreate = document.getElementById('formCreate');
     const senhaInput = document.getElementById('senhaCreate');
     const senhaErrorSpan = document.getElementById('senhaErro');
@@ -81,19 +77,12 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 // 3. Se TUDO estiver válido, desabilita o botão (lógica do "clique único")
                 if (submitButton) submitButton.disabled = true;
-                // ... e permite que o formulário seja enviado
+
             }
         });
     }
 
-    // --- BLOCO REMOVIDO (LINHAS 78-89 do seu código) ---
-    // O bloco que começava com 'if (formCreateAdmin)' foi removido
-    // pois estava quebrado (ReferenceError) e redundante.
-    // --- FIM DA REMOÇÃO ---
-
-
     // --- LÓGICA PARA ABRIR/FECHAR MODAIS COM CLIQUE ---
-    // (Este código agora será executado, pois o erro anterior foi removido)
     const botoesModal = document.querySelectorAll('.acaoModal');
     botoesModal.forEach(botaoModal => {
         botaoModal.addEventListener('click', () => {
@@ -172,13 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // --- BLOCO REMOVIDO (LINHAS 137-158 do seu código) ---
-    // A lógica de "clicar uma vez" para 'formCreate' foi removida
-    // pois já está integrada no listener de 'submit' combinado (linhas 62-85).
-    // --- FIM DA REMOÇÃO ---
-
     // --- LÓGICA PARA O BOTÃO DE CONFIRMAR (OUTROS FORMS) ---
-    // (Esta lógica está correta e agora será executada)
     const outrosFormsPost = document.querySelectorAll('form[method="post"]:not(#formCreate)');
     outrosFormsPost.forEach(form => {
         form.addEventListener('submit', (event) => {

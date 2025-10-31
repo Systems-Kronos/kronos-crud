@@ -90,16 +90,7 @@
 
 <div class="conteudoPrincipal">
 
-    <%-- Bloco de Exibição de Erro (Geral e Parcial) --%>
-    <%
-        if (erro != null && !erro.isEmpty()) {
-    %>
-    <div class="mensagem-erro">
-        <strong>Erro:</strong> <%= erro %>
-    </div>
-    <%
-        }
-    %>
+    <%-- Bloco de Exibição de Erro (Parcial) --%>
     <%
         String erroParcial = (String) session.getAttribute("erro_parcial");
         if (erroParcial != null) {
@@ -138,6 +129,11 @@
         <section class="create">
             <dialog id="create">
                 <h2>Cadastrar habilidade</h2>
+                <% if ("create".equals(modalAberto) && erro != null && !erro.isEmpty()) { %>
+                <div class="mensagem-erro">
+                    <strong>Erro:</strong> <%= erro %>
+                </div>
+                <% } %>
                 <form action="${pageContext.request.contextPath}/habilidade-create" id="formCreate" method="post">
                     <div class="campos">
                         <div>
@@ -171,6 +167,11 @@
         <section class="update">
             <dialog id="update">
                 <h2>Editar habilidade</h2>
+                <% if ("update".equals(modalAberto) && erro != null && !erro.isEmpty()) { %>
+                <div class="mensagem-erro">
+                    <strong>Erro:</strong> <%= erro %>
+                </div>
+                <% } %>
                 <form action="${pageContext.request.contextPath}/habilidade-update" method="post">
                     <div class="idAtual">
                         <label for="idUpdate">ID:</label>
@@ -206,6 +207,11 @@
         <section class="delete">
             <dialog id="delete">
                 <h2>Excluir habilidade</h2>
+                <% if ("delete".equals(modalAberto) && erro != null && !erro.isEmpty()) { %>
+                <div class="mensagem-erro">
+                    <strong>Erro:</strong> <%= erro %>
+                </div>
+                <% } %>
                 <form action="${pageContext.request.contextPath}/habilidades-delete" method="post">
                     <div class="idAtual">
                         <label for="idDelete">ID:</label>

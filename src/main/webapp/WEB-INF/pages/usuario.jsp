@@ -112,8 +112,6 @@
     }
 %>
 
-%>
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -147,16 +145,7 @@
 </header>
 
 <div class="conteudoPrincipal">
-    <%-- Bloco de Exibição de Erro (Geral e Parcial) --%>
-<%
-            if (erro != null && !erro.isEmpty()) {
-        %>
-        <div class="mensagem-erro">
-            <strong>Erro:</strong> <%= erro %>
-        </div>
-            <%
-            }
-        %>
+    <%-- Bloco de Exibição de Erro (Parcial) --%>
             <%
             String erroParcial = (String) session.getAttribute("erro_parcial");
             if (erroParcial != null) {
@@ -189,6 +178,11 @@
             <section class="create">
             <dialog id="create">
                 <h2>Cadastrar usuário</h2>
+                <% if ("create".equals(modalAberto) && erro != null && !erro.isEmpty()) { %>
+                <div class="mensagem-erro">
+                    <strong>Erro:</strong> <%= erro %>
+                </div>
+                <% } %>
                 <form action="${pageContext.request.contextPath}/usuario-create" id="formCreate" method="post">
                     <div class="campos">
                         <div>
@@ -197,7 +191,7 @@
                             <div class="campo">
                                 <label for="senhaCreate">Senha</label>
                                 <input type="password" name="senha" id="senhaCreate" autocomplete="new-password" required>
-                                <span id="senhaErro" class="erro-message"></span>
+                                <span id="senhaErro" class="erro-senha"></span>
                             </div>
                             <div class="campoLado">
                                 <div class="campo">
@@ -257,6 +251,11 @@
             <section class="update">
             <dialog id="update">
                 <h2>Editar usuário</h2>
+                <% if ("update".equals(modalAberto) && erro != null && !erro.isEmpty()) { %>
+                <div class="mensagem-erro">
+                    <strong>Erro:</strong> <%= erro %>
+                </div>
+                <% } %>
                 <form action="${pageContext.request.contextPath}/usuario-update" method="post">
                     <div class="idAtual"> <label for="idUpdate">ID:</label> <input type="number" name="id" id="idUpdate" readonly value="<%= updateID %>"> </div>
                     <div class="campos">
@@ -265,7 +264,6 @@
                             <div class="campo"> <label for="cpfUpdate">CPF</label> <input type="text" name="cpf" id="cpfUpdate" autocomplete="off" required value="<%= updateCpf %>"> </div>
                             <div class="campo">
                                 <label for="senhaUpdate">Senha</label>
-                                <%-- Senha opcional no update --%>
                                 <input type="password" name="senha" id="senhaUpdate" autocomplete="new-password" placeholder="Deixe em branco para manter">
                             </div>
                             <div class="campoLado">
@@ -324,6 +322,11 @@
             <section class="delete">
             <dialog id="delete">
                 <h2>Excluir usuário</h2>
+                <% if ("delete".equals(modalAberto) && erro != null && !erro.isEmpty()) { %>
+                <div class="mensagem-erro">
+                    <strong>Erro:</strong> <%= erro %>
+                </div>
+                <% } %>
                 <form action="${pageContext.request.contextPath}/usuario-delete" method="post">
                     <div class="idAtual"> <label for="idDelete">ID:</label> <input type="number" name="id" id="idDelete" readonly value="<%= deleteID %>"> </div>
                     <div class="campos">
@@ -403,7 +406,6 @@
                     <td><%= u.getStatus() %></td>
                     <td><%= u.getIdSetor() %></td>
                     <td><%= u.getIdSupervisor() %></td>
-                    <%-- Para exibir nomes de Setor/Supervisor, precisaria de JOINs no DAO e carregar os objetos --%>
                 </tr>
                 <%
                     }

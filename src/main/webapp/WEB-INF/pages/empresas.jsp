@@ -124,15 +124,6 @@
 
     <%-- Bloco de Exibição de Erro (Geral e Parcial) --%>
     <%
-        if (erro != null && !erro.isEmpty()) {
-    %>
-    <div class="mensagem-erro">
-        <strong>Erro:</strong> <%= erro %>
-    </div>
-    <%
-        }
-    %>
-    <%
         String erroParcial = (String) session.getAttribute("erro_parcial");
         if (erroParcial != null) {
     %>
@@ -164,6 +155,11 @@
         <section class="create">
             <dialog id="create">
                 <h2>Cadastrar empresa</h2>
+                <% if ("create".equals(modalAberto) && erro != null && !erro.isEmpty()) { %>
+                <div class="mensagem-erro">
+                    <strong>Erro:</strong> <%= erro %>
+                </div>
+                <% } %>
                 <form action="${pageContext.request.contextPath}/empresa-create" id="formCreate" method="post">
                     <div class="campos">
                         <div>
@@ -212,6 +208,11 @@
         <section class="update">
             <dialog id="update">
                 <h2>Editar empresa</h2>
+                <% if ("update".equals(modalAberto) && erro != null && !erro.isEmpty()) { %>
+                <div class="mensagem-erro">
+                    <strong>Erro:</strong> <%= erro %>
+                </div>
+                <% } %>
                 <form action="${pageContext.request.contextPath}/empresas-update" method="post">
                     <div class="idAtual"> <label for="idUpdate">ID:</label> <input type="number" name="id" id="idUpdate" readonly value="<%= updateID %>"> </div>
                     <div class="campos">
@@ -260,6 +261,11 @@
         <section class="delete">
             <dialog id="delete">
                 <h2>Excluir empresa</h2>
+                <% if ("delete".equals(modalAberto) && erro != null && !erro.isEmpty()) { %>
+                <div class="mensagem-erro">
+                    <strong>Erro:</strong> <%= erro %>
+                </div>
+                <% } %>
                 <form action="${pageContext.request.contextPath}/empresas-delete" method="post">
                     <div class="idAtual"> <label for="idDelete">ID:</label> <input type="number" name="id" id="idDelete" readonly value="<%= deleteID %>"> </div>
                     <div class="campos">

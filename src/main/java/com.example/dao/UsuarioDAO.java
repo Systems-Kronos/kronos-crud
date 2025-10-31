@@ -27,10 +27,10 @@ public class UsuarioDAO {
              PreparedStatement pstmt = conn.prepareStatement(createSQL, Statement.RETURN_GENERATED_KEYS)) {
 
             pstmt.setString(1, usuario.getNome());
-            pstmt.setString(2, usuario.getCpf()); // Model deve garantir que está limpo
+            pstmt.setString(2, usuario.getCpf());
             pstmt.setString(3, usuario.getGenero() != null ? String.valueOf(usuario.getGenero()) : null);
             pstmt.setString(4, usuario.getStatus());
-            pstmt.setString(5, usuario.getSenha()); // SENHA DEVE SER HASH
+            pstmt.setString(5, usuario.getSenha());
             pstmt.setInt(6, usuario.getIdSetor());
             pstmt.setInt(7, usuario.getIdSupervisor());
             pstmt.setString(8, usuario.getCargo());

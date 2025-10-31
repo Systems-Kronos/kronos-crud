@@ -82,16 +82,7 @@
 
 <div class="conteudoPrincipal">
 
-    <%-- Bloco de Exibição de Erro (Geral e Parcial) --%>
-        <%
-        if (erro != null && !erro.isEmpty()) {
-    %>
-    <div class="mensagem-erro">
-        <strong>Erro:</strong> <%= erro %>
-    </div>
-        <%
-        }
-    %>
+    <%-- Bloco de Exibição de Erro (Parcial) --%>
         <%
         String erroParcial = (String) session.getAttribute("erro_parcial");
         if (erroParcial != null) {
@@ -125,8 +116,13 @@
             <section class="create">
             <dialog id="create">
                 <h2>Cadastrar administrador</h2>
+                <% if ("create".equals(modalAberto) && erro != null && !erro.isEmpty()) { %>
+                <div class="mensagem-erro">
+                    <strong>Erro:</strong> <%= erro %>
+                </div>
+                <% } %>
                 <%-- Este formulário é validado pelo script.js (lógica de senha) --%>
-                <form action="${pageContext.request.contextPath}/admin-create" id="formCreateAdmin" class="form-validar-senha" method="post" novalidate>
+                <form action="${pageContext.request.contextPath}/admin-create" id="formCreateAdmin" method="post" novalidate>
                     <div class="campos">
                         <div>
                             <div class="campo">
@@ -134,9 +130,9 @@
                                 <input type="text" name="nome" id="nomeCreate" autocomplete="off" required value="<%= createNome %>">
                             </div>
                             <div class="campo">
-                                <label for="senhaCreateAdmin">Senha</label>
-                                <input type="password" name="senha" id="senhaCreateAdmin" class="input-senha-validar" autocomplete="new-password" required>
-                                <span id="senhaErrorAdmin" class="error-message span-erro-senha"></span>
+                                <label for="senhaCreate">Senha</label>
+                                <input type="password" name="senha" id="senhaCreate" autocomplete="new-password" required>
+                                <span id="senhaErro" class="erro-senha"></span>
                             </div>
                         </div>
                         <div>
@@ -159,6 +155,11 @@
             <section class="update">
             <dialog id="update">
                 <h2>Editar administrador</h2>
+                <% if ("update".equals(modalAberto) && erro != null && !erro.isEmpty()) { %>
+                <div class="mensagem-erro">
+                    <strong>Erro:</strong> <%= erro %>
+                </div>
+                <% } %>
                 <form action="${pageContext.request.contextPath}/admin-update" method="post">
                     <div class="idAtual"> <label for="idUpdate">ID:</label> <input type="number" name="id" id="idUpdate" readonly value="<%= updateID %>"> </div>
                     <div class="campos">
@@ -182,6 +183,11 @@
             <section class="delete">
             <dialog id="delete">
                 <h2>Excluir administrador</h2>
+                <% if ("delete".equals(modalAberto) && erro != null && !erro.isEmpty()) { %>
+                <div class="mensagem-erro">
+                    <strong>Erro:</strong> <%= erro %>
+                </div>
+                <% } %>
                 <form action="${pageContext.request.contextPath}/admin-delete" method="post">
                     <div class="idAtual"> <label for="idDelete">ID:</label> <input type="number" name="id" id="idDelete" readonly value="<%= deleteID %>"> </div>
                     <div class="campos">
@@ -231,5 +237,6 @@
             </table>
         </div>
     </main>
+</div>
 </body>
 </html>
