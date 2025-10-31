@@ -40,7 +40,7 @@ public class ServletDeleteUsuario extends HttpServlet {
             String idParam = request.getParameter("id");
             if (idParam != null && !idParam.isEmpty()) {
                 int id = Integer.parseInt(idParam);
-                Usuario usuarioModal = dao.read(id); // Busca sem habilidades
+                Usuario usuarioModal = dao.read(id);
 
                 if (usuarioModal != null) {
                     request.setAttribute("usuarioModal", usuarioModal);
@@ -81,7 +81,7 @@ public class ServletDeleteUsuario extends HttpServlet {
             String idParam = request.getParameter("id");
             id = Integer.parseInt(idParam);
 
-            // 1. Remove associações de habilidades PRIMEIRO
+            // 1. Remove associações de habilidades
             try {
                 int habilidadesRemovidas = dao.removeAllHabilidadesFromUsuario(id);
                 System.out.println("Removidas " + habilidadesRemovidas + " associações de habilidades para o usuário ID: " + id);
@@ -116,7 +116,7 @@ public class ServletDeleteUsuario extends HttpServlet {
 
         // Fluxo de Resposta
         if (success) {
-            // SUCESSO: Redireciona (PRG)
+            // SUCESSO: Redireciona
             System.out.println("Usuário ID " + id + " deletado com sucesso.");
             response.sendRedirect(request.getContextPath() + "/usuarios-crud");
             return;

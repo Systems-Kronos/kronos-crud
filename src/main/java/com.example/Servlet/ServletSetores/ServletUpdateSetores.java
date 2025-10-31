@@ -1,9 +1,9 @@
 package com.example.Servlet.ServletSetores;
 
 import com.example.dao.SetorDAO;
-import com.example.dao.EmpresaDAO; // <-- IMPORT ADICIONADO
+import com.example.dao.EmpresaDAO;
 import com.example.Model.Setor;
-import com.example.Model.Empresa; // <-- IMPORT ADICIONADO
+import com.example.Model.Empresa;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -11,7 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.sql.SQLException; // <-- IMPORT ADICIONADO
+import java.sql.SQLException;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -130,7 +130,7 @@ public class ServletUpdateSetores extends HttpServlet {
                 erro = "Não foi possível atualizar (ID: " + id + "). O registro pode não existir mais.";
             }
 
-            // Captura erros de VALIDAÇÃO do Model ou de CONVERSÃO
+            // Captura erros de validação do Model ou de conversão
         } catch (IllegalArgumentException | NullPointerException e) {
             // NumberFormatException é subclasse de IllegalArgumentException
             erro = "Erro de validação ou formato inválido: " + e.getMessage();
@@ -151,7 +151,7 @@ public class ServletUpdateSetores extends HttpServlet {
 
         // 6. Fluxo de Resposta
         if (success) {
-            // SUCESSO: Redireciona (PRG)
+            // SUCESSO: Redireciona
             System.out.println("Setor ID " + id + " atualizado com sucesso.");
             response.sendRedirect(request.getContextPath() + "/setores-crud");
             return; // Encerra

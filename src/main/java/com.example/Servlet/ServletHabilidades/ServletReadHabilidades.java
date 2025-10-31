@@ -31,7 +31,7 @@ public class ServletReadHabilidades extends HttpServlet {
         String pk = request.getParameter("pk");
 
         if (pk != null && !pk.isEmpty()) {
-            // 1. REQUISIÇÃO JSON (via AJAX)
+            // 1. Requisição JSON
             // Usado para preencher os modais de Update e Delete dinamicamente.
 
             response.setContentType("application/json");
@@ -42,13 +42,11 @@ public class ServletReadHabilidades extends HttpServlet {
                 Habilidades habilidade = dao.read(id); // Pode lançar SQLException
 
                 if (habilidade != null) {
-                    // Nota: Construção manual de JSON é frágil.
-                    // Em um projeto maior, use uma biblioteca (Gson, Jackson).
                     String json = "{"
-                            + "\"id\":\"" + id + "\"," // 'pk' é o mesmo que 'id'
-                            + "\"nome\":\"" + habilidade.getNome() + "\"," // Assume que nome não tem aspas
+                            + "\"id\":\"" + id + "\","
+                            + "\"nome\":\"" + habilidade.getNome() + "\","
                             + "\"tag\":\"" + habilidade.getTag() + "\","
-                            + "\"descricao\":\"" + habilidade.getDescricao().trim() + "\"" // Risco se a descrição tiver aspas
+                            + "\"descricao\":\"" + habilidade.getDescricao().trim() + "\""
                             + "}";
 
                     response.getWriter().write(json);
@@ -74,7 +72,7 @@ public class ServletReadHabilidades extends HttpServlet {
             }
 
         } else {
-            // --- RAMO 2: CARREGAMENTO DA PÁGINA (Forward JSP) ---
+            // Carregamento da Página (Forward JSP)
             // Carrega a lista completa (com filtros) para exibir no 'habilidades.jsp'.
 
             List<Habilidades> listaHabilidades = new ArrayList<>(); // Inicia vazia
@@ -93,11 +91,7 @@ public class ServletReadHabilidades extends HttpServlet {
                 // O DAO (corrigido) lança SQLException
                 listaHabilidades = dao.read(nomePesquisa, orderBy, direction);
 
-                // CORREÇÃO: O 'if (listaHabilidades == null)' foi removido,
-                // pois o DAO corrigido NUNCA retorna null para uma lista,
-                // ele retorna uma lista vazia.
-
-            } catch (SQLException e) { // <-- CORREÇÃO: Tratamento específico
+            } catch (SQLException e) {
                 e.printStackTrace();
                 erro = "Erro ao buscar lista de habilidades: " + e.getMessage();
             } catch (Exception e) {

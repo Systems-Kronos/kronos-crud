@@ -87,12 +87,11 @@ public class ServletCreateUsuario extends HttpServlet {
                 } catch (SQLException eHab) {
                     // Erro parcial: Usuário criado, mas habilidades falharam.
                     eHab.printStackTrace();
-                    // Usamos a sessão para enviar um "aviso" (flash message) para a próxima página
                     request.getSession().setAttribute("erro_parcial", "Usuário criado (ID: " + novoIdUsuario + "), mas falha ao adicionar habilidades: " + eHab.getMessage());
                 }
             }
 
-            // 6. SUCESSO (PRG Pattern)
+            // 6. SUCESSO
             System.out.println("Usuário criado com sucesso! ID: " + novoIdUsuario);
             response.sendRedirect(request.getContextPath() + "/usuarios-crud");
             return; // Encerra aqui após redirect
@@ -116,9 +115,7 @@ public class ServletCreateUsuario extends HttpServlet {
             erro = "Erro inesperado ao criar usuário: " + e.getMessage();
         }
 
-        // 7. CAMINHO DE FALHA (Forward)
-        // O código SÓ chega aqui se uma exceção foi pega ANTES do success=true.
-
+        // 7. Caminho de Falha (Forward)
         System.err.println("Falha na criação do usuário. Fazendo forward. Erro: " + erro);
 
         // Define os atributos de erro e de repopulação do formulário
@@ -143,7 +140,7 @@ public class ServletCreateUsuario extends HttpServlet {
         }
         request.setAttribute("listaUsuarios", listaUsuarios);
 
-        // Recarrega TODAS as habilidades (para os checkboxes do modal)
+        // Recarrega todas as habilidades (para os checkboxes do modal)
         try {
             HabilidadesDAO hDAO = new HabilidadesDAO();
 

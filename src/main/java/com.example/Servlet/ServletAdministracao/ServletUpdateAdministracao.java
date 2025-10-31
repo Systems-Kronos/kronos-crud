@@ -98,7 +98,7 @@ public class ServletUpdateAdministracao extends HttpServlet {
             id = Integer.parseInt(idParam); // Pode lançar NumberFormatException
             nome = request.getParameter("nome");
             email = request.getParameter("email");
-            String novaSenha = request.getParameter("senha"); // Senha pode ser opcional
+            String novaSenha = request.getParameter("senha");
 
             // 2. Buscar o objeto original no banco
             Administracao adminParaAtualizar = dao.read(id); // Pode lançar SQLException
@@ -111,7 +111,7 @@ public class ServletUpdateAdministracao extends HttpServlet {
             adminParaAtualizar.setNome(nome);
             adminParaAtualizar.setEmail(email);
 
-            // 4. Tratar atualização de senha (opcional)
+            // 4. Tratar atualização de senha
             if (novaSenha != null && !novaSenha.trim().isEmpty()) {
                 adminParaAtualizar.setSenha(novaSenha);
             }
@@ -130,7 +130,7 @@ public class ServletUpdateAdministracao extends HttpServlet {
             // NumberFormatException é uma subclasse de IllegalArgumentException
             erro = "Erro de validação ou formato inválido: " + e.getMessage();
 
-            // Captura erros de BANCO (ex: e-mail duplicado, falha na conexão)
+            // Captura erros de banco (ex: e-mail duplicado, falha na conexão)
         } catch (SQLException e) {
             e.printStackTrace();
             // Tenta dar uma mensagem amigável para e-mail duplicado (UNIQUE constraint)

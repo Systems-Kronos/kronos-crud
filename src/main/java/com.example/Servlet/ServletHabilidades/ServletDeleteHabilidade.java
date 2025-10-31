@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.SQLException; // <--- IMPORT ADICIONADO
+import java.sql.SQLException;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -126,7 +126,7 @@ public class ServletDeleteHabilidade extends HttpServlet {
             return; // Encerra a execução
         }
 
-        // CAMINHO DE FALHA
+        // Caminho de Falha
         System.err.println("Falha ao deletar habilidade ID " + id + ". Fazendo forward. Erro: " + erro);
         request.setAttribute("erro", erro);
 
@@ -137,7 +137,7 @@ public class ServletDeleteHabilidade extends HttpServlet {
             listaHabilidades = dao.read();
         } catch (SQLException e) {
             e.printStackTrace();
-            // Concatena o erro da LEITURA com o erro original da EXCLUSÃO
+            // Concatena o erro da leitura com o erro original da EXCLUSÃO
             request.setAttribute("erro", erro + " | ERRO ADICIONAL: Falha ao recarregar a lista.");
         }
         request.setAttribute("listaHabilidades", listaHabilidades);

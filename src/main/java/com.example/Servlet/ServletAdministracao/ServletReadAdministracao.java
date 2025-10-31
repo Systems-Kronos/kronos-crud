@@ -40,7 +40,7 @@ public class ServletReadAdministracao extends HttpServlet {
                 Administracao admin = dao.read(id); // Pode lançar SQLException
 
                 if (admin != null) {
-                    // Constrói a resposta JSON manualmente
+                    // Constrói a resposta JSON
                     String json = "{"
                             + "\"id\":\"" + id + "\","
                             + "\"nome\":\"" + escapeJson(admin.getNome()) + "\","
@@ -60,7 +60,7 @@ public class ServletReadAdministracao extends HttpServlet {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST); // Erro 400
                 response.getWriter().write("{\"erro\":\"PK inválida: " + pk + "\"}");
 
-            } catch (SQLException e) { // <-- CORREÇÃO: Tratamento específico
+            } catch (SQLException e) {
                 // Erro de banco de dados
                 e.printStackTrace();
                 response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR); // Erro 500

@@ -1,9 +1,9 @@
 package com.example.Servlet.ServletSetores;
 
 import com.example.dao.SetorDAO;
-import com.example.dao.EmpresaDAO; // <-- IMPORT ADICIONADO
+import com.example.dao.EmpresaDAO;
 import com.example.Model.Setor;
-import com.example.Model.Empresa; // <-- IMPORT ADICIONADO
+import com.example.Model.Empresa;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -11,7 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.sql.SQLException; // <-- IMPORT ADICIONADO
+import java.sql.SQLException;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -65,7 +65,7 @@ public class ServletDeleteSetores extends HttpServlet {
         } catch (SQLException e) {
             e.printStackTrace();
             erro = "Erro de banco de dados ao carregar dados: " + e.getMessage();
-        } catch (NumberFormatException e) { // <-- CORREÇÃO: Específico
+        } catch (NumberFormatException e) {
             erro = "ID inválido fornecido (doGet): " + request.getParameter("id");
             System.err.println("ID inválido ('id') delete setor (doGet): " + idParam);
         } catch (Exception e) { // Outros erros inesperados
@@ -73,17 +73,17 @@ public class ServletDeleteSetores extends HttpServlet {
             erro = "Erro inesperado ao buscar dados (doGet): " + e.getMessage();
         }
 
-        // --- Encaminhamento para o JSP ---
+        // Encaminhamento para o JSP
         if (erro != null) {
             request.setAttribute("erro", erro);
         }
         request.setAttribute("listaSetores", listaSetores);
-        request.setAttribute("listaEmpresas", listaEmpresas); // <-- CORREÇÃO: Envia empresas
+        request.setAttribute("listaEmpresas", listaEmpresas);
 
         request.getRequestDispatcher("/WEB-INF/pages/setores.jsp").forward(request, response);
     }
 
-    /**
+    /*
      * Executa a exclusão do Setor após a confirmação no modal.
      */
     @Override
@@ -114,7 +114,7 @@ public class ServletDeleteSetores extends HttpServlet {
             erro = "ID inválido fornecido para exclusão.";
             System.err.println("ID inválido ('id') delete setor doPost: " + request.getParameter("id"));
 
-        } catch (SQLException e) { // <-- CORREÇÃO: Específico
+        } catch (SQLException e) {
             e.printStackTrace();
             // Mensagem amigável para restrição de Foreign Key (FK)
             // Ex: Se o setor ainda possui Usuários
@@ -129,7 +129,7 @@ public class ServletDeleteSetores extends HttpServlet {
             erro = "Erro inesperado ao processar a exclusão: " + e.getMessage();
         }
 
-        // --- Fluxo de Resposta ---
+        // Fluxo de Resposta
         if (success) {
             // SUCESSO: Redireciona (PRG) para a listagem
             System.out.println("Setor ID " + id + " deletado com sucesso.");
@@ -137,14 +137,14 @@ public class ServletDeleteSetores extends HttpServlet {
             return; // Encerra a execução
         }
 
-        // --- CAMINHO DE FALHA (Forward) ---
+        // Caminho de Falha (Forward)
         System.err.println("Falha ao deletar setor ID " + id + ". Fazendo forward. Erro: " + erro);
         request.setAttribute("erro", erro);
 
         // Recarrega dados necessários para o JSP
         List<Setor> listaSetores = new ArrayList<>();
         try {
-            // CORREÇÃO: Trata SQLException ao recarregar a lista de fundo
+            // Trata SQLException ao recarregar a lista de fundo
             listaSetores = dao.read();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -152,7 +152,7 @@ public class ServletDeleteSetores extends HttpServlet {
         }
         request.setAttribute("listaSetores", listaSetores);
 
-        // CORREÇÃO: Recarrega lista de Empresas (necessária para os modais Create/Update)
+        // Recarrega lista de Empresas (necessária para os modais Create/Update)
         try {
             EmpresaDAO empresaDAO = new EmpresaDAO();
             request.setAttribute("listaEmpresas", empresaDAO.read());
@@ -164,7 +164,7 @@ public class ServletDeleteSetores extends HttpServlet {
         // Tenta recarregar modal com dados (se ID for válido)
         if (id > 0) {
             try {
-                // CORREÇÃO: Trata exceção ao recarregar dados do modal
+                // Trata exceção ao recarregar dados do modal
                 request.setAttribute("setorModal", dao.read(id));
             } catch (Exception readEx) {
                 System.err.println("Falha ao recarregar dados do modal de delete: " + readEx.getMessage());

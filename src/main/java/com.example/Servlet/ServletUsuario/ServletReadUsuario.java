@@ -103,7 +103,7 @@ public class ServletReadUsuario extends HttpServlet {
                 // Usa o método do DAO que aceita filtros E carrega habilidades (JOINs)
                 listaUsuarios = dao.read(pesquisa, orderBy, direction); // Pode lançar SQLException
 
-                // Carrega a lista de TODAS as habilidades disponíveis
+                // Carrega a lista de todas as habilidades disponíveis
                 HabilidadesDAO habilidadesDAO = new HabilidadesDAO();
                 todasAsHabilidades = habilidadesDAO.read();
 

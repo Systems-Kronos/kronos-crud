@@ -76,7 +76,6 @@ public class ServletUpdateUsuario extends HttpServlet {
             request.setAttribute("erro", erro);
         }
         request.setAttribute("listaUsuarios", listaUsuarios); // Envia a lista (mesmo que vazia)
-        // Confirme o nome do seu JSP de usuários
         request.getRequestDispatcher("/WEB-INF/pages/usuario.jsp").forward(request, response);
     }
 
@@ -166,7 +165,6 @@ public class ServletUpdateUsuario extends HttpServlet {
 
                     // 7B. Calcula o que adicionar:
                     // Itera sobre as habilidades submetidas (do formulário).
-                    // Se uma submetida NÃO ESTÁ no banco, adiciona.
                     for (int idSubmetido : idsHabilidadesSubmetidas) {
                         if (!idsAtuaisDoBanco.contains(idSubmetido)) {
                             System.out.println("Adicionando habilidade " + idSubmetido + " ao usuário " + id);
@@ -176,7 +174,6 @@ public class ServletUpdateUsuario extends HttpServlet {
 
                     // 7C. Calcula o que remover:
                     // Itera sobre as habilidades do banco.
-                    // Se uma do banco NÃO ESTÁ na lista submetida, remove.
                     for (int idDoBanco : idsAtuaisDoBanco) {
                         if (!idsHabilidadesSubmetidas.contains(idDoBanco)) {
                             System.out.println("Removendo habilidade " + idDoBanco + " do usuário " + id);
@@ -215,7 +212,7 @@ public class ServletUpdateUsuario extends HttpServlet {
             erro = "Erro inesperado ao atualizar usuário: " + e.getMessage();
         }
 
-        // Fluxo de Resposta (Padrão)
+        // Fluxo de Resposta
         if (success) {
             System.out.println("Usuário ID " + id + " atualizado com sucesso.");
             response.sendRedirect(request.getContextPath() + "/usuarios-crud");

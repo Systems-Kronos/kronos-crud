@@ -68,7 +68,7 @@ public class ServletReadEmpresa extends HttpServlet {
             } catch (NumberFormatException e) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST); // 400
                 response.getWriter().write("{\"erro\":\"PK inválida: " + pk + "\"}");
-            } catch (SQLException e) { // <-- CORREÇÃO: Específico
+            } catch (SQLException e) {
                 e.printStackTrace();
                 response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR); // 500
                 response.getWriter().write("{\"erro\":\"Erro de banco de dados: " + e.getMessage() + "\"}");
@@ -95,7 +95,7 @@ public class ServletReadEmpresa extends HttpServlet {
                 // 1. Carrega a lista principal de empresas (filtrada)
                 listaEmpresas = dao.read(nomePesquisa, orderBy, direction); // Pode lançar SQLException
 
-                // 2. CORREÇÃO: Carrega a lista de TODOS os planos (para os <select> dos modais)
+                // 2. Carrega a lista de TODOS os planos (para os <select> dos modais)
                 PlanoDAO planoDAO = new PlanoDAO();
                 listaPlanos = planoDAO.read();
 
