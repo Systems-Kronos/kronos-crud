@@ -1,7 +1,7 @@
 package com.example.Servlet.ServletAdministracao;
 
 import java.io.IOException;
-import java.sql.SQLException; // <--- IMPORT ADICIONADO
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 

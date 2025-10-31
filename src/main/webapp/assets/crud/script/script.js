@@ -5,33 +5,35 @@ document.addEventListener('DOMContentLoaded', () => {
     if (modalIdParaAbrir) {
         const modal = document.getElementById(modalIdParaAbrir);
         if (modal && typeof modal.showModal === 'function') {
-            modal.showModal();
-        } else {
-            console.error("Tentativa de abrir um modal que não existe: '" + modalIdParaAbrir + "'");
+            try {
+                modal.showModal();
+            } catch (e) {
+                console.error("Erro ao tentar abrir modal automaticamente:", modalIdParaAbrir, e);
+            }
+        } else if (modalIdParaAbrir) {
+            console.error("Tentativa de abrir um modal que não existe:", modalIdParaAbrir);
         }
     }
 
     // --- LÓGICA PARA BOTÕES DE FILTRAGEM ---
     const botaoLimparFiltro = document.getElementById('botaoLimparFiltro');
-
     if (botaoLimparFiltro) {
-        botaoLimparFiltro.addEventListener('click', function () {
-            // Previne o comportamento padrão 'reset' do formulário
-            event.preventDefault();
-            const caminho = JSON.parse(botaoLimparFiltro.dataset.caminho);
-            const caminhoBase = caminho.base;
-            const tabelaAtual = caminho.tabela;
-            window.location.href = `${caminhoBase}/${tabelaAtual}`;
+        botaoLimparFiltro.addEventListener('click', function (event) {
+            event.preventDefault(); // Previne o reset do formulário
+            try {
+                const caminho = JSON.parse(botaoLimparFiltro.dataset.caminho);
+                window.location.href = `${caminho.base}/${caminho.tabela}`;
+            } catch (e) {
+                console.error("Erro ao processar 'data-caminho' do botão Limpar Filtros:", e);
+            }
         });
     }
 
-    // --- LÓGICA PARA VALIDAÇÃO ESPECÍFICA DE SENHA ---
+    // --- LÓGICA GENÉRICA PARA VALIDAÇÃO ESPECÍFICA DE SENHA ---
+    // (Procura por classes CSS, funcionando em admin.jsp e usuario.jsp)
+    // (Seus JSPs precisam ter as classes: .form-validar-senha, .input-senha-validar, .span-erro-senha)
 
-    const formCreate = document.getElementById('formCreate');
-    const senhaInput = document.getElementById('senhaCreate');
-    const senhaErrorSpan = document.getElementById('senhaErro');
-
-    // Função que valida a senha (igual)
+    // Função de validação
     function validarSenha(senha) {
         if (!senha) return "A senha não pode estar em branco.";
         if (senha.length < 8) return "A senha deve ter no mínimo 8 caracteres.";
@@ -42,47 +44,55 @@ document.addEventListener('DOMContentLoaded', () => {
         return ""; // Válida
     }
 
-    // Valida a senha enquanto digita (feedback em tempo real)
-    if (senhaInput && senhaErrorSpan) {
-        senhaInput.addEventListener('input', () => {
-            const mensagemErro = validarSenha(senhaInput.value);
-            senhaErrorSpan.textContent = mensagemErro;
-        });
-        const parentDialogCreate = formCreate ? formCreate.closest('dialog') : null;
-        if (parentDialogCreate) {
-            parentDialogCreate.addEventListener('close', () => {
-                senhaErrorSpan.textContent = '';
-            });
-        }
-    }
+    // Encontra TODOS os formulários que precisam de validação de senha
+    const formCreate = document.getElementById('formCreate');
 
-    // Listener de submit ÚNICO E COMBINADO para 'formCreate'
     if (formCreate) {
-        formCreate.addEventListener('submit', (event) => {
-            const submitButton = formCreate.querySelector('button[type="submit"].confirmar');
-            let mensagemErroSenha = "";
+        // Encontra os elementos DENTRO do formulário 'formCreate'
+        // NOTA: Seus JSPs (admin e usuário) usam os mesmos IDs 'senhaCreate' e 'senhaErro'.
+        // Isso NÃO é ideal, mas o seletor abaixo vai funcionar na página que estiver carregada.
+        const senhaInput = formCreate.querySelector('#senhaCreate');
+        const senhaErrorSpan = formCreate.querySelector('#senhaErro'); // Procura 'senhaErro'
+        const submitButton = formCreate.querySelector('button[type="submit"].confirmar');
 
-            // 1. Valida a senha (se o campo de senha existir)
+        // Adiciona listener de 'input' (feedback em tempo real)
+        if (senhaInput && senhaErrorSpan) {
+            senhaInput.addEventListener('input', () => {
+                const mensagemErro = validarSenha(senhaInput.value);
+                senhaErrorSpan.textContent = mensagemErro;
+            });
+            // Limpa erro ao fechar modal
+            const parentDialog = formCreate.closest('dialog');
+            if (parentDialog) {
+                parentDialog.addEventListener('close', () => {
+                    senhaErrorSpan.textContent = '';
+                });
+            }
+        }
+
+        // Adiciona listener de 'submit' ao formulário
+        formCreate.addEventListener('submit', (event) => {
+            let mensagemErroSenha = "";
             if (senhaInput && senhaErrorSpan) {
                 mensagemErroSenha = validarSenha(senhaInput.value);
                 senhaErrorSpan.textContent = mensagemErroSenha;
             }
 
-            // 2. Verifica se a senha OU outros campos (required, email, etc) falharam
-            //    (Se o form tiver 'novalidate', checkValidity() ainda funciona)
+            // Verifica se a senha OU outros campos (required) falharam
+            // (Seus JSPs não usam 'novalidate', então o checkValidity() falhará
+            // E o navegador mostrará as mensagens de 'required'.)
             if (mensagemErroSenha || !formCreate.checkValidity()) {
-                // Se falhou, impede o envio e garante que o botão esteja ATIVO
-                event.preventDefault();
-                if (submitButton) submitButton.disabled = false;
+                event.preventDefault(); // Impede o envio
+                if (submitButton) submitButton.disabled = false; // Reabilita o botão
             } else {
-                // 3. Se TUDO estiver válido, desabilita o botão (lógica do "clique único")
-                if (submitButton) submitButton.disabled = true;
-
+                if (submitButton) submitButton.disabled = true; // Desabilita no sucesso
             }
         });
     }
 
+
     // --- LÓGICA PARA ABRIR/FECHAR MODAIS COM CLIQUE ---
+    // (Este código agora será executado, pois o erro de ID foi corrigido)
     const botoesModal = document.querySelectorAll('.acaoModal');
     botoesModal.forEach(botaoModal => {
         botaoModal.addEventListener('click', () => {
@@ -94,13 +104,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (acao === 'abrir') {
 
                     if (modal.id === 'create') {
-                        // Limpa qualquer span de erro de senha dentro do modal create
-                        const errorSpans = modal.querySelectorAll('.error-message, .erro-senha'); // Pega ambas as classes
-                        if (errorSpans) {
-                            errorSpans.forEach(span => span.textContent = '');
-                        }
+                        // Limpa spans de erro e reseta o formulário
+                        const errorSpans = modal.querySelectorAll('.error-message, .erro-senha');
+                        if (errorSpans) errorSpans.forEach(span => span.textContent = '');
 
-                        // Reseta o formulário para limpar campos
                         const form = modal.querySelector('form');
                         if (form) form.reset();
 
@@ -110,7 +117,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
 
                     const pk = botaoModal.dataset.pk;
-
                     if (botaoModal.dataset.caminho) {
                         const caminho = JSON.parse(botaoModal.dataset.caminho);
                         const caminhoBase = caminho.base;
@@ -161,17 +167,15 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // --- LÓGICA PARA O BOTÃO DE CONFIRMAR (OUTROS FORMS) ---
+    // --- LÓGICA PARA O BOTÃO DE CONFIRMAR (OUTROS FORMS - Update/Delete) ---
+    // (Esta lógica está correta e agora será executada)
     const outrosFormsPost = document.querySelectorAll('form[method="post"]:not(#formCreate)');
     outrosFormsPost.forEach(form => {
         form.addEventListener('submit', (event) => {
             const submitButton = form.querySelector('button[type="submit"].confirmar');
-            // Desabilita o botão SOMENTE se a validação HTML5 do navegador passar
             if (form.checkValidity()) {
                 if (submitButton) submitButton.disabled = true;
             } else {
-                // Se a validação falhar, o navegador (sem 'novalidate')
-                // mostrará os erros, e o botão deve permanecer ativo
                 if (submitButton) submitButton.disabled = false;
             }
         });
@@ -193,7 +197,7 @@ function preencherCamposModal(tipo, dados, tabela) {
             campos = ['id', 'nome', 'email'];
             break;
         case 'empresas-crud':
-            campos = ['id', 'nome', 'email', 'cep', 'cnpj', 'telefone', 'porte', 'horaAbertura', 'horaFechamento', 'regrasNegocios', 'plano']; // 'plano' adicionado se o ID for 'planoUpdate'/'planoDelete'
+            campos = ['id', 'nome', 'email', 'cep', 'cnpj', 'telefone', 'porte', 'horaAbertura', 'horaFechamento', 'regrasNegocios', 'plano'];
             break;
         case 'planos-crud':
             campos = ['id', 'nome', 'custo', 'maxFuncionarios', 'descricao'];
@@ -205,7 +209,7 @@ function preencherCamposModal(tipo, dados, tabela) {
             campos = ['id', 'nome', 'qtnFuncionarios', 'turnos', 'descricao', 'idEmpresa'];
             break;
         case 'usuarios-crud':
-            campos = ['id', 'nome', 'cpf', 'genero', 'cargo', 'status', 'idSetor', 'idSupervisor'];
+            campos = ['id', 'nome', 'cpf', 'telefone', 'genero', 'cargo', 'status', 'idSetor', 'idSupervisor'];
             if (dados.usuario) {
                 dadosParaCampos = dados.usuario;
             } else {
@@ -217,12 +221,14 @@ function preencherCamposModal(tipo, dados, tabela) {
             return;
     }
 
+    // Preenche campos de texto, select, etc.
     campos.forEach(campo => {
         const elementoId = `${campo}${sufixo}`;
         const elemento = document.getElementById(elementoId);
         if (elemento) {
-            // Renomeia 'idPlano' do JSON para 'plano' do ID do select
             let valor = (campo === 'plano' && dadosParaCampos['idPlano']) ? dadosParaCampos['idPlano'] : dadosParaCampos[campo];
+            valor = (campo === 'idEmpresa' && dadosParaCampos['idEmpresa']) ? dadosParaCampos['idEmpresa'] : valor;
+
             elemento.value = valor !== null && valor !== undefined ? valor : '';
         } else {
             console.warn(`Elemento não encontrado no modal ${tipo} para ${tabela}: #${elementoId}`);
@@ -231,7 +237,7 @@ function preencherCamposModal(tipo, dados, tabela) {
 
     if (tabela === 'usuarios-crud' && tipo === 'update') {
         const idsHabilidadesDoUsuario = dados.habilidadesDoUsuario || [];
-        const todosOsCheckboxes = document.querySelectorAll('#lista-checkboxes-habilidades .habilidade-update-cb');
+        const todosOsCheckboxes = document.querySelectorAll('#listaHabilidadesUpdate .habilidade-update-cb');
 
         if (todosOsCheckboxes.length > 0) {
             todosOsCheckboxes.forEach(checkbox => {

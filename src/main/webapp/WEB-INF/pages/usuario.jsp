@@ -18,6 +18,7 @@
     // Variáveis para repopular campos após erro
     String createNome = "";
     String createCpf = "";
+    String createTelefone = "";
     String createGenero = "";
     String createStatus = "";
     String createIdSetor = "";
@@ -28,6 +29,7 @@
     if ("create".equals(modalAberto)) {
         createNome = request.getAttribute("nome_previo") != null ? (String)request.getAttribute("nome_previo") : "";
         createCpf = request.getAttribute("cpf_previo") != null ? (String)request.getAttribute("cpf_previo") : "";
+        createTelefone = request.getAttribute("telefone_previo") != null ? (String)request.getAttribute("telefone_previo") : "";
         createGenero = request.getAttribute("genero_previo") != null ? (String)request.getAttribute("genero_previo") : "";
         createStatus = request.getAttribute("status_previo") != null ? (String)request.getAttribute("status_previo") : "";
         createIdSetor = request.getAttribute("idSetor_previo") != null ? (String)request.getAttribute("idSetor_previo") : "";
@@ -44,6 +46,7 @@
     String updateID = "";
     String updateNome = "";
     String updateCpf = "";
+    String updateTelefone = "";
     String updateGenero = "";
     String updateStatus = "";
     String updateIdSetor = "";
@@ -55,6 +58,7 @@
         updateID = String.valueOf(usuarioModal.getId());
         updateNome = usuarioModal.getNome();
         updateCpf = usuarioModal.getCpf();
+        updateTelefone = usuarioModal.getTelefone();
         updateGenero = usuarioModal.getGenero() != null ? usuarioModal.getGenero().toString() : "";
         updateStatus = usuarioModal.getStatus();
         updateIdSetor = String.valueOf(usuarioModal.getIdSetor());
@@ -76,6 +80,7 @@
         // ID não muda
         updateNome = (String) request.getAttribute("nome_previo");
         updateCpf = (String) request.getAttribute("cpf_previo");
+        updateTelefone = (String) request.getAttribute("telefone_previo");
         updateGenero = (String) request.getAttribute("genero_previo");
         updateStatus = (String) request.getAttribute("status_previo");
         updateIdSetor = (String) request.getAttribute("idSetor_previo");
@@ -88,6 +93,7 @@
     String deleteID = "";
     String deleteNome = "";
     String deleteCpf = "";
+    String deleteTelefone = "";
     String deleteGenero = "";
     String deleteStatus = "";
     String deleteIdSetor = "";
@@ -98,6 +104,7 @@
         deleteID = String.valueOf(usuarioModal.getId());
         deleteNome = usuarioModal.getNome();
         deleteCpf = usuarioModal.getCpf();
+        deleteTelefone = usuarioModal.getTelefone();
         deleteGenero = usuarioModal.getGenero() != null ? usuarioModal.getGenero().toString() : "";
         deleteStatus = usuarioModal.getStatus();
         deleteIdSetor = String.valueOf(usuarioModal.getIdSetor());
@@ -188,6 +195,7 @@
                         <div>
                             <div class="campo"> <label for="nomeCreate">Nome</label> <input type="text" name="nome" id="nomeCreate" autocomplete="off" required value="<%= createNome %>"> </div>
                             <div class="campo"> <label for="cpfCreate">CPF</label> <input type="text" name="cpf" id="cpfCreate" autocomplete="off" required value="<%= createCpf %>"> </div>
+                            <div class="campo"><label for="telefoneCreate">Telefone</label> <input type="text" name="telefone" id="telefoneCreate" autocomplete="off" required value="<%= createTelefone %>"></div>
                             <div class="campo">
                                 <label for="senhaCreate">Senha</label>
                                 <input type="password" name="senha" id="senhaCreate" autocomplete="new-password" required>
@@ -262,6 +270,7 @@
                         <div>
                             <div class="campo"> <label for="nomeUpdate">Nome</label> <input type="text" name="nome" id="nomeUpdate" autocomplete="off" required value="<%= updateNome %>"> </div>
                             <div class="campo"> <label for="cpfUpdate">CPF</label> <input type="text" name="cpf" id="cpfUpdate" autocomplete="off" required value="<%= updateCpf %>"> </div>
+                            <div class="campo"> <label for="telefoneUpdate">Telefone</label> <input type="text" name="telefone" id="telefoneUpdate" autocomplete="off" required value="<%= updateTelefone %>"> </div>
                             <div class="campo">
                                 <label for="senhaUpdate">Senha</label>
                                 <input type="password" name="senha" id="senhaUpdate" autocomplete="new-password" placeholder="Deixe em branco para manter">
@@ -333,6 +342,7 @@
                         <div>
                             <div class="campo"> <label for="nomeDelete">Nome</label> <input type="text" name="nome" id="nomeDelete" disabled value="<%= deleteNome %>"> </div>
                             <div class="campo"> <label for="cpfDelete">CPF</label> <input type="text" name="cpf" id="cpfDelete" disabled value="<%= deleteCpf %>"> </div>
+                            <div class="campo"> <label for="telefoneDelete">Telefone</label> <input type="text" name="telefone" id="telefoneDelete" disabled value="<%= deleteTelefone %>"> </div>
                             <div class="campo"> <label for="senhaDelete">Senha</label> <input type="password" name="senha" id="senhaDelete" disabled value="********"> </div>
                             <div class="campoLado">
                                 <div class="campo">
@@ -380,6 +390,7 @@
                     <th>ID</th>
                     <th>Nome</th>
                     <th>CPF</th>
+                    <th>Telefone</th>
                     <th>Senha</th>
                     <th>Gênero</th>
                     <th>Cargo</th>
@@ -400,6 +411,7 @@
                     <td><%= u.getId() %></td>
                     <td><%= u.getNome() %></td>
                     <td><%= u.getCpf() %></td>
+                    <td><%= u.getTelefone() %></td>
                     <td><%= u.getSenha() %></td>
                     <td><%= u.getGenero() %></td>
                     <td><%= u.getCargo() %></td>
@@ -411,7 +423,7 @@
                     }
                 } else {
                 %>
-                <tr> <td colspan="11">Nenhum usuário encontrado.</td> </tr>
+                <tr> <td colspan="12">Nenhum usuário encontrado.</td> </tr>
                 <%
                     }
                 %>

@@ -4,7 +4,7 @@ import com.example.Controller.Conexao;
 import com.example.Model.Habilidades;
 import com.example.Model.Usuario;
 
-import java.sql.*; // Import Statement
+import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -19,7 +19,7 @@ public class UsuarioDAO {
     public int create(Usuario usuario) throws SQLException {
         Conexao conexao = new Conexao();
         // 1. SQL pede o retorno das chaves geradas (o ID)
-        String createSQL = "INSERT INTO usuario (nome, cpf, genero, status, senha, fk_setor_id, fk_supervisor_id, cargo) VALUES (?,?,?,?,?,?,?,?)";
+        String createSQL = "INSERT INTO usuario (nome, cpf, telefone, genero, status, senha, fk_setor_id, fk_supervisor_id, cargo) VALUES (?,?,?,?,?,?,?,?,?)";
 
         // 2. try-with-resources para gerenciar Conexão e PreparedStatement
         try (Connection conn = conexao.conectar();
@@ -28,12 +28,13 @@ public class UsuarioDAO {
 
             pstmt.setString(1, usuario.getNome());
             pstmt.setString(2, usuario.getCpf());
-            pstmt.setString(3, usuario.getGenero() != null ? String.valueOf(usuario.getGenero()) : null);
-            pstmt.setString(4, usuario.getStatus());
-            pstmt.setString(5, usuario.getSenha());
-            pstmt.setInt(6, usuario.getIdSetor());
-            pstmt.setInt(7, usuario.getIdSupervisor());
-            pstmt.setString(8, usuario.getCargo());
+            pstmt.setString(3, usuario.getTelefone());
+            pstmt.setString(4, usuario.getGenero() != null ? String.valueOf(usuario.getGenero()) : null);
+            pstmt.setString(5, usuario.getStatus());
+            pstmt.setString(6, usuario.getSenha());
+            pstmt.setInt(7, usuario.getIdSetor());
+            pstmt.setInt(8, usuario.getIdSupervisor());
+            pstmt.setString(9, usuario.getCargo());
 
             int affectedRows = pstmt.executeUpdate();
 
@@ -59,7 +60,7 @@ public class UsuarioDAO {
      */
     public List<Usuario> read() throws SQLException {
         Conexao conexao = new Conexao();
-        String readSQL = "SELECT u.id AS u_id, u.nome AS u_nome, u.cpf AS u_cpf, u.genero AS u_genero, " +
+        String readSQL = "SELECT u.id AS u_id, u.nome AS u_nome, u.cpf AS u_cpf, u.telefone AS u_telefone, u.genero AS u_genero, " +
                 "u.status AS u_status, u.senha AS u_senha, u.fk_setor_id AS u_id_setor, " +
                 "u.fk_supervisor_id AS u_id_supervisor, u.cargo AS u_cargo, " +
                 "h.id AS h_id, h.nome AS h_nome, h.tag AS h_tag, h.descricao AS h_descricao " +
@@ -82,6 +83,7 @@ public class UsuarioDAO {
                             idUsuario,
                             rset.getString("u_nome"),
                             rset.getString("u_cpf"),
+                            rset.getString("u_telefone"),
                             (rset.getString("u_genero") != null && !rset.getString("u_genero").isEmpty()) ? rset.getString("u_genero").charAt(0) : null,
                             rset.getString("u_status"),
                             rset.getString("u_senha"),
@@ -120,7 +122,7 @@ public class UsuarioDAO {
 
         List<Object> parametros = new LinkedList<>();
         StringBuilder sqlBuilder = new StringBuilder(
-                "SELECT u.id AS u_id, u.nome AS u_nome, u.cpf AS u_cpf, u.genero AS u_genero, " +
+                "SELECT u.id AS u_id, u.nome AS u_nome, u.cpf AS u_cpf, u.telefone AS u_telefone, u.genero AS u_genero, " +
                         "u.status AS u_status, u.senha AS u_senha, u.fk_setor_id AS u_id_setor, " +
                         "u.fk_supervisor_id AS u_id_supervisor, u.cargo AS u_cargo, " +
                         "h.id AS h_id, h.nome AS h_nome, h.tag AS h_tag, h.descricao AS h_descricao " +
@@ -164,6 +166,7 @@ public class UsuarioDAO {
                                 idUsuario,
                                 rset.getString("u_nome"),
                                 rset.getString("u_cpf"),
+                                rset.getString("u_telefone"),
                                 (rset.getString("u_genero") != null && !rset.getString("u_genero").isEmpty()) ? rset.getString("u_genero").charAt(0) : null,
                                 rset.getString("u_status"),
                                 rset.getString("u_senha"),
@@ -210,6 +213,7 @@ public class UsuarioDAO {
                             rset.getInt("id"),
                             rset.getString("nome"),
                             rset.getString("cpf"),
+                            rset.getString("telefone"),
                             (rset.getString("genero") != null && !rset.getString("genero").isEmpty()) ? rset.getString("genero").charAt(0) : null,
                             rset.getString("status"),
                             rset.getString("senha"),
@@ -228,19 +232,20 @@ public class UsuarioDAO {
      */
     public int update(Usuario usuario) throws SQLException {
         Conexao conexao = new Conexao();
-        String updateSQL = "UPDATE usuario SET nome = ?, cpf = ?, genero = ?, status = ?, senha = ?, fk_setor_id = ?, fk_supervisor_id = ?, cargo = ? WHERE id = ?";
+        String updateSQL = "UPDATE usuario SET nome = ?, cpf = ?, telefone = ?, genero = ?, status = ?, senha = ?, fk_setor_id = ?, fk_supervisor_id = ?, cargo = ? WHERE id = ?";
 
         try (Connection conn = conexao.conectar();
              PreparedStatement pstmt = conn.prepareStatement(updateSQL)) {
             pstmt.setString(1, usuario.getNome());
             pstmt.setString(2, usuario.getCpf());
-            pstmt.setString(3, usuario.getGenero() != null ? usuario.getGenero().toString() : null);
-            pstmt.setString(4, usuario.getStatus());
-            pstmt.setString(5, usuario.getSenha());
-            pstmt.setInt(6, usuario.getIdSetor());
-            pstmt.setInt(7, usuario.getIdSupervisor());
-            pstmt.setString(8, usuario.getCargo());
-            pstmt.setInt(9, usuario.getId());
+            pstmt.setString(3, usuario.getTelefone());
+            pstmt.setString(4, usuario.getGenero() != null ? usuario.getGenero().toString() : null);
+            pstmt.setString(5, usuario.getStatus());
+            pstmt.setString(6, usuario.getSenha());
+            pstmt.setInt(7, usuario.getIdSetor());
+            pstmt.setInt(8, usuario.getIdSupervisor());
+            pstmt.setString(9, usuario.getCargo());
+            pstmt.setInt(10, usuario.getId());
             return pstmt.executeUpdate();
         }
     }
@@ -248,21 +253,22 @@ public class UsuarioDAO {
     /*
      * Atualiza dados da tabela 'usuario'. NÃO mexe nas habilidades.
      */
-    public int update(int id, String nome, String cpf, char genero, String status, String senha, int idSetor, int idSupervisor, String cargo) throws SQLException {
+    public int update(int id, String nome, String cpf, String telefone, char genero, String status, String senha, int idSetor, int idSupervisor, String cargo) throws SQLException {
         Conexao conexao = new Conexao();
-        String updateSQL = "UPDATE usuario SET nome = ?, cpf = ?, genero = ?, status = ?, senha = ?, fk_setor_id = ?, fk_supervisor_id = ?, cargo = ? WHERE id = ?";
+        String updateSQL = "UPDATE usuario SET nome = ?, cpf = ?, telefone = ?, genero = ?, status = ?, senha = ?, fk_setor_id = ?, fk_supervisor_id = ?, cargo = ? WHERE id = ?";
 
         try (Connection conn = conexao.conectar();
              PreparedStatement pstmt = conn.prepareStatement(updateSQL)) {
             pstmt.setString(1, nome);
             pstmt.setString(2, cpf);
-            pstmt.setString(3, String.valueOf(genero));
-            pstmt.setString(4, status);
-            pstmt.setString(5, senha);
-            pstmt.setInt(6, idSetor);
-            pstmt.setInt(7, idSupervisor);
-            pstmt.setString(8, cargo);
-            pstmt.setInt(9, id);
+            pstmt.setString(3, telefone);
+            pstmt.setString(4, String.valueOf(genero));
+            pstmt.setString(5, status);
+            pstmt.setString(6, senha);
+            pstmt.setInt(7, idSetor);
+            pstmt.setInt(8, idSupervisor);
+            pstmt.setString(9, cargo);
+            pstmt.setInt(10, id);
             return pstmt.executeUpdate();
         }
     }

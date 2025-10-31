@@ -55,11 +55,10 @@ public class ServletCreateAdministracao extends HttpServlet {
             }
 
         } catch (IllegalArgumentException | NullPointerException e) {
-            // Captura erros de VALIDAÇÃO do Model (ex: campos nulos, email inválido)
+            // Captura erros de validação do Model (ex: campos nulos, email inválido)
             erro = "Erro de validação: " + e.getMessage();
 
-            // Captura específica para erros de SQL
-        } catch (SQLException e) {
+        } catch (SQLException e) { // Captura específica para erros de SQL
             e.printStackTrace();
             // Tenta dar uma mensagem amigável para violação de constraint (e-mail duplicado)
             if (e.getMessage() != null && (e.getMessage().contains("Duplicate entry") || e.getMessage().contains("UNIQUE constraint failed"))) {
@@ -75,8 +74,8 @@ public class ServletCreateAdministracao extends HttpServlet {
 
 
         // Caminho de Falha (Se 'success' == false ou se uma Exceção foi capturada)
-        // Se a criação falhou, não fazemos redirect, mas sim um forward
-        // para a mesma página (JSP), exibindo a mensagem de erro.
+        // Se a criação falhou, não faz redirect, mas sim um forward
+        // para a mesma página (JSP), exibe a mensagem de erro.
 
         System.err.println("Falha na criação do admin. Fazendo forward para o JSP. Erro: " + erro);
 
@@ -94,12 +93,12 @@ public class ServletCreateAdministracao extends HttpServlet {
             e.printStackTrace(); // Loga o erro de leitura
             listaAdmins = new ArrayList<>(); // Usa uma lista vazia para não quebrar o JSP
 
-            // Concatena o erro da LEITURA com o erro original da CRIAÇÃO
+            // Concatena o erro da leitura com o erro original da criação
             request.setAttribute("erro", erro + " | ERRO ADICIONAL: Falha ao recarregar a lista de administradores.");
         }
         request.setAttribute("listaAdmins", listaAdmins);
 
-        // Avisa o JSP para reabrir o modal de CREATE
+        // Avisa o JSP para reabrir o modal de create
         // Isso permite que o usuário veja o erro e os dados que preencheu
         request.setAttribute("abrirModal", "create");
 
