@@ -104,17 +104,7 @@
 
 <div class="conteudoPrincipal">
 
-    <%-- Bloco de Exibição de Erro (Geral e Parcial) --%>
-    <%
-        if (erro != null && !erro.isEmpty()) {
-    %>
-    <div class="mensagem-erro">
-        <strong>Erro:</strong> <%= erro %>
-    </div>
-    <%
-        }
-    %>
-    <%-- Bloco para "erro_parcial" --%>
+    <%-- Bloco de Exibição de Erro (Parcial) --%>
     <%
         String erroParcial = (String) session.getAttribute("erro_parcial");
         if (erroParcial != null) {
@@ -153,6 +143,11 @@
         <section class="create">
             <dialog id="create">
                 <h2>Cadastrar plano</h2>
+                <% if ("create".equals(modalAberto) && erro != null && !erro.isEmpty()) { %>
+                <div class="mensagem-erro">
+                    <strong>Erro:</strong> <%= erro %>
+                </div>
+                <% } %>
                 <form action="${pageContext.request.contextPath}/plano-create" id="formCreate" method="post">
                     <div class="campos">
                         <div>
@@ -191,6 +186,11 @@
         <section class="update">
             <dialog id="update">
                 <h2>Editar plano</h2>
+                <% if ("update".equals(modalAberto) && erro != null && !erro.isEmpty()) { %>
+                <div class="mensagem-erro">
+                    <strong>Erro:</strong> <%= erro %>
+                </div>
+                <% } %>
                 <form action="${pageContext.request.contextPath}/plano-update" method="post">
                     <div class="idAtual">
                         <label for="idUpdate">ID:</label>
@@ -230,6 +230,11 @@
         <section class="delete">
             <dialog id="delete">
                 <h2>Excluir plano</h2>
+                <% if ("delete".equals(modalAberto) && erro != null && !erro.isEmpty()) { %>
+                <div class="mensagem-erro">
+                    <strong>Erro:</strong> <%= erro %>
+                </div>
+                <% } %>
                 <form action="${pageContext.request.contextPath}/planos-delete" method="post">
                     <div class="idAtual">
                         <label for="idDelete">ID:</label>

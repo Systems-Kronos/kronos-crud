@@ -146,7 +146,7 @@ public class ServletCreateUsuario extends HttpServlet {
         // Recarrega TODAS as habilidades (para os checkboxes do modal)
         try {
             HabilidadesDAO hDAO = new HabilidadesDAO();
-            // CORREÇÃO: Nome do atributo deve ser o que o JSP espera
+
             request.setAttribute("todasAsHabilidades", hDAO.read());
         } catch (SQLException e) {
             e.printStackTrace();
