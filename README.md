@@ -9,57 +9,62 @@
 - [📄 Licença](#-licença)
 - [💻 Autores](#-autores)
 
+</br>
+
 ## 📓 Sobre
-kronos-crud é uma aplicação web completa desenvolvida em Java, que inclui um painel administrativo (CRUD) e uma landing
-page de apresentação, complementares para o sistema **Kronos**.
-O painel administrativo é construído seguindo a arquitetura MVC (Model-View-Controller), utilizando Java Servlets como
-controladores, DAOs (Data Access Objects) para a lógica de banco de dados, e JSPs (JavaServer Pages) para a camada de
-visualização (View).
+kronos-crud é uma aplicação web completa desenvolvida em Java, que inclui um painel administrativo (CRUD) e uma landing page de apresentação, complementares para o sistema **Kronos**.
+O painel administrativo é construído seguindo a arquitetura MVC (Model-View-Controller), utilizando Java Servlets como controladores, DAOs (Data Access Objects) para a lógica de banco de dados, e JSPs (JavaServer Pages) para a camada de visualização (View).
+
+</br>
 
 ## 🚀 Tecnologias
 - Back-end:
-    - Java 19
-    - Java Servlets
-    - JavaServer Pages (JSP)
-    - JDBC (Java Database Connectivity)
+  - Java 11
+  - Java Servlets
+  - JavaServer Pages (JSP)
+  - JDBC (Java Database Connectivity)
 - Front-end:
-    - HTML5
-    - CSS3
-    - JavaScript
+  - HTML5
+  - CSS3
+  - JavaScript
 - Banco de Dados:
-    - PostgreSQL
+  - PostgreSQL
 - Servidor de Aplicação:
-    - Apache Tomcat 11.0.11.
+  - Apache Tomcat 11.0.11
 - Build & Dependência:
-    - Apache Maven
+  - Apache Maven
+
+</br>
 
 ## ✨ Funcionalidades
 - Painel Administrativo (CRUD)
-    - Tela de Login para autenticação segura do administrador.
-    - CRUD completo (Create, Read, Update, Delete) para 6 módulos:
-        - Administradores
-        - Usuários
-        - Empresas
-        - Setores
-        - Planos
-        - Habilidades
-    - Busca e filtragem de dados nas tabelas.
-    - Ordenação de dados por colunas (crescente ou decrescente).
-    - Interface de popup para criação, edição e exclusão de itens.
-
+  - Tela de Login para autenticação segura do administrador.
+  - CRUD completo (Create, Read, Update, Delete) para 6 módulos:
+    - Administradores;
+    - Usuários;
+    - Empresas;
+    - Setores;
+    - Planos;
+    - Habilidades.
+  - Busca e filtragem de dados nas tabelas.
+  - Ordenação de dados por colunas (crescente ou decrescente).
+  - Interface de popup para criação, edição e exclusão de itens.
+ 
 - Back-end (Arquitetura)
-    - Arquitetura MVC (Model-View-Controller).
-    - Padrão DAO (Data Access Object).
-    - Servlets para controlar o fluxo de requisições.
-    - Validação de dados nos Models (Java) antes de salvar.
-    - Validação de regras complexas com Regex (CPF, CNPJ, senha, e-mail, etc.).
-    - Padrão Post-Redirect-Get para evitar reenvio de formulários.
-    - Tratamento de exceções de validação e de SQL nos Servlets.
-    - Carregamento de credenciais de banco (via .env) para segurança.
+  - Arquitetura MVC (Model-View-Controller).
+  - Padrão DAO (Data Access Object).
+  - Servlets para controlar o fluxo de requisições.
+  - Validação de dados nos Models (Java) antes de salvar.
+  - Validação de regras complexas com Regex (CPF, CNPJ, senha, e-mail, etc.).
+  - Padrão Post-Redirect-Get para evitar reenvio de formulários.
+  - Tratamento de exceções de validação e de SQL nos Servlets.
+  - Carregamento de credenciais de banco (via .env) para segurança.
 
 - Landing Page
-    - Website de apresentação (HTML e CSS) separado do painel.
-    - Link de acesso para a área de login do CRUD.
+  - Website de apresentação (HTML e CSS) separado do painel.
+  - Link de acesso para a área de login do CRUD.
+
+</br>
 
 ## ⚙️ Instalação
 É necessário ter o Java JDK (11 ou superior), um Servidor (Apache Tomcat) e um Banco de Dados (PostgreSQL) instalados.
@@ -88,7 +93,7 @@ cp src/main/resources/.env.example src/main/resources/.env
 # No Windows (use o .cmd): 
 mvnw.cmd clean package
 # No macOS/Linux (use o ./mvnw): 
-./mvnw clean package
+# ./mvnw clean package
 
 # Rodar o projeto (Passo Manual)
 # 1. Inicie seu servidor Apache Tomcat.
@@ -96,35 +101,41 @@ mvnw.cmd clean package
 # 3. Acesse a aplicação (ex: http://localhost:8080/kronos-crud/login-crud)
 ```
 
+</br>
+
 ## 🧱 Estrutura do Projeto
 ```
 kronos-crud
-├── /.mvn           # Configuração do Maven Wrapper
-├── README.md           # Este arquivo
-├── .gitignore           # Arquivos ignorados pelo Git
-├── LICENSE           # Licença do projeto
-├── mvnw & mvnw.cmd          # Scripts do Maven Wrapper
-├── pom.xml           # Dependências e build do Maven
-└── /src            # Código-fonte principal
+├── /.mvn                   # Configuração do Maven Wrapper
+├── README.md               # Este arquivo
+├── .gitignore              # Arquivos ignorados pelo Git
+├── LICENSE                 # Licença do projeto
+├── mvnw & mvnw.cmd         # Scripts do Maven Wrapper
+├── pom.xml                 # Dependências e build do Maven
+└── /src                    # Código-fonte principal
   └── /main
-    ├── /java           # Código Java (Back-end)
-    │  └── /com.example 
-    │    ├── /Controller           # Guarda a classe de conexão com o BD
+    ├── /java               # Código Java (Back-end)
+    │  └── /com.example  
+    │    ├── /Controller    # Guarda a classe de conexão com o BD
     │    ├── /dao           # Data Access Objects (Lógica SQL)
-    │    ├── /Model           # Classes de modelo
-    │    └── /Servlet           # Servlets (Controladores)
-    ├── /resources           # Arquivo de configuração (ex: .env.example)
-    └── /webapp           # Código Web (Front-end)
+    │    ├── /Model         # Classes de modelo
+    │    └── /Servlet       # Servlets (Controladores)
+    ├── /resources          # Arquivo de configuração (ex: .env.example)
+    └── /webapp             # Código Web (Front-end)
       ├── /assets           # Arquivos estáticos (CSS, JS, Imagens)
-      ├── /crud           # Páginas HTML específicas do CRUD
-      ├── /landingpage           # Páginas HTML da Landing Page
+      ├── /crud             # Páginas HTML específicas do CRUD
+      ├── /landingpage      # Páginas HTML da Landing Page
       └── /WEB-INF
-        ├── /pages           # Arquivos JSP (Views)
-        └── web.xml           # Mapeamento de Servlets
+        ├── /pages          # Arquivos JSP (Views)
+        └── web.xml         # Mapeamento de Servlets
 ```
+
+</br>
 
 ## 📄 Licença
 Este projeto está licenciado sob a licença MIT — veja o arquivo LICENSE para mais detalhes.
+
+</br>
 
 ## 💻 Autores
 - [Breno Gomes](https://github.com/Brenoz001)
