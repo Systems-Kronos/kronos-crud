@@ -94,11 +94,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- LÓGICA PARA ABRIR/FECHAR MODAIS COM CLIQUE ---
     // (Este código agora será executado, pois o erro de ID foi corrigido)
     const botoesModal = document.querySelectorAll('.acaoModal');
+    const loading = document.querySelector('.carregando');
     botoesModal.forEach(botaoModal => {
         botaoModal.addEventListener('click', () => {
             botaoModal.disabled = true;
             const modal = document.getElementById(botaoModal.dataset.modal);
             const acao = botaoModal.dataset.acao;
+            loading.classList.add('mostrar');
 
             if (modal) {
                 if (acao === 'abrir') {
@@ -112,6 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         if (form) form.reset();
 
                         modal.showModal();
+                        loading.classList.remove('mostrar');
                         botaoModal.disabled = false;
                         return;
                     }
@@ -140,6 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                     preencherCamposModal('delete', dados, tabelaAtual);
                                 }
                                 modal.showModal();
+                                loading.classList.remove('mostrar');
                                 botaoModal.disabled = false;
                             })
                             .catch(err => {
@@ -154,6 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 } else if (acao === 'fechar') {
                     modal.close();
+                    loading.classList.remove('mostrar');
                     botaoModal.disabled = false;
                 }
                 else {
@@ -165,6 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 botaoModal.disabled = false;
             }
         });
+        loading.classList.remove('mostrar');
     });
 
     // --- LÓGICA PARA O BOTÃO DE CONFIRMAR (OUTROS FORMS - Update/Delete) ---

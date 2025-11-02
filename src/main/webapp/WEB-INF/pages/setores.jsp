@@ -296,36 +296,41 @@
 
         <%-- ==== TABELA DE VISUALIZAÇÃO (READ) ==== --%>
         <main>
+            <div class="carregando">
+                <div class="popUpCarregando">
+                    Carregando...
+                    <img class="kronosCarregando" src="${pageContext.request.contextPath}/assets/crud/img/favikronos.ico" alt="">
+                </div>
+            </div>
             <div class="tabelaScroll">
                 <table class="tabelaHabilidades">
                     <thead>
-                    <tr>
-                        <th>Ver</th>
-                        <th>Excluir</th>
-                        <th>ID</th>
-                        <th>Nome</th>
-                        <th>Empresa (ID)</th>
-                        <th>Quantidade de Funcionários</th>
-                        <th>Turnos</th>
-                        <th>Descrição</th>
-                    </tr>
+                        <tr>
+                            <th>Ver</th>
+                            <th>Excluir</th>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Empresa (ID)</th>
+                            <th>Quantidade de Funcionários</th>
+                            <th>Turnos</th>
+                            <th>Descrição</th>
+                        </tr>
                     </thead>
                     <tbody>
                     <%
                         if (listaSetores != null && !listaSetores.isEmpty()) {
                             for (Setor setor : listaSetores) {
                     %>
-                    <tr>
-                        <%-- O <td> do botão "Ver" está presente --%>
-                        <td> <button type="button" class="detalhes acaoModal" data-acao="abrir" data-modal="update" data-pk="<%= setor.getId() %>" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"setores-crud"}'><img src="${pageContext.request.contextPath}/assets/crud/img/mais-detalhes.png" alt="Ver/Editar"></button> </td>
-                        <td> <button type="button" class="detalhes acaoModal" data-acao="abrir" data-modal="delete" data-pk="<%= setor.getId() %>" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"setores-crud"}'><img src="${pageContext.request.contextPath}/assets/crud/img/deletar-kronos.png" alt="Excluir"></button> </td>
-                        <td><%= setor.getId() %></td>
-                        <td><%= setor.getNome() %></td>
-                        <td><%= setor.getIdEmpresa() %></td>
-                        <td><%= setor.getQntFuncionarios() %></td>
-                        <td><%= setor.getTurnos() %></td>
-                        <td><%= setor.getDescricao() %></td>
-                    </tr>
+                        <tr>
+                            <td> <button type="button" class="detalhes acaoModal" data-acao="abrir" data-modal="update" data-pk="<%= setor.getId() %>" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"setores-crud"}'><img src="${pageContext.request.contextPath}/assets/crud/img/mais-detalhes.png" alt="Ver/Editar"></button> </td>
+                            <td> <button type="button" class="detalhes acaoModal" data-acao="abrir" data-modal="delete" data-pk="<%= setor.getId() %>" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"setores-crud"}'><img src="${pageContext.request.contextPath}/assets/crud/img/deletar-kronos.png" alt="Excluir"></button> </td>
+                            <td><%= setor.getId() %></td>
+                            <td><%= setor.getNome() %></td>
+                            <td><%= setor.getIdEmpresa() %></td>
+                            <td><%= setor.getQntFuncionarios() %></td>
+                            <td><%= setor.getTurnos() %></td>
+                            <td><%= setor.getDescricao() %></td>
+                        </tr>
                     <%
                         }
                     } else {

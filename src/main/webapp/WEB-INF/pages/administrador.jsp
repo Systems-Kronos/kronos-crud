@@ -219,29 +219,46 @@
         </div>
 
             <%-- ==== TABELA DE VISUALIZAÇÃO (READ) ==== --%>
-            <main>
+        <main>
+            <div class="carregando">
+                <div class="popUpCarregando">
+                    Carregando...
+                    <img class="kronosCarregando" src="${pageContext.request.contextPath}/assets/crud/img/favikronos.ico" alt="">
+                </div>
+            </div>
             <div class="tabelaScroll">
                 <table class="tabelaAdministrador">
-                    <thead> <tr> <th>Ver</th> <th>Excluir</th> <th>ID</th> <th>Nome</th> <th>E-mail</th> <th>Senha</th> </tr> </thead>
+                    <thead> 
+                        <tr> 
+                            <th>Ver</th> 
+                            <th>Excluir</th> 
+                            <th>ID</th> 
+                            <th>Nome</th> 
+                            <th>E-mail</th> 
+                            <th>Senha</th> 
+                        </tr> 
+                    </thead>
                     <tbody>
                     <%-- Loop para renderizar a tabela principal (Read) --%>
                     <%
                         if (listaAdmins != null && !listaAdmins.isEmpty()) {
                             for (Administracao admin : listaAdmins) {
                     %>
-                    <tr>
-                        <td> <button type="button" class="detalhes acaoModal" data-acao="abrir" data-modal="update" data-pk="<%= admin.getId() %>" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"admin-crud"}'><img src="${pageContext.request.contextPath}/assets/crud/img/mais-detalhes.png" alt="Ver/Editar"></button> </td>
-                        <td> <button type="button" class="detalhes acaoModal" data-acao="abrir" data-modal="delete" data-pk="<%= admin.getId() %>" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"admin-crud"}'><img src="${pageContext.request.contextPath}/assets/crud/img/deletar-kronos.png" alt="Excluir"></button> </td>
-                        <td><%= admin.getId() %></td>
-                        <td><%= admin.getNome() %></td>
-                        <td><%= admin.getEmail() %></td>
-                        <td><%= admin.getSenha() %></td>
-                    </tr>
+                        <tr>
+                            <td> <button type="button" class="detalhes acaoModal" data-acao="abrir" data-modal="update" data-pk="<%= admin.getId() %>" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"admin-crud"}'><img src="${pageContext.request.contextPath}/assets/crud/img/mais-detalhes.png" alt="Ver/Editar"></button> </td>
+                            <td> <button type="button" class="detalhes acaoModal" data-acao="abrir" data-modal="delete" data-pk="<%= admin.getId() %>" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"admin-crud"}'><img src="${pageContext.request.contextPath}/assets/crud/img/deletar-kronos.png" alt="Excluir"></button> </td>
+                            <td><%= admin.getId() %></td>
+                            <td><%= admin.getNome() %></td>
+                            <td><%= admin.getEmail() %></td>
+                            <td><%= admin.getSenha() %></td>
+                        </tr>
                     <%
                         }
                     } else {
                     %>
-                    <tr> <td colspan="6">Nenhum administrador encontrado.</td> </tr>
+                        <tr> 
+                            <td colspan="6">Nenhum administrador encontrado.</td> 
+                        </tr>
                     <% } %>
                     </tbody>
                 </table>
