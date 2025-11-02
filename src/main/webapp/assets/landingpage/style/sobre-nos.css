@@ -1,3 +1,12 @@
+/* * {
+    outline: 1px solid red;
+} */
+
+html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+}
+
 .menu a {
     position: relative;
     transition: 0.3s ease;
@@ -23,7 +32,7 @@
 }
 
 @media (max-width: 864px) {
-    .menu a.ativo::after {
+    .menu a::after {
         top: 2.6vw;
     }
 }
@@ -135,4 +144,93 @@
 
 .nossaMissao p {
     font-size: 1.1vw;
+}
+
+@media (max-width: 820px) {
+
+    /* Tela de sobre nós -> Sobre o Kronos */
+    .sobreKronos {
+        padding: 10vw 5vw;
+    }
+
+    .sobreKronos h1 {
+        font-size: 6.5vw;
+    }
+
+    .sobreKronos p {
+        font-size: 3.5vw;
+        padding: 0 2vw;
+        line-height: 5vw;
+    }
+
+    .sobreKronos button {
+        padding: 2.5vw 4vw;
+        font-size: 3.5vw;
+        margin-top: 5vw;
+        border-radius: 1.5vw;
+    }
+
+    /* Tela de sobre nós -> Nossa história */
+    .nossaHistoria { 
+        margin: 8vw 0; 
+    }
+
+    .caixaCentral {
+        flex-direction: column; 
+        gap: 0; 
+    }
+
+    .nossaHistoria img { 
+        width: 90%; 
+        height: auto; 
+        max-height: 70vw;
+        border-radius: 2vw 2vw 0vw 0vw; 
+        box-shadow: 0vw 0.5vw 1vw rgba(0, 0, 0, 0.2);
+        position: static; 
+        left: 0;
+    }
+
+    .descricaoCaixaCentral {
+        width: 90%; 
+        box-shadow: 0vw 0.5vw 1vw rgba(0, 0, 0, 0.2);
+        border: none;
+        border-bottom: 0.1vw rgb(182, 182, 182) groove; 
+        border-left: 0.1vw rgb(182, 182, 182) groove;
+        border-right: 0.1vw rgb(182, 182, 182) groove;
+        border-radius: 0vw 0vw 2vw 2vw; 
+        padding: 5vw;
+        position: static;
+        right: 0;
+        text-align: center;
+    }
+    
+    .descricaoCaixaCentral h1 {
+        font-size: 6vw;
+        text-align: center;
+    }
+
+    .descricaoCaixaCentral p {
+        font-size: 3.5vw;
+        line-height: 5vw;
+        text-align: justify; 
+    }
+
+    .textoCaixaCentral {
+        margin-bottom: 3vw;
+    }
+
+    /* Tela de sobre nós -> Nossa missão */
+    .nossaMissao {
+        padding: 8vw 5vw;
+        row-gap: 3vw;
+    }
+
+    .nossaMissao h1 {
+        font-size: 6vw;
+    }
+
+    .nossaMissao p {
+        font-size: 3.5vw;
+        line-height: 5vw;
+    }
 }

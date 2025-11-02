@@ -9,7 +9,7 @@
 
     <base href="/KronosCRUD_war_exploded/">
     <meta charset="UTF-8">
-    <meta name="viewport" content="wclassth=device-wclassth, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="assets/landingpage/img/favikronos.ico" type="image/x-icon">
     <link rel="stylesheet" href="assets/landingpage/style/header.css">
     <link rel="stylesheet" href="assets/landingpage/style/sobre-nos.css">
@@ -20,7 +20,7 @@
 
 <body>
     
-    <header>
+    <header class="cabecalho">
         <div class="kronos">
             <h1 class="logoKronosDesktop">KRONOS</h1>
             <img src="assets/landingpage/img/favikronos.ico" alt="LOGO KRONOS" class="logoKronosMobile">
@@ -39,7 +39,7 @@
         <section class="sobreKronos">
             <h1>Sobre o Kronos</h1>
             <p>Sua melhor opção para a produtividade e o <br> bem-estar dos funcionários.</p>
-            <button>Entre em contato</button>
+            <button onclick="document.querySelector('.rodape').scrollIntoView({behavior: 'smooth'})">Entre em contato</button>
         </section>
         
         <section class="nossaHistoria">
@@ -71,15 +71,9 @@
             <p>Tornar a gestão industrial mais inteligente, equilibrada e sustentável, usando tecnologia para <br>
                 otimizar processos e produtividade, em sintonia com os objetivos da ODS 9.</p>
         </section>
-        
-        <hr>
-
-        <section class="ods">
-            
-        </section>
     </main>
 
-    <footer>
+    <footer class="rodape">
         <div class="kronosFooter">
             <img src="assets/landingpage/img/favikronos.ico" alt="LOGO KRONOS">
             <h1>KRONOS</h1>

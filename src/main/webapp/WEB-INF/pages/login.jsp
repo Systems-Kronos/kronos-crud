@@ -14,33 +14,34 @@
 </head>
 
 <body>
-<main>
-    <h1>KRONOS</h1>
-    <h2>Entre em sua conta</h2>
+    <main>
+        <h1>KRONOS</h1>
+        <h2>Entre em sua conta</h2>
 
-    <%
-        String erroLogin = (String) request.getAttribute("erro"); // Pega o erro do ServletLogin
-        if (erroLogin != null && !erroLogin.isEmpty()) { // Verifica se há erro
-    %>
-    <div class="mensagem-erro">
-        <strong>Erro:</strong> <%= erroLogin %>
-    </div>
-    <%
-        }
-    %>
-    <form action="${pageContext.request.contextPath}/login-crud" method="post">
-        <div>
-            <label for="email">Email</label>
-            <input type="email" name="email" id="email" placeholder="Digite seu email" required>
+        <%
+            String erroLogin = (String) request.getAttribute("erro"); // Pega o erro do ServletLogin
+            if (erroLogin != null && !erroLogin.isEmpty()) { // Verifica se há erro
+        %>
+        <div class="mensagem-erro">
+            <strong>Erro:</strong> <%= erroLogin %>
         </div>
+        <%
+            }
+        %>
+        <form action="${pageContext.request.contextPath}/login-crud" method="post">
+            <div>
+                <label for="email">Email</label>
+                <input type="email" name="email" id="email" placeholder="Digite seu email" required>
+            </div>
 
-        <div>
-            <label for="senha">Senha</label>
-            <input type="password" name="senha" id="senha" placeholder="Digite sua senha" required>
-        </div>
+            <div>
+                <label for="senha">Senha</label>
+                <input type="password" name="senha" id="senha" placeholder="Digite sua senha" required>
+            </div>
 
-        <button type="submit" class="botaoConta">Entrar</button>
-    </form>
-</main>
+            <button type="submit" class="botaoConta">Entrar</button>
+            <a href="${pageContext.request.contextPath}/landingpage/index.html" class="sairCrud">Voltar para Landing Page</a>
+        </form>
+    </main>
 </body>
 </html>
