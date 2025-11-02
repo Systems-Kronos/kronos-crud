@@ -28,7 +28,10 @@ public class Conexao {
             Class.forName("org.postgresql.Driver");
 
             // 2. Carrega as variáveis do .env (apenas uma vez)
-            Dotenv dotenv = Dotenv.load();
+            Dotenv dotenv = Dotenv.configure()
+                    .ignoreIfMissing()
+                    .load();
+
             DB_URL = dotenv.get("DB_URL");
             DB_USER = dotenv.get("DB_USER");
             DB_PASSWORD = dotenv.get("DB_PASSWORD");
