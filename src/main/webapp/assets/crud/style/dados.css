@@ -1,0 +1,907 @@
+/* ANIMAÇÃO - CARREGANDO */
+
+@keyframes girar {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ANIMAÇÃO - CARREGANDO */
+
+/* * {
+border: 0.1vw solid red;
+} */
+
+html {
+    scrollbar-gutter: stable;
+}
+
+::-webkit-scrollbar {
+    width: 0.5vw;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #E6B648;
+}
+
+::-webkit-scrollbar-track {
+    background: #370963;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    bottom: 0;
+    display: flex;
+    font-family: "Montserrat", sans-serif;
+}
+
+.meuPlaceholder {
+    width: 20%;
+    height: 100vh;
+}
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 20%;
+    height: 100vh;
+    background-color: #F3ECFF;
+    color: #370963;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+header h1 {
+    font-family: "Cinzel", serif;
+    font-size: 3vw;
+    font-weight: bold;
+    margin-top: 4vw;
+    color: #370963;
+    align-self: center;
+    margin-bottom: 5vw;
+}
+
+header nav img {
+    object-fit: contain;
+    width: 2vw;
+}
+
+header ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+header li {
+    display: flex;
+    font-size: 1.5vw;
+    font-weight: 500;
+}
+
+header li a {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    padding: 1vw 2.95vw;
+    gap: 1vw;
+    text-decoration: none;
+    color: #370963;
+    transition: 0.25s ease-in-out;
+}
+
+header li a:hover {
+    background-color: #EADAF5;
+}
+
+header li a.ativo {
+    background-color: #EBD2FA;
+}
+
+header > .sairCrud {
+    margin-top: 2vw;
+    font-size: 1.2vw;
+    text-decoration: none;
+}
+
+.navegacaoContexto {
+    display: none;
+}
+ 
+.conteudoPrincipal {
+    margin-left: 20%;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    padding: 2vw;
+}
+
+.procurarCadastrar {
+    display: flex;
+    align-items: center;
+    margin: 3vw 0vw 3vw 15vw;
+    gap: 1vw;
+}
+
+form {
+    display: flex;
+    align-items: center;
+    gap: 1vw;
+}
+
+form .buscar {
+    display: flex;
+    font-size: 1.2vw;
+    padding: 0vw 1vw;
+    height: 2.75vw;
+    width: 20vw;
+    border-radius: 0.6vw;
+    border: 0.1vw solid black;
+    color: black;
+}
+
+form .buscar::placeholder {
+    color: rgb(19, 19, 19);
+}
+
+.filtros {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.filtros summary {
+    list-style: none;
+    background-color: #F8F2FF;
+    color: #451B6D;
+    font-weight: 500;
+    padding: 0.75vw 1.5vw;
+    font-size: 1.5vw;
+    transition: background-color 0.3s ease;
+    border-radius: 1vw;
+    border: none;
+}
+
+.filtros summary:hover {
+    background-color: #e0d6f0;
+}
+
+.conteudoFiltros {
+    overflow: hidden;
+    position: absolute;
+    background-color: #f8f2ff;
+    border-radius: 1vw;
+    margin-top: 0.3vw;
+    min-width: 12vw;
+    flex-direction: column;
+    font-size: 1.1vw;
+}
+
+.conteudoFiltros button {
+    cursor: pointer;
+    background-color: #370963;
+    border: none;
+    border-radius: 0.2vw;
+    font-size: 1vw;
+    padding: 0.75vw 0vw;
+    color: #FFFFFF;
+}
+
+.filtros[open] .conteudoFiltros {
+    display: flex;
+}
+
+.opcaoFiltro {
+    display: flex;
+    align-items: center;
+    padding: 1vw 2vw;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.opcaoFiltro input {
+    margin-right: 1vw;
+    width: 1vw;
+    height: 1vw;
+    cursor: pointer;
+}
+
+.opcaoFiltro:hover {
+    background-color: #D8C8F0;
+}
+
+.cadastrar:hover {
+    background-color: #3E1570;
+}
+
+.cadastrar {
+    cursor: pointer;
+    list-style: none;
+    background-color: #5A1B9B;
+    color: #FFFFFF;
+    font-weight: 400;
+    padding: 0.75vw 1.5vw;
+    font-size: 1.5vw;
+    border-radius: 1vw;
+    border: none;
+    transition: background-color 0.3s ease;
+    font-family: "Montserrat", sans-serif;
+}
+
+.create, .update, .delete {
+    display: inline-flex;
+}
+
+.create::-webkit-scrollbar-thumb,
+.update::-webkit-scrollbar-thumb,
+.delete::-webkit-scrollbar-thumb {
+    background: #E6B648;
+    height: 0.5vh;
+    border-radius: 0vw 1vw 1vw 0vw;
+}
+
+.create::-webkit-scrollbar-track,
+.update::-webkit-scrollbar-track,
+.delete::-webkit-scrollbar-track {
+    background: #370963;
+    height: 0.5vh;
+    border-radius: 0vw 1vw 1vw 0vw;
+}
+
+section dialog form .campo input:focus,
+section dialog form .campo textarea:focus {
+    outline: none;
+    box-shadow: 0 0 0 0.05vw #2b064e;
+    transition: background 0.3s ease;
+}
+
+section dialog::backdrop {
+    background: rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(8px);
+}
+
+section dialog {
+    border-radius: 1vw;
+    border: 0.15vw solid #370963;
+    transition: 0.3s ease-in;
+}
+
+section dialog form {
+    display: flex;
+    flex-direction: column;
+    margin: 1vw;
+    box-sizing: border-box;
+}
+
+section dialog form .campos {
+    display: flex;
+    gap: 5vw;
+}
+
+section dialog form .campo {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.5vw;
+    row-gap: 0.75vw;
+}
+
+
+section dialog form .campo label {
+    font-size: 1.15vw;
+}
+
+section dialog form .campoLado {
+    display: flex;
+    gap: 1.70vw;
+}
+
+section dialog form .idAtual {
+    font-family: "Montserrat", sans-serif;
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+    font-size: 1.5vw;
+    color: #370963;
+}
+
+section dialog form .idAtual input[type="number"] {
+    font-family: "Montserrat", sans-serif;
+    border: none;
+    background: none;
+    font-weight: bold;
+    font-size: 1.5vw;
+    color: #370963;
+    outline: none;
+    user-select: none;
+    cursor: default;
+    width: 5vw;
+    text-align: center;
+}
+
+section dialog form .campos input {
+    font-family: "Montserrat", sans-serif;
+    background-color: #FBF8FF;
+    border-radius: 0.5vw;
+    width: 17.5vw;
+    height: 1.75vw;
+    font-size: 1vw;
+    padding-left: 0.5vw;
+    border: 0.15vw solid #370963;
+    font-weight: 400;
+}
+
+section dialog form .campos textarea {
+    font-family: "Montserrat", sans-serif;
+    width: 17.5vw;
+    height: 6vw;
+    font-size: 1vw;
+    padding: 0.5vw;
+    background-color: #FBF8FF;
+    border-radius: 0.5vw;
+    border: 0.15vw solid #370963;
+    font-weight: 400;
+    resize: none;
+}
+
+section dialog form .campos select {
+    font-family: "Montserrat", sans-serif;
+    background-color: #FBF8FF;
+    border-radius: 0.5vw;
+    width: 8.25vw;
+    height: 2.5vw;
+    font-size: 1vw;
+    padding: 0.5vw;
+    border: 0.15vw solid #370963;
+    font-weight: 400;
+}
+
+section dialog form .campos fieldset {
+    max-height: 23vh;
+    font-size: 1.1vw;
+    overflow-y: auto;
+    background-color: #FBF8FF;
+    border-radius: 0.5vw;
+    border: 0.15vw solid #370963;
+    padding: 0.5vw; 
+    box-sizing: border-box;
+}
+
+#listaHabilidadesCreate,
+#listaHabilidadesUpdate {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.5vw 1vw;
+    align-items: center;
+    white-space: nowrap;
+}
+
+#listaHabilidadesCreate label,
+#listaHabilidadesUpdate label {
+    text-align: left;
+    display: inline;
+}
+
+.habilidade-create-cb,
+.habilidade-update-cb {
+    width: 1.2vw;
+    height: 1.2vw;
+    cursor: pointer;
+    margin: 0;
+}
+
+section dialog form .campos .campoLado input {
+    font-family: "Montserrat", sans-serif;
+    background-color: #FBF8FF;
+    border-radius: 0.5vw;
+    width: 7.125vw;
+    height: 1.25vw;
+    font-size: 1vw;
+    padding: 0.5vw;
+    border: 0.15vw solid #370963;
+    font-weight: 400;
+}
+
+section dialog form .campos select option:first-child {
+    display: none; 
+}
+
+section dialog h2 {
+    font-size: 2vw;
+    margin: 1vw 0vw 2.5vw 1vw;
+    color: #370963;
+    font-family: "Crete Round";
+    font-weight: 500;
+}
+
+section dialog menu {
+    display: flex;
+    align-self: flex-end;
+    margin-right: 1vw;
+    gap: 1vw;
+}
+
+section dialog menu button {
+    cursor: pointer;
+    padding: 0.75vw 1.5vw;
+    background-color: #E6B648;
+    transition: 0.3s ease;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 600;
+    font-size: 1vw;
+    border: none;
+    border-radius: 0.6vw;
+}
+
+section dialog menu button:hover {
+    background-color: #C48F20;
+}
+
+section dialog menu button.cancelar {
+    background-color: #9E9E9E;
+    color: #000000;
+}
+
+section dialog menu button.cancelar:hover {
+    background-color: #E53935;
+    color: #FFFFFF;
+}
+
+table {
+    min-width: 75vw;
+    width: auto;
+    border-collapse: collapse;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 400;
+    margin-top: 2vw;
+    border-collapse: collapse;
+    font-size: 1vw;
+    text-align: center;
+}
+
+th, td {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 500;
+    padding: 1vw 2vw;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+th {
+    font-size: 1.1vw;
+    background-color: #E6B648;
+    color: white;
+}
+
+th:first-child {
+    border-radius: 1vw 0vw 0vw 0vw;
+}
+
+th:last-child {
+    border-radius: 0vw 1vw 0vw 0vw;
+}
+
+tr {
+    background-color: #FDFDFD;
+}
+
+tr:nth-child(even) {
+    background-color: #F2F2F2;
+}
+
+tr:hover {
+    background-color: #fdfdfdb7;
+    transition: 0.3s;
+}
+
+td {
+    overflow: hidden;
+}
+
+table button.detalhes img {
+    object-fit: contain;
+    height: 1.5vw;
+    cursor: pointer;
+}
+
+table button.detalhes {
+    display: inline-flex;
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+.tabelaScroll {
+    overflow-x: auto;
+    overflow-y: auto;
+    width: 75vw;
+    max-height: 70vh
+}
+
+.tabelaScroll::-webkit-scrollbar-thumb {
+    background: #E6B648;
+    border-radius: 0vw 0vw 2vw 2vw;
+}
+
+.tabelaScroll::-webkit-scrollbar-track {
+    background: #370963;
+    border-radius: 0vw 0vw 2vw 2vw;
+}
+
+.mensagem-erro {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 1rem;
+    border: 1px solid #f5c6cb;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+    font-family: 'Montserrat', sans-serif;
+    text-align: center;
+}
+
+.erro-senha {
+    background-color: transparent;
+    color: #dc3545;
+    padding: 0;
+    border: none;
+    margin-bottom: 2vw;
+    margin-top: 0.2vw;
+    font-size: 0.9vw;
+    text-align: left;
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0; 
+    width: 100%;
+    white-space: nowrap;
+}
+
+.erro-senha:not(:empty) {
+    display: block;
+}
+
+.mensagem-aviso {
+    background-color: #FFF3CD;
+    color: #664D03;
+    border: 1px solid #FFECB5;
+    padding: 1rem;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+    font-family: 'Montserrat', sans-serif;
+    min-height: 4em;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.carregando {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 9999;
+}
+
+.carregando.mostrar {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.carregando .popUpCarregando {
+    background: #FFFFFF;
+    padding: 4vw 6vw;
+    border-radius: 1vw;
+    border: 0.15vw solid #370963;
+    color: #370963;
+    font-family: 'Crete Round', sans-serif;
+    font-size: 1.6vw;
+    font-weight: bold;
+    box-shadow: 0 0.5vw 1vw rgba(0,0,0,0.3);
+    text-align: center;
+    display: flex;
+    align-items: center;
+    gap: 1.25vw;
+}
+
+.carregando .kronosCarregando {
+    animation: girar 2s linear infinite;
+    height: 3vw;
+    object-fit: contain;
+}
+
+@media (max-width: 912px) {
+    body {
+        display: block;
+    }
+    
+    .meuPlaceholder {
+        display: none;
+    }
+
+    header {
+        position: static;
+        width: 100%;
+        height: auto;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 2vw 4vw;
+        box-sizing: border-box;
+        background-color: #F3ECFF;
+        z-index: 10;
+    }
+
+    header h1 {
+        font-size: 6vw;
+        margin: 0;
+    }
+    
+    header > .sairCrud {
+        font-size: 3.5vw;
+        margin: 0;
+    }
+
+    header nav {
+        display: none; 
+    }
+    
+    .navegacaoContexto {
+        display: flex;
+        overflow-x: auto; 
+        white-space: nowrap;
+        background-color: #F3ECFF; 
+        padding: 2vw 4vw;
+        border-bottom: 0.2vw solid #370963;
+    }
+
+    .navegacaoContexto a {
+        text-decoration: none;
+        color: #370963;
+        font-size: 3.5vw;
+        padding: 2vw 4vw;
+        transition: 0.2s ease;
+        border-bottom: 0.4vw solid transparent;
+        font-weight: 500;
+        display: inline-block;
+    }
+
+    .navegacaoContexto a.ativo {
+        border-radius: 0.5vw;
+        background-color: #EADAF5;
+        border-color: #E6B648;
+    }
+
+    .conteudoPrincipal {
+        margin-left: 0;
+        width: 100%;
+        padding: 5vw;
+        box-sizing: border-box;
+    }
+
+    .procurarCadastrar {
+        flex-direction: column;
+        align-items: stretch;
+        margin: 5vw 0;
+        gap: 3vw;
+    }
+    
+    form {
+        flex-direction: column;
+        gap: 3vw;
+    }
+
+    form .buscar {
+        font-size: 3.5vw;
+        padding: 2.5vw 4vw;
+        height: auto;
+        width: 100%;
+        border-radius: 1.5vw;
+        box-sizing: border-box;
+    }
+    
+    .filtros {
+        width: 100%;
+    }
+
+    .filtros summary {
+        padding: 2.5vw 4vw;
+        font-size: 3.5vw;
+        border-radius: 1.5vw;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .conteudoFiltros {
+        min-width: 100%;
+        margin-top: 1vw;
+        font-size: 3vw;
+        border-radius: 1.5vw;
+    }
+    
+    .conteudoFiltros button {
+        font-size: 3vw;
+        padding: 1.5vw 0;
+        border-radius: 0.5vw;
+    }
+
+    .opcaoFiltro {
+        padding: 2.5vw 4vw;
+    }
+
+    .opcaoFiltro input {
+        margin-right: 3vw;
+        width: 3.5vw;
+        height: 3.5vw;
+    }
+
+    .cadastrar {
+        padding: 2.5vw 4vw;
+        font-size: 3.5vw;
+        border-radius: 1.5vw;
+        text-align: center;
+    }
+
+    .tabelaScroll {
+        overflow-x: auto;
+        overflow-y: hidden;
+        width: 90vw;
+        max-height: 80vh;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    table {
+        min-width: 150vw;
+        font-size: 3vw;
+        margin-top: 4vw;
+    }
+    
+    th, td {
+        padding: 3vw 5vw;
+        white-space: nowrap;
+    }
+    
+    th {
+        font-size: 3.5vw;
+    }
+    
+    th:first-child {
+        border-radius: 1vw 0vw 0vw 0vw;
+    }
+    
+    th:last-child {
+        border-radius: 0vw 1vw 0vw 0vw;
+    }
+
+    table button.detalhes img {
+        height: 4vw;
+    }
+
+    section dialog {
+        width: 90%;
+        border-radius: 2vw;
+        border: 0.5vw solid #370963;
+        box-sizing: border-box;
+        margin: auto;
+        overflow-x: hidden;
+    }
+    
+    section dialog h2 {
+        font-size: 6vw;
+        margin: 3vw 0vw 5vw 0;
+        text-align: center;
+    }
+    
+    section dialog form {
+        width: 100%;
+    }
+    
+    section dialog form .campos {
+        flex-direction: column;
+        gap: 5vw;
+    }
+    
+    section dialog form .campo {
+        margin-bottom: 4vw;
+        row-gap: 2vw;
+    }
+
+    section dialog form .campo label {
+        font-size: 3.5vw;
+    }
+
+    section dialog form .campos input,
+    section dialog form .campos textarea {
+        width: 100%;
+        height: auto;
+        font-size: 3.5vw;
+        padding: 2vw 3vw;
+        border-radius: 1vw;
+        box-sizing: border-box;
+    }
+
+    section dialog form .campos textarea {
+        height: 15vw;
+    }
+    
+    section dialog form .campoLado {
+        gap: 4vw;
+    }
+
+    section dialog form .campos select {
+        width: 25vw;
+        height: 8vw;
+        font-size: 3.5vw;
+        padding: 1vw;
+        border-radius: 1vw;
+    }
+
+    section dialog form .campos fieldset {
+        font-size: 3vw;
+        width: 100%;
+    }
+
+    section dialog form .campos .campoLado input {
+        width: 45%;
+        height: 5vw;
+        font-size: 3.5vw;
+        padding: 1.5vw 3vw;
+        border-radius: 1vw;
+    }
+
+    section dialog form .idAtual {
+        font-size: 4vw;
+    }
+    
+    section dialog form .idAtual input[type="number"] {
+        font-size: 4vw;
+        width: 10vw;
+    }
+
+    section dialog menu {
+        justify-content: center;
+        margin-right: 0;
+        margin-top: 5vw;
+        gap: 2vw;
+    }
+
+    section dialog menu button {
+        padding: 1.75vw 3.5vw;
+        font-size: 3.5vw;
+        border-radius: 1.5vw;
+        position: relative;
+        right: 7vw;
+    }
+    
+    .erro-senha {
+        font-size: 2.5vw;
+        margin-bottom: 4vw;
+    }
+
+    .carregando .popUpCarregando {
+        padding: 12vw 17vw;
+        border-radius: 1.5vw;
+        border: 0.3vw solid #370963;
+        font-size: 5vw;
+        box-shadow: 0 0.75vw 1.5vw rgba(0,0,0,0.3);
+        gap: 2.5vw;
+    }
+    
+    .carregando .kronosCarregando {
+        animation: girar 3s linear infinite;
+        height: 10vw;
+    }
+}

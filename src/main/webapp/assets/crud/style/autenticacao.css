@@ -1,0 +1,185 @@
+* {
+    box-sizing: border-box;
+}
+
+html {
+    font-family: "Montserrat";
+}
+
+body {
+    background: #370963;
+    padding: 0;
+    margin: 0;
+}
+
+main {
+    padding: 0.5vw 2.5vw 1vw;
+    width: 50%;
+    background-color: #FFFFFF;
+    min-height: 100vh;
+}
+
+main h1 {
+    font-family: "Cinzel", serif;
+    font-size: 2.2vw;
+    color: #E6B648;
+}
+
+main h2 {
+    font-family: "Crete Round", sans-serif;
+    font-size: 2.4vw;
+    font-weight: 400;
+    padding: 3vw 4vw 0vw;
+    color: #25173A;
+}
+
+form {
+    padding: 0vw 5vw;
+    display: flex;
+    flex-direction: column;
+    row-gap: 2vw;
+    font-size: 1.25vw;
+    font-weight: 500;
+}
+
+form div {
+    display: flex;
+    flex-direction: column;
+    row-gap: 1vw;
+}
+
+form input {
+    font-size: 1.1vw;
+    border-radius: 0.6vw;
+    padding: 1vw;
+    border: none;
+    background-color: #FBF8FF;
+    font-family: "Montserrat";
+}
+
+select {
+    font-size: 1.1vw;
+    width: 15vw;
+    border-radius: 0.5vw;
+    align-items: center;
+    justify-content: center;
+    padding: 0.6vw;
+    border: none;
+    background-color: #FBF8FF;
+    font-family: "Montserrat";
+}
+
+.botaoConta {
+    font-size: 1.5vw;
+    font-family: "Montserrat";
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    padding: 1vw 15.5vw;
+    border-radius: 0.8vw;
+    cursor: pointer;
+    background: #370963;
+    transition: 0.3s ease;
+    color: #FFFFFF;
+}
+
+.botaoConta:hover {
+    background: #2A044D;
+}
+
+a {
+    text-decoration: none;
+}
+
+.mensagem-erro {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 1rem;
+    border: 1px solid #f5c6cb;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+    font-family: 'Montserrat', sans-serif;
+    text-align: center;
+}
+
+.sairCrud {
+    color: #551A8B;
+    margin-top: 2vw;
+    font-size: 1.25vw;
+    text-decoration: none;
+}
+
+@media (max-width: 912px) {
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start; 
+        padding-top: 5vw; 
+    }
+    
+    main {
+        padding: 5vw 5vw 8vw; 
+        width: 90%; 
+        min-height: auto; 
+        margin-left: 0;
+        margin-right: 0;
+        border-radius: 2vw; 
+        box-shadow: 0 0 10vw rgba(0, 0, 0, 0.2);
+    }
+    
+    main h1 {
+        font-size: 6vw; 
+        text-align: center;
+        margin-bottom: 5vw;
+    }
+    
+    main h2 {
+        font-size: 5vw; 
+        padding: 5vw 0vw 5vw; 
+        text-align: center;
+    }
+    
+    form {
+        padding: 0vw; 
+        row-gap: 5vw; 
+        font-size: 4vw;
+    }
+    
+    form div {
+        row-gap: 3vw; 
+    }
+    
+    form input {
+        font-size: 3.5vw;
+        border-radius: 1.5vw;
+        padding: 4vw 3vw;
+        box-sizing: border-box; 
+    }
+
+    select {
+        font-size: 3.5vw;
+        width: 100%; 
+        border-radius: 1.5vw;
+        padding: 3vw;
+        height: auto;
+    }
+
+    .botaoConta {
+        font-size: 4.5vw;
+        padding: 4vw 0; 
+        border-radius: 1.5vw;
+        margin-top: 5vw;
+    }
+    
+    .mensagem-erro {
+        padding: 3vw;
+        font-size: 3.5vw;
+        margin-bottom: 3vw;
+    }
+
+    .sairCrud {
+        font-size: 3.5vw;
+        margin: 0;
+    }
+}

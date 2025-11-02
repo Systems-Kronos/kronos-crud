@@ -5,147 +5,126 @@
     <!-------------------- Fontes -------------------->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Montserrat:wght@400;500;700;900&family=Crete+Round:wght@400;700&display=swap"
-        rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Montserrat:wght@400;500;700;900&family=Crete+Round:wght@400;700&display=swap" rel="stylesheet">
+    
+    <base href="/KronosCRUD_war_exploded/">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="../assets/landingpage/img/favikronos.ico" type="image/x-icon">
-    <link rel="stylesheet" href="../assets/landingpage/style/header.css">
-    <link rel="stylesheet" href="../assets/landingpage/style/planos.css">
-    <link rel="stylesheet" href="../assets/landingpage/style/footer.css">
+    <link rel="icon" href="assets/landingpage/img/favikronos.ico" type="image/x-icon">
+    <link rel="stylesheet" href="assets/landingpage/style/header.css">
+    <link rel="stylesheet" href="assets/landingpage/style/planos.css">
+    <link rel="stylesheet" href="assets/landingpage/style/footer.css">
 
     <title>Planos - Kronos</title>
 </head>
 
 <body>
 
-    <header>
+    <header class="cabecalho">
         <div class="kronos">
             <h1 class="logoKronosDesktop">KRONOS</h1>
-            <img src="../assets/landingpage/img/favikronos.ico" alt="LOGO KRONOS" class="logoKronosMobile">
+            <img src="assets/landingpage/img/favikronos.ico" alt="LOGO KRONOS" class="logoKronosMobile">
         </div>
         <nav class="menu">
             <ul>
-                <li class="opcoesHeader"><a href="index.html" class="botaoInicio botoesHeader">Início</a></li>
-                <li class="opcoesHeader"><a href="funcionalidades.html"
-                        class="botaoFuncionalidades botoesHeader">Funcionalidades</a></li>
-                <li class="opcoesHeader"><a href="sobre-nos.html" class="botaoSobreNos">Sobre nós</a></li>
-                <li class="opcoesHeader"><a href="planos.html" class="botaoPlanos botoesHeader ativo">Planos</a></li>
+                <li class="opcoesHeader"><a href="landingpage/index.html" class="botoesHeader">Início</a></li>
+                <li class="opcoesHeader"><a href="landingpage/funcionalidades.html" class="botoesHeader">Funcionalidades</a></li>
+                <li class="opcoesHeader"><a href="landingpage/sobre-nos.html" class="botoesHeader">Sobre nós</a></li>
+                <li class="opcoesHeader"><a href="landingpage/planos.html" class="botoesHeader ativo">Planos</a></li>
             </ul>
         </nav>
-        <div class="cadeadoAreaRestrita"><a href="/src/main/resources/landingpage/restrito.html"><img
-                src="../assets/landingpage/img/cadeado-area-restrita.png" class="areaRestrita"></a></div>
     </header>
 
     <main>
         <section class="telaPlanos">
             <div class="tituloPrePlanos">
-                <h1>Escolha o Plano Ideal para Sua Indústria</h1>
+                <h1>Escolha o Plano Ideal para a Sua Indústria</h1>
                 <p>
-                    Transparência é essencial. Por isso, oferecemos planos claros e flexíveis, sem complicação, para
-                    <br>
-                    que sua empresa invista apenas no que precisa e acompanhe o crescimento de perto.
+                    Transparência é essencial. Por isso, oferecemos planos claros e flexíveis, sem complicação,
+                    para que sua empresa invista apenas no que precisa e acompanhe o crescimento de perto.
                 </p>
             </div>
-            
-            <div class="cardsPlanos">
-                <div class="colunaPlanos1">
-                    <div class="planoPro planos">
-                        <h1>Pro</h1>
-                        <div class="colunasPro">
-                            <div class="colunaPro1">
-                                <p>Ideal para empresas que querem eficiência e distribuição inteligente das tarefas.</p>
-                                <ul>
-                                    <li>Tudo do Lite</li>
-                                    <li>Distribuição inteligente de tarefas</li>
-                                    <li>Dashboard operacional para supervisores</li>
-                                    <li>Monitor de carga de trabalho</li>
-                                </ul>
-                            </div>
 
-                            <hr class="barraSeparacao">
-                            
-                            <div class="colunaPro2">
-                                <h5>A PARTIR DE</h5>
-                                <h2>R$ 100,00</h2>
-                                <button>ASSINE JÁ</button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="planoLite planos">
-                        <h1>Lite</h1>
-                        <div class="colunasLite">
-                            <div class="colunaLite1">
-                                <p>Ideal para empresas que querem eficiência e distribuição inteligente das tarefas.</p>
-                                <ul>
-                                    <li>Gestão de tarefas padrão e recorrentes</li>
-                                    <li>App para operadores registrarem tarefas concluídas</li>
-                                    <li>Relatórios básicos de status</li>
-                                </ul>
-                            </div>
-                            
-                            <hr class="barraSeparacao">
-                            
-                            <div class="colunaLite2">
-                                <h5>A PARTIR DE</h5>
-                                <h2>R$ 100,00</h2>
-                                <button>ASSINE JÁ</button>
-                            </div>
-                        </div>
+            <div class="cardsPlanos">
+                <div class="cardPlano lite">
+                    <h2>LITE</h2>
+                    <p>Para quem precisa começar a organizar tarefas e ganhar mais clareza no dia a dia.</p>
+                    <ul>
+                        <li>Criação de Tarefas;</li>
+                        <li>Visualização de Tarefas;</li>
+                        <li>App para operadores registrarem tarefas concluídas;</li>
+                        <li>Acesso pequeno a dashboards;</li>
+                        <li>Plano inicial para até 50 funcionários.</li>
+                    </ul>
+                    <div class="preco">
+                        <h5>NO PREÇO DE</h5>
+                        <h3>R$ 2.500,00</h3>
+                        <button>ASSINE JÁ</button>
                     </div>
                 </div>
                 
-                <div class="colunaPlanos2">
-                    <div class="planoEnterprise planos">
-                        <h1>Enterprise</h1>
-                        <div class="colunaEnterprise">
-                            <p>Ideal para empresas que querem eficiência e distribuição inteligente das tarefas.</p>
-                            <ul>
-                                <li>Tudo do Pro e Lite</li>
-                                <li>Realocação proativa respeitando a rotina dos colaboradores</li>
-                                <li>Dashboard tático com análises preditivas</li>
-                                <li>Funcionalidades de bem-estar (alertas de sobrecarga + pausas inteligentes)</li>
-                                <li>Relatórios detalhados e exportáveis</li>
-                            </ul>
-                            <h5>A PARTIR DE</h5>
-                            <h2>R$ 100,00</h2>
-                            <button>ASSINE JÁ</button>
-                        </div>
+                <div class="cardPlano pro">
+                    <h2>PRO</h2>
+                    <p>Ideal para empresas que querem eficiência e distribuição inteligente das tarefas.</p>
+                    <ul>
+                        <li>Todas as vantagens do plano lite;</li>
+                        <li>Dashboards mais detalhadas;</li>
+                        <li>Realocação automática de tarefas;</li>
+                        <li>Nível de dificuldade das tarefas através do método GUT;</li>
+                        <li>De 51 a 499 funcionários.</li>
+                    </ul>
+                    <div class="preco">
+                        <h5>NO PREÇO DE</h5>
+                        <h3>R$ 10.000,00</h3>
+                        <button>ASSINE JÁ</button>
+                    </div>
+                </div>
+                
+                <div class="cardPlano enterprise">
+                    <h2>ENTERPRISE</h2>
+                    <p>Ideal para empresas que querem organizar seus funcionários da melhor forma possível.</p>
+                    <ul>
+                        <li>Tudo do Pro e Lite</li>
+                        <li>Acesso total a dashboards;</li>
+                        <li>Realocação de tarefas por meio da análise GUT;</li>
+                        <li>Relatórios detalhados e exportáveis;</li>
+                        <li>A partir de 500 funcionários.</li>
+                    </ul>
+                    <div class="preco">
+                        <h5>NEGOCIÁVEL A PARTIR DE</h5>
+                        <h3>R$ 22.500,00</h3>
+                        <button>ASSINE JÁ</button>
                     </div>
                 </div>
             </div>
         </section>
     </main>
 
-
-    <footer>
+    <footer class="rodape">
         <div class="kronosFooter">
-            <img src="../assets/landingpage/img/Favikronos.ico" alt="LOGO KRONOS">
+            <img src="assets/landingpage/img/favikronos.ico" alt="LOGO KRONOS">
             <h1>KRONOS</h1>
         </div>
         <nav class="colunaFooter1">
             <ul>
-                <li class="opcoesFooter"><a href="index.html">Início</a></li>
-                <li class="opcoesFooter"><a href="funcionalidades.html">Funcionalidades</a></li>
-                <li class="opcoesFooter"><a href="sobre-nos.html">Sobre nós</a></li>
-                <li class="opcoesFooter"><a href="planos.html">Planos</a></li>
+                <li class="opcoesFooter"><a href="landingpage/index.html">Início</a></li>
+                <li class="opcoesFooter"><a href="landingpage/funcionalidades.html">Funcionalidades</a></li>
+                <li class="opcoesFooter"><a href="landingpage/sobre-nos.html">Sobre nós</a></li>
+                <li class="opcoesFooter"><a href="landingpage/planos.html">Planos</a></li>
             </ul>
         </nav>
         <div class="colunaFooter2">
             <address>
-                <div class="telefoneKronos"><img src="../assets/landingpage/img/telefone-kronos.png" alt="TELEFONE DO KRONOS"> +55 (11)
-                    95677-5122 </div>
-                <div class="emailKronos"><img src="../assets/landingpage/img/email-kronos.png" alt="EMAIL DO KRONOS"> <a
-                        href="mailto:kronosoficial.contato@gmail.com"> kronosoficial.contato@gmail.com </a> </div>
-                <div class="instagramKronos"><img src="../assets/landingpage/img/instagram-kronos.png" alt="INSTAGRAM DO KRONOS"> <a
-                        href="https://www.instagram.com/kronos.systems/" target="_blank"> @kronos.systems </a> </div>
+                <div class="telefoneKronos"><img src="assets/landingpage/img/telefone-kronos.png" alt="TELEFONE DO KRONOS"> +55 (11) 95677-5122 </div>
+                <div class="emailKronos"><img src="assets/landingpage/img/email-kronos.png" alt="EMAIL DO KRONOS"> <a href="mailto:kronosoficial.contato@gmail.com"> kronosoficial.contato@gmail.com </a> </div>
+                <div class="instagramKronos"><img src="assets/landingpage/img/instagram-kronos.png" alt="INSTAGRAM DO KRONOS"> <a href="https://www.instagram.com/kronos.systems/" target="_blank"> @kronos.systems </a> </div>
             </address>
-            <small>&copy; 2025 KRONOS. Todos os direitos reservados.</small>
+            <small>
+                &copy; 2025 KRONOS. Todos os direitos reservados.
+                <a href="login-crud"><img src="assets/landingpage/img/cadeado-area-restrita.png" class="cadeadoAreaRestrita"></a>
+            </small>        
         </div>
     </footer>
-</body>
 
+</body>
 </html>

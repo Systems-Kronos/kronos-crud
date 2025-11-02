@@ -3,4 +3,95 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
          version="6.0">
+
+    <session-config>
+        <session-timeout>90</session-timeout>
+    </session-config>
+
+   <!-- ==================== Páginas de Erro ==================== -->
+
+    <!-- Requisição mal feita -->
+    <error-page>
+        <error-code>400</error-code>
+        <location>/WEB-INF/pages/error/400.jsp</location>
+    </error-page>
+
+    <!-- Credencial necessária  -->
+    <error-page>
+        <error-code>401</error-code>
+        <location>/WEB-INF/pages/error/401.jsp</location>
+    </error-page>
+
+    <!-- Credencial não permite acesso -->
+    <error-page>
+        <error-code>403</error-code>
+        <location>/WEB-INF/pages/error/403.jsp</location>
+    </error-page>
+
+    <!-- Página não encontrada -->
+    <error-page>
+        <error-code>404</error-code>
+        <location>/WEB-INF/pages/error/404.jsp</location>
+    </error-page>
+
+    <!-- Método não permitido -->
+    <error-page>
+        <error-code>405</error-code>
+        <location>/WEB-INF/pages/error/400.jsp</location>
+    </error-page>
+
+    <!-- Tempo de requisição excedido -->
+    <error-page>
+        <error-code>408</error-code>
+        <location>/WEB-INF/pages/error/401.jsp</location>
+    </error-page>
+
+    <!-- Conteúdo removido -->
+    <error-page>
+        <error-code>410</error-code>
+        <location>/WEB-INF/pages/error/404.jsp</location>
+    </error-page>
+
+    <!-- Tipo de mídia não suportado -->
+    <error-page>
+        <error-code>415</error-code>
+        <location>/WEB-INF/pages/error/400.jsp</location>
+    </error-page>
+
+    <!-- Erro interno do servidor -->
+    <error-page>
+        <error-code>500</error-code>
+        <location>/WEB-INF/pages/error/500.jsp</location>
+    </error-page>
+
+    <!-- Serviço indisponível -->
+    <error-page>
+        <error-code>503</error-code>
+        <location>/WEB-INF/pages/error/500.jsp</location>
+    </error-page>
+
+    <!-- Tempo de resposta do gateway excedido -->
+    <error-page>
+        <error-code>504</error-code>
+        <location>/WEB-INF/pages/error/500.jsp</location>
+    </error-page>
+
+    <!-- Autenticação de rede necessária -->
+    <error-page>
+        <error-code>511</error-code>
+        <location>/WEB-INF/pages/error/500.jsp</location>
+    </error-page>
+
+    <!-- Padrão geral pra qualquer exceção -->
+    <error-page>
+        <exception-type>java.lang.Throwable</exception-type>
+        <location>/WEB-INF/pages/error/500.jsp</location>
+    </error-page>
+
+    <!-- ==================== Entrada do Site ==================== -->
+
+   <welcome-file-list>
+        <welcome-file>landingpage/index.html</welcome-file>
+   </welcome-file-list>
+
 </web-app>

@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 
 /**
  * Representa uma empresa com informações detalhadas como
- * nome, localização, contatos, horário de funcionamento e plano assinado
+ * nome, localização, contatos, horário de funcionamento e plano assinado.
  * A classe garante a integridade dos dados da empresa através de validações rigorosas.
  */
 public class Empresa {
@@ -21,13 +21,14 @@ public class Empresa {
     private LocalTime horarioAbertura;
     private LocalTime horarioFechamento;
     private String regraDeNegocios;
+    private int idPlano;
 
     // Métodos Construtores
 
-    // As validações de exceções são realizadas pelos métodos set
+    // As validações de exceções são realizadas pelos métodos setters
     public Empresa(int id, String nome, String cep, String cnpj, String email, String telefone,
                    String porte, LocalTime horarioAbertura,
-                   LocalTime horarioFechamento, String regraDeNegocios) {
+                   LocalTime horarioFechamento, String regraDeNegocios, int idPlano) {
         this.setId(id);
         this.setNome(nome);
         this.setCep(cep);
@@ -38,11 +39,12 @@ public class Empresa {
         this.setHorarioAbertura(horarioAbertura);
         this.setHorarioFechamento(horarioFechamento);
         this.setRegraDeNegocios(regraDeNegocios);
+        this.setIdPlano(idPlano);
     }
 
     public Empresa(String nome, String cep, String cnpj, String email, String telefone,
                    String porte, LocalTime horarioAbertura,
-                   LocalTime horarioFechamento, String regraDeNegocios) {
+                   LocalTime horarioFechamento, String regraDeNegocios, int idPlano) {
         this.setNome(nome);
         this.setCep(cep);
         this.setCnpj(cnpj);
@@ -52,6 +54,7 @@ public class Empresa {
         this.setHorarioAbertura(horarioAbertura);
         this.setHorarioFechamento(horarioFechamento);
         this.setRegraDeNegocios(regraDeNegocios);
+        this.setIdPlano(idPlano);
     }
 
     // Métodos Getters e Setters
@@ -61,7 +64,7 @@ public class Empresa {
         return id;
     }
     public void setId(int id) {
-        if (id <= 0) { // Exceção: verifica se o ID é negativo ou igual a zero
+        if (id <= 0) {
             throw new IllegalArgumentException("O ID não pode ser zero ou negativo.");
         }
         this.id = id;
@@ -72,10 +75,10 @@ public class Empresa {
         return nome;
     }
     public void setNome(String nome) {
-        if (nome == null) { // Exceção: verifica se o nome é nulo
+        if (nome == null) {
             throw new NullPointerException("O nome não pode ser nulo.");
         }
-        if (nome.trim().isEmpty()) { // Exceção: verifica se o nome só contém espaço
+        if (nome.trim().isEmpty()) {
             throw new IllegalArgumentException("O nome não pode estar em branco.");
         }
         this.nome = nome;
@@ -86,13 +89,12 @@ public class Empresa {
         return cep;
     }
     public void setCep(String cep) {
-        if (cep == null) { // Exceção: verifica se o CEP é nulo
+        if (cep == null) {
             throw new NullPointerException("O CEP não pode ser nulo.");
         }
-        if (!isValidCep(cep)) { // Exceção: verifica se o CEP é válido pelo método isValidCep
-            throw new IllegalArgumentException("O formato do CEP é inválido: '" + cep + "'.");
-        }
-        this.cep = cep.replaceAll("[^\\d]", "");
+        String cepLimpo = cep.replaceAll("[^\\d]", "");
+        validateCep(cepLimpo);
+        this.cep = cepLimpo;
     }
 
     // Para o CNPJ
@@ -100,13 +102,12 @@ public class Empresa {
         return cnpj;
     }
     public void setCnpj(String cnpj) {
-        if (cnpj == null) { // Exceção: verifica se o CNPJ é nulo
+        if (cnpj == null) {
             throw new NullPointerException("O CNPJ não pode ser nulo.");
         }
-        if (!isValidCnpj(cnpj)) { // Exceção: verifica se o CNPJ é válido pelo método isValidCnpj
-            throw new IllegalArgumentException("O formato do CNPJ é inválido: '" + cnpj + "'.");
-        }
-        this.cnpj = cnpj.replaceAll("[^\\d]", "");
+        String cnpjLimpo = cnpj.replaceAll("[^\\d]", "");
+        validateCnpj(cnpjLimpo);
+        this.cnpj = cnpjLimpo;
     }
 
     // Para o email
@@ -114,12 +115,10 @@ public class Empresa {
         return email;
     }
     public void setEmail(String email) {
-        if (email == null) { // Exceção: verifica se o email é nulo
+        if (email == null) {
             throw new NullPointerException("O email não pode ser nulo.");
         }
-        if (!isValidEmail(email)) { // Exceção: verifica se o email é válido pelo método isValidEmail
-            throw new IllegalArgumentException("O formato do e-mail é inválido: '" + email + "'.");
-        }
+        validateEmail(email);
         this.email = email;
     }
 
@@ -128,13 +127,12 @@ public class Empresa {
         return telefone;
     }
     public void setTelefone(String telefone) {
-        if (telefone == null) { // Exceção: verifica se o telefone é nulo
+        if (telefone == null) {
             throw new NullPointerException("O telefone não pode ser nulo.");
         }
-        if (!isValidTelefone(telefone)) { // Exceção: verifica se o telefone é válido
-            throw new IllegalArgumentException("O formato do telefone é inválido: '" + telefone + "'.");
-        }
-        this.telefone = telefone.replaceAll("[^\\d]", "");
+        String telefoneLimpo = telefone.replaceAll("[^\\d]", "");
+        validateTelefone(telefoneLimpo);
+        this.telefone = telefoneLimpo;
     }
 
     // Para o porte
@@ -142,10 +140,10 @@ public class Empresa {
         return porte;
     }
     public void setPorte(String porte) {
-        if (porte == null) { // Exceção: verifica se o porte é nulo
+        if (porte == null) {
             throw new NullPointerException("O porte não pode ser nulo.");
         }
-        if (porte.trim().isEmpty()) { // Exceção: verifica se o nome só contém espaço
+        if (porte.trim().isEmpty()) {
             throw new IllegalArgumentException("O porte não pode estar em branco.");
         }
         this.porte = porte;
@@ -156,10 +154,9 @@ public class Empresa {
         return horarioAbertura;
     }
     public void setHorarioAbertura(LocalTime horarioAbertura) {
-        if (horarioAbertura == null) { // Exceção: verifica se o horario de abertura é nulo
+        if (horarioAbertura == null) {
             throw new NullPointerException("O horário de abertura não pode ser nulo.");
         }
-        // Exceção: verifica se o horário de abertura é depois do horário de fechamento
         if (this.horarioFechamento != null && horarioAbertura.isAfter(this.horarioFechamento)) {
             throw new IllegalStateException("O horário de abertura não pode ser posterior ao de fechamento.");
         }
@@ -171,10 +168,9 @@ public class Empresa {
         return horarioFechamento;
     }
     public void setHorarioFechamento(LocalTime horarioFechamento) {
-        if (horarioFechamento == null) { // Exceção: verifica se o horario de fechamento é nulo
+        if (horarioFechamento == null) {
             throw new NullPointerException("O horário de fechamento não pode ser nulo.");
         }
-        // Exceção: verifica se o horário de fechamento é antes do horário de abertura
         if (this.horarioAbertura != null && horarioFechamento.isBefore(this.horarioAbertura)) {
             throw new IllegalStateException("O horário de fechamento não pode ser anterior ao de abertura.");
         }
@@ -186,18 +182,29 @@ public class Empresa {
         return regraDeNegocios;
     }
     public void setRegraDeNegocios(String regraDeNegocios) {
-        if (regraDeNegocios == null) { // Exceção: verifica se a regra de negócios é nula
+        if (regraDeNegocios == null) {
             throw new NullPointerException("A regra de negócios não pode ser nula.");
         }
-        if (regraDeNegocios.trim().isEmpty()) { // Exceção: verifica se a regra de negócios só contém espaço
+        if (regraDeNegocios.trim().isEmpty()) {
             throw new IllegalArgumentException("A regra de negócios não pode estar vazia.");
         }
         this.regraDeNegocios = regraDeNegocios;
     }
 
+    // Para o ID do plano
+    public int getIdPlano() {
+        return idPlano;
+    }
+    public void setIdPlano(int idPlano) {
+        if (idPlano <= 0) {
+            throw new IllegalArgumentException("O ID do plano não pode ser zero ou negativo.");
+        }
+        this.idPlano = idPlano;
+    }
+
     // Método toString
     public String toString() {
-        return String.format("Empresa | Id: %-3d | Nome: %-20s | CEP: %-9s | CNPJ: %-18s | Email: %-20s | Telefone: %-12s | Porte: %-7s | Horário Abertura: %-10s | Horário Fechamento: %-10s | Regras de Negócios: %-50s",
+        return String.format("Empresa | Id: %-3d | Nome: %-20s | CEP: %-9s | CNPJ: %-18s | Email: %-20s | Telefone: %-12s | Porte: %-7s | Horário Abertura: %-10s | Horário Fechamento: %-10s | Regras de Negócios: %-50s | IdPlano: %-5d",
                 this.id,
                 this.nome,
                 this.cep,
@@ -207,56 +214,54 @@ public class Empresa {
                 this.porte,
                 this.horarioAbertura,
                 this.horarioFechamento,
-                this.regraDeNegocios
+                this.regraDeNegocios,
+                this.idPlano
         );
     }
+
+    // Pattern para a email: verifica se tem formato válido
+    private static final Pattern PATTERN_EMAIL = Pattern.compile(
+            "^[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@" +
+                    "(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,63}$"
+    );
 
     // Métodos de Validação
 
     /*
      * Verifica se o CEP é válido
-     * Exemplos de CEP aceitável:
-     * "12345-123", "12345123"
      */
-    private boolean isValidCep(String cep) {
-        String regex = "\\b\\d{5}-?\\d{3}\\b";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(cep.trim());
-        return matcher.matches();
+    private void validateCep(String cepLimpo) {
+        if (cepLimpo.length() != 8) {
+            throw new IllegalArgumentException("CEP inválido. Deve conter 8 dígitos. Recebido: '" + cepLimpo + "'");
+        }
     }
 
     /*
      * Verifica se o CNPJ é válido
-     * Exemplos de CNPJ aceitável:
-     * "12.345.678/1234-56", "12345678123456"
      */
-    private boolean isValidCnpj(String cnpj) {
-        String regex = "\\b\\d{2}\\.?\\d{3}\\.?\\d{3}/?\\.?\\d{4}-?\\d{2}\\b";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(cnpj.trim());
-        return matcher.matches();
+    private void validateCnpj(String cnpjLimpo) {
+        if (cnpjLimpo.length() != 14) {
+            throw new IllegalArgumentException("CNPJ inválido. Deve conter 14 dígitos. Recebido: '" + cnpjLimpo + "'");
+        }
     }
 
     /*
      * Verifica se o telefone é válido
-     * Exemplos de telefone aceitável:
-     * "(11) 12345-1234", "11123451234"
      */
-    private boolean isValidTelefone(String telefone) {
-        String regex = "\\(?\\d{2}\\)?\\s?\\d{4,5}-?\\d{4}";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(telefone.trim());
-        return matcher.matches();
+    private void validateTelefone(String telefoneLimpo) {
+        int len = telefoneLimpo.length();
+        if (len != 10 && len != 11) {
+            throw new IllegalArgumentException("Telefone inválido. Deve conter 10 ou 11 dígitos (com DDD). Recebido: '" + telefoneLimpo + "'");
+        }
     }
 
     /*
-    * Verifica se o email é válido
-    */
-    private boolean isValidEmail(String email) {
-        String regex = "^[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*" +
-                "@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,63}$";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(email);
-        return matcher.matches();
+     * Verifica se o email é válido
+     */
+    private void validateEmail(String email) {
+        Matcher matcher = PATTERN_EMAIL.matcher(email);
+        if (!matcher.matches()) {
+            throw new IllegalArgumentException("O formato do e-mail é inválido: '" + email + "'.");
+        }
     }
 }
