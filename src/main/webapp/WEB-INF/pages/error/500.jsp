@@ -13,7 +13,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="${pageContext.request.contextPath}/assets/error/img/favikronos.ico" type="image/x-icon">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/error/style/error.css">
-    <title>Erro 404 - Kronos</title>
+    <title>Erro 500 - Kronos</title>
 </head>
 
 <body>
@@ -22,6 +22,7 @@
             <img src="${pageContext.request.contextPath}/assets/crud/img/favikronos.ico" alt="LOGO KRONOS" class="logoKronosMobile">
             <h1 class="logoKronosDesktop">KRONOS</h1>
         </div>
+        <a href="${pageContext.request.contextPath}/landingpage/index.html" class="sairCrud">Voltar para Landing Page</a>
     </header>
 
     <main>
