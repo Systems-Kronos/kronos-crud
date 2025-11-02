@@ -1,4 +1,4 @@
-package com.example.Servlet;
+package com.example.Servlet.ServletLogin;
 
 import com.example.Model.Administracao;
 import com.example.dao.AdministracaoDAO;
