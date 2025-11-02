@@ -322,24 +322,30 @@
 
         <%-- ==== TABELA DE VISUALIZAÇÃO (READ) ==== --%>
         <main>
+            <div class="carregando">
+                <div class="popUpCarregando">
+                    Carregando...
+                    <img class="kronosCarregando" src="${pageContext.request.contextPath}/assets/crud/img/favikronos.ico" alt="">
+                </div>
+            </div>
             <div class="tabelaScroll">
                 <table class="tabelaEmpresas">
                     <thead>
-                    <tr>
-                        <th>Ver</th>
-                        <th>Excluir</th>
-                        <th>ID</th>
-                        <th>Nome</th>
-                        <th>E-mail</th>
-                        <th>Porte</th>
-                        <th>Plano</th>
-                        <th>CEP</th>
-                        <th>CNPJ</th>
-                        <th>Telefone</th>
-                        <th>Abertura</th>
-                        <th>Fechamento</th>
-                        <th>Regras</th>
-                    </tr>
+                        <tr>
+                            <th>Ver</th>
+                            <th>Excluir</th>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>E-mail</th>
+                            <th>Porte</th>
+                            <th>Plano</th>
+                            <th>CEP</th>
+                            <th>CNPJ</th>
+                            <th>Telefone</th>
+                            <th>Abertura</th>
+                            <th>Fechamento</th>
+                            <th>Regras</th>
+                        </tr>
                     </thead>
                     <tbody>
                     <%
@@ -356,28 +362,28 @@
                                     }
                                 }
                     %>
-                    <tr>
-                        <td> <button type="button" class="detalhes acaoModal" data-acao="abrir" data-modal="update" data-pk="<%= empresa.getId() %>" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"empresas-crud"}'><img src="${pageContext.request.contextPath}/assets/crud/img/mais-detalhes.png" alt="Ver/Editar"></button> </td>
-                        <td> <button type="button" class="detalhes acaoModal" data-acao="abrir" data-modal="delete" data-pk="<%= empresa.getId() %>" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"empresas-crud"}'><img src="${pageContext.request.contextPath}/assets/crud/img/deletar-kronos.png" alt="Excluir"></button> </td>
-                        <td><%= empresa.getId() %></td>
-                        <td><%= empresa.getNome() %></td>
-                        <td><%= empresa.getEmail() %></td>
-                        <td><%= empresa.getPorte() %></td>
-                        <td><%= nomePlano %></td>
-                        <td><%= empresa.getCep() %></td>
-                        <td><%= empresa.getCnpj() %></td>
-                        <td><%= empresa.getTelefone() %></td>
-                        <td><%= empresa.getHorarioAbertura() %></td>
-                        <td><%= empresa.getHorarioFechamento() %></td>
-                        <td><%= empresa.getRegraDeNegocios() %></td>
-                    </tr>
+                        <tr>
+                            <td> <button type="button" class="detalhes acaoModal" data-acao="abrir" data-modal="update" data-pk="<%= empresa.getId() %>" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"empresas-crud"}'><img src="${pageContext.request.contextPath}/assets/crud/img/mais-detalhes.png" alt="Ver/Editar"></button> </td>
+                            <td> <button type="button" class="detalhes acaoModal" data-acao="abrir" data-modal="delete" data-pk="<%= empresa.getId() %>" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"empresas-crud"}'><img src="${pageContext.request.contextPath}/assets/crud/img/deletar-kronos.png" alt="Excluir"></button> </td>
+                            <td><%= empresa.getId() %></td>
+                            <td><%= empresa.getNome() %></td>
+                            <td><%= empresa.getEmail() %></td>
+                            <td><%= empresa.getPorte() %></td>
+                            <td><%= nomePlano %></td>
+                            <td><%= empresa.getCep() %></td>
+                            <td><%= empresa.getCnpj() %></td>
+                            <td><%= empresa.getTelefone() %></td>
+                            <td><%= empresa.getHorarioAbertura() %></td>
+                            <td><%= empresa.getHorarioFechamento() %></td>
+                            <td><%= empresa.getRegraDeNegocios() %></td>
+                        </tr>
                     <%
                         }
                     } else {
                     %>
-                    <tr>
-                        <td colspan="13">Nenhuma empresa encontrada.</td>
-                    </tr>
+                        <tr>
+                            <td colspan="13">Nenhuma empresa encontrada.</td>
+                        </tr>
                     <% } %>
                     </tbody>
                 </table>

@@ -282,44 +282,46 @@
 
         <%-- ==== TABELA DE VISUALIZAÇÃO (READ) ==== --%>
         <main>
+            <div class="carregando">
+                <div class="popUpCarregando">
+                    Carregando...
+                    <img class="kronosCarregando" src="${pageContext.request.contextPath}/assets/crud/img/favikronos.ico" alt="">
+                </div>
+            </div>
             <div class="tabelaScroll">
                 <table class="tabelaPlanos">
                     <thead>
-                    <tr>
-                        <th>Ver</th>
-                        <th>Excluir</th>
-                        <th>ID</th>
-                        <th>Nome</th>
-                        <th>Custo</th>
-                        <th>Máximo de Funcionários</th>
-                        <th>Descrição</th>
-                    </tr>
+                        <tr>
+                            <th>Ver</th>
+                            <th>Excluir</th>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Custo</th>
+                            <th>Máximo de Funcionários</th>
+                            <th>Descrição</th>
+                        </tr>
                     </thead>
                     <tbody>
                     <%
                         if (listaPlanos != null && !listaPlanos.isEmpty()) {
                             for (Plano plano : listaPlanos) {
                     %>
-                    <tr>
-                        <td>
-                            <button type="button" id="modalUpdate" class="detalhes acaoModal" data-acao="abrir" data-modal="update" data-pk="<%= plano.getId() %>" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"planos-crud"}'><img src="${pageContext.request.contextPath}/assets/crud/img/mais-detalhes.png" alt="Ver/Editar"></button>
-                        </td>
-                        <td>
-                            <button type="button" id="modalDelete" class="detalhes acaoModal" data-acao="abrir" data-modal="delete" data-pk="<%= plano.getId() %>" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"planos-crud"}'><img src="${pageContext.request.contextPath}/assets/crud/img/deletar-kronos.png" alt="Excluir"></button>
-                        </td>
-                        <td><%= plano.getId() %></td>
-                        <td><%= plano.getNome() %></td>
-                        <td>R$ <%= String.format("%.2f", plano.getCusto()) %></td> <%-- Formatação de Custo --%>
-                        <td><%= plano.getMaxFuncionarios() %></td>
-                        <td><%= plano.getDescricao() %></td>
-                    </tr>
+                        <tr>
+                            <td> <button type="button" id="modalUpdate" class="detalhes acaoModal" data-acao="abrir" data-modal="update" data-pk="<%= plano.getId() %>" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"planos-crud"}'><img src="${pageContext.request.contextPath}/assets/crud/img/mais-detalhes.png" alt="Ver/Editar"></button> </td>
+                            <td> <button type="button" id="modalDelete" class="detalhes acaoModal" data-acao="abrir" data-modal="delete" data-pk="<%= plano.getId() %>" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"planos-crud"}'><img src="${pageContext.request.contextPath}/assets/crud/img/deletar-kronos.png" alt="Excluir"></button> </td>
+                            <td><%= plano.getId() %></td>
+                            <td><%= plano.getNome() %></td>
+                            <td>R$ <%= String.format("%.2f", plano.getCusto()) %></td> <%-- Formatação de Custo --%>
+                            <td><%= plano.getMaxFuncionarios() %></td>
+                            <td><%= plano.getDescricao() %></td>
+                        </tr>
                     <%
                         }
                     } else {
                     %>
-                    <tr>
-                        <td colspan="7">Nenhum plano encontrado.</td>
-                    </tr>
+                        <tr>
+                            <td colspan="7">Nenhum plano encontrado.</td>
+                        </tr>
                     <% } %>
                     </tbody>
                 </table>

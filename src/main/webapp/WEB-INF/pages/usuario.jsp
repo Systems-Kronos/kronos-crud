@@ -388,23 +388,29 @@
 
         <%-- ==== TABELA DE VISUALIZAÇÃO (READ) ==== --%>
         <main>
+            <div class="carregando">
+                <div class="popUpCarregando">
+                    Carregando...
+                    <img class="kronosCarregando" src="${pageContext.request.contextPath}/assets/crud/img/favikronos.ico" alt="">
+                </div>
+            </div>
             <div class="tabelaScroll">
                 <table class="tabelaUsuarios">
                     <thead>
-                    <tr>
-                        <th>Ver</th>
-                        <th>Excluir</th>
-                        <th>ID</th>
-                        <th>Nome</th>
-                        <th>CPF</th>
-                        <th>Telefone</th>
-                        <th>Senha</th>
-                        <th>Gênero</th>
-                        <th>Cargo</th>
-                        <th>Status</th>
-                        <th>Setor ID</th>
-                        <th>Supervisor ID</th>
-                    </tr>
+                        <tr>
+                            <th>Ver</th>
+                            <th>Excluir</th>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>CPF</th>
+                            <th>Telefone</th>
+                            <th>Senha</th>
+                            <th>Gênero</th>
+                            <th>Cargo</th>
+                            <th>Status</th>
+                            <th>Setor ID</th>
+                            <th>Supervisor ID</th>
+                        </tr>
                     </thead>
                     <tbody>
                     <%
@@ -412,25 +418,27 @@
                         if (listaUsuarios != null && !listaUsuarios.isEmpty()) {
                             for (Usuario u : listaUsuarios) {
                     %>
-                    <tr>
-                        <td> <button type="button" class="detalhes acaoModal" data-acao="abrir" data-modal="update" data-pk="<%= u.getId() %>" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"usuarios-crud"}'><img src="${pageContext.request.contextPath}/assets/crud/img/mais-detalhes.png" alt=""></button> </td>
-                        <td> <button type="button" class="detalhes acaoModal" data-acao="abrir" data-modal="delete" data-pk="<%= u.getId() %>" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"usuarios-crud"}'><img src="${pageContext.request.contextPath}/assets/crud/img/deletar-kronos.png" alt=""></button> </td>
-                        <td><%= u.getId() %></td>
-                        <td><%= u.getNome() %></td>
-                        <td><%= u.getCpf() %></td>
-                        <td><%= u.getTelefone() %></td>
-                        <td><%= u.getSenha() %></td>
-                        <td><%= u.getGenero() %></td>
-                        <td><%= u.getCargo() %></td>
-                        <td><%= u.getStatus() %></td>
-                        <td><%= u.getIdSetor() %></td>
-                        <td><%= u.getIdSupervisor() %></td>
-                    </tr>
+                        <tr>
+                            <td> <button type="button" class="detalhes acaoModal" data-acao="abrir" data-modal="update" data-pk="<%= u.getId() %>" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"usuarios-crud"}'><img src="${pageContext.request.contextPath}/assets/crud/img/mais-detalhes.png" alt=""></button> </td>
+                            <td> <button type="button" class="detalhes acaoModal" data-acao="abrir" data-modal="delete" data-pk="<%= u.getId() %>" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"usuarios-crud"}'><img src="${pageContext.request.contextPath}/assets/crud/img/deletar-kronos.png" alt=""></button> </td>
+                            <td><%= u.getId() %></td>
+                            <td><%= u.getNome() %></td>
+                            <td><%= u.getCpf() %></td>
+                            <td><%= u.getTelefone() %></td>
+                            <td><%= u.getSenha() %></td>
+                            <td><%= u.getGenero() %></td>
+                            <td><%= u.getCargo() %></td>
+                            <td><%= u.getStatus() %></td>
+                            <td><%= u.getIdSetor() %></td>
+                            <td><%= u.getIdSupervisor() %></td>
+                        </tr>
                     <%
                         }
                     } else {
                     %>
-                    <tr> <td colspan="12">Nenhum usuário encontrado.</td> </tr>
+                    <tr> 
+                        <td colspan="12">Nenhum usuário encontrado.</td> 
+                    </tr>
                     <%
                         }
                     %>

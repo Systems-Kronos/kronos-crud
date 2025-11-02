@@ -1,3 +1,12 @@
+/* ANIMAÇÃO - CARREGANDO */
+
+@keyframes girar {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ANIMAÇÃO - CARREGANDO */
+
 /* * {
 border: 0.1vw solid red;
 } */
@@ -483,7 +492,7 @@ tr:nth-child(even) {
 }
 
 tr:hover {
-    background-color: #FDFDFD;
+    background-color: #fdfdfdb7;
     transition: 0.3s;
 }
 
@@ -567,6 +576,50 @@ table button.detalhes {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.carregando {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 9999;
+}
+
+.carregando.mostrar {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.carregando .popUpCarregando {
+    background: #FFFFFF;
+    padding: 4vw 6vw;
+    border-radius: 1vw;
+    border: 0.15vw solid #370963;
+    color: #370963;
+    font-family: 'Crete Round', sans-serif;
+    font-size: 1.6vw;
+    font-weight: bold;
+    box-shadow: 0 0.5vw 1vw rgba(0,0,0,0.3);
+    text-align: center;
+    display: flex;
+    align-items: center;
+    gap: 1.25vw;
+}
+
+.carregando .kronosCarregando {
+    animation: girar 2s linear infinite;
+    height: 3vw;
+    object-fit: contain;
 }
 
 @media (max-width: 912px) {
@@ -829,10 +882,26 @@ table button.detalhes {
         padding: 1.75vw 3.5vw;
         font-size: 3.5vw;
         border-radius: 1.5vw;
+        position: relative;
+        right: 7vw;
     }
     
     .erro-senha {
         font-size: 2.5vw;
         margin-bottom: 4vw;
+    }
+
+    .carregando .popUpCarregando {
+        padding: 12vw 17vw;
+        border-radius: 1.5vw;
+        border: 0.3vw solid #370963;
+        font-size: 5vw;
+        box-shadow: 0 0.75vw 1.5vw rgba(0,0,0,0.3);
+        gap: 2.5vw;
+    }
+    
+    .carregando .kronosCarregando {
+        animation: girar 3s linear infinite;
+        height: 10vw;
     }
 }

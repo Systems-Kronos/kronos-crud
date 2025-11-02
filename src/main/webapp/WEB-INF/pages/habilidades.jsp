@@ -255,42 +255,44 @@
 
         <%-- ==== TABELA DE VISUALIZAÇÃO (READ) ==== --%>
         <main>
+            <div class="carregando">
+                <div class="popUpCarregando">
+                    Carregando...
+                    <img class="kronosCarregando" src="${pageContext.request.contextPath}/assets/crud/img/favikronos.ico" alt="">
+                </div>
+            </div>
             <div class="tabelaScroll">
                 <table class="tabelaHabilidades">
                     <thead>
-                    <tr>
-                        <th>Ver</th>
-                        <th>Excluir</th>
-                        <th>ID</th>
-                        <th>Nome</th>
-                        <th>Tag</th>
-                        <th>Descrição</th>
-                    </tr>
+                        <tr>
+                            <th>Ver</th>
+                            <th>Excluir</th>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Tag</th>
+                            <th>Descrição</th>
+                        </tr>
                     </thead>
                     <tbody>
                     <%
                         if (listaHabilidades != null && !listaHabilidades.isEmpty()) {
                             for (Habilidades habilidade : listaHabilidades) {
                     %>
-                    <tr>
-                        <td>
-                            <button type="button" class="detalhes acaoModal" data-acao="abrir" data-modal="update" data-pk="<%= habilidade.getId() %>" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"habilidades-crud"}'><img src="${pageContext.request.contextPath}/assets/crud/img/mais-detalhes.png" alt="Ver/Editar"></button>
-                        </td>
-                        <td>
-                            <button type="button" class="detalhes acaoModal" data-acao="abrir" data-modal="delete" data-pk="<%= habilidade.getId() %>" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"habilidades-crud"}'><img src="${pageContext.request.contextPath}/assets/crud/img/deletar-kronos.png" alt="Excluir"></button>
-                        </td>
-                        <td><%= habilidade.getId() %></td>
-                        <td><%= habilidade.getNome() %></td>
-                        <td><%= habilidade.getTag() %></td>
-                        <td><%= habilidade.getDescricao() %></td>
-                    </tr>
+                        <tr>
+                            <td> <button type="button" class="detalhes acaoModal" data-acao="abrir" data-modal="update" data-pk="<%= habilidade.getId() %>" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"habilidades-crud"}'><img src="${pageContext.request.contextPath}/assets/crud/img/mais-detalhes.png" alt="Ver/Editar"></button> </td>
+                            <td> <button type="button" class="detalhes acaoModal" data-acao="abrir" data-modal="delete" data-pk="<%= habilidade.getId() %>" data-caminho='{"base":"${pageContext.request.contextPath}","tabela":"habilidades-crud"}'><img src="${pageContext.request.contextPath}/assets/crud/img/deletar-kronos.png" alt="Excluir"></button> </td>
+                            <td><%= habilidade.getId() %></td>
+                            <td><%= habilidade.getNome() %></td>
+                            <td><%= habilidade.getTag() %></td>
+                            <td><%= habilidade.getDescricao() %></td>
+                        </tr>
                     <%
                         }
                     } else {
                     %>
-                    <tr>
-                        <td colspan="6">Nenhuma habilidade encontrada.</td>
-                    </tr>
+                        <tr>
+                            <td colspan="6">Nenhuma habilidade encontrada.</td>
+                        </tr>
                     <% } %>
                     </tbody>
                 </table>
