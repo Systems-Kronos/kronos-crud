@@ -109,7 +109,7 @@ header > .sairCrud {
 .navegacaoContexto {
     display: none;
 }
- 
+
 .conteudoPrincipal {
     margin-left: 20%;
     width: 80%;
@@ -365,7 +365,7 @@ section dialog form .campos fieldset {
     background-color: #FBF8FF;
     border-radius: 0.5vw;
     border: 0.15vw solid #370963;
-    padding: 0.5vw; 
+    padding: 0.5vw;
     box-sizing: border-box;
 }
 
@@ -405,7 +405,7 @@ section dialog form .campos .campoLado input {
 }
 
 section dialog form .campos select option:first-child {
-    display: none; 
+    display: none;
 }
 
 section dialog h2 {
@@ -554,7 +554,7 @@ table button.detalhes {
     display: none;
     position: absolute;
     top: 100%;
-    left: 0; 
+    left: 0;
     width: 100%;
     white-space: nowrap;
 }
@@ -626,7 +626,7 @@ table button.detalhes {
     body {
         display: block;
     }
-    
+
     .meuPlaceholder {
         display: none;
     }
@@ -648,21 +648,21 @@ table button.detalhes {
         font-size: 6vw;
         margin: 0;
     }
-    
+
     header > .sairCrud {
         font-size: 3.5vw;
         margin: 0;
     }
 
     header nav {
-        display: none; 
+        display: none;
     }
-    
+
     .navegacaoContexto {
         display: flex;
-        overflow-x: auto; 
+        overflow-x: auto;
         white-space: nowrap;
-        background-color: #F3ECFF; 
+        background-color: #F3ECFF;
         padding: 2vw 4vw;
         border-bottom: 0.2vw solid #370963;
     }
@@ -697,7 +697,7 @@ table button.detalhes {
         margin: 5vw 0;
         gap: 3vw;
     }
-    
+
     form {
         flex-direction: column;
         gap: 3vw;
@@ -711,7 +711,7 @@ table button.detalhes {
         border-radius: 1.5vw;
         box-sizing: border-box;
     }
-    
+
     .filtros {
         width: 100%;
     }
@@ -730,7 +730,7 @@ table button.detalhes {
         font-size: 3vw;
         border-radius: 1.5vw;
     }
-    
+
     .conteudoFiltros button {
         font-size: 3vw;
         padding: 1.5vw 0;
@@ -762,26 +762,26 @@ table button.detalhes {
         margin-left: auto;
         margin-right: auto;
     }
-    
+
     table {
         min-width: 150vw;
         font-size: 3vw;
         margin-top: 4vw;
     }
-    
+
     th, td {
         padding: 3vw 5vw;
         white-space: nowrap;
     }
-    
+
     th {
         font-size: 3.5vw;
     }
-    
+
     th:first-child {
         border-radius: 1vw 0vw 0vw 0vw;
     }
-    
+
     th:last-child {
         border-radius: 0vw 1vw 0vw 0vw;
     }
@@ -798,22 +798,22 @@ table button.detalhes {
         margin: auto;
         overflow-x: hidden;
     }
-    
+
     section dialog h2 {
         font-size: 6vw;
         margin: 3vw 0vw 5vw 0;
         text-align: center;
     }
-    
+
     section dialog form {
         width: 100%;
     }
-    
+
     section dialog form .campos {
         flex-direction: column;
         gap: 5vw;
     }
-    
+
     section dialog form .campo {
         margin-bottom: 4vw;
         row-gap: 2vw;
@@ -836,7 +836,7 @@ table button.detalhes {
     section dialog form .campos textarea {
         height: 15vw;
     }
-    
+
     section dialog form .campoLado {
         gap: 4vw;
     }
@@ -865,7 +865,7 @@ table button.detalhes {
     section dialog form .idAtual {
         font-size: 4vw;
     }
-    
+
     section dialog form .idAtual input[type="number"] {
         font-size: 4vw;
         width: 10vw;
@@ -885,7 +885,7 @@ table button.detalhes {
         position: relative;
         right: 7vw;
     }
-    
+
     .erro-senha {
         font-size: 2.5vw;
         margin-bottom: 4vw;
@@ -899,7 +899,7 @@ table button.detalhes {
         box-shadow: 0 0.75vw 1.5vw rgba(0,0,0,0.3);
         gap: 2.5vw;
     }
-    
+
     .carregando .kronosCarregando {
         animation: girar 3s linear infinite;
         height: 10vw;
