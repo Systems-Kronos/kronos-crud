@@ -1,3 +1,12 @@
+/* ANIMAÇÃO - CARREGANDO */
+
+@keyframes girar {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ANIMAÇÃO - CARREGANDO */
+
 /* * {
 border: 0.1vw solid red;
 } */
@@ -37,7 +46,7 @@ header {
     left: 0;
     width: 20%;
     height: 100vh;
-    background-color: #f3ecff;
+    background-color: #F3ECFF;
     color: #370963;
     display: flex;
     flex-direction: column;
@@ -88,9 +97,19 @@ header li a:hover {
 }
 
 header li a.ativo {
-    background-color: #ebd2fa;
+    background-color: #EBD2FA;
 }
 
+header > .sairCrud {
+    margin-top: 2vw;
+    font-size: 1.2vw;
+    text-decoration: none;
+}
+
+.navegacaoContexto {
+    display: none;
+}
+ 
 .conteudoPrincipal {
     margin-left: 20%;
     width: 80%;
@@ -262,20 +281,21 @@ section dialog form .campos {
 }
 
 section dialog form .campo {
+    position: relative;
     display: flex;
     flex-direction: column;
-    margin-bottom: 1vw;
-    row-gap: 0.5vw;
+    margin-bottom: 1.5vw;
+    row-gap: 0.75vw;
 }
 
 
 section dialog form .campo label {
-    font-size: 1.2vw;
+    font-size: 1.15vw;
 }
 
 section dialog form .campoLado {
     display: flex;
-    gap: 1.75vw;
+    gap: 1.70vw;
 }
 
 section dialog form .idAtual {
@@ -315,12 +335,12 @@ section dialog form .campos input {
 
 section dialog form .campos textarea {
     font-family: "Montserrat", sans-serif;
-    background-color: #FBF8FF;
-    border-radius: 0.5vw;
     width: 17.5vw;
     height: 6vw;
     font-size: 1vw;
     padding: 0.5vw;
+    background-color: #FBF8FF;
+    border-radius: 0.5vw;
     border: 0.15vw solid #370963;
     font-weight: 400;
     resize: none;
@@ -336,6 +356,40 @@ section dialog form .campos select {
     padding: 0.5vw;
     border: 0.15vw solid #370963;
     font-weight: 400;
+}
+
+section dialog form .campos fieldset {
+    max-height: 23vh;
+    font-size: 1.1vw;
+    overflow-y: auto;
+    background-color: #FBF8FF;
+    border-radius: 0.5vw;
+    border: 0.15vw solid #370963;
+    padding: 0.5vw; 
+    box-sizing: border-box;
+}
+
+#listaHabilidadesCreate,
+#listaHabilidadesUpdate {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.5vw 1vw;
+    align-items: center;
+    white-space: nowrap;
+}
+
+#listaHabilidadesCreate label,
+#listaHabilidadesUpdate label {
+    text-align: left;
+    display: inline;
+}
+
+.habilidade-create-cb,
+.habilidade-update-cb {
+    width: 1.2vw;
+    height: 1.2vw;
+    cursor: pointer;
+    margin: 0;
 }
 
 section dialog form .campos .campoLado input {
@@ -438,7 +492,7 @@ tr:nth-child(even) {
 }
 
 tr:hover {
-    background-color: #ddd;
+    background-color: #fdfdfdb7;
     transition: 0.3s;
 }
 
@@ -487,41 +541,367 @@ table button.detalhes {
     font-family: 'Montserrat', sans-serif;
     text-align: center;
 }
+
 .erro-senha {
     background-color: transparent;
     color: #dc3545;
     padding: 0;
     border: none;
-    margin-bottom: 0;
-    margin-top: 0.25rem;
-    font-size: 0.875em;
+    margin-bottom: 2vw;
+    margin-top: 0.2vw;
+    font-size: 0.9vw;
     text-align: left;
     display: none;
+    position: absolute;
+    top: 100%;
+    left: 0; 
+    width: 100%;
+    white-space: nowrap;
 }
 
 .erro-senha:not(:empty) {
     display: block;
 }
 
-#listaHabilidadesCreate, #listaHabilidadesUpdate {
-    max-height: 150px;
-    overflow-y: auto;
-    border: 1px solid #ccc;padding: 5px;
-}
-
 .mensagem-aviso {
-    background-color: #fff3cd;
-    color: #664d03;
-    border: 1px solid #ffecb5;
-
+    background-color: #FFF3CD;
+    color: #664D03;
+    border: 1px solid #FFECB5;
     padding: 1rem;
     border-radius: 5px;
     margin-bottom: 1rem;
     font-family: 'Montserrat', sans-serif;
-
     min-height: 4em;
     box-sizing: border-box;
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.carregando {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 9999;
+}
+
+.carregando.mostrar {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.carregando .popUpCarregando {
+    background: #FFFFFF;
+    padding: 4vw 6vw;
+    border-radius: 1vw;
+    border: 0.15vw solid #370963;
+    color: #370963;
+    font-family: 'Crete Round', sans-serif;
+    font-size: 1.6vw;
+    font-weight: bold;
+    box-shadow: 0 0.5vw 1vw rgba(0,0,0,0.3);
+    text-align: center;
+    display: flex;
+    align-items: center;
+    gap: 1.25vw;
+}
+
+.carregando .kronosCarregando {
+    animation: girar 2s linear infinite;
+    height: 3vw;
+    object-fit: contain;
+}
+
+@media (max-width: 912px) {
+    body {
+        display: block;
+    }
+    
+    .meuPlaceholder {
+        display: none;
+    }
+
+    header {
+        position: static;
+        width: 100%;
+        height: auto;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 2vw 4vw;
+        box-sizing: border-box;
+        background-color: #F3ECFF;
+        z-index: 10;
+    }
+
+    header h1 {
+        font-size: 6vw;
+        margin: 0;
+    }
+    
+    header > .sairCrud {
+        font-size: 3.5vw;
+        margin: 0;
+    }
+
+    header nav {
+        display: none; 
+    }
+    
+    .navegacaoContexto {
+        display: flex;
+        overflow-x: auto; 
+        white-space: nowrap;
+        background-color: #F3ECFF; 
+        padding: 2vw 4vw;
+        border-bottom: 0.2vw solid #370963;
+    }
+
+    .navegacaoContexto a {
+        text-decoration: none;
+        color: #370963;
+        font-size: 3.5vw;
+        padding: 2vw 4vw;
+        transition: 0.2s ease;
+        border-bottom: 0.4vw solid transparent;
+        font-weight: 500;
+        display: inline-block;
+    }
+
+    .navegacaoContexto a.ativo {
+        border-radius: 0.5vw;
+        background-color: #EADAF5;
+        border-color: #E6B648;
+    }
+
+    .conteudoPrincipal {
+        margin-left: 0;
+        width: 100%;
+        padding: 5vw;
+        box-sizing: border-box;
+    }
+
+    .procurarCadastrar {
+        flex-direction: column;
+        align-items: stretch;
+        margin: 5vw 0;
+        gap: 3vw;
+    }
+    
+    form {
+        flex-direction: column;
+        gap: 3vw;
+    }
+
+    form .buscar {
+        font-size: 3.5vw;
+        padding: 2.5vw 4vw;
+        height: auto;
+        width: 100%;
+        border-radius: 1.5vw;
+        box-sizing: border-box;
+    }
+    
+    .filtros {
+        width: 100%;
+    }
+
+    .filtros summary {
+        padding: 2.5vw 4vw;
+        font-size: 3.5vw;
+        border-radius: 1.5vw;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .conteudoFiltros {
+        min-width: 100%;
+        margin-top: 1vw;
+        font-size: 3vw;
+        border-radius: 1.5vw;
+    }
+    
+    .conteudoFiltros button {
+        font-size: 3vw;
+        padding: 1.5vw 0;
+        border-radius: 0.5vw;
+    }
+
+    .opcaoFiltro {
+        padding: 2.5vw 4vw;
+    }
+
+    .opcaoFiltro input {
+        margin-right: 3vw;
+        width: 3.5vw;
+        height: 3.5vw;
+    }
+
+    .cadastrar {
+        padding: 2.5vw 4vw;
+        font-size: 3.5vw;
+        border-radius: 1.5vw;
+        text-align: center;
+    }
+
+    .tabelaScroll {
+        overflow-x: auto;
+        overflow-y: hidden;
+        width: 90vw;
+        max-height: 80vh;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    table {
+        min-width: 150vw;
+        font-size: 3vw;
+        margin-top: 4vw;
+    }
+    
+    th, td {
+        padding: 3vw 5vw;
+        white-space: nowrap;
+    }
+    
+    th {
+        font-size: 3.5vw;
+    }
+    
+    th:first-child {
+        border-radius: 1vw 0vw 0vw 0vw;
+    }
+    
+    th:last-child {
+        border-radius: 0vw 1vw 0vw 0vw;
+    }
+
+    table button.detalhes img {
+        height: 4vw;
+    }
+
+    section dialog {
+        width: 90%;
+        border-radius: 2vw;
+        border: 0.5vw solid #370963;
+        box-sizing: border-box;
+        margin: auto;
+        overflow-x: hidden;
+    }
+    
+    section dialog h2 {
+        font-size: 6vw;
+        margin: 3vw 0vw 5vw 0;
+        text-align: center;
+    }
+    
+    section dialog form {
+        width: 100%;
+    }
+    
+    section dialog form .campos {
+        flex-direction: column;
+        gap: 5vw;
+    }
+    
+    section dialog form .campo {
+        margin-bottom: 4vw;
+        row-gap: 2vw;
+    }
+
+    section dialog form .campo label {
+        font-size: 3.5vw;
+    }
+
+    section dialog form .campos input,
+    section dialog form .campos textarea {
+        width: 100%;
+        height: auto;
+        font-size: 3.5vw;
+        padding: 2vw 3vw;
+        border-radius: 1vw;
+        box-sizing: border-box;
+    }
+
+    section dialog form .campos textarea {
+        height: 15vw;
+    }
+    
+    section dialog form .campoLado {
+        gap: 4vw;
+    }
+
+    section dialog form .campos select {
+        width: 25vw;
+        height: 8vw;
+        font-size: 3.5vw;
+        padding: 1vw;
+        border-radius: 1vw;
+    }
+
+    section dialog form .campos fieldset {
+        font-size: 3vw;
+        width: 100%;
+    }
+
+    section dialog form .campos .campoLado input {
+        width: 45%;
+        height: 5vw;
+        font-size: 3.5vw;
+        padding: 1.5vw 3vw;
+        border-radius: 1vw;
+    }
+
+    section dialog form .idAtual {
+        font-size: 4vw;
+    }
+    
+    section dialog form .idAtual input[type="number"] {
+        font-size: 4vw;
+        width: 10vw;
+    }
+
+    section dialog menu {
+        justify-content: center;
+        margin-right: 0;
+        margin-top: 5vw;
+        gap: 2vw;
+    }
+
+    section dialog menu button {
+        padding: 1.75vw 3.5vw;
+        font-size: 3.5vw;
+        border-radius: 1.5vw;
+        position: relative;
+        right: 7vw;
+    }
+    
+    .erro-senha {
+        font-size: 2.5vw;
+        margin-bottom: 4vw;
+    }
+
+    .carregando .popUpCarregando {
+        padding: 12vw 17vw;
+        border-radius: 1.5vw;
+        border: 0.3vw solid #370963;
+        font-size: 5vw;
+        box-shadow: 0 0.75vw 1.5vw rgba(0,0,0,0.3);
+        gap: 2.5vw;
+    }
+    
+    .carregando .kronosCarregando {
+        animation: girar 3s linear infinite;
+        height: 10vw;
+    }
 }

@@ -22,6 +22,7 @@
             <img src="${pageContext.request.contextPath}/assets/crud/img/favikronos.ico" alt="LOGO KRONOS" class="logoKronosMobile">
             <h1 class="logoKronosDesktop">KRONOS</h1>
         </div>
+        <a href="${pageContext.request.contextPath}/landingpage/index.html" class="sairCrud">Voltar para Landing Page</a>
     </header>
 
     <main>

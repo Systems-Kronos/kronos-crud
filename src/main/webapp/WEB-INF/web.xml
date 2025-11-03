@@ -8,13 +8,7 @@
         <session-timeout>90</session-timeout>
     </session-config>
 
-    <!-- ==================== Entrada do Site ==================== -->
-
-   <welcome-file-list>
-        <welcome-file>landingpage/index.html</welcome-file>
-   </welcome-file-list>
-
-   <!-- ==================== Páginas de Erro ==================== -->
+    <!-- ==================== Páginas de Erro ==================== -->
 
     <!-- Requisição mal feita -->
     <error-page>
@@ -49,7 +43,7 @@
     <!-- Tempo de requisição excedido -->
     <error-page>
         <error-code>408</error-code>
-        <location>/WEB-INF/pages/error/400.jsp</location>
+        <location>/WEB-INF/pages/error/401.jsp</location>
     </error-page>
 
     <!-- Conteúdo removido -->
@@ -94,5 +88,10 @@
         <location>/WEB-INF/pages/error/500.jsp</location>
     </error-page>
 
+    <!-- ==================== Entrada do Site ==================== -->
+
+    <welcome-file-list>
+        <welcome-file>landingpage/index.html</welcome-file>
+    </welcome-file-list>
 
 </web-app>
